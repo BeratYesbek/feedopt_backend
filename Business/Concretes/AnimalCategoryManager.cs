@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Core.Utilities.Result.Abstracts;
+using Core.Utilities.Result.Concretes;
+using DataAccess.Concretes;
 using Entity.concretes;
 
 namespace Business.Concretes
@@ -13,7 +15,9 @@ namespace Business.Concretes
     {
         public IResult Add(AnimalCategory animalCategory)
         {
-            throw new NotImplementedException();
+            EfAnimalCategoryDal a = new EfAnimalCategoryDal();
+            a.Add(animalCategory);
+            return new SuccessResult();
         }
 
         public IResult Update(AnimalCategory animalCategory)
