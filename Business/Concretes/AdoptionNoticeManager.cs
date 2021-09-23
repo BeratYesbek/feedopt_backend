@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Core.Utilities.Result.Abstracts;
+using Core.Utilities.Result.Concretes;
+using DataAccess.Concretes;
 using Entity.concretes;
 
 namespace Business.Concretes
@@ -13,7 +15,9 @@ namespace Business.Concretes
     {
         public IResult Add(AdoptionNotice adoptionNotice)
         {
-            throw new NotImplementedException();
+            var addedData = new EfAdoptionNoticeDal();
+            addedData.Add(adoptionNotice);
+            return new SuccessResult();
         }
 
         public IResult Update(AdoptionNotice adoptionNotice)
@@ -26,12 +30,12 @@ namespace Business.Concretes
             throw new NotImplementedException();
         }
 
-        public IDataResult<AdoptionNotice> Get(AdoptionNotice adoptionNotice)
+        public IDataResult<AdoptionNotice> Get(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IDataResult<List<AdoptionNotice>> GetAll(AdoptionNotice adoptionNotice)
+        public IDataResult<List<AdoptionNotice>> GetAll()
         {
             throw new NotImplementedException();
         }

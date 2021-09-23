@@ -30,12 +30,12 @@ namespace Business.Concretes
             throw new NotImplementedException();
         }
 
-        public IDataResult<AnimalCategory> Get(AnimalCategory animalCategory)
+        public IDataResult<AnimalCategory> Get(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IDataResult<List<AnimalCategory>> GetAll(AnimalCategory animalCategory)
+        public IDataResult<List<AnimalCategory>> GetAll()
         {
             throw new NotImplementedException();
         }

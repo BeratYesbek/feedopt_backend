@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Entity.Abstracts;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Core.DataAccess
@@ -48,6 +48,7 @@ namespace Core.DataAccess
         {
             using (TContext context = new TContext())
             {
+
                 var result = context.Set<TEntity>().SingleOrDefault(filter);
                 return result;
             }
@@ -57,6 +58,7 @@ namespace Core.DataAccess
         {
             using (TContext context = new TContext())
             {
+           
                 var result = filter == null
                     ? context.Set<TEntity>().ToList()
                     : context.Set<TEntity>().Where(filter).ToList();

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Core.Utilities.Result.Abstracts;
+using Core.Utilities.Result.Concretes;
+using DataAccess.Concretes;
 using Entity;
 
 namespace Business.Concretes
@@ -13,7 +15,8 @@ namespace Business.Concretes
     {
         public IResult Add(MissingDeclaration missingDeclaration)
         {
-            throw new NotImplementedException();
+            new EfMissingDeclarationDal().Add(missingDeclaration);
+            return new SuccessResult();
         }
 
         public IResult Update(MissingDeclaration missingDeclaration)
@@ -26,14 +29,14 @@ namespace Business.Concretes
             throw new NotImplementedException();
         }
 
-        public IDataResult<MissingDeclaration> Get(MissingDeclaration missingDeclaration)
+        public IDataResult<MissingDeclaration> Get(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IDataResult<List<MissingDeclaration>> GetAll(MissingDeclaration missingDeclaration)
+        public IDataResult<List<MissingDeclaration>> GetAll()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<MissingDeclaration>>(new EfMissingDeclarationDal().GetAll());
         }
     }
 }

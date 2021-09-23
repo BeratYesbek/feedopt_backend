@@ -16,8 +16,8 @@ namespace Business.Abstracts
 
         IResult Delete(AdoptionNotice adoptionNotice);
 
-        IDataResult<AdoptionNotice> Get(AdoptionNotice adoptionNotice);
+        IDataResult<AdoptionNotice> Get(int id);
 
-        IDataResult<List<AdoptionNotice>> GetAll(AdoptionNotice adoptionNotice);
+        IDataResult<List<AdoptionNotice>> GetAll();
     }
 }

@@ -17,8 +17,8 @@ namespace Business.Abstracts
 
         IResult Delete(MissingDeclaration missingDeclaration);
 
-        IDataResult<MissingDeclaration> Get(MissingDeclaration missingDeclaration);
+        IDataResult<MissingDeclaration> Get(int id);
 
-        IDataResult<List<MissingDeclaration>> GetAll(MissingDeclaration missingDeclaration);
+        IDataResult<List<MissingDeclaration>> GetAll();
     }
 }
