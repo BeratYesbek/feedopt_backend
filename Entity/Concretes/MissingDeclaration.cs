@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Core.Entity;
 using Core.Entity.Abstracts;
 using Entity.concretes;
+using Entity.Concretes;
 
 namespace Entity
 {
@@ -22,16 +23,17 @@ namespace Entity
 
         public int UserId { get; set; }
 
-        public string City { get; set; }
+        public int LocationId { get; set; }
 
-        public long Lan { get; set; }
-
-        public long Lon { get; set; }
+        [ForeignKey("LocationId")]
+        public virtual Location Location { get; set; }
 
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
         [ForeignKey("AnimalSpeciesId")]
         public virtual AnimalSpecies AnimalSpecies { get; set; }
+
+        public virtual ICollection<MissingDeclarationImage> MissingDeclarationImages { get; set; }
     }
 }

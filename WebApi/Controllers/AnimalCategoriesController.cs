@@ -26,5 +26,61 @@ namespace WebApi.Controllers
 
             return BadRequest();
         }
+
+
+        [HttpPost("Update")]
+        public IActionResult Update(AnimalCategory animalCategory)
+        {
+            var result = new AnimalCategoryManager().Update(animalCategory);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
+
+        [HttpPost("Delete")]
+        public IActionResult Delete(AnimalCategory animalCategory)
+        {
+            var result = new AnimalCategoryManager().Delete(animalCategory);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
+
+        [HttpGet("GetById")]
+        public IActionResult Get(int id)
+        {
+            var result = new AnimalCategoryManager().Get(id);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
+
+        [HttpGet("GetAll")]
+        public IActionResult GetAll()
+        {
+            var result = new AnimalCategoryManager().GetAll();
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
     }
 }

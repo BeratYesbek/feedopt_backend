@@ -13,31 +13,46 @@ namespace Business.Concretes
 {
     public class AdoptionNoticeManager : IAdoptionNoticeService
     {
+        private EfAdoptionNoticeDal adoptionNoticeDal = new EfAdoptionNoticeDal();
+
         public IResult Add(AdoptionNotice adoptionNotice)
         {
-            var addedData = new EfAdoptionNoticeDal();
-            addedData.Add(adoptionNotice);
+            adoptionNoticeDal.Add(adoptionNotice);
             return new SuccessResult();
         }
 
         public IResult Update(AdoptionNotice adoptionNotice)
         {
-            throw new NotImplementedException();
+            adoptionNoticeDal.Update(adoptionNotice);
+            return new SuccessResult();
         }
 
         public IResult Delete(AdoptionNotice adoptionNotice)
         {
-            throw new NotImplementedException();
+            adoptionNoticeDal.Delete(adoptionNotice);
+            return new SuccessResult();
         }
 
         public IDataResult<AdoptionNotice> Get(int id)
         {
-            throw new NotImplementedException();
+            var data = adoptionNoticeDal.Get(a => a.AdoptionNoticeId == id);
+            if (data != null)
+            {
+                return new SuccessDataResult<AdoptionNotice>(data);
+            }
+
+            return new ErrorDataResult<AdoptionNotice>(null);
         }
 
         public IDataResult<List<AdoptionNotice>> GetAll()
         {
-            throw new NotImplementedException();
+            var data = adoptionNoticeDal.GetAll();
+            if (data.Count > 0)
+            {
+                return new SuccessDataResult<List<AdoptionNotice>>(data);
+            }
+
+            return new ErrorDataResult<List<AdoptionNotice>>(null);
         }
     }
 }

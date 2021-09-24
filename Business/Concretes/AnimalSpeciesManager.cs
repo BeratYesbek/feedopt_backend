@@ -12,32 +12,46 @@ namespace Business.Abstracts
 {
     public class AnimalSpeciesManager : IAnimalSpeciesService
     {
+        private EfAnimalSpeciesDal animalSpeciesDal = new EfAnimalSpeciesDal();
+
         public IResult Add(AnimalSpecies animalSpecies)
         {
-            var addedData = new EfAnimalSpeciesDal();
-            addedData.Add(animalSpecies);
+            animalSpeciesDal.Add(animalSpecies);
             return new SuccessResult();
         }
 
         public IResult Update(AnimalSpecies animalSpecies)
         {
-            throw new NotImplementedException();
+            animalSpeciesDal.Update(animalSpecies);
+            return new SuccessResult();
         }
 
         public IResult Delete(AnimalSpecies animalSpecies)
         {
-            throw new NotImplementedException();
+            animalSpeciesDal.Delete(animalSpecies);
+            return new SuccessResult();
         }
 
         public IDataResult<AnimalSpecies> Get(int id)
         {
-            var data = new EfAnimalSpeciesDal().Get(a => a.AnimalSpeciesId == id);
-            return new SuccessDataResult<AnimalSpecies>(data);
+            var data = animalSpeciesDal.Get(a => a.AnimalSpeciesId == id);
+            if (data != null)
+            {
+                return new SuccessDataResult<AnimalSpecies>(data);
+            }
+
+            return new ErrorDataResult<AnimalSpecies>(null);
         }
+
         public IDataResult<List<AnimalSpecies>> GetAll()
         {
-            throw new NotImplementedException();
+            var data = animalSpeciesDal.GetAll();
+            if (data.Count > 0)
+            {
+                return new SuccessDataResult<List<AnimalSpecies>>(data);
+            }
 
+            return new ErrorDataResult<List<AnimalSpecies>>(null);
         }
     }
 }

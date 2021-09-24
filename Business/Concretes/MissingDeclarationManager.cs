@@ -13,30 +13,46 @@ namespace Business.Concretes
 {
     public class MissingDeclarationManager : IMissingDeclarationService
     {
+        private EfMissingDeclarationDal missingDeclarationDal = new EfMissingDeclarationDal();
+
         public IResult Add(MissingDeclaration missingDeclaration)
         {
-            new EfMissingDeclarationDal().Add(missingDeclaration);
+            missingDeclarationDal.Add(missingDeclaration);
             return new SuccessResult();
         }
 
         public IResult Update(MissingDeclaration missingDeclaration)
         {
-            throw new NotImplementedException();
+            missingDeclarationDal.Update(missingDeclaration);
+            return new SuccessResult();
         }
 
         public IResult Delete(MissingDeclaration missingDeclaration)
         {
-            throw new NotImplementedException();
+            missingDeclarationDal.Delete(missingDeclaration);
+            return new SuccessResult();
         }
 
         public IDataResult<MissingDeclaration> Get(int id)
         {
-            throw new NotImplementedException();
+            var data = missingDeclarationDal.Get(m => m.MissingDeclarationId == id);
+            if (data != null)
+            {
+                return new SuccessDataResult<MissingDeclaration>(data);
+            }
+
+            return new ErrorDataResult<MissingDeclaration>(null);
         }
 
         public IDataResult<List<MissingDeclaration>> GetAll()
         {
-            return new SuccessDataResult<List<MissingDeclaration>>(new EfMissingDeclarationDal().GetAll());
+            var data = missingDeclarationDal.GetAll();
+            if (data.Count > 0)
+            {
+                return new SuccessDataResult<List<MissingDeclaration>>(data);
+            }
+
+            return new ErrorDataResult<List<MissingDeclaration>>(null);
         }
     }
 }

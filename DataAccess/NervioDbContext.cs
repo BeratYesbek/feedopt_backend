@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Core.Entity;
 using Entity;
 using Entity.concretes;
+using Entity.Concretes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -25,6 +26,9 @@ namespace DataAccess
         public DbSet<AnimalSpecies> AnimalSpecies { get; set; }
         public DbSet<MissingDeclaration> MissingDeclarations { get; set; }
         public DbSet<AdoptionNotice> AdoptionNotices { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<AdoptionNoticeImage> AdoptionNoticeImages { get; set; }
+        public DbSet<MissingDeclarationImage> MissingDeclarationImages { get; set; }
         public DbSet<User> Users { get; set; }
     }
 }

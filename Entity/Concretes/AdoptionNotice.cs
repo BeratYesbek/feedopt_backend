@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.Entity;
 using Core.Entity.Abstracts;
+using Entity.Concretes;
 
 namespace Entity.concretes
 {
@@ -17,18 +18,19 @@ namespace Entity.concretes
 
         public int UserId { get; set; }
 
-        public string City { get; set; }
-
-        public long Lan { get; set; }
-
-        public long Lon { get; set; }
+        public int LocationId { get; set; }
 
         public int AnimalSpeciesId { get; set; }
+
+        [ForeignKey("LocationId")]
+        public virtual Location Location { get; set; }
 
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
         [ForeignKey("AnimalSpeciesId")]
         public virtual AnimalSpecies AnimalSpecies { get; set; }
+         
+        public virtual ICollection<AdoptionNoticeImage> AdoptionNoticeImage { get; set; }
     }
 }
