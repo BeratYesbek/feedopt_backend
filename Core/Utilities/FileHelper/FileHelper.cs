@@ -16,6 +16,11 @@ namespace Core.Utilities.FileHelper
         private static string _folderName = "";
         private static string[] _fileExtension;
 
+        /// <summary>
+        ///     if this method success, message will return which contains file path
+        /// </summary>
+        /// <param name="formFile"></param>
+        /// <returns> error message or file path </returns>
         public static IResult Upload(IFormFile formFile)
         {
             if (formFile == null && formFile.Length <= 0)
@@ -37,6 +42,11 @@ namespace Core.Utilities.FileHelper
         }
 
 
+        /// <summary>
+        ///    if this method success, message will return which contains file path
+        /// </summary>
+        /// <param name="formFile"></param>
+        /// <returns> error message or file path   </returns>
         public static IResult Update(IFormFile formFile, string imagePath)
         {
             if (formFile == null && formFile.Length <= 0)

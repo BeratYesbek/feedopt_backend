@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Core.Entity.Abstracts;
 using Entity.concretes;
@@ -30,8 +31,10 @@ namespace Entity.Concretes
 
         public long Longitude { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<MissingDeclaration> MissingDeclarations { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<AdoptionNotice> AdoptionNotices { get; set; }
     }
 }

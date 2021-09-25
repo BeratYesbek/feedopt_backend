@@ -15,10 +15,10 @@ namespace Business.Concretes
     {
         private EfMissingDeclarationDal missingDeclarationDal = new EfMissingDeclarationDal();
 
-        public IResult Add(MissingDeclaration missingDeclaration)
+        public IDataResult<MissingDeclaration> Add(MissingDeclaration missingDeclaration)
         {
-            missingDeclarationDal.Add(missingDeclaration);
-            return new SuccessResult();
+            var data = missingDeclarationDal.Add(missingDeclaration);
+            return new SuccessDataResult<MissingDeclaration>(data);
         }
 
         public IResult Update(MissingDeclaration missingDeclaration)

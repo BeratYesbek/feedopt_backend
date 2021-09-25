@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using Core.Utilities.Result.Abstracts;
 using Entity;
 using Entity.concretes;
+using Entity.Concretes;
+using Microsoft.AspNetCore.Http;
 
 namespace Business.Abstracts
 {
     public interface IMissingDeclarationService
     {
-        IResult Add(MissingDeclaration missingDeclaration);
+        IDataResult<MissingDeclaration> Add(MissingDeclaration missingDeclaration);
 
         IResult Update(MissingDeclaration missingDeclaration);
 

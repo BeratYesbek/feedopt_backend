@@ -12,10 +12,10 @@ namespace Business.Concretes
     {
         EfAnimalCategoryDal animalCategoryDal = new EfAnimalCategoryDal();
 
-        public IResult Add(AnimalCategory animalCategory)
+        public IDataResult<AnimalCategory> Add(AnimalCategory animalCategory)
         {
-            animalCategoryDal.Add(animalCategory);
-            return new SuccessResult();
+            var result = animalCategoryDal.Add(animalCategory);
+            return new SuccessDataResult<AnimalCategory>(result);
         }
 
         public IResult Update(AnimalCategory animalCategory)

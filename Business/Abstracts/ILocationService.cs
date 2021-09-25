@@ -10,7 +10,7 @@ namespace Business.Abstracts
 {
     public interface ILocationService
     {
-        IResult Add(Location location);
+        IDataResult<Location> Add(Location location);
 
         IResult Update(Location location);
 

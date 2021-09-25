@@ -5,35 +5,54 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Core.Utilities.Result.Abstracts;
+using Core.Utilities.Result.Concretes;
+using DataAccess.Concretes;
 using Entity.Concretes;
 
 namespace Business.Concretes
 {
     public class LocationManager : ILocationService
     {
-        public IResult Add(Location location)
+        private readonly EfLocationDal locationDal = new EfLocationDal();
+
+        public IDataResult<Location> Add(Location location)
         {
-            throw new NotImplementedException();
+            var data = locationDal.Add(location);
+            return new SuccessDataResult<Location>(data);
         }
 
         public IResult Update(Location location)
         {
-            throw new NotImplementedException();
+            locationDal.Update(location);
+            return new SuccessResult();
         }
 
         public IResult Delete(Location location)
         {
-            throw new NotImplementedException();
+            locationDal.Delete(location);
+            return new SuccessResult();
         }
 
         public IDataResult<Location> Get(int id)
         {
-            throw new NotImplementedException();
+            var data = locationDal.Get(l => l.LocationId == id);
+            if (data != null)
+            {
+                return new SuccessDataResult<Location>(data);
+            }
+
+            return new ErrorDataResult<Location>(null);
         }
 
         public IDataResult<List<Location>> GetAll()
         {
-            throw new NotImplementedException();
+            var data = locationDal.GetAll();
+            if (data.Count > 0)
+            {
+                return new SuccessDataResult<List<Location>>(data);
+            }
+
+            return new ErrorDataResult<List<Location>>(null);
         }
     }
 }

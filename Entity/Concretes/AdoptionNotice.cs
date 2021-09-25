@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Core.Entity;
 using Core.Entity.Abstracts;
@@ -30,7 +31,8 @@ namespace Entity.concretes
 
         [ForeignKey("AnimalSpeciesId")]
         public virtual AnimalSpecies AnimalSpecies { get; set; }
-         
+
+        [JsonIgnore]
         public virtual ICollection<AdoptionNoticeImage> AdoptionNoticeImage { get; set; }
     }
 }

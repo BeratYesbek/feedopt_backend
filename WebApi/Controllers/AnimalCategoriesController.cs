@@ -20,7 +20,7 @@ namespace WebApi.Controllers
             var result = new AnimalCategoryManager().Add(animalCategory);
             if (result.Success)
             {
-                return Ok();
+                return Ok(result);
 
             }
 

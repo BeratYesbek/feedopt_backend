@@ -10,7 +10,7 @@ namespace Business.Abstracts
 {
     public interface IAnimalCategoryService
     {
-        IResult Add(AnimalCategory animalCategory);
+        IDataResult<AnimalCategory> Add(AnimalCategory animalCategory);
 
         IResult Update(AnimalCategory animalCategory);
 
