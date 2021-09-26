@@ -13,7 +13,7 @@ namespace WebApi.Controllers
     [ApiController]
     public class AnimalSpeciesController : ControllerBase
     {
-        [HttpPost("Add")]
+        [HttpPost("add")]
         public IActionResult Add(AnimalSpecies animalSpecies)
         {
             var result = new AnimalSpeciesManager().Add(animalSpecies);
@@ -26,7 +26,33 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("GetById")]
+        [HttpPost("update")]
+        public IActionResult Update(AnimalSpecies animalSpecies)
+        {
+            var result = new AnimalSpeciesManager().Update(animalSpecies);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPost("delete")]
+        public IActionResult Delete(AnimalSpecies animalSpecies)
+        {
+            var result = new AnimalSpeciesManager().Delete(animalSpecies);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet("getById")]
         public IActionResult GetById(int id)
         {
             var result = new AnimalSpeciesManager().Get(id);
@@ -38,7 +64,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
             var result = new AnimalSpeciesManager().GetAll();

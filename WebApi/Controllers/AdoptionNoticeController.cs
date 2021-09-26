@@ -19,7 +19,7 @@ namespace WebApi.Controllers
             
         }
 
-        [HttpPost("Add")]
+        [HttpPost("add")]
         public IActionResult Add(AdoptionNotice adoptionNotice)
         {
             var result = new AdoptionNoticeManager().Add(adoptionNotice);
@@ -32,7 +32,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("Update")]
+        [HttpPost("update")]
         public IActionResult Update(AdoptionNotice adoptionNotice)
         {
             var result = new AdoptionNoticeManager().Update(adoptionNotice);
@@ -45,7 +45,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("Delete")]
+        [HttpPost("delete")]
         public IActionResult Delete(AdoptionNotice adoptionNotice)
         {
             var result = new AdoptionNoticeManager().Delete(adoptionNotice);
@@ -58,7 +58,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("getById")]
         public IActionResult Get(int id)
         {
             var result = new AdoptionNoticeManager().Get(id);
@@ -71,7 +71,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("getAll")]
         public IActionResult GetAll(AdoptionNotice adoptionNotice)
         {
             var result = new AdoptionNoticeManager().GetAll();

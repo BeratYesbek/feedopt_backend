@@ -14,7 +14,7 @@ namespace WebApi.Controllers
     public class AnimalCategoriesController : ControllerBase
     {
 
-        [HttpPost("Add")]
+        [HttpPost("add")]
         public IActionResult Add(AnimalCategory animalCategory)
         {
             var result = new AnimalCategoryManager().Add(animalCategory);
@@ -28,7 +28,7 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpPost("Update")]
+        [HttpPost("update")]
         public IActionResult Update(AnimalCategory animalCategory)
         {
             var result = new AnimalCategoryManager().Update(animalCategory);
@@ -42,7 +42,7 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpPost("Delete")]
+        [HttpPost("delete")]
         public IActionResult Delete(AnimalCategory animalCategory)
         {
             var result = new AnimalCategoryManager().Delete(animalCategory);
@@ -56,7 +56,7 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpGet("GetById")]
+        [HttpGet("getById")]
         public IActionResult Get(int id)
         {
             var result = new AnimalCategoryManager().Get(id);
@@ -70,7 +70,7 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpGet("GetAll")]
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
             var result = new AnimalCategoryManager().GetAll();

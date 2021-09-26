@@ -12,7 +12,7 @@ namespace Entity.Concretes
     public class MissingDeclarationImage : IEntity
     {
         [Key] 
-        public int AnimalImageId { get; set; }
+        public int MissingDeclarationImageId { get; set; }
 
         public string ImagePath { get; set; }
 

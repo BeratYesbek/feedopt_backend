@@ -19,7 +19,7 @@ namespace WebApi.Controllers
 
         }
 
-        [HttpPost("Add")]
+        [HttpPost("add")]
         public IActionResult Add(MissingDeclaration missingDeclaration)
         {
             var result = new MissingDeclarationManager().Add(missingDeclaration);
@@ -31,7 +31,7 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("Update")]
+        [HttpPost("update")]
         public IActionResult Update(MissingDeclaration missingDeclaration)
         {
             var result = new MissingDeclarationManager().Update(missingDeclaration);
@@ -45,7 +45,7 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpPost("Delete")]
+        [HttpPost("delete")]
         public IActionResult Delete(MissingDeclaration missingDeclaration)
         {
             var result = new MissingDeclarationManager().Delete(missingDeclaration);
@@ -59,7 +59,7 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpGet("GetById")]
+        [HttpGet("getById")]
         public IActionResult Get(int id)
         {
             var result = new MissingDeclarationManager().Get(id);
@@ -75,7 +75,7 @@ namespace WebApi.Controllers
 
      
 
-        [HttpGet("GetAll")]
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
             var result = new MissingDeclarationManager().GetAll();

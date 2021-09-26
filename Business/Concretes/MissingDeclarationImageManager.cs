@@ -80,7 +80,7 @@ namespace Business.Concretes
 
         public IDataResult<MissingDeclarationImage> Get(int id)
         {
-            var data = missingDeclarationImageDal.Get(m => m.AnimalImageId == id);
+            var data = missingDeclarationImageDal.Get(m => m.MissingDeclarationImageId == id);
             if (data != null)
             {
                 return new SuccessDataResult<MissingDeclarationImage>(data);
