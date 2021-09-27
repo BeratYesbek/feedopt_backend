@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Concretes;
+using Entity;
 using Entity.ApiEntity;
 using Entity.Concretes;
+using Newtonsoft.Json;
 
 namespace WebApi.Controllers
 {
@@ -19,8 +21,12 @@ namespace WebApi.Controllers
         [HttpPost("add")]
         public IActionResult Add([FromForm] MissingDeclarationImageApiEntity missingDeclarationImageApiEntity)
         {
-            var result = missingDeclarationImageManager.Add(missingDeclarationImageApiEntity.MissingDeclarationImage[0],
-                missingDeclarationImageApiEntity.FormFiles);
+            MissingDeclarationImage[] missingDeclarations =
+                JsonConvert.DeserializeObject<MissingDeclarationImage[]>(missingDeclarationImageApiEntity.MissingDeclarationImage);
+
+
+            var result = missingDeclarationImageManager.Add(missingDeclarations[0],
+                missingDeclarationImageApiEntity.FormFiles);    
 
             if (result.Success)
             {
@@ -32,15 +38,15 @@ namespace WebApi.Controllers
         [HttpPost("update")]
         public IActionResult Update([FromForm] MissingDeclarationImageApiEntity missingDeclarationImageApiEntity)
         {
-            var result = missingDeclarationImageManager.Update(missingDeclarationImageApiEntity.MissingDeclarationImage,
+           /* var result = missingDeclarationImageManager.Update(missingDeclarationImageApiEntity.MissingDeclarationImage,
                 missingDeclarationImageApiEntity.FormFiles);
 
             if (result.Success)
             {
                 return Ok(result);
-            }
+            }*/
 
-            return BadRequest(result);
+            return BadRequest();
         }
 
         [HttpPost("delete")]

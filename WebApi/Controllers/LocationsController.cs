@@ -5,24 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Concretes;
-using Entity.concretes;
+using Entity.Concretes;
 
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdoptionNoticeController : ControllerBase
+    public class LocationsController : ControllerBase
     {
-
-        public AdoptionNoticeController()
-        {
-            
-        }
-
+        private readonly LocationManager locationManager = new LocationManager();
         [HttpPost("add")]
-        public IActionResult Add(AdoptionNotice adoptionNotice)
+        public IActionResult Add(Location location)
         {
-            var result = new AdoptionNoticeManager().Add(adoptionNotice);
+            var result =  locationManager.Add(location);
 
             if (result.Success)
             {
@@ -33,9 +28,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(AdoptionNotice adoptionNotice)
+        public IActionResult Update(Location location)
         {
-            var result = new AdoptionNoticeManager().Update(adoptionNotice);
+            var result =  locationManager.Update(location);
 
             if (result.Success)
             {
@@ -46,9 +41,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(AdoptionNotice adoptionNotice)
+        public IActionResult Delete(Location location)
         {
-            var result = new AdoptionNoticeManager().Delete(adoptionNotice);
+            var result = locationManager.Delete(location);
 
             if (result.Success)
             {
@@ -61,7 +56,7 @@ namespace WebApi.Controllers
         [HttpGet("getById")]
         public IActionResult Get(int id)
         {
-            var result = new AdoptionNoticeManager().Get(id);
+            var result = locationManager.Get(id);
 
             if (result.Success)
             {
@@ -74,7 +69,7 @@ namespace WebApi.Controllers
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            var result = new AdoptionNoticeManager().GetAll();
+            var result = locationManager.GetAll();
 
             if (result.Success)
             {

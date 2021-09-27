@@ -4,8 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Entity.Concretes;
+using Entity.Util;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Entity.ApiEntity
 {
@@ -16,7 +20,8 @@ namespace Entity.ApiEntity
     /// /// </summary>
     public class MissingDeclarationImageApiEntity
     {
-        public MissingDeclarationImage[] MissingDeclarationImage { get; set; }
+       
+        public string MissingDeclarationImage { get; set; }
 
         public IFormFile[] FormFiles { get; set; }
     }

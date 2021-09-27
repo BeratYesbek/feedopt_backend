@@ -27,9 +27,9 @@ namespace Entity.Concretes
         [StringLength(500)]
         public string PlaceId { get; set; }
 
-        public long Latitude { get; set; }
+        public string Latitude { get; set; }
 
-        public long Longitude { get; set; }
+        public string Longitude { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<MissingDeclaration> MissingDeclarations { get; set; }

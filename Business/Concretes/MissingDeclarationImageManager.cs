@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,9 +30,11 @@ namespace Business.Concretes
                     return new ErrorResult(result.Message);
                 }
 
-                //result.message contains image path
+                // result.message contains image path
                 missingDeclarationImage.ImagePath = result.Message;
                 missingDeclarationImageDal.Add(missingDeclarationImage);
+                // always must assigned zero to missingDeclarationImageId after saved
+                missingDeclarationImage.MissingDeclarationImageId = 0;
             }
 
             return new SuccessResult();
