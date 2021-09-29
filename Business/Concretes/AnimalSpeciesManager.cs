@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Business.Validation.FluentValidation;
+using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
@@ -20,18 +23,23 @@ namespace Business.Abstracts
             _animalSpeciesDal = animalSpeciesDal;
         }
 
+        [ValidationAspect(typeof(AnimalSpeciesValidator))]
+        [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
         public IResult Add(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Add(animalSpecies);
             return new SuccessResult();
         }
 
+        [ValidationAspect(typeof(AnimalSpeciesValidator))]
+        [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
         public IResult Update(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Update(animalSpecies);
             return new SuccessResult();
         }
 
+        [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
         public IResult Delete(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Delete(animalSpecies);
@@ -49,6 +57,7 @@ namespace Business.Abstracts
             return new ErrorDataResult<AnimalSpecies>(null);
         }
 
+        [CacheAspect]
         public IDataResult<List<AnimalSpecies>> GetAll()
         {
             var data = _animalSpeciesDal.GetAll();

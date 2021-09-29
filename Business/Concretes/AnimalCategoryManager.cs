@@ -5,6 +5,9 @@ using DataAccess.Concretes;
 using Entity.concretes;
 using System;
 using System.Collections.Generic;
+using Business.Validation.FluentValidation;
+using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Validation;
 using DataAccess.Abstracts;
 
 namespace Business.Concretes
@@ -18,19 +21,24 @@ namespace Business.Concretes
         {
             _animalCategoryDal = animalCategoryDal;
         }
-
+        
+        [ValidationAspect(typeof(AnimalCategoryValidator))]
+        [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         public IDataResult<AnimalCategory> Add(AnimalCategory animalCategory)
         {
             var result = _animalCategoryDal.Add(animalCategory);
             return new SuccessDataResult<AnimalCategory>(result);
         }
 
+        [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
+        [ValidationAspect(typeof(AnimalCategoryValidator))]
         public IResult Update(AnimalCategory animalCategory)
         {
             _animalCategoryDal.Update(animalCategory);
             return new SuccessResult();
         }
 
+        [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         public IResult Delete(AnimalCategory animalCategory)
         {
             _animalCategoryDal.Delete(animalCategory);
@@ -48,6 +56,7 @@ namespace Business.Concretes
             return new ErrorDataResult<AnimalCategory>(null);
         }
 
+        [CacheAspect]
         public IDataResult<List<AnimalCategory>> GetAll()
         {
             var data = _animalCategoryDal.GetAll();

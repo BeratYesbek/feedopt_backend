@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Business.Validation.FluentValidation;
+using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
@@ -21,18 +24,22 @@ namespace Business.Concretes
             _adoptionNoticeDal = adoptionNoticeDal;
         }
 
+        [ValidationAspect(typeof(AdoptionNoticeValidator))]
+        [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
         public IResult Add(AdoptionNotice adoptionNotice)
         {
             _adoptionNoticeDal.Add(adoptionNotice);
             return new SuccessResult();
         }
-
+        [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
+        [ValidationAspect(typeof(AdoptionNoticeValidator))]
         public IResult Update(AdoptionNotice adoptionNotice)
         {
             _adoptionNoticeDal.Update(adoptionNotice);
             return new SuccessResult();
         }
 
+        [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
         public IResult Delete(AdoptionNotice adoptionNotice)
         {
             _adoptionNoticeDal.Delete(adoptionNotice);
@@ -50,6 +57,7 @@ namespace Business.Concretes
             return new ErrorDataResult<AdoptionNotice>(null);
         }
 
+        [CacheAspect]
         public IDataResult<List<AdoptionNotice>> GetAll()
         {
             var data = _adoptionNoticeDal.GetAll();

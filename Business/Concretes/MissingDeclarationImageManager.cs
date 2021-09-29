@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Core.Aspects.Autofac.Cache;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
@@ -24,6 +25,8 @@ namespace Business.Concretes
         {
             _missingDeclarationImageDal = missingDeclarationImageDal;
         }
+
+        [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
         public IResult Add(MissingDeclarationImage missingDeclarationImage, IFormFile[] formFiles)
         {
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
@@ -45,6 +48,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
         public IResult Update(MissingDeclarationImage[] missingDeclarationImage, IFormFile[] formFiles)
         {
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
@@ -64,6 +68,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
         public IResult Delete(MissingDeclarationImage[] missingDeclarationImage)
         {
             foreach (var image in missingDeclarationImage)
@@ -97,6 +102,7 @@ namespace Business.Concretes
             return new ErrorDataResult<MissingDeclarationImage>(null);
         }
 
+        [CacheAspect]
         public IDataResult<List<MissingDeclarationImage>> GetAll()
         {
             var data = _missingDeclarationImageDal.GetAll();
