@@ -7,6 +7,7 @@ using Business.Abstracts;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
+using DataAccess.Abstracts;
 using DataAccess.Concretes;
 using Entity.Concretes;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +16,13 @@ namespace Business.Concretes
 {
     public class AdoptionNoticeImageManager : IAdoptionNoticeImageService
     {
-        private readonly EfAdoptionNoticeImageDal adoptionNoticeImageDal = new EfAdoptionNoticeImageDal();
+
+        private readonly IAdoptionNoticeImageDal _adoptionNoticeImageDal;
+
+        public AdoptionNoticeImageManager(IAdoptionNoticeImageDal adoptionNoticeImageDal)
+        {
+            _adoptionNoticeImageDal = adoptionNoticeImageDal;
+        }
 
         public IResult Add(AdoptionNoticeImage adoptionNoticeImage, IFormFile[] formFiles)
         {
@@ -30,7 +37,7 @@ namespace Business.Concretes
 
                 //result.message contains image path
                 adoptionNoticeImage.ImagePath = result.Message;
-                adoptionNoticeImageDal.Add(adoptionNoticeImage);
+                _adoptionNoticeImageDal.Add(adoptionNoticeImage);
             }
 
             return new SuccessResult();
@@ -41,7 +48,7 @@ namespace Business.Concretes
             foreach (var image in adoptionNoticeImages)
             {
                 var result = FileHelper.Delete(image.ImagePath);
-                adoptionNoticeImageDal.Delete(image);
+                _adoptionNoticeImageDal.Delete(image);
             }
 
             return new SuccessResult();
@@ -49,7 +56,7 @@ namespace Business.Concretes
 
         public IDataResult<AdoptionNoticeImage> Get(int id)
         {
-            var data = adoptionNoticeImageDal.Get(a => a.AdoptionNoticeImageId == id);
+            var data = _adoptionNoticeImageDal.Get(a => a.AdoptionNoticeImageId == id);
 
             if (data != null)
             {
@@ -61,7 +68,7 @@ namespace Business.Concretes
 
         public IDataResult<List<AdoptionNoticeImage>> GetAll()
         {
-            var data = adoptionNoticeImageDal.GetAll();
+            var data = _adoptionNoticeImageDal.GetAll();
 
             if (data.Count > 0)
             {
@@ -73,7 +80,7 @@ namespace Business.Concretes
 
         public IDataResult<List<AdoptionNoticeImage>> GetByAdoptionNoticeId(int id)
         {
-            var data = adoptionNoticeImageDal.GetAll(a => a.AdoptionNoticeId == id);
+            var data = _adoptionNoticeImageDal.GetAll(a => a.AdoptionNoticeId == id);
 
             if (data.Count > 0)
             {
@@ -96,7 +103,7 @@ namespace Business.Concretes
 
                 //result.message contains image path
                 adoptionNoticeImage[i].ImagePath = result.Message;
-                adoptionNoticeImageDal.Update(adoptionNoticeImage[i]);
+                _adoptionNoticeImageDal.Update(adoptionNoticeImage[i]);
             }
 
             return new SuccessResult();

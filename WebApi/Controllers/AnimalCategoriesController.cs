@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Abstracts;
 using Business.Concretes;
 using Entity.concretes;
 
@@ -13,15 +14,20 @@ namespace WebApi.Controllers
     [ApiController]
     public class AnimalCategoriesController : ControllerBase
     {
+        private readonly IAnimalCategoryService _animalCategoryService;
+
+        public AnimalCategoriesController(IAnimalCategoryService animalCategoryService)
+        {
+            _animalCategoryService = animalCategoryService;
+        }
 
         [HttpPost("add")]
         public IActionResult Add(AnimalCategory animalCategory)
         {
-            var result = new AnimalCategoryManager().Add(animalCategory);
+            var result = _animalCategoryService.Add(animalCategory);
             if (result.Success)
             {
                 return Ok(result);
-
             }
 
             return BadRequest();
@@ -31,7 +37,7 @@ namespace WebApi.Controllers
         [HttpPost("update")]
         public IActionResult Update(AnimalCategory animalCategory)
         {
-            var result = new AnimalCategoryManager().Update(animalCategory);
+            var result = _animalCategoryService.Update(animalCategory);
 
             if (result.Success)
             {
@@ -45,7 +51,7 @@ namespace WebApi.Controllers
         [HttpPost("delete")]
         public IActionResult Delete(AnimalCategory animalCategory)
         {
-            var result = new AnimalCategoryManager().Delete(animalCategory);
+            var result = _animalCategoryService.Delete(animalCategory);
 
             if (result.Success)
             {
@@ -59,7 +65,7 @@ namespace WebApi.Controllers
         [HttpGet("getById")]
         public IActionResult Get(int id)
         {
-            var result = new AnimalCategoryManager().Get(id);
+            var result = _animalCategoryService.Get(id);
 
             if (result.Success)
             {
@@ -73,7 +79,7 @@ namespace WebApi.Controllers
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            var result = new AnimalCategoryManager().GetAll();
+            var result = _animalCategoryService.GetAll();
 
             if (result.Success)
             {

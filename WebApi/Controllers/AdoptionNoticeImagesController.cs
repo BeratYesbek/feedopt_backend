@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Abstracts;
 using Business.Concretes;
 using Entity.ApiEntity;
 using Entity.Concretes;
+using Newtonsoft.Json;
 
 namespace WebApi.Controllers
 {
@@ -14,12 +16,19 @@ namespace WebApi.Controllers
     [ApiController]
     public class AdoptionNoticeImagesController : ControllerBase
     {
-        private readonly AdoptionNoticeImageManager adoptionNoticeImageManager = new AdoptionNoticeImageManager();
+        private readonly IAdoptionNoticeImageService _adoptionNoticeImageService;
+
+        public AdoptionNoticeImagesController(IAdoptionNoticeImageService adoptionNoticeImageService)
+        {
+            _adoptionNoticeImageService = adoptionNoticeImageService;
+        }
 
         [HttpPost("add")]
         public IActionResult Add([FromForm] AdoptionNoticeImageApiEntity adoptionNoticeImageApi)
         {
-            var result = adoptionNoticeImageManager.Add(adoptionNoticeImageApi.AdoptionNoticeImage[0],
+            AdoptionNoticeImage[] adoptionNoticeImages =
+                JsonConvert.DeserializeObject<AdoptionNoticeImage[]>(adoptionNoticeImageApi.AdoptionNoticeImage);
+            var result = _adoptionNoticeImageService.Add(adoptionNoticeImages[0],
                 adoptionNoticeImageApi.FormFiles);
 
             if (result.Success)
@@ -33,7 +42,9 @@ namespace WebApi.Controllers
         [HttpPost("update")]
         public IActionResult Update([FromForm] AdoptionNoticeImageApiEntity adoptionNoticeImageApi)
         {
-            var result = adoptionNoticeImageManager.Update(adoptionNoticeImageApi.AdoptionNoticeImage,
+            AdoptionNoticeImage[] adoptionNoticeImages =
+                JsonConvert.DeserializeObject<AdoptionNoticeImage[]>(adoptionNoticeImageApi.AdoptionNoticeImage);
+            var result = _adoptionNoticeImageService.Update(adoptionNoticeImages,
                 adoptionNoticeImageApi.FormFiles);
 
             if (result.Success)
@@ -47,7 +58,7 @@ namespace WebApi.Controllers
         [HttpPost("delete")]
         public IActionResult Delete(AdoptionNoticeImage[] adoptionNoticeImages)
         {
-            var result = adoptionNoticeImageManager.Delete(adoptionNoticeImages);
+            var result = _adoptionNoticeImageService.Delete(adoptionNoticeImages);
             if (result.Success)
             {
                 return Ok(result);
@@ -59,7 +70,7 @@ namespace WebApi.Controllers
         [HttpGet("getById")]
         public IActionResult Get(int id)
         {
-            var result = adoptionNoticeImageManager.Get(id);
+            var result = _adoptionNoticeImageService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -71,7 +82,7 @@ namespace WebApi.Controllers
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            var result = adoptionNoticeImageManager.GetAll();
+            var result = _adoptionNoticeImageService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -83,7 +94,7 @@ namespace WebApi.Controllers
         [HttpGet("getByAdoptionNoticeId")]
         public IActionResult GetByAdoptionNoticeId(int adoptionNoticeId)
         {
-            var result = adoptionNoticeImageManager.GetByAdoptionNoticeId(adoptionNoticeId);
+            var result = _adoptionNoticeImageService.GetByAdoptionNoticeId(adoptionNoticeId);
             if (result.Success)
             {
                 return Ok();

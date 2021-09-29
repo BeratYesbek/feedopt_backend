@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Abstracts;
 using Business.Concretes;
 using Entity;
 using Entity.ApiEntity;
@@ -16,17 +17,24 @@ namespace WebApi.Controllers
     [ApiController]
     public class MissingDeclarationImagesController : ControllerBase
     {
-        private MissingDeclarationImageManager missingDeclarationImageManager = new MissingDeclarationImageManager();
+
+        private readonly IMissingDeclarationImageService _missingDeclarationImageService;
+
+        public MissingDeclarationImagesController(IMissingDeclarationImageService missingDeclarationImageService)
+        {
+            _missingDeclarationImageService = missingDeclarationImageService;
+        }
 
         [HttpPost("add")]
         public IActionResult Add([FromForm] MissingDeclarationImageApiEntity missingDeclarationImageApiEntity)
         {
             MissingDeclarationImage[] missingDeclarations =
-                JsonConvert.DeserializeObject<MissingDeclarationImage[]>(missingDeclarationImageApiEntity.MissingDeclarationImage);
+                JsonConvert.DeserializeObject<MissingDeclarationImage[]>(missingDeclarationImageApiEntity
+                    .MissingDeclarationImage);
 
 
-            var result = missingDeclarationImageManager.Add(missingDeclarations[0],
-                missingDeclarationImageApiEntity.FormFiles);    
+            var result = _missingDeclarationImageService.Add(missingDeclarations[0],
+                missingDeclarationImageApiEntity.FormFiles);
 
             if (result.Success)
             {
@@ -35,16 +43,17 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
         }
+
         [HttpPost("update")]
         public IActionResult Update([FromForm] MissingDeclarationImageApiEntity missingDeclarationImageApiEntity)
         {
-           /* var result = missingDeclarationImageManager.Update(missingDeclarationImageApiEntity.MissingDeclarationImage,
-                missingDeclarationImageApiEntity.FormFiles);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }*/
+            /* var result = missingDeclarationImageManager.Update(missingDeclarationImageApiEntity.MissingDeclarationImage,
+                 missingDeclarationImageApiEntity.FormFiles);
+ 
+             if (result.Success)
+             {
+                 return Ok(result);
+             }*/
 
             return BadRequest();
         }
@@ -52,7 +61,7 @@ namespace WebApi.Controllers
         [HttpPost("delete")]
         public IActionResult Delete(MissingDeclarationImage[] missingDeclarationImage)
         {
-            var result = missingDeclarationImageManager.Delete(missingDeclarationImage);
+            var result = _missingDeclarationImageService.Delete(missingDeclarationImage);
             if (result.Success)
             {
                 return Ok(result);
@@ -64,7 +73,7 @@ namespace WebApi.Controllers
         [HttpGet("getById")]
         public IActionResult Get(int id)
         {
-            var result = missingDeclarationImageManager.Get(id);
+            var result = _missingDeclarationImageService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -72,10 +81,11 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
         }
+
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            var result = missingDeclarationImageManager.GetAll();
+            var result = _missingDeclarationImageService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -87,7 +97,7 @@ namespace WebApi.Controllers
         [HttpGet("GetByMissingDeclarationId")]
         public IActionResult GetByMissingDeclarationId(int missingDeclarationId)
         {
-            var result = missingDeclarationImageManager.GetByMissingDeclarationId(missingDeclarationId);
+            var result = _missingDeclarationImageService.GetByMissingDeclarationId(missingDeclarationId);
             if (result.Success)
             {
                 return Ok();

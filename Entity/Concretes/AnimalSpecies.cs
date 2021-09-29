@@ -16,12 +16,10 @@ namespace Entity.concretes
 
         [StringLength(50)] public string Kind { get; set; }
 
-        [ForeignKey("AnimalCategoryId")]
-        public virtual AnimalCategory AnimalCategory { get; set; }
+        [ForeignKey("AnimalCategoryId")] public virtual AnimalCategory AnimalCategory { get; set; }
 
         public int AnimalCategoryId { get; set; }
 
-        [JsonIgnore]
-        public virtual ICollection<MissingDeclaration> MissingDeclarations { get; set; }
+        [JsonIgnore] public virtual ICollection<MissingDeclaration> MissingDeclarations { get; set; }
     }
 }

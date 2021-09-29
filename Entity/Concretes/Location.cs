@@ -12,29 +12,22 @@ namespace Entity.Concretes
 {
     public class Location : IEntity
     {
-        [Key] 
-        public int LocationId { get; set; }
+        [Key] public int LocationId { get; set; }
 
-        [StringLength(500)]
-        public string Address { get; set; }
+        [StringLength(500)] public string Address { get; set; }
 
-        [StringLength(100)]
-        public string City { get; set; }
+        [StringLength(100)] public string City { get; set; }
 
-        [StringLength(100)]
-        public string Country { get; set; }
+        [StringLength(100)] public string Country { get; set; }
 
-        [StringLength(500)]
-        public string PlaceId { get; set; }
+        [StringLength(500)] public string PlaceId { get; set; }
 
         public string Latitude { get; set; }
 
         public string Longitude { get; set; }
 
-        [JsonIgnore]
-        public virtual ICollection<MissingDeclaration> MissingDeclarations { get; set; }
+        [JsonIgnore] public virtual ICollection<MissingDeclaration> MissingDeclarations { get; set; }
 
-        [JsonIgnore]
-        public virtual ICollection<AdoptionNotice> AdoptionNotices { get; set; }
+        [JsonIgnore] public virtual ICollection<AdoptionNotice> AdoptionNotices { get; set; }
     }
 }

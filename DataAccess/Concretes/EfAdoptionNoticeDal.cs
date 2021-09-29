@@ -9,7 +9,7 @@ using Entity.concretes;
 
 namespace DataAccess.Concretes
 {
-    public class EfAdoptionNoticeDal : EfEntityRepositoryBase<AdoptionNotice,NervioDbContext>,IAdoptionNoticaDal
+    public class EfAdoptionNoticeDal : EfEntityRepositoryBase<AdoptionNotice,NervioDbContext>,IAdoptionNoticeDal
     {
     }
 }

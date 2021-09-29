@@ -8,7 +8,7 @@ using Entity.concretes;
 
 namespace DataAccess.Abstracts
 {
-    interface IAdoptionNoticaDal : IEntityRepository<AdoptionNotice>
+    public interface IAdoptionNoticeDal : IEntityRepository<AdoptionNotice>
     {
     }
 }

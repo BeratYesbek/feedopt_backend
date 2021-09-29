@@ -10,10 +10,15 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Core.DependencyResolvers;
+using Core.Extensions;
+using Core.Utilities.IoC;
 using DataAccess;
 using Entity.Util;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace WebApi
 {
@@ -29,17 +34,21 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
             services.AddControllers();
-            services.AddMvc(options =>
-            {
-                // add custom model binders to beginning of collection
-                options.ModelBinderProviders.Insert(0, new FormDataJsonBinderProvider());
-            });
+            services
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.DefaultIgnoreCondition =
+                        System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+                });
+
             services.AddControllers().AddNewtonsoftJson();
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebApi", Version = "v1"}); });
+
+            services.AddDependencyResolvers(new ICoreModule[]
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
+                new CoreModule()
             });
         }
         //
@@ -61,10 +70,7 @@ namespace WebApi
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Abstracts;
 using Business.Concretes;
 using Entity.Concretes;
 
@@ -13,11 +14,17 @@ namespace WebApi.Controllers
     [ApiController]
     public class LocationsController : ControllerBase
     {
-        private readonly LocationManager locationManager = new LocationManager();
+        private readonly ILocationService _locationService;
+
+        public LocationsController(ILocationService locationService)
+        {
+            _locationService = locationService;
+        }
+
         [HttpPost("add")]
         public IActionResult Add(Location location)
         {
-            var result =  locationManager.Add(location);
+            var result = _locationService.Add(location);
 
             if (result.Success)
             {
@@ -30,7 +37,7 @@ namespace WebApi.Controllers
         [HttpPost("update")]
         public IActionResult Update(Location location)
         {
-            var result =  locationManager.Update(location);
+            var result = _locationService.Update(location);
 
             if (result.Success)
             {
@@ -43,7 +50,7 @@ namespace WebApi.Controllers
         [HttpPost("delete")]
         public IActionResult Delete(Location location)
         {
-            var result = locationManager.Delete(location);
+            var result = _locationService.Delete(location);
 
             if (result.Success)
             {
@@ -56,7 +63,7 @@ namespace WebApi.Controllers
         [HttpGet("getById")]
         public IActionResult Get(int id)
         {
-            var result = locationManager.Get(id);
+            var result = _locationService.Get(id);
 
             if (result.Success)
             {
@@ -69,7 +76,7 @@ namespace WebApi.Controllers
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            var result = locationManager.GetAll();
+            var result = _locationService.GetAll();
 
             if (result.Success)
             {

@@ -13,10 +13,17 @@ namespace WebApi.Controllers
     [ApiController]
     public class AnimalSpeciesController : ControllerBase
     {
+        private readonly IAnimalSpeciesService _animalSpeciesService;
+
+        public AnimalSpeciesController(IAnimalSpeciesService animalSpeciesService)
+        {
+            _animalSpeciesService = animalSpeciesService;
+        }
+
         [HttpPost("add")]
         public IActionResult Add(AnimalSpecies animalSpecies)
         {
-            var result = new AnimalSpeciesManager().Add(animalSpecies);
+            var result = _animalSpeciesService.Add(animalSpecies);
 
             if (result.Success)
             {
@@ -29,7 +36,7 @@ namespace WebApi.Controllers
         [HttpPost("update")]
         public IActionResult Update(AnimalSpecies animalSpecies)
         {
-            var result = new AnimalSpeciesManager().Update(animalSpecies);
+            var result = _animalSpeciesService.Update(animalSpecies);
 
             if (result.Success)
             {
@@ -42,7 +49,7 @@ namespace WebApi.Controllers
         [HttpPost("delete")]
         public IActionResult Delete(AnimalSpecies animalSpecies)
         {
-            var result = new AnimalSpeciesManager().Delete(animalSpecies);
+            var result = _animalSpeciesService.Delete(animalSpecies);
 
             if (result.Success)
             {
@@ -55,7 +62,7 @@ namespace WebApi.Controllers
         [HttpGet("getById")]
         public IActionResult GetById(int id)
         {
-            var result = new AnimalSpeciesManager().Get(id);
+            var result = _animalSpeciesService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -67,7 +74,7 @@ namespace WebApi.Controllers
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            var result = new AnimalSpeciesManager().GetAll();
+            var result = _animalSpeciesService.GetAll();
             if (result.Success)
             {
                 return Ok(result);

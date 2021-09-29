@@ -8,6 +8,7 @@ using Business.Abstracts;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
+using DataAccess.Abstracts;
 using DataAccess.Concretes;
 using Entity;
 using Entity.Concretes;
@@ -17,8 +18,12 @@ namespace Business.Concretes
 {
     public class MissingDeclarationImageManager : IMissingDeclarationImageService
     {
-        private readonly EfMissingDeclarationImageDal missingDeclarationImageDal = new EfMissingDeclarationImageDal();
+        private readonly IMissingDeclarationImageDal _missingDeclarationImageDal;
 
+        public MissingDeclarationImageManager(IMissingDeclarationImageDal missingDeclarationImageDal)
+        {
+            _missingDeclarationImageDal = missingDeclarationImageDal;
+        }
         public IResult Add(MissingDeclarationImage missingDeclarationImage, IFormFile[] formFiles)
         {
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
@@ -32,7 +37,7 @@ namespace Business.Concretes
 
                 // result.message contains image path
                 missingDeclarationImage.ImagePath = result.Message;
-                missingDeclarationImageDal.Add(missingDeclarationImage);
+                _missingDeclarationImageDal.Add(missingDeclarationImage);
                 // always must assigned zero to missingDeclarationImageId after saved
                 missingDeclarationImage.MissingDeclarationImageId = 0;
             }
@@ -53,7 +58,7 @@ namespace Business.Concretes
 
                 //result.message contains image path
                 missingDeclarationImage[i].ImagePath = result.Message;
-                missingDeclarationImageDal.Update(missingDeclarationImage[i]);
+                _missingDeclarationImageDal.Update(missingDeclarationImage[i]);
             }
 
             return new SuccessResult();
@@ -64,7 +69,7 @@ namespace Business.Concretes
             foreach (var image in missingDeclarationImage)
             {
                 var result = FileHelper.Delete(image.ImagePath);
-                missingDeclarationImageDal.Delete(image);
+                _missingDeclarationImageDal.Delete(image);
             }
 
             return new SuccessResult();
@@ -72,7 +77,7 @@ namespace Business.Concretes
 
         public IDataResult<List<MissingDeclarationImage>> GetByMissingDeclarationId(int id)
         {
-            var data = missingDeclarationImageDal.GetAll(m => m.MissingDeclarationId == id);
+            var data = _missingDeclarationImageDal.GetAll(m => m.MissingDeclarationId == id);
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<MissingDeclarationImage>>(data);
@@ -83,7 +88,7 @@ namespace Business.Concretes
 
         public IDataResult<MissingDeclarationImage> Get(int id)
         {
-            var data = missingDeclarationImageDal.Get(m => m.MissingDeclarationImageId == id);
+            var data = _missingDeclarationImageDal.Get(m => m.MissingDeclarationImageId == id);
             if (data != null)
             {
                 return new SuccessDataResult<MissingDeclarationImage>(data);
@@ -94,7 +99,7 @@ namespace Business.Concretes
 
         public IDataResult<List<MissingDeclarationImage>> GetAll()
         {
-            var data = missingDeclarationImageDal.GetAll();
+            var data = _missingDeclarationImageDal.GetAll();
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<MissingDeclarationImage>>(data);

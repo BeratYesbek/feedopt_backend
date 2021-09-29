@@ -12,11 +12,11 @@ namespace Business.Abstracts
 {
     public interface IMissingDeclarationImageService
     {
-        delegate IResult Add(MissingDeclarationImage missingDeclarationImage, IFormFile[] formFiles);
+         IResult Add(MissingDeclarationImage missingDeclarationImage, IFormFile[] formFiles);
 
-        delegate IResult Update(MissingDeclarationImage[] missingDeclarationImage, IFormFile[] formFiles);
+         IResult Update(MissingDeclarationImage[] missingDeclarationImage, IFormFile[] formFiles);
 
-        delegate IResult Delete(MissingDeclarationImage[] missingDeclarationImage);
+         IResult Delete(MissingDeclarationImage[] missingDeclarationImage);
 
         IDataResult<List<MissingDeclarationImage>> GetByMissingDeclarationId(int id);
 

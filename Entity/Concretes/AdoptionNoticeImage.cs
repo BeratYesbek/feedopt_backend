@@ -12,14 +12,12 @@ namespace Entity.Concretes
 {
     public class AdoptionNoticeImage : IEntity
     {
-        [Key]
-        public int AdoptionNoticeImageId { get; set; }
+        [Key] public int AdoptionNoticeImageId { get; set; }
 
         public string ImagePath { get; set; }
 
         public int AdoptionNoticeId { get; set; }
 
-        [ForeignKey("AdoptionNoticeId")]
-        public virtual AdoptionNotice AdoptionNotice { get; set; }
+        [ForeignKey("AdoptionNoticeId")] public virtual AdoptionNotice AdoptionNotice { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace Entity.ApiEntity
     /// </summary>
     public class AdoptionNoticeImageApiEntity
     {
-        public AdoptionNoticeImage[] AdoptionNoticeImage { get; set; }
+        public string AdoptionNoticeImage { get; set; }
 
         public IFormFile[] FormFiles { get; set; }
     }

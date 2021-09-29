@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.DataAccess;
+using DataAccess.Abstracts;
 using Entity.Concretes;
 
 namespace DataAccess.Concretes
 {
-    public class EfLocationDal : EfEntityRepositoryBase<Location, NervioDbContext>
+    public class EfLocationDal : EfEntityRepositoryBase<Location, NervioDbContext>, ILocationDal
     {
     }
 }

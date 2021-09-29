@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Business.Abstracts;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
+using DataAccess.Abstracts;
 using DataAccess.Concretes;
 using Entity.Concretes;
 
@@ -13,29 +14,35 @@ namespace Business.Concretes
 {
     public class LocationManager : ILocationService
     {
-        private readonly EfLocationDal locationDal = new EfLocationDal();
+
+        private readonly ILocationDal _locationDal;
+
+        public LocationManager(ILocationDal locationDal)
+        {
+            _locationDal = locationDal;
+        }
 
         public IDataResult<Location> Add(Location location)
         {
-            var data = locationDal.Add(location);
+            var data = _locationDal.Add(location);
             return new SuccessDataResult<Location>(data);
         }
 
         public IResult Update(Location location)
         {
-            locationDal.Update(location);
+            _locationDal.Update(location);
             return new SuccessResult();
         }
 
         public IResult Delete(Location location)
         {
-            locationDal.Delete(location);
+            _locationDal.Delete(location);
             return new SuccessResult();
         }
 
         public IDataResult<Location> Get(int id)
         {
-            var data = locationDal.Get(l => l.LocationId == id);
+            var data = _locationDal.Get(l => l.LocationId == id);
             if (data != null)
             {
                 return new SuccessDataResult<Location>(data);
@@ -46,7 +53,7 @@ namespace Business.Concretes
 
         public IDataResult<List<Location>> GetAll()
         {
-            var data = locationDal.GetAll();
+            var data = _locationDal.GetAll();
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<Location>>(data);

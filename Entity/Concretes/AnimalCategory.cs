@@ -7,16 +7,19 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Core.Entity.Abstracts;
+using Newtonsoft.Json;
 
 namespace Entity.concretes
 {
     public class AnimalCategory : IEntity
     {
-        [Key] public int AnimalCategoryId { get; set; }
+        [Key] 
+        public int AnimalCategoryId { get; set; }
 
-        [StringLength(50)] public string AnimalCategoryName { get; set; }
+        [StringLength(50)] 
+        public string AnimalCategoryName { get; set; }
 
-        [JsonIgnore]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public virtual ICollection<AnimalSpecies> AnimalSpecies { get; set; }
     }
 }

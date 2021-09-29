@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Business.Abstracts;
 using Business.Concretes;
 using Entity;
 using Entity.concretes;
@@ -14,15 +15,17 @@ namespace WebApi.Controllers
     [ApiController]
     public class MissingDeclarationsController : ControllerBase
     {
-        public MissingDeclarationsController()
-        {
+        private readonly IMissingDeclarationService _missingDeclarationService;
 
+        public MissingDeclarationsController(IMissingDeclarationService missingDeclarationService)
+        {
+            _missingDeclarationService = missingDeclarationService;
         }
 
         [HttpPost("add")]
         public IActionResult Add(MissingDeclaration missingDeclaration)
         {
-            var result = new MissingDeclarationManager().Add(missingDeclaration);
+            var result = _missingDeclarationService.Add(missingDeclaration);
             if (result.Success)
             {
                 return Ok(result);
@@ -34,7 +37,7 @@ namespace WebApi.Controllers
         [HttpPost("update")]
         public IActionResult Update(MissingDeclaration missingDeclaration)
         {
-            var result = new MissingDeclarationManager().Update(missingDeclaration);
+            var result = _missingDeclarationService.Update(missingDeclaration);
 
             if (result.Success)
             {
@@ -48,7 +51,7 @@ namespace WebApi.Controllers
         [HttpPost("delete")]
         public IActionResult Delete(MissingDeclaration missingDeclaration)
         {
-            var result = new MissingDeclarationManager().Delete(missingDeclaration);
+            var result = _missingDeclarationService.Delete(missingDeclaration);
 
             if (result.Success)
             {
@@ -62,7 +65,7 @@ namespace WebApi.Controllers
         [HttpGet("getById")]
         public IActionResult Get(int id)
         {
-            var result = new MissingDeclarationManager().Get(id);
+            var result = _missingDeclarationService.Get(id);
 
             if (result.Success)
             {
@@ -73,12 +76,10 @@ namespace WebApi.Controllers
         }
 
 
-     
-
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            var result = new MissingDeclarationManager().GetAll();
+            var result = _missingDeclarationService.GetAll();
             if (result.Success)
             {
                 return Ok(result);

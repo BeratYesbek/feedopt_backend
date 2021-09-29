@@ -20,7 +20,6 @@ namespace Entity.ApiEntity
     /// /// </summary>
     public class MissingDeclarationImageApiEntity
     {
-       
         public string MissingDeclarationImage { get; set; }
 
         public IFormFile[] FormFiles { get; set; }
