@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Business.BusinessAspect;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Performance;
@@ -27,6 +28,7 @@ namespace Business.Concretes
 
         [ValidationAspect(typeof(AdoptionNoticeValidator))]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
+        [SecuredOperation("AdoptionNotice.Add,User")]
         [PerformanceAspect(5)]
         public IResult Add(AdoptionNotice adoptionNotice)
         {
@@ -35,6 +37,7 @@ namespace Business.Concretes
         }
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
+        [SecuredOperation("AdoptionNotice.Update,User")]
         [ValidationAspect(typeof(AdoptionNoticeValidator))]
         public IResult Update(AdoptionNotice adoptionNotice)
         {
@@ -43,6 +46,7 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
+        [SecuredOperation("AdoptionNotice.Delete,User")]
         [PerformanceAspect(5)]
         public IResult Delete(AdoptionNotice adoptionNotice)
         {
@@ -51,6 +55,7 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
+        [SecuredOperation("AdoptionNotice.Get,User")]
         public IDataResult<AdoptionNotice> Get(int id)
         {
             var data = _adoptionNoticeDal.Get(a => a.AdoptionNoticeId == id);
@@ -64,6 +69,7 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
+        [SecuredOperation("AdoptionNotice.GetAll,User")]
         public IDataResult<List<AdoptionNotice>> GetAll()
         {
             var data = _adoptionNoticeDal.GetAll();

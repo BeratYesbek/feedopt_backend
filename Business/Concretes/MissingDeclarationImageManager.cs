@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Business.BusinessAspect;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Performance;
 using Core.Utilities.FileHelper;
@@ -28,6 +29,7 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
+        [SecuredOperation("MissingDeclarationImage.Add,User")]
         [PerformanceAspect(5)]
         public IResult Add(MissingDeclarationImage missingDeclarationImage, IFormFile[] formFiles)
         {
@@ -51,6 +53,7 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
+        [SecuredOperation("MissingDeclarationImage.Update,User")]
         [PerformanceAspect(5)]
         public IResult Update(MissingDeclarationImage[] missingDeclarationImage, IFormFile[] formFiles)
         {
@@ -72,6 +75,7 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
+        [SecuredOperation("MissingDeclarationImage.Delete,User")]
         [PerformanceAspect(5)]
         public IResult Delete(MissingDeclarationImage[] missingDeclarationImage)
         {
@@ -85,6 +89,7 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
+        [SecuredOperation("MissingDeclarationImage.Get,User")]
         public IDataResult<List<MissingDeclarationImage>> GetByMissingDeclarationId(int id)
         {
             var data = _missingDeclarationImageDal.GetAll(m => m.MissingDeclarationId == id);
@@ -97,6 +102,7 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
+        [SecuredOperation("MissingDeclarationImage.Get,User")]
         public IDataResult<MissingDeclarationImage> Get(int id)
         {
             var data = _missingDeclarationImageDal.Get(m => m.MissingDeclarationImageId == id);
@@ -110,6 +116,7 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
+        [SecuredOperation("MissingDeclarationImage.GetAll,User")]
         public IDataResult<List<MissingDeclarationImage>> GetAll()
         {
             var data = _missingDeclarationImageDal.GetAll();

@@ -26,8 +26,10 @@ namespace Entity.Concretes
 
         public string Longitude { get; set; }
 
-        [JsonIgnore] public virtual ICollection<MissingDeclaration> MissingDeclarations { get; set; }
+        [JsonIgnore] 
+        public virtual ICollection<MissingDeclaration> MissingDeclarations { get; set; }
 
-        [JsonIgnore] public virtual ICollection<AdoptionNotice> AdoptionNotices { get; set; }
+        [JsonIgnore] 
+        public virtual ICollection<AdoptionNotice> AdoptionNotices { get; set; }
     }
 }

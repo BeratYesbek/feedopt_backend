@@ -18,6 +18,7 @@ namespace Entity.Concretes
 
         public int AdoptionNoticeId { get; set; }
 
-        [ForeignKey("AdoptionNoticeId")] public virtual AdoptionNotice AdoptionNotice { get; set; }
+        [ForeignKey("AdoptionNoticeId")]
+        public virtual AdoptionNotice AdoptionNotice { get; set; }
     }
 }

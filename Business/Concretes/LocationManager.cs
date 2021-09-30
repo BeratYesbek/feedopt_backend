@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Business.BusinessAspect;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Performance;
@@ -28,6 +29,7 @@ namespace Business.Concretes
 
         [ValidationAspect(typeof(LocationValidator))]
         [CacheRemoveAspect("ILocationService.GetAll")]
+        [SecuredOperation("Location.Add,User")]
         [PerformanceAspect(5)]
         public IDataResult<Location> Add(Location location)
         {
@@ -37,6 +39,7 @@ namespace Business.Concretes
 
         [ValidationAspect(typeof(LocationValidator))]
         [CacheRemoveAspect("ILocationService.GetAll")]
+        [SecuredOperation("Location.Update,User")]
         [PerformanceAspect(5)]
         public IResult Update(Location location)
         {
@@ -45,6 +48,7 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("ILocationService.GetAll")]
+        [SecuredOperation("Location.Delete,User")]
         [PerformanceAspect(5)]
         public IResult Delete(Location location)
         {
@@ -53,6 +57,7 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
+        [SecuredOperation("Location.Get,User")]
         public IDataResult<Location> Get(int id)
         {
             var data = _locationDal.Get(l => l.LocationId == id);
@@ -66,6 +71,7 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
+        [SecuredOperation("Location.GetAll,User")]
         public IDataResult<List<Location>> GetAll()
         {
             var data = _locationDal.GetAll();

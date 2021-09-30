@@ -47,13 +47,16 @@ namespace WebApi.Controllers
         [HttpPost("update")]
         public IActionResult Update([FromForm] MissingDeclarationImageApiEntity missingDeclarationImageApiEntity)
         {
-            /* var result = missingDeclarationImageManager.Update(missingDeclarationImageApiEntity.MissingDeclarationImage,
+            MissingDeclarationImage[] missingDeclarations =
+                JsonConvert.DeserializeObject<MissingDeclarationImage[]>(missingDeclarationImageApiEntity
+                    .MissingDeclarationImage);
+            var result = _missingDeclarationImageService.Update(missingDeclarations,
                  missingDeclarationImageApiEntity.FormFiles);
  
              if (result.Success)
              {
                  return Ok(result);
-             }*/
+             }
 
             return BadRequest();
         }

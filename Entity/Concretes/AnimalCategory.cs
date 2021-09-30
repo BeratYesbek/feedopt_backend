@@ -19,7 +19,7 @@ namespace Entity.concretes
         [StringLength(50)] 
         public string AnimalCategoryName { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        //[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public virtual ICollection<AnimalSpecies> AnimalSpecies { get; set; }
     }
 }

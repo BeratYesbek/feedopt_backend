@@ -5,6 +5,7 @@ using DataAccess.Concretes;
 using Entity.concretes;
 using System;
 using System.Collections.Generic;
+using Business.BusinessAspect;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Performance;
@@ -15,14 +16,14 @@ namespace Business.Concretes
 {
     public class AnimalCategoryManager : IAnimalCategoryService
     {
-
         private readonly IAnimalCategoryDal _animalCategoryDal;
 
         public AnimalCategoryManager(IAnimalCategoryDal animalCategoryDal)
         {
             _animalCategoryDal = animalCategoryDal;
         }
-        
+
+        [SecuredOperation("AnimalCategory.Add,Admin")]
         [ValidationAspect(typeof(AnimalCategoryValidator))]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [PerformanceAspect(5)]
@@ -32,6 +33,7 @@ namespace Business.Concretes
             return new SuccessDataResult<AnimalCategory>(result);
         }
 
+        [SecuredOperation("AnimalCategory.Update,Admin")]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [ValidationAspect(typeof(AnimalCategoryValidator))]
         [PerformanceAspect(5)]
@@ -41,6 +43,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        [SecuredOperation("AnimalCategory.Update,Admin")]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [PerformanceAspect(5)]
         public IResult Delete(AnimalCategory animalCategory)
@@ -50,6 +53,7 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
+        [SecuredOperation("AnimalCategory.Get,User")]
         public IDataResult<AnimalCategory> Get(int id)
         {
             var data = _animalCategoryDal.Get(a => a.AnimalCategoryId == id);
@@ -63,6 +67,7 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
+        [SecuredOperation("AnimalCategory.GetAll,User")]
         public IDataResult<List<AnimalCategory>> GetAll()
         {
             var data = _animalCategoryDal.GetAll();

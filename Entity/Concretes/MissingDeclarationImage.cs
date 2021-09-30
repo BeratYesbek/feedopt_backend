@@ -17,6 +17,7 @@ namespace Entity.Concretes
 
         public int MissingDeclarationId { get; set; }
 
-        [ForeignKey("MissingDeclarationId")] public virtual MissingDeclaration MissingDeclaration { get; set; }
+        [ForeignKey("MissingDeclarationId")]
+        public virtual MissingDeclaration MissingDeclaration { get; set; }
     }
 }

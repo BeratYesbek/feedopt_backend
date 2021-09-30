@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Business.BusinessAspect;
 using Core.Aspects.Autofac.Performance;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
@@ -26,6 +27,7 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
+        [SecuredOperation("AdoptionNotice.Add,User")]
         public IResult Add(AdoptionNoticeImage adoptionNoticeImage, IFormFile[] formFiles)
         {
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
@@ -46,6 +48,7 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
+        [SecuredOperation("AdoptionNotice.Delete,User")]
         public IResult Delete(AdoptionNoticeImage[] adoptionNoticeImages)
         {
             foreach (var image in adoptionNoticeImages)
@@ -57,6 +60,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
         [PerformanceAspect(5)]
+        [SecuredOperation("AdoptionNotice.Get,User")]
         public IDataResult<AdoptionNoticeImage> Get(int id)
         {
             var data = _adoptionNoticeImageDal.Get(a => a.AdoptionNoticeImageId == id);
@@ -69,6 +73,7 @@ namespace Business.Concretes
             return new ErrorDataResult<AdoptionNoticeImage>(null);
         }
         [PerformanceAspect(5)]
+        [SecuredOperation("AdoptionNotice.GetAll,User")]
         public IDataResult<List<AdoptionNoticeImage>> GetAll()
         {
             var data = _adoptionNoticeImageDal.GetAll();
@@ -81,6 +86,7 @@ namespace Business.Concretes
             return new ErrorDataResult<List<AdoptionNoticeImage>>(null);
         }
         [PerformanceAspect(5)]
+        [SecuredOperation("AdoptionNotice.Get,User")]
         public IDataResult<List<AdoptionNoticeImage>> GetByAdoptionNoticeId(int id)
         {
             var data = _adoptionNoticeImageDal.GetAll(a => a.AdoptionNoticeId == id);
@@ -94,6 +100,7 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
+        [SecuredOperation("AdoptionNotice.Update,User")]
         public IResult Update(AdoptionNoticeImage[] adoptionNoticeImage, IFormFile[] formFiles)
         {
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
