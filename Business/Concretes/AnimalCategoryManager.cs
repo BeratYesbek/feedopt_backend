@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using DataAccess.Abstracts;
 
@@ -24,6 +25,7 @@ namespace Business.Concretes
         
         [ValidationAspect(typeof(AnimalCategoryValidator))]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
+        [PerformanceAspect(5)]
         public IDataResult<AnimalCategory> Add(AnimalCategory animalCategory)
         {
             var result = _animalCategoryDal.Add(animalCategory);
@@ -32,6 +34,7 @@ namespace Business.Concretes
 
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [ValidationAspect(typeof(AnimalCategoryValidator))]
+        [PerformanceAspect(5)]
         public IResult Update(AnimalCategory animalCategory)
         {
             _animalCategoryDal.Update(animalCategory);
@@ -39,12 +42,14 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
+        [PerformanceAspect(5)]
         public IResult Delete(AnimalCategory animalCategory)
         {
             _animalCategoryDal.Delete(animalCategory);
             return new SuccessResult();
         }
 
+        [PerformanceAspect(5)]
         public IDataResult<AnimalCategory> Get(int id)
         {
             var data = _animalCategoryDal.Get(a => a.AnimalCategoryId == id);
@@ -57,6 +62,7 @@ namespace Business.Concretes
         }
 
         [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<List<AnimalCategory>> GetAll()
         {
             var data = _animalCategoryDal.GetAll();

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Core.Aspects.Autofac.Performance;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
@@ -24,6 +25,7 @@ namespace Business.Concretes
             _adoptionNoticeImageDal = adoptionNoticeImageDal;
         }
 
+        [PerformanceAspect(5)]
         public IResult Add(AdoptionNoticeImage adoptionNoticeImage, IFormFile[] formFiles)
         {
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
@@ -43,6 +45,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        [PerformanceAspect(5)]
         public IResult Delete(AdoptionNoticeImage[] adoptionNoticeImages)
         {
             foreach (var image in adoptionNoticeImages)
@@ -53,7 +56,7 @@ namespace Business.Concretes
 
             return new SuccessResult();
         }
-
+        [PerformanceAspect(5)]
         public IDataResult<AdoptionNoticeImage> Get(int id)
         {
             var data = _adoptionNoticeImageDal.Get(a => a.AdoptionNoticeImageId == id);
@@ -65,7 +68,7 @@ namespace Business.Concretes
 
             return new ErrorDataResult<AdoptionNoticeImage>(null);
         }
-
+        [PerformanceAspect(5)]
         public IDataResult<List<AdoptionNoticeImage>> GetAll()
         {
             var data = _adoptionNoticeImageDal.GetAll();
@@ -77,7 +80,7 @@ namespace Business.Concretes
 
             return new ErrorDataResult<List<AdoptionNoticeImage>>(null);
         }
-
+        [PerformanceAspect(5)]
         public IDataResult<List<AdoptionNoticeImage>> GetByAdoptionNoticeId(int id)
         {
             var data = _adoptionNoticeImageDal.GetAll(a => a.AdoptionNoticeId == id);
@@ -90,6 +93,7 @@ namespace Business.Concretes
             return new ErrorDataResult<List<AdoptionNoticeImage>>(null);
         }
 
+        [PerformanceAspect(5)]
         public IResult Update(AdoptionNoticeImage[] adoptionNoticeImage, IFormFile[] formFiles)
         {
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);

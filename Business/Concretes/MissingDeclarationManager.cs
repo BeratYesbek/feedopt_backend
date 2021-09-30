@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
@@ -26,6 +27,7 @@ namespace Business.Concretes
 
         [ValidationAspect(typeof(MissingDeclarationValidator))]
         [CacheRemoveAspect("IMissingDeclarationService.GetAll")]
+        [PerformanceAspect(5)]
         public IDataResult<MissingDeclaration> Add(MissingDeclaration missingDeclaration)
         {
             var data = _missingDeclarationDal.Add(missingDeclaration);
@@ -34,12 +36,14 @@ namespace Business.Concretes
 
         [ValidationAspect(typeof(MissingDeclarationValidator))]
         [CacheRemoveAspect("IMissingDeclarationService.GetAll")]
+        [PerformanceAspect(5)]
         public IResult Update(MissingDeclaration missingDeclaration)
         {
             _missingDeclarationDal.Update(missingDeclaration);
             return new SuccessResult();
         }
 
+        [PerformanceAspect(5)]
         [CacheRemoveAspect("IMissingDeclarationService.GetAll")]
         public IResult Delete(MissingDeclaration missingDeclaration)
         {
@@ -47,6 +51,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        [PerformanceAspect(5)]
         public IDataResult<MissingDeclaration> Get(int id)
         {
             var data = _missingDeclarationDal.Get(m => m.MissingDeclarationId == id);
@@ -59,6 +64,7 @@ namespace Business.Concretes
         }
 
         [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<List<MissingDeclaration>> GetAll()
         {
             var data = _missingDeclarationDal.GetAll();

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Performance;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
@@ -27,6 +28,7 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
+        [PerformanceAspect(5)]
         public IResult Add(MissingDeclarationImage missingDeclarationImage, IFormFile[] formFiles)
         {
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
@@ -49,6 +51,7 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
+        [PerformanceAspect(5)]
         public IResult Update(MissingDeclarationImage[] missingDeclarationImage, IFormFile[] formFiles)
         {
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
@@ -69,6 +72,7 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
+        [PerformanceAspect(5)]
         public IResult Delete(MissingDeclarationImage[] missingDeclarationImage)
         {
             foreach (var image in missingDeclarationImage)
@@ -80,6 +84,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        [PerformanceAspect(5)]
         public IDataResult<List<MissingDeclarationImage>> GetByMissingDeclarationId(int id)
         {
             var data = _missingDeclarationImageDal.GetAll(m => m.MissingDeclarationId == id);
@@ -91,6 +96,7 @@ namespace Business.Concretes
             return new ErrorDataResult<List<MissingDeclarationImage>>(null);
         }
 
+        [PerformanceAspect(5)]
         public IDataResult<MissingDeclarationImage> Get(int id)
         {
             var data = _missingDeclarationImageDal.Get(m => m.MissingDeclarationImageId == id);
@@ -103,6 +109,7 @@ namespace Business.Concretes
         }
 
         [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<List<MissingDeclarationImage>> GetAll()
         {
             var data = _missingDeclarationImageDal.GetAll();
