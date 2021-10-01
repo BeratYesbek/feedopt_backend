@@ -9,6 +9,7 @@ using Business.Abstracts;
 using Business.Concretes;
 using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
+using Core.Utilities.Security.JWT;
 using DataAccess.Abstracts;
 using DataAccess.Concretes;
 using Entity.concretes;
@@ -31,8 +32,7 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<MissingDeclarationManager>().As<IMissingDeclarationService>().SingleInstance();
             builder.RegisterType<EfMissingDeclarationDal>().As<IMissingDeclarationDal>().SingleInstance();
 
-            builder.RegisterType<MissingDeclarationImageManager>().As<IMissingDeclarationImageService>()
-                .SingleInstance();
+            builder.RegisterType<MissingDeclarationImageManager>().As<IMissingDeclarationImageService>().SingleInstance();
             builder.RegisterType<EfMissingDeclarationImageDal>().As<IMissingDeclarationImageDal>().SingleInstance();
 
             builder.RegisterType<AdoptionNoticeImageManager>().As<IAdoptionNoticeImageService>().SingleInstance();
@@ -40,6 +40,14 @@ namespace Business.DependencyResolver.Autofac
 
             builder.RegisterType<LocationManager>().As<ILocationService>().SingleInstance();
             builder.RegisterType<EfLocationDal>().As<ILocationDal>().SingleInstance();
+
+
+            builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
+            builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
+
+            builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
+
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
