@@ -9,9 +9,13 @@ using Core.Entity;
 using Microsoft.Extensions.Configuration;
 using Core.Entity.Concretes;
 using Core.Extensions;
+using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.Encyrption;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 
 namespace Core.Utilities.Security.JWT
 {
@@ -20,11 +24,13 @@ namespace Core.Utilities.Security.JWT
         public IConfiguration Configuration { get; }
         private TokenOptions _tokenOptions;
         private DateTime _accessTokenExpiration;
+        private IHttpContextAccessor _httpContextAccessor;
 
         public JwtHelper(IConfiguration configuration)
         {
             Configuration = configuration;
             _tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
         public AccessToken CreateToken(User user, List<OperationClaim> operationClaims)
@@ -35,12 +41,17 @@ namespace Core.Utilities.Security.JWT
             var jwt = CreateJwtSecurityToken(_tokenOptions, user, signingCredentials, operationClaims);
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var token = jwtSecurityTokenHandler.WriteToken(jwt);
-
+            AddToSession(token,_accessTokenExpiration);
             return new AccessToken
             {
                 Token = token,
                 Expiration = _accessTokenExpiration
             };
+        }
+
+        private void AddToSession(string token, DateTime expiration)
+        {
+            _httpContextAccessor.HttpContext.Session.SetString(token, expiration.ToString());
         }
 
         public JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, User user,

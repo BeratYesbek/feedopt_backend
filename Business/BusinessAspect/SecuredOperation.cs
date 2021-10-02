@@ -4,8 +4,11 @@ using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using Core.Extensions;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -25,6 +28,8 @@ namespace Business.BusinessAspect
         protected override void OnBefore(IInvocation invocation)
         {
             var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
+            var expiration = _httpContextAccessor.HttpContext.Request.Headers["Expiration"];
+
 
             foreach (var role in _roles)
             {

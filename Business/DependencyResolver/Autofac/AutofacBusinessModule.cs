@@ -13,6 +13,9 @@ using Core.Utilities.Security.JWT;
 using DataAccess.Abstracts;
 using DataAccess.Concretes;
 using Entity.concretes;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Session;
+using Microsoft.Extensions.Logging;
 
 namespace Business.DependencyResolver.Autofac
 {
@@ -32,7 +35,8 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<MissingDeclarationManager>().As<IMissingDeclarationService>().SingleInstance();
             builder.RegisterType<EfMissingDeclarationDal>().As<IMissingDeclarationDal>().SingleInstance();
 
-            builder.RegisterType<MissingDeclarationImageManager>().As<IMissingDeclarationImageService>().SingleInstance();
+            builder.RegisterType<MissingDeclarationImageManager>().As<IMissingDeclarationImageService>()
+                .SingleInstance();
             builder.RegisterType<EfMissingDeclarationImageDal>().As<IMissingDeclarationImageDal>().SingleInstance();
 
             builder.RegisterType<AdoptionNoticeImageManager>().As<IAdoptionNoticeImageService>().SingleInstance();
@@ -41,13 +45,14 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<LocationManager>().As<ILocationService>().SingleInstance();
             builder.RegisterType<EfLocationDal>().As<ILocationDal>().SingleInstance();
 
+            builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>().SingleInstance();
+            builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>().SingleInstance();
 
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
 
             builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
-
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
