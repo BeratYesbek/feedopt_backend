@@ -11,7 +11,7 @@ namespace Entity.Concretes
 {
     public class MissingDeclarationImage : IEntity
     {
-        [Key] public int MissingDeclarationImageId { get; set; }
+        [Key] public int MissingDeclarationImageId  { get; set; }
 
         public string ImagePath { get; set; }
 

@@ -30,6 +30,7 @@ namespace Entity.concretes
         public virtual User User { get; set; }
 
         [ForeignKey("AnimalSpeciesId")] 
+        
         public virtual AnimalSpecies AnimalSpecies { get; set; }
 
         [JsonIgnore] 

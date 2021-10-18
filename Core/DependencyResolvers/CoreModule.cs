@@ -21,12 +21,7 @@ namespace Core.DependencyResolvers
             serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             serviceCollection.AddSingleton<ICacheManager, MemoryCacheManager>();
             serviceCollection.AddSingleton<Stopwatch>();
-            serviceCollection.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromDays(14);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
+   
         }
     }
 }

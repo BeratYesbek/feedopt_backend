@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +11,7 @@ using Core.Utilities.IoC;
 using Core.Utilities.Security.Encyrption;
 using Core.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Session;
 
@@ -28,11 +30,10 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDistributedMemoryCache();
 
-        
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -54,10 +55,16 @@ namespace WebApi
                 {
                     options.JsonSerializerOptions.DefaultIgnoreCondition =
                         System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
-                });
-            services.AddControllers().AddNewtonsoftJson();
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebApi", Version = "v1"}); });
+                })
+                .AddNewtonsoftJson();
 
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebApi", Version = "v1"}); });
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.IsEssential = true;
+            });
+       
 
             services.AddDependencyResolvers(new ICoreModule[]
             {
@@ -76,6 +83,7 @@ namespace WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
             }
+
 
             app.UseStaticFiles();
 

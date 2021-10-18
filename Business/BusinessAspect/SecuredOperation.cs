@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Claims;
 using System.Text;
 using Core.Extensions;
+using Core.Utilities.Sessions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,11 +30,16 @@ namespace Business.BusinessAspect
         protected override void OnBefore(IInvocation invocation)
         {
             var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
-            var expiration = _httpContextAccessor.HttpContext.Request.Headers["Expiration"];
+            var exp = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(t => t.Type == "exp");
 
+            if (exp == null)
+            {
+                throw new Exception("Your token expiration is up");
+            }
 
             foreach (var role in _roles)
             {
+   
                 if (roleClaims.Contains(role))
                 {
                     return;

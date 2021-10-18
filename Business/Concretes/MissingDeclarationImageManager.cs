@@ -34,6 +34,7 @@ namespace Business.Concretes
         public IResult Add(MissingDeclarationImage missingDeclarationImage, IFormFile[] formFiles)
         {
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
+
             foreach (var file in formFiles)
             {
                 var result = FileHelper.Upload(file);

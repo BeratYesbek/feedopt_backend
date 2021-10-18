@@ -10,7 +10,10 @@ using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.IoC;
 using DataAccess.Abstracts;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Concretes
 {
@@ -21,6 +24,9 @@ namespace Business.Concretes
         public AnimalCategoryManager(IAnimalCategoryDal animalCategoryDal)
         {
             _animalCategoryDal = animalCategoryDal;
+            var _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+            _httpContextAccessor.HttpContext.Session.SetString("a", "123456789");
+
         }
 
         [SecuredOperation("AnimalCategory.Add,Admin")]

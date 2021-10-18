@@ -12,11 +12,11 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdoptionNoticeController : ControllerBase
+    public class AdoptionNoticesController : ControllerBase
     {
         private readonly IAdoptionNoticeService _adoptionNoticeService;
 
-        public AdoptionNoticeController(IAdoptionNoticeService adoptionNoticeService)
+        public AdoptionNoticesController(IAdoptionNoticeService adoptionNoticeService)
         {
             _adoptionNoticeService = adoptionNoticeService;
         }

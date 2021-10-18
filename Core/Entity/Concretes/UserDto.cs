@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Core.Entity.Abstracts;
-using Newtonsoft.Json;
 
-namespace Core.Entity
+namespace Core.Entity.Concretes
 {
-    public class User : IEntity
+    public class UserDto : IEntity
     {
         public int Id { get; set; }
 
@@ -17,13 +17,6 @@ namespace Core.Entity
 
         public string Email { get; set; }
 
-        [JsonIgnore]
-        public byte[] PasswordHash { get; set; }
-
-        [JsonIgnore]
-        public byte[] PasswordSalt { get; set; }
-
-        [JsonIgnore]
         public bool Status { get; set; }
     }
 }

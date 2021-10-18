@@ -44,7 +44,7 @@ namespace Business.Concretes
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
-            if (userToCheck == null)
+            if (!userToCheck.Success)
             {
                 return new ErrorDataResult<User>(null, "Password or email is wrong");
             }

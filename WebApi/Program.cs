@@ -31,3 +31,8 @@ namespace WebApi
                 });
     }
 }
+/*
+ *
+ * DependencyResolutionException: None of the constructors found with 'Autofac.Core.Activators.Reflection.DefaultConstructorFinder' on type 'Microsoft.AspNetCore.Session.DistributedSessionStore' can be invoked with the available services and parameters:
+Cannot resolve parameter 'Microsoft.Extensions.Caching.Distributed.IDistributedCache cache' of constructor 'Void .ctor(Microsoft.Extensions.Caching.Distributed.IDistributedCache, Microsoft.Extensions.Logging.ILoggerFactory)'.
+ */

@@ -35,13 +35,13 @@ namespace Core.Utilities.Security.JWT
 
         public AccessToken CreateToken(User user, List<OperationClaim> operationClaims)
         {
-            _accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.AccessTokenExpiration);
+            _accessTokenExpiration = DateTime.Now.AddDays(_tokenOptions.AccessTokenExpiration);
             var securityKey = SecurityKeyHelper.CreateSecurityKey(_tokenOptions.SecurityKey);
             var signingCredentials = SigningCredentialsHelper.CreateSigningCredentials(securityKey);
             var jwt = CreateJwtSecurityToken(_tokenOptions, user, signingCredentials, operationClaims);
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var token = jwtSecurityTokenHandler.WriteToken(jwt);
-            AddToSession(token,_accessTokenExpiration);
+            Sessions.Sessions.AddSession(token, _accessTokenExpiration.Date.ToString());
             return new AccessToken
             {
                 Token = token,
@@ -49,10 +49,6 @@ namespace Core.Utilities.Security.JWT
             };
         }
 
-        private void AddToSession(string token, DateTime expiration)
-        {
-            _httpContextAccessor.HttpContext.Session.SetString(token, expiration.ToString());
-        }
 
         public JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, User user,
             SigningCredentials signingCredentials, List<OperationClaim> operationClaims)

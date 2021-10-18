@@ -12,7 +12,8 @@ namespace Entity.Concretes
 {
     public class AdoptionNoticeImage : IEntity
     {
-        [Key] public int AdoptionNoticeImageId { get; set; }
+        [Key] 
+        public int AdoptionNoticeImageId { get; set; }
 
         public string ImagePath { get; set; }
 
