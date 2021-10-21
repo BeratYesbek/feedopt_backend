@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Utilities.Result.Abstracts;
@@ -24,6 +25,6 @@ namespace Business.Abstracts
 
         IDataResult<List<ChatDto>> GetAllByReceiverIdAndSenderId(int senderId, int receiverId);
 
-        object GetAllLastMessages(int id);
+        IDataResult<List<ChatDto>> GetAllLastMessages(int id);
     }
 }

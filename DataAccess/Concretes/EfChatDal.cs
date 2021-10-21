@@ -33,18 +33,11 @@ namespace DataAccess.Concretes
             }
         }
 
-        public object GetAllLastMessages(Expression<Func<Chat, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object GetAllLastMessages(int id)
+        public List<ChatDto> GetAllLastMessages(Expression<Func<Chat, bool>> filter, int id)
         {
             using (NervioDbContext context = new NervioDbContext())
             {
-                
-
-                var result = from chat in context.Chats.Where(c => c.ReceiverId == id || c.SenderId == id).ToList()
+                var result = from chat in context.Chats.Where(filter).ToList()
                         .GroupBy(c => c.SenderId == id ? c.ReceiverId : c.SenderId)
                         .Select(c => c.OrderByDescending(t => t.Date).First()).ToList()
                     join senderUser in context.Users on chat.ReceiverId equals senderUser.Id
@@ -55,8 +48,8 @@ namespace DataAccess.Concretes
                         ReceiverUser = receiverUser,
                         Chat = chat
                     };
-           
-                return null;
+
+                return result.ToList();
             }
         }
     }

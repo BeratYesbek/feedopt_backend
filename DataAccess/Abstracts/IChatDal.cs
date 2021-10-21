@@ -15,6 +15,6 @@ namespace DataAccess.Abstracts
     {
         List<ChatDto> GetAllByReceiverIdAndSenderId(Expression<Func<Chat, bool>> filter);
 
-        object GetAllLastMessages(Expression<Func<Chat, bool>> filter);
+        List<ChatDto> GetAllLastMessages(Expression<Func<Chat, bool>> filter,int id);
     }
 }   

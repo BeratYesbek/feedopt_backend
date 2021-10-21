@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
@@ -79,10 +81,16 @@ namespace Business.Concretes
             return new ErrorDataResult<List<ChatDto>>(null);
         }
 
-        public object GetAllLastMessages(int id)
+        public IDataResult<List<ChatDto>> GetAllLastMessages(int id)
         {
-            _chatDal.GetAllLastMessages(id);
-            return null;
+            var data = _chatDal.GetAllLastMessages(c => c.ReceiverId == id || c.SenderId == id, id);
+
+            if (data.Count > 0)
+            {
+                return new SuccessDataResult<List<ChatDto>>(data);
+            }
+
+            return new ErrorDataResult<List<ChatDto>>(data);
         }
     }
 }
