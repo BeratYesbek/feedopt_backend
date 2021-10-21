@@ -91,5 +91,12 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
         }
+
+        [HttpGet("getAllLastMessages")]
+        public IActionResult GetAllLastMessages(int id)
+        {
+            _chatService.GetAllLastMessages(id);
+            return Ok();
+        }
     }
 }

@@ -14,5 +14,7 @@ namespace DataAccess.Abstracts
     public interface IChatDal : IEntityRepository<Chat>
     {
         List<ChatDto> GetAllByReceiverIdAndSenderId(Expression<Func<Chat, bool>> filter);
+
+        object GetAllLastMessages(Expression<Func<Chat, bool>> filter);
     }
 }   

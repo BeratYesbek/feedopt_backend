@@ -78,5 +78,11 @@ namespace Business.Concretes
 
             return new ErrorDataResult<List<ChatDto>>(null);
         }
+
+        public object GetAllLastMessages(int id)
+        {
+            _chatDal.GetAllLastMessages(id);
+            return null;
+        }
     }
 }

@@ -23,5 +23,7 @@ namespace Business.Abstracts
         IDataResult<List<Chat>> GetAll();
 
         IDataResult<List<ChatDto>> GetAllByReceiverIdAndSenderId(int senderId, int receiverId);
+
+        object GetAllLastMessages(int id);
     }
 }

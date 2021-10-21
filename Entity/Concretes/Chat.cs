@@ -17,6 +17,8 @@ namespace Entity.Concretes
 
         public string Message { get; set; }
 
+        //public bool IsSeen { get; set; }
+
         public  DateTime Date { get; set; }
     }
 }
