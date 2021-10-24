@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Core.Utilities.Mailer;
 using Entity.Concretes;
 
 namespace WebApi.Controllers
@@ -28,6 +29,7 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -39,6 +41,7 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -69,6 +72,7 @@ namespace WebApi.Controllers
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
+            VerifyEmailMailer.SendVerifyEmail("hello world", "beratyesbekk@gmail.com");
             var result = _chatService.GetAll();
             if (result.Success)
             {
@@ -98,6 +102,7 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
     }

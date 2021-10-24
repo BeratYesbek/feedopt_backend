@@ -17,6 +17,7 @@ using DataAccess.Concretes;
 using Entity.Concretes;
 using Microsoft.AspNetCore.Http;
 
+
 namespace Business.Concretes
 {
     public class AdoptionNoticeImageManager : IAdoptionNoticeImageService

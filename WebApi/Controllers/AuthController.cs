@@ -6,6 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Entity.Dtos;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace WebApi.Controllers
 {
@@ -57,5 +61,12 @@ namespace WebApi.Controllers
 
             return BadRequest(result.Message);
         }
+
+
+
+
+
+
+
     }
 }

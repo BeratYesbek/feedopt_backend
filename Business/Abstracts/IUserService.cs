@@ -25,5 +25,6 @@ namespace Business.Abstracts
 
         IDataResult<User> GetByMail(string email);
 
+
     }
 }
