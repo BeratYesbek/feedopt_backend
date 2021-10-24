@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
 using Core.Aspects.Autofac.Performance;
+using Core.Utilities;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
@@ -18,7 +21,6 @@ namespace Business.Concretes
 {
     public class AdoptionNoticeImageManager : IAdoptionNoticeImageService
     {
-
         private readonly IAdoptionNoticeImageDal _adoptionNoticeImageDal;
 
         public AdoptionNoticeImageManager(IAdoptionNoticeImageDal adoptionNoticeImageDal)
@@ -33,7 +35,10 @@ namespace Business.Concretes
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
             foreach (var file in formFiles)
             {
-                var result = FileHelper.Upload(file);
+                Image image = Image.FromStream(file.OpenReadStream(), true, true);
+                var result = FileHelper.Upload(file,
+                    ImageScaling.ResizeImage(image, ImageScaling.ImageWidth, ImageScaling.ImageHeight));
+
                 if (!result.Success)
                 {
                     return new ErrorResult(result.Message);
@@ -59,6 +64,7 @@ namespace Business.Concretes
 
             return new SuccessResult();
         }
+
         [PerformanceAspect(5)]
         [SecuredOperation("AdoptionNotice.Get,User")]
         public IDataResult<AdoptionNoticeImage> Get(int id)
@@ -72,6 +78,7 @@ namespace Business.Concretes
 
             return new ErrorDataResult<AdoptionNoticeImage>(null);
         }
+
         [PerformanceAspect(5)]
         [SecuredOperation("AdoptionNotice.GetAll,User")]
         public IDataResult<List<AdoptionNoticeImage>> GetAll()
@@ -85,6 +92,7 @@ namespace Business.Concretes
 
             return new ErrorDataResult<List<AdoptionNoticeImage>>(null);
         }
+
         [PerformanceAspect(5)]
         [SecuredOperation("AdoptionNotice.Get,User")]
         public IDataResult<List<AdoptionNoticeImage>> GetByAdoptionNoticeId(int id)
@@ -106,7 +114,9 @@ namespace Business.Concretes
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
             for (int i = 0; i < formFiles.Length; i++)
             {
-                var result = FileHelper.Update(formFiles[i], adoptionNoticeImage[i].ImagePath);
+                Image image = Image.FromStream(formFiles[i].OpenReadStream(), true, true);
+                var result = FileHelper.Update(formFiles[i], adoptionNoticeImage[i].ImagePath,
+                    ImageScaling.ResizeImage(image, ImageScaling.ImageWidth, ImageScaling.ImageHeight));
                 if (!result.Success)
                 {
                     return new ErrorResult(result.Message);

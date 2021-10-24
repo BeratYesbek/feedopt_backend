@@ -28,7 +28,6 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
-
             return BadRequest(result);
         }
 
@@ -40,7 +39,6 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
-
             return BadRequest(result);
         }
 
@@ -100,7 +98,6 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
-
             return BadRequest(result);
         }
     }

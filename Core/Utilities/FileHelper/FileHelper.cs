@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,13 @@ namespace Core.Utilities.FileHelper
         private static string[] _fileExtension;
 
         /// <summary>
+        /// 
         ///     if this method success, message will return which contains file path
+        /// 
         /// </summary>
         /// <param name="formFile"></param>
         /// <returns> error message or file path </returns>
-        public static IResult Upload(IFormFile formFile)
+        public static IResult Upload(IFormFile formFile, Image image = null)
         {
             if (formFile == null && formFile.Length <= 0)
             {
@@ -36,8 +39,9 @@ namespace Core.Utilities.FileHelper
             {
                 return new ErrorResult(typeValid.Message);
             }
+
             CheckDirectoryExists(_currentDirectory + _folderName);
-            CreateImageFile(_currentDirectory + _folderName + randomName + type, formFile);
+            CreateImageFile(_currentDirectory + _folderName + randomName + type, formFile, image);
             return new SuccessResult((_folderName + randomName + type).Replace("\\", "/"));
         }
 
@@ -47,7 +51,7 @@ namespace Core.Utilities.FileHelper
         /// </summary>
         /// <param name="formFile"></param>
         /// <returns> error message or file path   </returns>
-        public static IResult Update(IFormFile formFile, string imagePath)
+        public static IResult Update(IFormFile formFile, string imagePath, Image image = null)
         {
             if (formFile == null && formFile.Length <= 0)
             {
@@ -65,7 +69,7 @@ namespace Core.Utilities.FileHelper
 
             DeleteOldImageFile((_currentDirectory + imagePath).Replace("/", "\\"));
             CheckDirectoryExists(_currentDirectory + _folderName);
-            CreateImageFile(_currentDirectory + _folderName + randomName + type, formFile);
+            CreateImageFile(_currentDirectory + _folderName + randomName + type, formFile, image);
             return new SuccessResult((_folderName + randomName + type).Replace("\\", "/"));
         }
 
@@ -76,13 +80,19 @@ namespace Core.Utilities.FileHelper
         }
 
 
-
-        private static void CreateImageFile(string directory, IFormFile file)
+        private static void CreateImageFile(string directory, IFormFile file, Image image)
         {
-            using (FileStream fileStream = File.Create(directory))
+            if (image == null)
             {
-                file.CopyTo(fileStream);
-                fileStream.Flush();
+                using (FileStream fileStream = File.Create(directory))
+                {
+                    file.CopyTo(fileStream);
+                    fileStream.Flush();
+                }
+            }
+            else
+            {
+                image.Save(directory);
             }
         }
 
@@ -113,7 +123,6 @@ namespace Core.Utilities.FileHelper
             {
                 File.Delete(directory.Replace("/", "\\"));
             }
-
         }
 
         public static void SetFileExtension(string folderName, params string[] fileExtension)
