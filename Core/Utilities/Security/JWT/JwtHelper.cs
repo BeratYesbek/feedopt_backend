@@ -62,6 +62,7 @@ namespace Core.Utilities.Security.JWT
                 signingCredentials: signingCredentials
             );
 
+
             return jwt;
         }
 

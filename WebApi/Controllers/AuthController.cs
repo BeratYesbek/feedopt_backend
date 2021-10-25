@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Business.Abstracts;
+using Core.Extensions;
+using Core.Utilities.Constants;
 using Entity.Dtos;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Facebook;
-using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace WebApi.Controllers
 {
@@ -36,6 +32,9 @@ namespace WebApi.Controllers
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
+                CookieExtension.SecureHttpOnly(CookieKey.AuthorizationKey, result.Data.Token);
+                CookieExtension.SecureHttpOnly(CookieKey.ExpireKey, result.Data.Expiration.ToString());
+                CookieExtension.SecureHttpOnly(CookieKey.Email, userForLoginDto.Email);
                 return Ok(result);
             }
 
@@ -62,11 +61,10 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-
-
-
-
-
-
+        [HttpPost("email")]
+        public IActionResult Email(string email)
+        {
+            return Ok();
+        }
     }
 }

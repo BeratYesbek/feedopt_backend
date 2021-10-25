@@ -11,11 +11,14 @@ using RazorLight.Extensions;
 
 namespace Core.Utilities.Mailer
 {
-    public class VerifyEmailMailer
+    public class Mailer
     {
-        private static readonly string defaultEmail = "beratyesbek@gmail.com";
+        private static readonly string DefaultEmail = "beratyesbek@gmail.com";
 
-        public static void SendVerifyEmail(string subject, string email)
+        /* .UsingTemplateFromFile($"{Environment.CurrentDirectory}\\wwwroot\\static\\email\\VerifyEmail.cshtml",
+                 new {User = user}).Send();*/
+
+        public static IFluentEmail StartMailer(string subject, string email)
         {
             var smtp = new SmtpSender(() => new SmtpClient()
             {
@@ -26,23 +29,18 @@ namespace Core.Utilities.Mailer
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential()
                 {
-                    UserName = defaultEmail,
-                    Password = "pstezzouzcdckpem"
+                    UserName = DefaultEmail,
+                    Password = "............................"
                 }
             });
 
             Email.DefaultSender = smtp;
             Email.DefaultRenderer = new RazorRenderer();
 
-            var template = "Dear @Model.Name, You are totally @Model.Compliment.";
-            User user = new User();
-            user.FirstName = "Berat Yesbek"; 
-            Email.From(defaultEmail)
+           var fluentEmail = Email.From(DefaultEmail)
                 .To(email)
-                .Subject(subject)
-                //.UsingTemplate(template, new {Name = "Luke", Compliment = "Awesome"}).Send();
-               .UsingTemplateFromFile($"{Environment.CurrentDirectory}\\wwwroot\\static\\email\\VerifyEmail.cshtml",
-                    new {User = user}).Send();
+                .Subject(subject);
+           return fluentEmail;
         }
     }
 }

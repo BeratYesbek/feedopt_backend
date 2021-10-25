@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Business.BusinessMailer;
+using Core.Entity;
 using Core.Utilities.Mailer;
 using Entity.Concretes;
 
@@ -72,7 +74,9 @@ namespace WebApi.Controllers
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            VerifyEmailMailer.SendVerifyEmail("hello world", "beratyesbekk@gmail.com");
+            User user = new User();
+            user.Email = "beratyesbekk@gmail.com";
+            VerifyEmailMailer.SendVerifyEmail(user, "Welcome to Nervio");
             var result = _chatService.GetAll();
             if (result.Success)
             {

@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+</head>
+<body>
+Hello @(Model.User.FirstName)
+<p id="email">@(Model.User.Email)</p>
+
+<button class="verify_button">Verify Account</button>
+
+<script>
+
+    let btn = document.getElementsByClassName("verify_button");
+    btn.addEventListener("click", verifyAccount);
+
+    function verifyAccount() {
+
+        /* const json = JSON.stringify({ email: "beratyesbek@gmail.com" });
+         axios.post("https://localhost:44324/api/auth/email", json);*/
+    }
+
+</script>
+</body>
+</html>

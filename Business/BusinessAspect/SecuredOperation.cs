@@ -1,17 +1,13 @@
-﻿using Castle.DynamicProxy;
+﻿using System;
+using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Security.Claims;
-using System.Text;
 using Core.Extensions;
-using Core.Utilities.Sessions;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Authentication;
 
 
 namespace Business.BusinessAspect
@@ -29,17 +25,30 @@ namespace Business.BusinessAspect
 
         protected override void OnBefore(IInvocation invocation)
         {
+            // a sample jwt encoded token string which is supposed to be extracted from 'Authorization' HTTP header in your Web Api controller
+
+            var cookieEmail = _httpContextAccessor.HttpContext.Request.Cookies["Email"];
+
             var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
             var exp = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(t => t.Type == "exp");
+            var email = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
+
+            //var name = _httpContextAccessor.HttpContext.User.Identity.Name;
+            //var userid = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
+
 
             if (exp == null)
             {
-                throw new Exception("Your token expiration is up");
+                throw new Exception ("Your token expiration is up");
+            }
+
+            if (email != cookieEmail)
+            {
+                throw new AuthenticationException("Your cookie email is not correct please sign in again");
             }
 
             foreach (var role in _roles)
             {
-   
                 if (roleClaims.Contains(role))
                 {
                     return;
