@@ -15,8 +15,6 @@ namespace Core.Utilities.Mailer
     {
         private static readonly string DefaultEmail = "beratyesbek@gmail.com";
 
-        /* .UsingTemplateFromFile($"{Environment.CurrentDirectory}\\wwwroot\\static\\email\\VerifyEmail.cshtml",
-                 new {User = user}).Send();*/
 
         public static IFluentEmail StartMailer(string subject, string email)
         {

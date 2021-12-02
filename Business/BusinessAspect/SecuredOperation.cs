@@ -31,7 +31,8 @@ namespace Business.BusinessAspect
 
             var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
             var exp = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(t => t.Type == "exp");
-            var email = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
+            var email = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.Email)
+                .FirstOrDefault()?.Value;
 
             //var name = _httpContextAccessor.HttpContext.User.Identity.Name;
             //var userid = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
@@ -57,5 +58,6 @@ namespace Business.BusinessAspect
 
             throw new Exception("You have no authorization");
         }
+
     }
 }

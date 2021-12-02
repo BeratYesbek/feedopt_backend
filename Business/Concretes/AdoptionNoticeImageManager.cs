@@ -32,8 +32,11 @@ namespace Business.Concretes
         [PerformanceAspect(5)]
         [SecuredOperation("AdoptionNotice.Add,User")]
         public IResult Add(AdoptionNoticeImage adoptionNoticeImage, IFormFile[] formFiles)
-        {
+        {   
+            // you can set your want to give extension 
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
+
+            // inside of foreach is scaling and streaming our file in wwwroot
             foreach (var file in formFiles)
             {
                 Image image = Image.FromStream(file.OpenReadStream(), true, true);
@@ -57,6 +60,7 @@ namespace Business.Concretes
         [SecuredOperation("AdoptionNotice.Delete,User")]
         public IResult Delete(AdoptionNoticeImage[] adoptionNoticeImages)
         {
+            // delete file in wwwroot and adoptionNoticeImages table
             foreach (var image in adoptionNoticeImages)
             {
                 var result = FileHelper.Delete(image.ImagePath);
@@ -112,9 +116,12 @@ namespace Business.Concretes
         [SecuredOperation("AdoptionNotice.Update,User")]
         public IResult Update(AdoptionNoticeImage[] adoptionNoticeImage, IFormFile[] formFiles)
         {
+            // you can set file extension what you give
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
             for (int i = 0; i < formFiles.Length; i++)
             {
+
+                //after this method exchange our files with old files before updating, update table 
                 Image image = Image.FromStream(formFiles[i].OpenReadStream(), true, true);
                 var result = FileHelper.Update(formFiles[i], adoptionNoticeImage[i].ImagePath,
                     ImageScaling.ResizeImage(image, ImageScaling.ImageWidth, ImageScaling.ImageHeight));

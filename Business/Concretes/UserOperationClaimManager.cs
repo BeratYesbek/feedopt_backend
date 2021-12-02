@@ -28,6 +28,7 @@ namespace Business.Concretes
         [SecuredOperation("UserOperationClaim.Add,SuperUser")]
         [ValidationAspect(typeof(UserOperationClaimValidator))]
         [PerformanceAspect(5)]
+        
         public IDataResult<UserOperationClaim> Add(UserOperationClaim userOperationClaim)
         {
             _userOperationClaimDal.Add(userOperationClaim);
