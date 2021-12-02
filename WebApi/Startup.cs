@@ -69,6 +69,12 @@ namespace WebApi
                     };
                 });
 
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
             services
                 .AddControllers()
                 .AddJsonOptions(options =>
