@@ -14,6 +14,7 @@ namespace Core.Utilities.Interceptors
 
         public virtual void Intercept(IInvocation invocation)
         {
+
         }
     }
 }
