@@ -59,7 +59,7 @@ namespace Business.Concretes
         [SecuredOperation("MissingDeclaration.Get,User")]
         public IDataResult<MissingDeclaration> Get(int id)
         {
-            var data = _missingDeclarationDal.Get(m => m.MissingDeclarationId == id);
+            var data = _missingDeclarationDal.Get(m => m.Id == id);
             if (data != null)
             {
                 return new SuccessDataResult<MissingDeclaration>(data);

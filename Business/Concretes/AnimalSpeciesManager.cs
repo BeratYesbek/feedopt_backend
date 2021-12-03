@@ -58,7 +58,7 @@ namespace Business.Abstracts
         [SecuredOperation("AnimalSpecies.Get,User")]
         public IDataResult<AnimalSpecies> Get(int id)
         {
-            var data = _animalSpeciesDal.Get(a => a.AnimalSpeciesId == id);
+            var data = _animalSpeciesDal.Get(a => a.Id == id);
             if (data != null)
             {
                 return new SuccessDataResult<AnimalSpecies>(data);

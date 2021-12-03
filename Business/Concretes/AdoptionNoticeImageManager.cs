@@ -74,7 +74,7 @@ namespace Business.Concretes
         [SecuredOperation("AdoptionNotice.Get,User")]
         public IDataResult<AdoptionNoticeImage> Get(int id)
         {
-            var data = _adoptionNoticeImageDal.Get(a => a.AdoptionNoticeImageId == id);
+            var data = _adoptionNoticeImageDal.Get(a => a.Id == id);
 
             if (data != null)
             {

@@ -11,13 +11,10 @@ namespace Entity.Concretes
 {
     public class MissingDeclarationImage : IEntity
     {
-        [Key] public int MissingDeclarationImageId  { get; set; }
+        public int Id { get; set; }
 
         public string ImagePath { get; set; }
 
         public int MissingDeclarationId { get; set; }
-
-        [ForeignKey("MissingDeclarationId")]
-        public virtual MissingDeclaration MissingDeclaration { get; set; }
     }
 }

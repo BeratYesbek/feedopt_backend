@@ -47,7 +47,7 @@ namespace Business.Concretes
                 missingDeclarationImage.ImagePath = result.Message;
                 _missingDeclarationImageDal.Add(missingDeclarationImage);
                 // always must assigned zero to missingDeclarationImageId after saved
-                missingDeclarationImage.MissingDeclarationImageId = 0;
+                missingDeclarationImage.Id = 0;
             }
 
             return new SuccessResult();
@@ -106,7 +106,7 @@ namespace Business.Concretes
         [SecuredOperation("MissingDeclarationImage.Get,User")]
         public IDataResult<MissingDeclarationImage> Get(int id)
         {
-            var data = _missingDeclarationImageDal.Get(m => m.MissingDeclarationImageId == id);
+            var data = _missingDeclarationImageDal.Get(m => m.Id == id);
             if (data != null)
             {
                 return new SuccessDataResult<MissingDeclarationImage>(data);

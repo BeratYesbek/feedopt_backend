@@ -17,7 +17,7 @@ namespace Business.Validation.FluentValidation
             RuleFor(l => l.City).NotEmpty().MinimumLength(2);
             RuleFor(l => l.Country).NotEmpty().MinimumLength(2);
             RuleFor(l => l.PlaceId).NotNull().NotEmpty();
-            RuleFor(l => l.LocationId).NotEmpty().NotNull();
+            RuleFor(l => l.Id).NotEmpty().NotNull();
             RuleFor(l => l.Longitude).NotEmpty().NotNull();
         }
     }

@@ -15,7 +15,7 @@ namespace Entity
 {
     public class MissingDeclaration : IEntity
     {
-        [Key] public int MissingDeclarationId { get; set; }
+        public int Id { get; set; }
 
         public string Description { get; set; }
 
@@ -24,13 +24,5 @@ namespace Entity
         public int UserId { get; set; }
 
         public int LocationId { get; set; }
-
-        [ForeignKey("LocationId")] public virtual Location Location { get; set; }
-
-        [ForeignKey("UserId")] public virtual User User { get; set; }
-
-        [ForeignKey("AnimalSpeciesId")] public virtual AnimalSpecies AnimalSpecies { get; set; }
-
-        [JsonIgnore] public virtual ICollection<MissingDeclarationImage> MissingDeclarationImages { get; set; }
     }
 }

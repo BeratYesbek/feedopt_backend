@@ -13,13 +13,8 @@ namespace Entity.concretes
 {
     public class AnimalCategory : IEntity
     {
-        [Key] 
-        public int AnimalCategoryId { get; set; }
+        public int Id { get; set; }
 
-        [StringLength(50)] 
         public string AnimalCategoryName { get; set; }
-
-        //[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public virtual ICollection<AnimalSpecies> AnimalSpecies { get; set; }
     }
 }

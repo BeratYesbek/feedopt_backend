@@ -62,7 +62,7 @@ namespace Business.Concretes
         [SecuredOperation("AnimalCategory.Get,User")]
         public IDataResult<AnimalCategory> Get(int id)
         {
-            var data = _animalCategoryDal.Get(a => a.AnimalCategoryId == id);
+            var data = _animalCategoryDal.Get(a => a.Id == id);
             if (data != null)
             {
                 return new SuccessDataResult<AnimalCategory>(data);

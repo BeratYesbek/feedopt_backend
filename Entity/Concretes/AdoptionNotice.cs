@@ -13,7 +13,7 @@ namespace Entity.concretes
 {
     public class AdoptionNotice : IEntity
     {
-        public int AdoptionNoticeId { get; set; }
+        public int Id { get; set; }
 
         public string Description { get; set; }
 
@@ -23,17 +23,5 @@ namespace Entity.concretes
 
         public int AnimalSpeciesId { get; set; }
 
-        [ForeignKey("LocationId")] 
-        public virtual Location Location { get; set; }
-
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
-
-        [ForeignKey("AnimalSpeciesId")] 
-        
-        public virtual AnimalSpecies AnimalSpecies { get; set; }
-
-        [JsonIgnore] 
-        public virtual ICollection<AdoptionNoticeImage> AdoptionNoticeImage { get; set; }
     }
 }

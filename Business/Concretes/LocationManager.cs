@@ -60,7 +60,7 @@ namespace Business.Concretes
         [SecuredOperation("Location.Get,User")]
         public IDataResult<Location> Get(int id)
         {
-            var data = _locationDal.Get(l => l.LocationId == id);
+            var data = _locationDal.Get(l => l.Id == id);
             if (data != null)
             {
                 return new SuccessDataResult<Location>(data);
