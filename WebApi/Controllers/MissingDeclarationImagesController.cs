@@ -40,8 +40,8 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
-
-            return BadRequest(result);
+           
+            return BadRequest();
         }
 
         [HttpPost("update")]
@@ -57,7 +57,7 @@ namespace WebApi.Controllers
              {
                  return Ok(result);
              }
-
+          
             return BadRequest();
         }
 

@@ -22,3 +22,4 @@ namespace Entity.Concretes
         public  DateTime Date { get; set; }
     }
 }
+

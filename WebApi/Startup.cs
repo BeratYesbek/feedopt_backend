@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,13 +12,14 @@ using Core.Extensions;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encyrption;
 using Core.Utilities.Security.JWT;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
+using DataAccess;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Session;
+using Microsoft.EntityFrameworkCore;
+using CloudinaryDotNet.Actions;
 
 namespace WebApi
 {
@@ -26,6 +28,17 @@ namespace WebApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            ConnectionString.DataBaseConnectionString = Configuration.GetConnectionString("DB_CONNECTION_STRING");
+
+            Account account = new Account(
+                "afteb",
+                "263478243847123",
+                "TnN1Q8Tli3DcTZ-qDXw5zgZWid8");
+
+            Cloudinary cloudinary = new CloudinaryDotNet.Cloudinary(account);
+            cloudinary.Api.Secure = true;
+            var deletionParams = new DeletionParams("xrba3uzkl5qiqpipzloo");
+            cloudinary.Destroy(deletionParams);
         }
 
         public IConfiguration Configuration { get; }
@@ -35,7 +48,12 @@ namespace WebApi
         {
             services.AddControllers();
             services.AddDistributedMemoryCache();
+            
 
+
+            services.AddDbContext<NervioDbContext>();
+
+            
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -45,7 +63,6 @@ namespace WebApi
                     options.Cookie.SameSite = SameSiteMode.None;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.IsEssential = true;
-
                 })
                 .AddJwtBearer(options =>
                 {
@@ -75,6 +92,7 @@ namespace WebApi
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             }));
+
             services
                 .AddControllers()
                 .AddJsonOptions(options =>

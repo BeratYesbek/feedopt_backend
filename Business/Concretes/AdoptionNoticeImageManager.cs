@@ -9,6 +9,7 @@ using Business.Abstracts;
 using Business.BusinessAspect;
 using Core.Aspects.Autofac.Performance;
 using Core.Utilities;
+using Core.Utilities.Cloud.Cloudinary;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
@@ -23,18 +24,19 @@ namespace Business.Concretes
     public class AdoptionNoticeImageManager : IAdoptionNoticeImageService
     {
         private readonly IAdoptionNoticeImageDal _adoptionNoticeImageDal;
-
-        public AdoptionNoticeImageManager(IAdoptionNoticeImageDal adoptionNoticeImageDal)
+        private readonly ICloudinaryService _cloudinaryService;
+        public AdoptionNoticeImageManager(IAdoptionNoticeImageDal adoptionNoticeImageDal,ICloudinaryService cloudinaryService)
         {
+            _cloudinaryService = cloudinaryService;
             _adoptionNoticeImageDal = adoptionNoticeImageDal;
         }
 
         [PerformanceAspect(5)]
-        [SecuredOperation("AdoptionNotice.Add,User")]
+        //[SecuredOperation("AdoptionNotice.Add,User")]
         public IResult Add(AdoptionNoticeImage adoptionNoticeImage, IFormFile[] formFiles)
         {   
             // you can set your want to give extension 
-            FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
+          /*  FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
 
             // inside of foreach is scaling and streaming our file in wwwroot
             foreach (var file in formFiles)
@@ -52,7 +54,8 @@ namespace Business.Concretes
                 adoptionNoticeImage.ImagePath = result.Message;
                 _adoptionNoticeImageDal.Add(adoptionNoticeImage);
             }
-
+          */
+          _cloudinaryService.Add(null);
             return new SuccessResult();
         }
 

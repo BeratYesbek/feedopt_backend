@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Core.Utilities.FileHelper
 {
-    public class FileHelper
+    public static class FileHelper
     {
         private static readonly string _currentDirectory = Environment.CurrentDirectory + "\\wwwroot";
         private static string _folderName = "";
@@ -104,7 +104,7 @@ namespace Core.Utilities.FileHelper
             }
         }
 
-        private static IResult CheckFileTypeValid(string type)
+        public static IResult CheckFileTypeValid(string type)
         {
             foreach (var extension in _fileExtension)
             {
@@ -125,7 +125,7 @@ namespace Core.Utilities.FileHelper
             }
         }
 
-        public static void SetFileExtension(string folderName, params string[] fileExtension)
+        public static void SetFileExtension(string folderName = default, params string[] fileExtension)
         {
             _folderName = $"\\{folderName}\\";
             _fileExtension = fileExtension;

@@ -16,10 +16,14 @@ namespace DataAccess
 {
     public class NervioDbContext : DbContext
     {
+    /*    public NervioDbContext(DbContextOptions<NervioDbContext>? dbContextOptions): base(dbContextOptions)
+        {
+            
+        }*/
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder
-                .UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=NervioDb;Trusted_Connection=true");
+            optionsBuilder.UseSqlServer(ConnectionString.DataBaseConnectionString);
+            //.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=NervioDb;Integrated Security=True");
         }
 
 

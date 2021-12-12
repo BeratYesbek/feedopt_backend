@@ -26,8 +26,12 @@ namespace WebApi.Controllers
         [HttpPost("add")]
         public IActionResult Add([FromForm] AdoptionNoticeImageApiEntity adoptionNoticeImageApi)
         {
-           /* AdoptionNoticeImage[] adoptionNoticeImages =
-                JsonConvert.DeserializeObject<AdoptionNoticeImage[]>(adoptionNoticeImageApi.AdoptionNoticeImage);*/
+            if (adoptionNoticeImageApi.AdoptionNoticeImage != null)
+            {
+                AdoptionNoticeImage[] adoptionNoticeImages =
+                    JsonConvert.DeserializeObject<AdoptionNoticeImage[]>(adoptionNoticeImageApi.AdoptionNoticeImage);
+            }
+       
             var result = _adoptionNoticeImageService.Add(null,
                 adoptionNoticeImageApi.FormFiles);
 
@@ -52,7 +56,7 @@ namespace WebApi.Controllers
                 return Ok(result);
             }
 
-            return BadRequest(result);
+            return BadRequest();
         }
 
         [HttpPost("delete")]

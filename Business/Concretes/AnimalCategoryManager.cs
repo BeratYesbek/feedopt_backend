@@ -29,7 +29,7 @@ namespace Business.Concretes
 
         }
 
-        [SecuredOperation("AnimalCategory.Add,Admin")]
+        //[SecuredOperation("AnimalCategory.Add,Admin")]
         [ValidationAspect(typeof(AnimalCategoryValidator))]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [PerformanceAspect(5)]
@@ -73,7 +73,7 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("AnimalCategory.GetAll,User")]
+        //[SecuredOperation("AnimalCategory.GetAll,User")]
         public IDataResult<List<AnimalCategory>> GetAll()
         {
             var data = _animalCategoryDal.GetAll();

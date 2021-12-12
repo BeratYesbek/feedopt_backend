@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:DB_CONNECTION_STRING",
+      "suggestion": "true",
+      "ignored": "true"
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/nerviodbserver/databases/NervioDb",
+      "type": "mssql.azure",
+      "connectionId": "DB_CONNECTION_STRING",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

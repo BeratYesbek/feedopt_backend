@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Business.DependencyResolver.Autofac;
+using DataAccess;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApi
 {
@@ -16,7 +19,15 @@ namespace WebApi
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+
+            var service = (IServiceScopeFactory) host.Services.GetService(typeof(IServiceScopeFactory));
+            using (var db = service.CreateScope().ServiceProvider.GetService<NervioDbContext>())
+            {
+                db.Database.Migrate();
+            }
+
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -25,10 +36,7 @@ namespace WebApi
                 {
                     builder.RegisterModule(new AutofacBusinessModule());
                 })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }
 /*

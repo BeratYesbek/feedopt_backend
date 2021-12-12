@@ -21,7 +21,7 @@
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "nervio2",
+      "defaultValue": "WebApi20211204222234",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }
