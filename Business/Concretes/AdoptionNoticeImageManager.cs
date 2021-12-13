@@ -25,7 +25,9 @@ namespace Business.Concretes
     {
         private readonly IAdoptionNoticeImageDal _adoptionNoticeImageDal;
         private readonly ICloudinaryService _cloudinaryService;
-        public AdoptionNoticeImageManager(IAdoptionNoticeImageDal adoptionNoticeImageDal,ICloudinaryService cloudinaryService)
+
+        public AdoptionNoticeImageManager(IAdoptionNoticeImageDal adoptionNoticeImageDal,
+            ICloudinaryService cloudinaryService)
         {
             _cloudinaryService = cloudinaryService;
             _adoptionNoticeImageDal = adoptionNoticeImageDal;
@@ -34,28 +36,27 @@ namespace Business.Concretes
         [PerformanceAspect(5)]
         //[SecuredOperation("AdoptionNotice.Add,User")]
         public IResult Add(AdoptionNoticeImage adoptionNoticeImage, IFormFile[] formFiles)
-        {   
+        {
             // you can set your want to give extension 
-          /*  FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
-
+            FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
             // inside of foreach is scaling and streaming our file in wwwroot
+
             foreach (var file in formFiles)
             {
-                Image image = Image.FromStream(file.OpenReadStream(), true, true);
-                var result = FileHelper.Upload(file,
-                    ImageScaling.ResizeImage(image, ImageScaling.ImageWidth, ImageScaling.ImageHeight));
-
+                Image image = ImageScaling.ResizeImage(Image.FromStream(file.OpenReadStream(), true, true),
+                    ImageScaling.ImageWidth, ImageScaling.ImageHeight);
+                var result = _cloudinaryService.Upload(file, image);
                 if (!result.Success)
                 {
                     return new ErrorResult(result.Message);
                 }
 
                 //result.message contains image path
+                adoptionNoticeImage.Id = 0;
                 adoptionNoticeImage.ImagePath = result.Message;
                 _adoptionNoticeImageDal.Add(adoptionNoticeImage);
             }
-          */
-          _cloudinaryService.Add(null);
+
             return new SuccessResult();
         }
 
@@ -66,7 +67,7 @@ namespace Business.Concretes
             // delete file in wwwroot and adoptionNoticeImages table
             foreach (var image in adoptionNoticeImages)
             {
-                var result = FileHelper.Delete(image.ImagePath);
+                var result = _cloudinaryService.Delete(image.PublicId);
                 _adoptionNoticeImageDal.Delete(image);
             }
 
@@ -123,11 +124,10 @@ namespace Business.Concretes
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
             for (int i = 0; i < formFiles.Length; i++)
             {
-
                 //after this method exchange our files with old files before updating, update table 
-                Image image = Image.FromStream(formFiles[i].OpenReadStream(), true, true);
-                var result = FileHelper.Update(formFiles[i], adoptionNoticeImage[i].ImagePath,
-                    ImageScaling.ResizeImage(image, ImageScaling.ImageWidth, ImageScaling.ImageHeight));
+                Image image = ImageScaling.ResizeImage(Image.FromStream(formFiles[i].OpenReadStream(), true, true),
+                    ImageScaling.ImageWidth, ImageScaling.ImageHeight);
+                var result = _cloudinaryService.Update(formFiles[i], adoptionNoticeImage[i].PublicId, image);
                 if (!result.Success)
                 {
                     return new ErrorResult(result.Message);

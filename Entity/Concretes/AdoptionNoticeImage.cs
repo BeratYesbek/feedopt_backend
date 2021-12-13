@@ -16,7 +16,8 @@ namespace Entity.Concretes
 
         public string ImagePath { get; set; }
 
-        public int AdoptionNoticeId { get; set; }
+        public string PublicId { get; set; }
 
+        public int AdoptionNoticeId { get; set; }
     }
 }

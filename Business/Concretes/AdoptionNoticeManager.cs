@@ -26,10 +26,10 @@ namespace Business.Concretes
             _adoptionNoticeDal = adoptionNoticeDal;
         }
 
-        [ValidationAspect(typeof(AdoptionNoticeValidator))]
+      /*  [ValidationAspect(typeof(AdoptionNoticeValidator))]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
         [SecuredOperation("AdoptionNotice.Add,User")]
-        [PerformanceAspect(5)]
+        [PerformanceAspect(5)]*/
         public IResult Add(AdoptionNotice adoptionNotice)
         {
             _adoptionNoticeDal.Add(adoptionNotice);

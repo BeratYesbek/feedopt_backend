@@ -11,8 +11,8 @@ namespace Core.Utilities
 {
     public static class ImageScaling
     {
-        public static int ImageWidth = 750;
-        public static int ImageHeight = 500;
+        public static int ImageWidth = 800;
+        public static int ImageHeight = 600;
 
         public static Bitmap ResizeImage(Image image, int width = 500, int height = 500)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +12,8 @@ namespace Core.Utilities.Cloud.Cloudinary
 {
     public interface ICloudinaryService
     {
-        IResult Add(IFormFile file);
-        IResult Update(IFormFile file, string url);
-        IResult Delete(string url);
-        DataResult<String> GetByUrl(string url);
+        IResult Upload(IFormFile file, Image image = default);
+        IResult Update(IFormFile file, string publicId, Image image = default);
+        IResult Delete(string publicId);
     }
 }
