@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ using Business.Abstracts;
 using Business.BusinessAspect;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Performance;
+using Core.Utilities;
+using Core.Utilities.Cloud.Cloudinary;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
@@ -22,10 +25,13 @@ namespace Business.Concretes
     public class MissingDeclarationImageManager : IMissingDeclarationImageService
     {
         private readonly IMissingDeclarationImageDal _missingDeclarationImageDal;
+        private readonly ICloudinaryService _cloudinaryService;
 
-        public MissingDeclarationImageManager(IMissingDeclarationImageDal missingDeclarationImageDal)
+        public MissingDeclarationImageManager(IMissingDeclarationImageDal missingDeclarationImageDal,
+            ICloudinaryService cloudinaryService)
         {
             _missingDeclarationImageDal = missingDeclarationImageDal;
+            _cloudinaryService = cloudinaryService;
         }
 
         [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
@@ -37,7 +43,9 @@ namespace Business.Concretes
 
             foreach (var file in formFiles)
             {
-                var result = FileHelper.Upload(file);
+                Image image = ImageScaling.ResizeImage(Image.FromStream(file.OpenReadStream(), true, true),
+                    ImageScaling.ImageWidth, ImageScaling.ImageHeight);
+                var result = _cloudinaryService.Upload(file, image);
                 if (!result.Success)
                 {
                     return new ErrorResult(result.Message);
@@ -61,7 +69,9 @@ namespace Business.Concretes
             FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
             for (int i = 0; i < formFiles.Length; i++)
             {
-                var result = FileHelper.Update(formFiles[i], missingDeclarationImage[i].ImagePath);
+                Image image = ImageScaling.ResizeImage(Image.FromStream(formFiles[i].OpenReadStream(), true, true),
+                    ImageScaling.ImageWidth, ImageScaling.ImageHeight);
+                var result = _cloudinaryService.Upload(formFiles[i], image);
                 if (!result.Success)
                 {
                     return new ErrorResult(result.Message);
@@ -82,7 +92,7 @@ namespace Business.Concretes
         {
             foreach (var image in missingDeclarationImage)
             {
-                var result = FileHelper.Delete(image.ImagePath);
+                var result = _cloudinaryService.Delete(image.PublicId);
                 _missingDeclarationImageDal.Delete(image);
             }
 

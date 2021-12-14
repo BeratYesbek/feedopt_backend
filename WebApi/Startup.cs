@@ -29,16 +29,6 @@ namespace WebApi
         {
             Configuration = configuration;
             ConnectionString.DataBaseConnectionString = Configuration.GetConnectionString("DB_CONNECTION_STRING");
-
-            Account account = new Account(
-                "afteb",
-                "263478243847123",
-                "TnN1Q8Tli3DcTZ-qDXw5zgZWid8");
-
-            Cloudinary cloudinary = new CloudinaryDotNet.Cloudinary(account);
-            cloudinary.Api.Secure = true;
-            var deletionParams = new DeletionParams("xrba3uzkl5qiqpipzloo");
-            cloudinary.Destroy(deletionParams);
         }
 
         public IConfiguration Configuration { get; }
@@ -93,14 +83,14 @@ namespace WebApi
                     .AllowAnyHeader();
             }));
 
-            services
+          /*  services
                 .AddControllers()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.DefaultIgnoreCondition =
                         System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
                 })
-                .AddNewtonsoftJson();
+                .AddNewtonsoftJson();*/
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebApi", Version = "v1"}); });
             services.AddSession(options =>
@@ -109,6 +99,9 @@ namespace WebApi
                 options.Cookie.IsEssential = true;
             });
 
+            services.AddControllers();
+            services.AddControllersWithViews();
+            services.AddMvcCore();
 
             services.AddDependencyResolvers(new ICoreModule[]
             {
@@ -141,7 +134,9 @@ namespace WebApi
 
             app.UseAuthorization();
 
+
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
         }
     }
 }

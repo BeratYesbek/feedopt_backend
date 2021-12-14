@@ -17,7 +17,6 @@ namespace Entity.Concretes
 
         public string PublicId { get; set; }
 
-
         public int MissingDeclarationId { get; set; }
     }
 }
