@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.Concretes;
 using Entity.concretes;
+using System.Globalization;
 
 namespace WebApi.Controllers
 {
@@ -24,6 +26,8 @@ namespace WebApi.Controllers
         [HttpPost("add")]
         public IActionResult Add(AnimalCategory animalCategory)
         {
+            string name = RegionInfo.CurrentRegion.EnglishName;
+
             var result = _animalCategoryService.Add(animalCategory);
             if (result.Success)
             {

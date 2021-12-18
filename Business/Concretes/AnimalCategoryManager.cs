@@ -29,8 +29,8 @@ namespace Business.Concretes
 
         }
 
-        //[SecuredOperation("AnimalCategory.Add,Admin")]
-        [ValidationAspect(typeof(AnimalCategoryValidator))]
+        [SecuredOperation("AnimalCategory.Add,Admin")]
+       // [ValidationAspect(typeof(AnimalCategoryValidator))]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [PerformanceAspect(5)]
         public IDataResult<AnimalCategory> Add(AnimalCategory animalCategory)

@@ -126,6 +126,8 @@ namespace WebApi
 
             app.UseSession();
 
+            app.ConfigureCustomExceptionMiddleware();
+
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
@@ -134,8 +136,10 @@ namespace WebApi
 
             app.UseAuthorization();
 
+            
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); endpoints.MapHub<ChatHub>("/chatHub"); });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers();
+                endpoints.MapHub<NotificationHub>("/notificationHub"); });
 
         }
     }

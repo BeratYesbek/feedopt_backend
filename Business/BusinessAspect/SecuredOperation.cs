@@ -8,6 +8,7 @@ using System.Security.Claims;
 using Core.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Authentication;
+using Core.CustomExceptions;
 
 
 namespace Business.BusinessAspect
@@ -40,7 +41,7 @@ namespace Business.BusinessAspect
 
             if (exp == null)
             {
-                throw new Exception ("Your token expiration is up");
+                throw new AuthenticationFailedException("Your token expiration is up");
             }
 
             if (email != cookieEmail)
@@ -56,7 +57,7 @@ namespace Business.BusinessAspect
                 }
             }
 
-            throw new Exception("You have no authorization");
+            throw new AuthenticationFailedException("You have no authorization");
         }
 
     }
