@@ -25,16 +25,17 @@ namespace Business.Concretes
         {
             _adoptionNoticeDal = adoptionNoticeDal;
         }
-
-      /*  [ValidationAspect(typeof(AdoptionNoticeValidator))]
-        [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
+        
+        [ValidationAspect(typeof(AdoptionNoticeValidator))]
         [SecuredOperation("AdoptionNotice.Add,User")]
-        [PerformanceAspect(5)]*/
+        [PerformanceAspect(5)]
+        [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
         public IResult Add(AdoptionNotice adoptionNotice)
         {
             _adoptionNoticeDal.Add(adoptionNotice);
             return new SuccessResult();
         }
+
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
         [SecuredOperation("AdoptionNotice.Update,User")]
@@ -69,7 +70,7 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("AdoptionNotice.GetAll,User")]
+        // [SecuredOperation("AdoptionNotice.GetAll,User")]
         public IDataResult<List<AdoptionNotice>> GetAll()
         {
             var data = _adoptionNoticeDal.GetAll();

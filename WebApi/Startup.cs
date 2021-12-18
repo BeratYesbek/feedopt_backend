@@ -20,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Session;
 using Microsoft.EntityFrameworkCore;
 using CloudinaryDotNet.Actions;
+using WebApi.SignalR;
 
 namespace WebApi
 {
@@ -43,7 +44,7 @@ namespace WebApi
 
             services.AddDbContext<NervioDbContext>();
 
-            
+            services.AddSignalR();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -120,8 +121,7 @@ namespace WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
             }
-
-
+           
             app.UseStaticFiles();
 
             app.UseSession();
@@ -135,7 +135,7 @@ namespace WebApi
             app.UseAuthorization();
 
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); endpoints.MapHub<ChatHub>("/chatHub"); });
 
         }
     }
