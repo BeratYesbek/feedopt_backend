@@ -21,7 +21,7 @@ namespace WebApi
         }
 
         [HttpPost("add")]
-        private IActionResult Add(CartSummary cartSummary)
+        protected IActionResult Add(CartSummary cartSummary)
         {
             var result = _cartSummaryService.Add(cartSummary);
             if (result.Success)
@@ -33,7 +33,7 @@ namespace WebApi
         }
 
         [HttpPost("update")]
-        private IActionResult Update(CartSummary cartSummary)
+        protected IActionResult Update(CartSummary cartSummary)
         {
             var result = _cartSummaryService.Update(cartSummary);
             if (result.Success)
@@ -45,7 +45,7 @@ namespace WebApi
         }
 
         [HttpPost("delete")]
-        private IActionResult Delete(CartSummary cartSummary)
+        protected IActionResult Delete(CartSummary cartSummary)
         {
             var result = _cartSummaryService.Delete(cartSummary);
             if (result.Success)
@@ -57,7 +57,7 @@ namespace WebApi
         }
 
         [HttpGet("getById")]
-        private IActionResult Get(int id)
+        protected IActionResult Get(int id)
         {
             var result = _cartSummaryService.Get(id);
             if (result.Success)
@@ -69,7 +69,7 @@ namespace WebApi
         }
         
         [HttpGet("getAll")]
-        private IActionResult GetAll()
+        protected IActionResult GetAll()
         {
             var result = _cartSummaryService.GetAll();
             if (result.Success)

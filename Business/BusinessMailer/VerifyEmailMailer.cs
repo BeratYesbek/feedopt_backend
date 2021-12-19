@@ -17,7 +17,7 @@ namespace Business.BusinessMailer
         public static async Task SendVerifyEmail(User user, string subject)
         {
             var _email = Mailer.StartMailer(subject, user.Email);
-            _email.UsingTemplateFromFile($"{_currentDirectory}{_verifyHtmlPage}", new { User = user }).SendAsync();
+            await _email.UsingTemplateFromFile($"{_currentDirectory}{_verifyHtmlPage}", new { User = user }).SendAsync();
         }
     }
 }

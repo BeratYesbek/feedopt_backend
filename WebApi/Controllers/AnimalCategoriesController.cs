@@ -26,7 +26,6 @@ namespace WebApi.Controllers
         [HttpPost("add")]
         public IActionResult Add(AnimalCategory animalCategory)
         {
-            string name = RegionInfo.CurrentRegion.EnglishName;
 
             var result = _animalCategoryService.Add(animalCategory);
             if (result.Success)

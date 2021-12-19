@@ -15,8 +15,8 @@ namespace Business.BusinessAspect
 {
     public class SecuredOperation : MethodInterception
     {
-        private string[] _roles;
-        private IHttpContextAccessor _httpContextAccessor;
+        private readonly string[] _roles;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public SecuredOperation(string roles)
         {
@@ -32,8 +32,7 @@ namespace Business.BusinessAspect
 
             var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
             var exp = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(t => t.Type == "exp");
-            var email = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.Email)
-                .FirstOrDefault()?.Value;
+            var email = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
 
             //var name = _httpContextAccessor.HttpContext.User.Identity.Name;
             //var userid = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;

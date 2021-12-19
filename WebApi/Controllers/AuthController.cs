@@ -64,10 +64,5 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("email")]
-        public IActionResult Email(string email)
-        {
-            return Ok();
-        }
     }
 }

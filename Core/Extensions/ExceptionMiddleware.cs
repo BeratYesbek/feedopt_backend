@@ -13,7 +13,7 @@ namespace Core.Extensions
 {
     public class ExceptionMiddleware
     {
-        private RequestDelegate _requestDelegate;
+        private readonly RequestDelegate _requestDelegate;
 
         public ExceptionMiddleware(RequestDelegate requestDelegate)
         {

@@ -8,8 +8,10 @@ using System.Collections.Generic;
 using Business.BusinessAspect;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Utilities.IoC;
 using DataAccess.Abstracts;
 using Microsoft.AspNetCore.Http;
@@ -29,8 +31,9 @@ namespace Business.Concretes
 
         }
 
-        [SecuredOperation("AnimalCategory.Add,Admin")]
+        //[SecuredOperation("AnimalCategory.Add,Admin")]
        // [ValidationAspect(typeof(AnimalCategoryValidator))]
+        [LogAspect(typeof(FileLogger))]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [PerformanceAspect(5)]
         public IDataResult<AnimalCategory> Add(AnimalCategory animalCategory)

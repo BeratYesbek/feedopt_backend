@@ -74,9 +74,6 @@ namespace WebApi.Controllers
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            User user = new User();
-            user.Email = "beratyesbekk@gmail.com";
-            VerifyEmailMailer.SendVerifyEmail(user, "Welcome to Nervio");
             var result = _chatService.GetAll();
             if (result.Success)
             {
