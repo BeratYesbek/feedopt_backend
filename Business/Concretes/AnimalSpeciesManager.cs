@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Business.BusinessAspect;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
@@ -29,6 +31,7 @@ namespace Business.Abstracts
         [ValidationAspect(typeof(AnimalSpeciesValidator))]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
         [PerformanceAspect(5)]
+        [LogAspect(typeof(FileLogger))]
         public IResult Add(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Add(animalSpecies);
@@ -39,6 +42,7 @@ namespace Business.Abstracts
         [ValidationAspect(typeof(AnimalSpeciesValidator))]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
         [PerformanceAspect(5)]
+        [LogAspect(typeof(FileLogger))]
         public IResult Update(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Update(animalSpecies);
@@ -48,6 +52,7 @@ namespace Business.Abstracts
         [SecuredOperation("AnimalSpecies.Delete,Admin")]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
+        [LogAspect(typeof(FileLogger))]
         public IResult Delete(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Delete(animalSpecies);
@@ -55,7 +60,9 @@ namespace Business.Abstracts
         }
 
         [PerformanceAspect(5)]
+        [CacheAspect]
         [SecuredOperation("AnimalSpecies.Get,User")]
+        [LogAspect(typeof(FileLogger))]
         public IDataResult<AnimalSpecies> Get(int id)
         {
             var data = _animalSpeciesDal.Get(a => a.Id == id);
@@ -70,6 +77,7 @@ namespace Business.Abstracts
         [CacheAspect]
         [PerformanceAspect(5)]
         [SecuredOperation("AnimalSpecies.GetAll,User")]
+        [LogAspect(typeof(FileLogger))]
         public IDataResult<List<AnimalSpecies>> GetAll()
         {
             var data = _animalSpeciesDal.GetAll();

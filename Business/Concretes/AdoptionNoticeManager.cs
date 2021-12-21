@@ -7,8 +7,10 @@ using Business.Abstracts;
 using Business.BusinessAspect;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
@@ -25,7 +27,8 @@ namespace Business.Concretes
         {
             _adoptionNoticeDal = adoptionNoticeDal;
         }
-        
+
+        [LogAspect(typeof(FileLogger))]
         [ValidationAspect(typeof(AdoptionNoticeValidator))]
         [SecuredOperation("AdoptionNotice.Add,User")]
         [PerformanceAspect(5)]
@@ -36,6 +39,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
         [SecuredOperation("AdoptionNotice.Update,User")]
@@ -46,6 +50,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        [LogAspect(typeof(FileLogger))]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
         [SecuredOperation("AdoptionNotice.Delete,User")]
         [PerformanceAspect(5)]
@@ -55,7 +60,9 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
+        [CacheAspect]
         [SecuredOperation("AdoptionNotice.Get,User")]
         public IDataResult<AdoptionNotice> Get(int id)
         {
@@ -70,7 +77,8 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
-        // [SecuredOperation("AdoptionNotice.GetAll,User")]
+        [SecuredOperation("AdoptionNotice.GetAll,User")]
+        [CacheAspect]
         public IDataResult<List<AdoptionNotice>> GetAll()
         {
             var data = _adoptionNoticeDal.GetAll();

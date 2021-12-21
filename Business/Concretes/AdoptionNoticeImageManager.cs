@@ -7,7 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
+using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Utilities;
 using Core.Utilities.Cloud.Cloudinary;
 using Core.Utilities.FileHelper;
@@ -33,8 +37,10 @@ namespace Business.Concretes
             _adoptionNoticeImageDal = adoptionNoticeImageDal;
         }
 
+        [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        //[SecuredOperation("AdoptionNotice.Add,User")]
+        [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
+        [SecuredOperation("AdoptionNotice.Add,User")]
         public IResult Add(AdoptionNoticeImage adoptionNoticeImage, IFormFile[] formFiles)
         {
             // you can set your want to give extension 
@@ -61,6 +67,7 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
+        [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
         [SecuredOperation("AdoptionNotice.Delete,User")]
         public IResult Delete(AdoptionNoticeImage[] adoptionNoticeImages)
         {
@@ -75,6 +82,9 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
+        [LogAspect(typeof(FileLogger))]
+        [PerformanceAspect(5)]
+        [CacheAspect]
         [SecuredOperation("AdoptionNotice.Get,User")]
         public IDataResult<AdoptionNoticeImage> Get(int id)
         {
@@ -88,6 +98,8 @@ namespace Business.Concretes
             return new ErrorDataResult<AdoptionNoticeImage>(null);
         }
 
+        [LogAspect(typeof(FileLogger))]
+        [CacheAspect]
         [PerformanceAspect(5)]
         [SecuredOperation("AdoptionNotice.GetAll,User")]
         public IDataResult<List<AdoptionNoticeImage>> GetAll()
@@ -102,7 +114,9 @@ namespace Business.Concretes
             return new ErrorDataResult<List<AdoptionNoticeImage>>(null);
         }
 
+        [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
+        [CacheAspect]
         [SecuredOperation("AdoptionNotice.Get,User")]
         public IDataResult<List<AdoptionNoticeImage>> GetByAdoptionNoticeId(int id)
         {
@@ -117,6 +131,8 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
+        [LogAspect(typeof(FileLogger))]
+        [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
         [SecuredOperation("AdoptionNotice.Update,User")]
         public IResult Update(AdoptionNoticeImage[] adoptionNoticeImage, IFormFile[] formFiles)
         {
