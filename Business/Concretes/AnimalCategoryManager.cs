@@ -31,11 +31,11 @@ namespace Business.Concretes
 
         }
 
-        [SecuredOperation("AnimalCategory.Add,Admin")]
+        //[SecuredOperation("AnimalCategory.Add,Admin")]
         [ValidationAspect(typeof(AnimalCategoryValidator))]
-        [LogAspect(typeof(FileLogger))]
+        /*[LogAspect(typeof(FileLogger))]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
-        [PerformanceAspect(5)]
+        [PerformanceAspect(5)]*/
         public IDataResult<AnimalCategory> Add(AnimalCategory animalCategory)
         {
             var result = _animalCategoryDal.Add(animalCategory);

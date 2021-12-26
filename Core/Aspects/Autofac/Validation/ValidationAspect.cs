@@ -36,5 +36,14 @@ namespace Core.Aspects.Autofac.Validation
         }
 
 
+        protected override void OnAfter(IInvocation invocation)
+        {
+            Console.WriteLine("Hello world");
+        }
+
+        protected override void OnSuccess(IInvocation invocation)
+        {
+            Console.WriteLine("Hello world");
+        }
     }
 }

@@ -7,8 +7,10 @@ using Business.Abstracts;
 using Business.BusinessAspect;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
@@ -30,6 +32,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IMissingDeclarationService.GetAll")]
         [SecuredOperation("MissingDeclaration.Add,User")]
         [PerformanceAspect(5)]
+        [LogAspect(typeof(FileLogger))]
         public IDataResult<MissingDeclaration> Add(MissingDeclaration missingDeclaration)
         {
             var data = _missingDeclarationDal.Add(missingDeclaration);
@@ -40,6 +43,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IMissingDeclarationService.GetAll")]
         [SecuredOperation("MissingDeclaration.Update,User")]
         [PerformanceAspect(5)]
+        [LogAspect(typeof(FileLogger))]
         public IResult Update(MissingDeclaration missingDeclaration)
         {
             _missingDeclarationDal.Update(missingDeclaration);
@@ -49,6 +53,7 @@ namespace Business.Concretes
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IMissingDeclarationService.GetAll")]
         [SecuredOperation("MissingDeclaration.Delete,User")]
+        [LogAspect(typeof(FileLogger))]
         public IResult Delete(MissingDeclaration missingDeclaration)
         {
             _missingDeclarationDal.Delete(missingDeclaration);
@@ -57,6 +62,8 @@ namespace Business.Concretes
 
         [PerformanceAspect(5)]
         [SecuredOperation("MissingDeclaration.Get,User")]
+        [CacheAspect]
+        [LogAspect(typeof(FileLogger))]
         public IDataResult<MissingDeclaration> Get(int id)
         {
             var data = _missingDeclarationDal.Get(m => m.Id == id);
@@ -71,6 +78,7 @@ namespace Business.Concretes
         [CacheAspect]
         [PerformanceAspect(5)]
         [SecuredOperation("MissingDeclaration.GetAll,User")]
+        [LogAspect(typeof(FileLogger))]
         public IDataResult<List<MissingDeclaration>> GetAll()
         {
             var data = _missingDeclarationDal.GetAll();

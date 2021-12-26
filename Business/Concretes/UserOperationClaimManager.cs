@@ -7,8 +7,10 @@ using Business.Abstracts;
 using Business.BusinessAspect;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Entity.Concretes;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
@@ -28,7 +30,7 @@ namespace Business.Concretes
         [SecuredOperation("UserOperationClaim.Add,SuperUser")]
         [ValidationAspect(typeof(UserOperationClaimValidator))]
         [PerformanceAspect(5)]
-        
+        [LogAspect(typeof(FileLogger))]
         public IDataResult<UserOperationClaim> Add(UserOperationClaim userOperationClaim)
         {
             _userOperationClaimDal.Add(userOperationClaim);
@@ -38,18 +40,25 @@ namespace Business.Concretes
         [SecuredOperation("UserOperationClaim.Update,SuperUser")]
         [ValidationAspect(typeof(UserOperationClaimValidator))]
         [PerformanceAspect(5)]
+        [LogAspect(typeof(FileLogger))]
         public IResult Update(UserOperationClaim userOperationClaim)
         {
             _userOperationClaimDal.Update(userOperationClaim);
             return new SuccessResult();
         }
+
         [SecuredOperation("UserOperationClaim.Delete,SuperUser")]
+        [LogAspect(typeof(FileLogger))]
+        [PerformanceAspect(5)]
         public IResult Delete(UserOperationClaim userOperationClaim)
         {
             _userOperationClaimDal.Delete(userOperationClaim);
             return new SuccessResult();
         }
+
         [SecuredOperation("UserOperationClaim.Get,SuperUser")]
+        [LogAspect(typeof(FileLogger))]
+        [PerformanceAspect(5)]
         public IDataResult<UserOperationClaim> Get(int id)
         {
             var data = _userOperationClaimDal.Get(u => u.Id == id);
@@ -62,6 +71,8 @@ namespace Business.Concretes
         }
 
         [SecuredOperation("UserOperationClaim.GetAll,SuperUser")]
+        [LogAspect(typeof(FileLogger))]
+        [PerformanceAspect(5)]
         public IDataResult<List<UserOperationClaim>> GetAll()
         {
             var data = _userOperationClaimDal.GetAll();
