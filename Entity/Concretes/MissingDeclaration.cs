@@ -19,7 +19,7 @@ namespace Entity
 
         public string Description { get; set; }
 
-        public int AnimalSpeciesId { get; set; }
+        public int AnimalId { get; set; }
 
         public int UserId { get; set; }
 

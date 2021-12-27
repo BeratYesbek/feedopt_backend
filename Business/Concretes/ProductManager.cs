@@ -28,7 +28,7 @@ namespace Business.Abstracts
 
         [LogAspect(typeof(FileLogger))]
         [ValidationAspect(typeof(ProductValidator))]
-        [SecuredOperation("Product.Add,Admin")]
+        //[SecuredOperation("Product.Add,Admin")]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IProductService.GetAll")]
         public IDataResult<Product> Add(Product product)

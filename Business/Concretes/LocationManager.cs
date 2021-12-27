@@ -26,10 +26,10 @@ namespace Business.Concretes
         {
             _locationDal = locationDal;
         }
-
+        
         [ValidationAspect(typeof(LocationValidator))]
         [CacheRemoveAspect("ILocationService.GetAll")]
-        [SecuredOperation("Location.Add,User")]
+       // [SecuredOperation("Location.Add,User")]
         [PerformanceAspect(5)]
         public IDataResult<Location> Add(Location location)
         {

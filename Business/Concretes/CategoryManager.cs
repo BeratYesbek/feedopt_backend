@@ -28,7 +28,7 @@ namespace Business.Concretes
         }
 
         [SecuredOperation("Category.Add,Admin")]
-        [ValidationAspect(typeof(CategoryValidator))]
+        //[ValidationAspect(typeof(CategoryValidator))]
         [CacheRemoveAspect("ICategoryService.GetAll")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]

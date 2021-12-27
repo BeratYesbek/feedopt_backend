@@ -29,7 +29,7 @@ namespace Business.Concretes
         }
 
         [LogAspect(typeof(FileLogger))]
-        [ValidationAspect(typeof(AdoptionNoticeValidator))]
+        //[ValidationAspect(typeof(AdoptionNoticeValidator))]
         [SecuredOperation("AdoptionNotice.Add,User")]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]

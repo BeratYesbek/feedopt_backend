@@ -31,7 +31,7 @@ namespace Business.Concretes
         }
 
         [SecuredOperation("Chat.Add,User")]
-        [ValidationAspect(typeof(CategoryValidator))]
+       // [ValidationAspect(typeof(CategoryValidator))]
         [CacheRemoveAspect("IChatService.GetAllByReceiverIdAndSenderId")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]

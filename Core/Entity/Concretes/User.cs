@@ -17,13 +17,20 @@ namespace Core.Entity
 
         public string Email { get; set; }
 
+        public string PhoneNumber { get; set; }
+
+        public bool PhoneNumberConfirmed { get; set; }
+
+        public bool TwoFactorEnabled { get; set; }
+
+        public bool EmailConfirmed { get; set; }
+
+        public bool Status { get; set; }
+
         [JsonIgnore]
         public byte[] PasswordHash { get; set; }
 
         [JsonIgnore]
         public byte[] PasswordSalt { get; set; }
-
-        [JsonIgnore]
-        public bool Status { get; set; }
     }
 }

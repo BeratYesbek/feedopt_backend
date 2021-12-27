@@ -27,7 +27,7 @@ namespace Business.Abstracts
             _animalSpeciesDal = animalSpeciesDal;
         }
 
-        [SecuredOperation("AnimalSpecies.Add,Admin")]
+        //[SecuredOperation("AnimalSpecies.Add,Admin")]
         [ValidationAspect(typeof(AnimalSpeciesValidator))]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
         [PerformanceAspect(5)]

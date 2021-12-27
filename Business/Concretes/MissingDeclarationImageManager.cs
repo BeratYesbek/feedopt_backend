@@ -37,7 +37,7 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
-        [SecuredOperation("MissingDeclarationImage.Add,User")]
+      //  [SecuredOperation("MissingDeclarationImage.Add,User")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
         public IResult Add(MissingDeclarationImage missingDeclarationImage, IFormFile[] formFiles)

@@ -13,7 +13,7 @@ namespace Business.Validation.FluentValidation
         public AdoptionNoticeValidator()
         {
             RuleFor(a => a.LocationId).NotEmpty().NotNull();
-            RuleFor(a => a.AnimalSpeciesId).NotEmpty().NotNull();
+            RuleFor(a => a.AnimalId).NotEmpty().NotNull();
             RuleFor(a => a.UserId).NotEmpty().NotNull();
             RuleFor(a => a.Description).NotEmpty();
             RuleFor(a => a.Description).MinimumLength(100);

@@ -22,6 +22,7 @@ namespace DataAccess
         public DbSet<AdoptionNoticeImage> AdoptionNoticeImages { get; set; }
         public DbSet<MissingDeclarationImage> MissingDeclarationImages { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Animal> Animals { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }

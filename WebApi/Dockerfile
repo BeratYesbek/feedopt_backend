@@ -12,13 +12,13 @@ COPY ["Business/Business.csproj", "Business/"]
 COPY ["DataAccess/DataAccess.csproj", "DataAccess/"]
 COPY ["Core/Core.csproj", "Core/"]
 COPY ["Entity/Entity.csproj", "Entity/"]
-RUN dotnet restore "WebApi/WebApi.csproj" -r linux-arm64
+RUN dotnet restore "WebApi/WebApi.csproj"
 COPY . .
 WORKDIR "/src/WebApi"
 RUN dotnet build "WebApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "WebApi.csproj" -c Release -o /app/publish -r linux-arm64 --self-contained false --no-restore
+RUN dotnet publish "WebApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

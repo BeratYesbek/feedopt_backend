@@ -41,8 +41,4 @@
     <ProjectReference Include="..\Entity\Entity.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="..\.dockerignore" />
-  </ItemGroup>
-
 </Project>

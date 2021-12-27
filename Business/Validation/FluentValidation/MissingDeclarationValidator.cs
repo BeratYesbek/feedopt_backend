@@ -16,7 +16,7 @@ namespace Business.Validation.FluentValidation
             RuleFor(m => m.Description).MinimumLength(100);
             RuleFor(m => m.Description).MaximumLength(500);
             RuleFor(m => m.LocationId).NotEmpty().NotNull();
-            RuleFor(m => m.AnimalSpeciesId).NotEmpty().NotNull();
+            RuleFor(m => m.AnimalId).NotEmpty().NotNull();
             RuleFor(m => m.UserId).NotEmpty().NotNull();
         }
     }

@@ -21,7 +21,7 @@ namespace Entity.concretes
 
         public int LocationId { get; set; }
 
-        public int AnimalSpeciesId { get; set; }
+        public int AnimalId { get; set; }
 
     }
 }

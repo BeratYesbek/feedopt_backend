@@ -30,7 +30,7 @@ namespace Business.Concretes
 
         [ValidationAspect(typeof(MissingDeclarationValidator))]
         [CacheRemoveAspect("IMissingDeclarationService.GetAll")]
-        [SecuredOperation("MissingDeclaration.Add,User")]
+        //[SecuredOperation("MissingDeclaration.Add,User")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
         public IDataResult<MissingDeclaration> Add(MissingDeclaration missingDeclaration)
