@@ -1,0 +1,1460 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "WebApi",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/AdoptionNoticeImages/add": {
+      "post": {
+        "tags": [
+          "AdoptionNoticeImages"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "AdoptionNoticeImage",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "FormFiles",
+            "type": "array",
+            "items": {
+              "format": "binary",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AdoptionNoticeImages/update": {
+      "post": {
+        "tags": [
+          "AdoptionNoticeImages"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "AdoptionNoticeImage",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "FormFiles",
+            "type": "array",
+            "items": {
+              "format": "binary",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AdoptionNoticeImages/delete": {
+      "post": {
+        "tags": [
+          "AdoptionNoticeImages"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AdoptionNoticeImage"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AdoptionNoticeImages/getById": {
+      "get": {
+        "tags": [
+          "AdoptionNoticeImages"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AdoptionNoticeImages/getAll": {
+      "get": {
+        "tags": [
+          "AdoptionNoticeImages"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AdoptionNoticeImages/getByAdoptionNoticeId": {
+      "get": {
+        "tags": [
+          "AdoptionNoticeImages"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "adoptionNoticeId",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AdoptionNotices/add": {
+      "post": {
+        "tags": [
+          "AdoptionNotices"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/AdoptionNotice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AdoptionNotices/update": {
+      "post": {
+        "tags": [
+          "AdoptionNotices"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/AdoptionNotice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AdoptionNotices/delete": {
+      "post": {
+        "tags": [
+          "AdoptionNotices"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/AdoptionNotice"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AdoptionNotices/getById": {
+      "get": {
+        "tags": [
+          "AdoptionNotices"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AdoptionNotices/getAll": {
+      "get": {
+        "tags": [
+          "AdoptionNotices"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AnimalCategories/add": {
+      "post": {
+        "tags": [
+          "AnimalCategories"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/AnimalCategory"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AnimalCategories/update": {
+      "post": {
+        "tags": [
+          "AnimalCategories"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/AnimalCategory"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AnimalCategories/delete": {
+      "post": {
+        "tags": [
+          "AnimalCategories"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/AnimalCategory"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AnimalCategories/getById": {
+      "get": {
+        "tags": [
+          "AnimalCategories"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AnimalCategories/getAll": {
+      "get": {
+        "tags": [
+          "AnimalCategories"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AnimalSpecies/add": {
+      "post": {
+        "tags": [
+          "AnimalSpecies"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/AnimalSpecies"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AnimalSpecies/update": {
+      "post": {
+        "tags": [
+          "AnimalSpecies"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/AnimalSpecies"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AnimalSpecies/delete": {
+      "post": {
+        "tags": [
+          "AnimalSpecies"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/AnimalSpecies"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AnimalSpecies/getById": {
+      "get": {
+        "tags": [
+          "AnimalSpecies"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/AnimalSpecies/getAll": {
+      "get": {
+        "tags": [
+          "AnimalSpecies"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/UserForLoginDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/UserForRegisterDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Auth/email": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "email",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Chats/add": {
+      "post": {
+        "tags": [
+          "Chats"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Chat"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Chats/update": {
+      "post": {
+        "tags": [
+          "Chats"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Chat"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Chats/delete": {
+      "post": {
+        "tags": [
+          "Chats"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Chat"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Chats/getById": {
+      "get": {
+        "tags": [
+          "Chats"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Chats/getAll": {
+      "get": {
+        "tags": [
+          "Chats"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Chats/getAllByReceiverIdAndSenderId": {
+      "get": {
+        "tags": [
+          "Chats"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "senderId",
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "in": "query",
+            "name": "receiverId",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Chats/getAllLastMessages": {
+      "get": {
+        "tags": [
+          "Chats"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Locations/add": {
+      "post": {
+        "tags": [
+          "Locations"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Location"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Locations/update": {
+      "post": {
+        "tags": [
+          "Locations"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Location"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Locations/delete": {
+      "post": {
+        "tags": [
+          "Locations"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Location"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Locations/getById": {
+      "get": {
+        "tags": [
+          "Locations"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Locations/getAll": {
+      "get": {
+        "tags": [
+          "Locations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/MissingDeclarationImages/add": {
+      "post": {
+        "tags": [
+          "MissingDeclarationImages"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "MissingDeclarationImage",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "FormFiles",
+            "type": "array",
+            "items": {
+              "format": "binary",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/MissingDeclarationImages/update": {
+      "post": {
+        "tags": [
+          "MissingDeclarationImages"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "MissingDeclarationImage",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "FormFiles",
+            "type": "array",
+            "items": {
+              "format": "binary",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/MissingDeclarationImages/delete": {
+      "post": {
+        "tags": [
+          "MissingDeclarationImages"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/MissingDeclarationImage"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/MissingDeclarationImages/getById": {
+      "get": {
+        "tags": [
+          "MissingDeclarationImages"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/MissingDeclarationImages/getAll": {
+      "get": {
+        "tags": [
+          "MissingDeclarationImages"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/MissingDeclarationImages/GetByMissingDeclarationId": {
+      "get": {
+        "tags": [
+          "MissingDeclarationImages"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "missingDeclarationId",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/MissingDeclarations/add": {
+      "post": {
+        "tags": [
+          "MissingDeclarations"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/MissingDeclaration"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/MissingDeclarations/update": {
+      "post": {
+        "tags": [
+          "MissingDeclarations"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/MissingDeclaration"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/MissingDeclarations/delete": {
+      "post": {
+        "tags": [
+          "MissingDeclarations"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/MissingDeclaration"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/MissingDeclarations/getById": {
+      "get": {
+        "tags": [
+          "MissingDeclarations"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/MissingDeclarations/getAll": {
+      "get": {
+        "tags": [
+          "MissingDeclarations"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/UserOperationClaims/add": {
+      "post": {
+        "tags": [
+          "UserOperationClaims"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/UserOperationClaim"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/UserOperationClaims/update": {
+      "post": {
+        "tags": [
+          "UserOperationClaims"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/UserOperationClaim"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/UserOperationClaims/delete": {
+      "post": {
+        "tags": [
+          "UserOperationClaims"
+        ],
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/UserOperationClaim"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/UserOperationClaims/getById": {
+      "get": {
+        "tags": [
+          "UserOperationClaims"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/UserOperationClaims/getAll": {
+      "get": {
+        "tags": [
+          "UserOperationClaims"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/WeatherForecast": {
+      "get": {
+        "tags": [
+          "WeatherForecast"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/WeatherForecast"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AdoptionNoticeImage": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "imagePath": {
+          "type": "string"
+        },
+        "adoptionNoticeId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "AdoptionNotice": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "userId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "locationId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "animalSpeciesId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "AnimalCategory": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "animalCategoryName": {
+          "type": "string"
+        }
+      }
+    },
+    "AnimalSpecies": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "animalCategoryId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "UserForLoginDto": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "UserForRegisterDto": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        }
+      }
+    },
+    "Chat": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "senderId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "receiverId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        },
+        "isSeen": {
+          "type": "boolean"
+        },
+        "date": {
+          "format": "date-time",
+          "type": "string"
+        }
+      }
+    },
+    "Location": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "address": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "placeId": {
+          "type": "string"
+        },
+        "latitude": {
+          "type": "string"
+        },
+        "longitude": {
+          "type": "string"
+        }
+      }
+    },
+    "MissingDeclarationImage": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "imagePath": {
+          "type": "string"
+        },
+        "missingDeclarationId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "MissingDeclaration": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "animalSpeciesId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "userId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "locationId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "UserOperationClaim": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "userId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "operationClaimId": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "WeatherForecast": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "temperatureC": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "temperatureF": {
+          "format": "int32",
+          "type": "integer",
+          "readOnly": true
+        },
+        "summary": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -10,7 +10,7 @@ namespace DataAccess
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(ConnectionString.DataBaseConnectionString);
+            optionsBuilder.UseNpgsql(ConnectionString.DataBaseConnectionString);
         }
 
 

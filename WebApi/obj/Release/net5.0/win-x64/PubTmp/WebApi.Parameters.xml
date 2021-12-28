@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="nervio-test-api" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\berat\\source\\repos\\nervio_backend\\WebApi\\obj\\Release\\net5\.0\\win-x64\\PubTmp\\Out\\$" />
+  </parameter>
+</parameters>

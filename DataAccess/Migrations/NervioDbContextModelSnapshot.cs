@@ -3,8 +3,8 @@ using System;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DataAccess.Migrations
 {
@@ -15,19 +15,19 @@ namespace DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityColumns()
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .UseIdentityByDefaultColumns()
+                .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.1");
 
             modelBuilder.Entity("Core.Entity.Concretes.OperationClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -38,14 +38,14 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<int>("OperationClaimId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -56,26 +56,38 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<byte[]>("PasswordHash")
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -86,17 +98,17 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<int>("AdoptionNoticeId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ImagePath")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PublicId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -107,23 +119,23 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsSeen")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("ReceiverId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("SenderId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -134,26 +146,26 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Latitude")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Longitude")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PlaceId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -164,14 +176,17 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<string>("ImagePath")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("MissingDeclarationId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -182,20 +197,20 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
-                    b.Property<int>("AnimalSpeciesId")
-                        .HasColumnType("int");
+                    b.Property<int>("AnimalId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("LocationId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -206,20 +221,20 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
-                    b.Property<int>("AnimalSpeciesId")
-                        .HasColumnType("int");
+                    b.Property<int>("AnimalId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("LocationId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -230,11 +245,11 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<string>("AnimalCategoryName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -245,18 +260,34 @@ namespace DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
 
                     b.Property<int>("AnimalCategoryId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Kind")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("AnimalSpecies");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("AnimalSpecies");
+                });
+
+            modelBuilder.Entity("Entity.Concretes.Animal", b =>
+                {
+                    b.HasBaseType("Entity.concretes.AnimalSpecies");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
+                    b.HasDiscriminator().HasValue("Animal");
                 });
 #pragma warning restore 612, 618
         }

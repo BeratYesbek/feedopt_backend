@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sitemanifest>
+  <IisApp path="C:\Users\berat\source\repos\nervio_backend\WebApi\obj\Release\net5.0\PubTmp\Out\" />
+  <dbfullsql path="C:\Users\berat\source\repos\nervio_backend\WebApi\obj\Release\net5.0\PubTmp\EFSQLScripts\DataAccess.NervioDbContext.sql" />
+</sitemanifest>

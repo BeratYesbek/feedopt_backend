@@ -8,6 +8,7 @@ namespace DataAccess
 {
     public static class ConnectionString
     {
-        public static string DataBaseConnectionString { get; set; }
+        public static string DataBaseConnectionString { get; set; } =
+            "Server=localhost;Database=postgres;Port=5432;Username=postgres;Password=123456";
     }
 }

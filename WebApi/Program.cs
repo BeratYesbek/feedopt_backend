@@ -24,7 +24,7 @@ namespace WebApi
             var service = (IServiceScopeFactory) host.Services.GetService(typeof(IServiceScopeFactory));
             using (var db = service.CreateScope().ServiceProvider.GetService<NervioDbContext>())
             {
-                //db.Database.Migrate();
+                db.Database.Migrate();
             }
 
             host.Run();
