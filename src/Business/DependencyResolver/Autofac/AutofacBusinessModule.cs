@@ -9,6 +9,7 @@ using Business.Abstracts;
 using Business.Concretes;
 using Castle.DynamicProxy;
 using Core.Utilities.Cloud.Cloudinary;
+using Core.Utilities.FileHelper;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstracts;
@@ -61,6 +62,8 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
 
             builder.RegisterType<DistributedSessionStore>().As<ISessionStore>();
+
+            builder.RegisterType<FileHelper2>().As<IFileHelper>();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

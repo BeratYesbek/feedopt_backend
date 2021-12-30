@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Core.Utilities.Cloud.Cloudinary
 {
-    public class CloudinaryOptions
+    public static class CloudinaryOptions
     {
-        public string Cloud { get; set; }
+        public static string Cloud { get; set; }
 
-        public string ApiKey { get; set; }
+        public static string ApiKey { get; set; }
 
-        public string ApiSecret { get; set; }
+        public static string ApiSecret { get; set; }
     }
 }

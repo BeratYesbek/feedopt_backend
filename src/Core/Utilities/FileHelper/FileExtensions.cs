@@ -8,6 +8,7 @@ namespace Core.Utilities.FileHelper
 {
     public class FileExtensions
     {
-        public readonly static String[] ImageExtensions = {".jpeg", ".jpg", ".png"};
+        public static String[] ImageExtensions = { ".jpeg", ".jpg", ".png" };
+
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Utilities.FileHelper;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace WebApi.Controllers
@@ -12,6 +13,11 @@ namespace WebApi.Controllers
     [Controller]
     public class HomeController : Controller
     {
+        public HomeController()
+        {
+
+        }
+
         [HttpGet("Index")]
         public IActionResult Index()
         {
