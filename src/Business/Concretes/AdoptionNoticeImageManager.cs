@@ -37,6 +37,8 @@ namespace Business.Concretes
             _adoptionNoticeImageDal = adoptionNoticeImageDal;
         }
 
+        // dfds
+
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
