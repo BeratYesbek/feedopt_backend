@@ -37,23 +37,17 @@ namespace Business.Concretes
             _adoptionNoticeImageDal = adoptionNoticeImageDal;
         }
 
-        // dfds
 
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
-       // [SecuredOperation("AdoptionNotice.Add,User")]
+        // [SecuredOperation("AdoptionNotice.Add,User")]
         public IResult Add(AdoptionNoticeImage adoptionNoticeImage, IFormFile[] formFiles)
         {
-            // you can set your want to give extension 
-            FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
-            // inside of foreach is scaling and streaming our file in wwwroot
-
             foreach (var file in formFiles)
             {
-                Image image = ImageScaling.ResizeImage(Image.FromStream(file.OpenReadStream(), true, true),
-                    ImageScaling.ImageWidth, ImageScaling.ImageHeight);
-                var result = _cloudinaryService.Upload(file, image);
+                var fileHelper = new FileHelper(RecordType.Storage, FileExtension.ImageExtension, FolderName.Images);
+                var result = fileHelper.Upload(file);
                 if (!result.Success)
                 {
                     return new ErrorResult(result.Message);
@@ -138,14 +132,12 @@ namespace Business.Concretes
         [SecuredOperation("AdoptionNotice.Update,User")]
         public IResult Update(AdoptionNoticeImage[] adoptionNoticeImage, IFormFile[] formFiles)
         {
-            // you can set file extension what you give
-            FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
+
             for (int i = 0; i < formFiles.Length; i++)
             {
                 //after this method exchange our files with old files before updating, update table 
-                Image image = ImageScaling.ResizeImage(Image.FromStream(formFiles[i].OpenReadStream(), true, true),
-                    ImageScaling.ImageWidth, ImageScaling.ImageHeight);
-                var result = _cloudinaryService.Update(formFiles[i], adoptionNoticeImage[i].PublicId, image);
+                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
+                var result = fileHelper.Upload(formFiles[i]);
                 if (!result.Success)
                 {
                     return new ErrorResult(result.Message);
@@ -160,3 +152,16 @@ namespace Business.Concretes
         }
     }
 }
+
+/*Image image = ImageScaling.ResizeImage(Image.FromStream(file.OpenReadStream(), true, true),
+      ImageScaling.ImageWidth, ImageScaling.ImageHeight);*/
+
+
+
+
+
+
+
+/* Image image = ImageScaling.ResizeImage(Image.FromStream(formFiles[i].OpenReadStream(), true, true),
+          ImageScaling.ImageWidth, ImageScaling.ImageHeight);*/
+//  var result = _cloudinaryService.Update(formFiles[i], adoptionNoticeImage[i].PublicId, image);

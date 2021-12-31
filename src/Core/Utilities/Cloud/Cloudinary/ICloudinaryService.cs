@@ -13,8 +13,6 @@ namespace Core.Utilities.Cloud.Cloudinary
 {
     public interface ICloudinaryService : IFileHelper
     {
-        IResult Upload(IFormFile file, Image image = default);
-        IResult Update(IFormFile file, string publicId, Image image = default);
-        IResult Delete(string publicId);
+      
     }
 }

@@ -1,112 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Utilities.Cloud.Cloudinary;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using Microsoft.AspNetCore.Http;
 
 namespace Core.Utilities.FileHelper
 {
-    public static class FileHelper
+    public enum FileExtension
     {
-        private static readonly string _currentDirectory = Environment.CurrentDirectory + "\\wwwroot";
-        private static string _folderName = "";
-        private static string[] _fileExtension;
+        ImageExtension = 0,
+        DocumentExtension = 1
+    }
 
-        /// <summary>
-        /// 
-        ///     if this method success, message will return which contains file path
-        /// 
-        /// </summary>
-        /// <param name="formFile"></param>
-        /// <returns> error message or file path </returns>
-        public static IResult Upload(IFormFile formFile, Image image = null)
+    public enum RecordType
+    {
+        Cloud = 0,
+        Storage = 1
+    }
+
+    public enum FolderName
+    {
+        Files = 0,
+        Images = 1,
+        Documents = 2
+    }
+
+    public class FileHelper 
+    {
+        private readonly IFileHelper _fileHelper;
+        private string[] FileType { get; }
+
+        public FileHelper(RecordType recordType, FileExtension fileExtension, FolderName folderName = default)
         {
-            if (formFile == null && formFile.Length <= 0)
+            FileType = GetExtensions(fileExtension);
+
+            if (recordType == RecordType.Cloud)
             {
-                return new ErrorResult("File doesn't exist");
-            }
-
-            var type = Path.GetExtension(formFile.FileName);
-            var typeValid = CheckFileTypeValid(type);
-            var randomName = Guid.NewGuid().ToString();
-
-            if (!typeValid.Success)
-            {
-                return new ErrorResult(typeValid.Message);
-            }
-
-            CheckDirectoryExists(_currentDirectory + _folderName);
-            CreateImageFile(_currentDirectory + _folderName + randomName + type, formFile, image);
-            return new SuccessResult((_folderName + randomName + type).Replace("\\", "/"));
-        }
-
-
-        /// <summary>
-        ///    if this method success, message will return which contains file path
-        /// </summary>
-        /// <param name="formFile"></param>
-        /// <returns> error message or file path   </returns>
-        public static IResult Update(IFormFile formFile, string imagePath, Image image = null)
-        {
-            if (formFile == null && formFile.Length <= 0)
-            {
-                return new ErrorResult("File doesn't exist");
-            }
-
-            var type = Path.GetExtension(formFile.FileName);
-            var typeValid = CheckFileTypeValid(type);
-            var randomName = Guid.NewGuid().ToString();
-
-            if (typeValid.Message != null)
-            {
-                return new ErrorResult(typeValid.Message);
-            }
-
-            DeleteOldImageFile((_currentDirectory + imagePath).Replace("/", "\\"));
-            CheckDirectoryExists(_currentDirectory + _folderName);
-            CreateImageFile(_currentDirectory + _folderName + randomName + type, formFile, image);
-            return new SuccessResult((_folderName + randomName + type).Replace("\\", "/"));
-        }
-
-        public static IResult Delete(string path)
-        {
-            DeleteOldImageFile((_currentDirectory + path).Replace("/", "\\"));
-            return new SuccessResult();
-        }
-
-
-        private static void CreateImageFile(string directory, IFormFile file, Image image)
-        {
-            if (image == null)
-            {
-                using (FileStream fileStream = File.Create(directory))
-                {
-                    file.CopyTo(fileStream);
-                    fileStream.Flush();
-                }
+                _fileHelper = new CloudinaryService();
             }
             else
             {
-                image.Save(directory);
+                _fileHelper = new StorageHelper(folderName.ToString());
             }
         }
 
-        private static void CheckDirectoryExists(string directory)
+
+        private string[] GetExtensions(FileExtension fileExtension)
         {
-            if (!Directory.Exists((directory)))
+            switch (fileExtension)
             {
-                Directory.CreateDirectory(directory);
+                case FileExtension.DocumentExtension:
+                    return null;
+                    break;
+                case FileExtension.ImageExtension:
+                    return FileExtensions.ImageExtensions;
+                default:
+                    return null;
             }
         }
 
-        public static IResult CheckFileTypeValid(string type)
+        public IResult CheckFileTypeValid(string type)
         {
-            foreach (var extension in _fileExtension)
+            foreach (var extension in FileType)
             {
                 if (extension == type)
                 {
@@ -117,18 +78,45 @@ namespace Core.Utilities.FileHelper
             return new ErrorResult("File type is not suitable");
         }
 
-        private static void DeleteOldImageFile(string directory)
+
+
+        /// <summary>
+        ///    if this method success, message will return which contains file path
+        /// </summary>
+        /// <param name="formFile"></param>
+        /// <returns> error message or file path   </returns>
+        public IResult Update(IFormFile file, string filePath, string publicId = null)
         {
-            if (File.Exists(directory.Replace("/", "\\")))
+            var result = CheckFileTypeValid(Path.GetExtension(file.FileName));
+            if (result.Success)
             {
-                File.Delete(directory.Replace("/", "\\"));
+                return _fileHelper.Update(file, filePath, publicId);
             }
+
+            return result;
         }
 
-        public static void SetFileExtension(string folderName = default, params string[] fileExtension)
+        public IResult Delete(string filePath, string publicId = null)
         {
-            _folderName = $"\\{folderName}\\";
-            _fileExtension = fileExtension;
+           return  _fileHelper.Delete(filePath, publicId);
+        }
+
+        /// <summary>
+        /// 
+        ///     if this method success, message will return which contains file path
+        /// 
+        /// </summary>
+        /// <param name="formFile"></param>
+        /// <returns> error message or file path </returns>
+        public IResult Upload(IFormFile file)
+        {
+            var result = CheckFileTypeValid(Path.GetExtension(file.FileName));
+            if (result.Success)
+            {
+                return _fileHelper.Upload(file);
+            }
+
+            return result;
         }
     }
 }

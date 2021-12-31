@@ -37,18 +37,15 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
-      //  [SecuredOperation("MissingDeclarationImage.Add,User")]
+        //  [SecuredOperation("MissingDeclarationImage.Add,User")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
         public IResult Add(MissingDeclarationImage missingDeclarationImage, IFormFile[] formFiles)
         {
-            FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
-
             foreach (var file in formFiles)
             {
-                Image image = ImageScaling.ResizeImage(Image.FromStream(file.OpenReadStream(), true, true),
-                    ImageScaling.ImageWidth, ImageScaling.ImageHeight);
-                var result = _cloudinaryService.Upload(file, image);
+                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
+                var result = fileHelper.Upload(file);
                 if (!result.Success)
                 {
                     return new ErrorResult(result.Message);
@@ -70,12 +67,12 @@ namespace Business.Concretes
         [LogAspect(typeof(FileLogger))]
         public IResult Update(MissingDeclarationImage[] missingDeclarationImage, IFormFile[] formFiles)
         {
-            FileHelper.SetFileExtension("images", FileExtensions.ImageExtensions);
             for (int i = 0; i < formFiles.Length; i++)
             {
-                Image image = ImageScaling.ResizeImage(Image.FromStream(formFiles[i].OpenReadStream(), true, true),
-                    ImageScaling.ImageWidth, ImageScaling.ImageHeight);
-                var result = _cloudinaryService.Upload(formFiles[i], image);
+            
+                //var result = _cloudinaryService.Upload(formFiles[i], image);
+                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
+                var result = fileHelper.Update(formFiles[i], missingDeclarationImage[i].ImagePath, missingDeclarationImage[i].PublicId);
                 if (!result.Success)
                 {
                     return new ErrorResult(result.Message);

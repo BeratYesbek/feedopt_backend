@@ -33,50 +33,30 @@ namespace Core.Utilities.Cloud.Cloudinary
             cloudinary.Api.Secure = true;
         }
 
-         public IResult Upload(IFormFile file, Image image = default)
+         public IResult Upload(IFormFile file)
          {
-             var extension = Path.GetExtension(file.FileName);
-             var result = FileHelper.FileHelper.CheckFileTypeValid(extension);
-             if (!result.Success)
-             {
-                 return new ErrorResult(result.Message);
-             }
- 
              ImageUploadResult imageUploadResult = null;
- 
-             if (image != default)
+             var uploadParams = new ImageUploadParams()
              {
-                 var stream = image.ToStream(ImageFormat.Jpeg);
- 
-                 var uploadParams = new ImageUploadParams()
-                 {
-                     File = new FileDescription(file.FileName, stream)
-                 };
-                 imageUploadResult = cloudinary.Upload(uploadParams);
-             }
-             else
-             {
-                 var uploadParams = new ImageUploadParams()
-                 {
-                     File = new FileDescription(file.FileName, file.OpenReadStream())
-                 };
-                 imageUploadResult = cloudinary.Upload(uploadParams);
-             }
- 
- 
-             return new SuccessResult(imageUploadResult.SecureUrl.ToString());
+                 File = new FileDescription(file.FileName, file.OpenReadStream())
+             };
+
+             imageUploadResult = cloudinary.Upload(uploadParams);
+
+
+            return new SuccessResult(imageUploadResult.SecureUrl.ToString());
          }
  
-         public IResult Delete(string publicId)
+         public IResult Delete(string filePath, string publicId)
          {
              var deletionParams = new DeletionParams(publicId);
              cloudinary.Destroy(deletionParams);
              return new SuccessResult();
          }
  
-         public IResult Update(IFormFile file, string publicId, Image image = default)
-         {
-          /*   var result = Delete(publicId);
+         public IResult Update(IFormFile file,string filePath ,string publicId)
+         { 
+             var result = Delete(null, publicId);
              if (result.Success)
              {
                  var addedDelete = Upload(file);
@@ -88,52 +68,11 @@ namespace Core.Utilities.Cloud.Cloudinary
                  return new ErrorResult(addedDelete.Message);
              }
  
-             return new ErrorResult(result.Message);*/
-          return null;
+             return new ErrorResult(result.Message);
          }
-        public async Task<IResult> Upload(IFormFile file)
-        {
-            throw new NotImplementedException();
-        }
+    
 
-        public Task<IResult> Update(IFormFile file, string filePath)
-        {
-            throw new NotImplementedException();
-        }
 
-        IResult ICloudinaryService.Delete(string publicId)
-        {
-            throw new NotImplementedException();
-        }
-
-      /*  public IResult Upload(IFormFile file, Image image = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IResult Update(IFormFile file, string publicId, Image image = default)
-        {
-            throw new NotImplementedException();
-        }*/
-
-        Task<IResult> IFileHelper.Delete(string filePath)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CheckDirectoryExists(string directory)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IResult CheckFileTypeValid(string type)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteOldImageFile(string directory)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

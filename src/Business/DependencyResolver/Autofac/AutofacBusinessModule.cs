@@ -63,7 +63,7 @@ namespace Business.DependencyResolver.Autofac
 
             builder.RegisterType<DistributedSessionStore>().As<ISessionStore>();
 
-            builder.RegisterType<FileHelper2>().As<IFileHelper>();
+            builder.RegisterType<FileHelper>().As<IFileHelper>();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
