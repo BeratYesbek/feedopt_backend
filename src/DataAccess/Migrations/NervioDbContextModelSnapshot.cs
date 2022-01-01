@@ -193,6 +193,27 @@ namespace DataAccess.Migrations
                     b.ToTable("MissingDeclarationImages");
                 });
 
+            modelBuilder.Entity("Entity.Concretes.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tickets");
+                });
+
             modelBuilder.Entity("Entity.MissingDeclaration", b =>
                 {
                     b.Property<int>("Id")

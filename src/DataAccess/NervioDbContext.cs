@@ -4,6 +4,7 @@ using Entity;
 using Entity.concretes;
 using Entity.Concretes;
 using Microsoft.EntityFrameworkCore;
+
 namespace DataAccess
 {
     public class NervioDbContext : DbContext
@@ -26,5 +27,6 @@ namespace DataAccess
         public DbSet<Chat> Chats { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
     }
 }

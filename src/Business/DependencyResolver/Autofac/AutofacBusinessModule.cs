@@ -15,6 +15,7 @@ using Core.Utilities.Security.JWT;
 using DataAccess.Abstracts;
 using DataAccess.Concretes;
 using Entity.concretes;
+using Entity.Concretes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.Logging;
@@ -56,6 +57,13 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<ChatManager>().As<IChatService>().SingleInstance();
             builder.RegisterType<EfChatDal>().As<IChatDal>().SingleInstance();
 
+
+            builder.RegisterType<TicketManager>().As<ITicketService>().SingleInstance();
+            builder.RegisterType<EfTicketDal>().As<ITicketDal>().SingleInstance();
+
+            builder.RegisterType<TicketFileManager>().As<ITicketFileService>().SingleInstance();
+            builder.RegisterType<EfTicketFileDal>().As<ITicketFileDal>().SingleInstance();
+
             builder.RegisterType<CloudinaryService>().As<ICloudinaryService>().SingleInstance();
 
             builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
@@ -63,7 +71,6 @@ namespace Business.DependencyResolver.Autofac
 
             builder.RegisterType<DistributedSessionStore>().As<ISessionStore>();
 
-            builder.RegisterType<FileHelper>().As<IFileHelper>();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

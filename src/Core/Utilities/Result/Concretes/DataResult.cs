@@ -13,10 +13,13 @@ namespace Core.Utilities.Result.Concretes
         {
             Data = data;
         }
+
         public DataResult(bool success, T data) : base(success)
         {
             Data = data;
         }
+
+   
         public T Data { get; }
     }
 }
