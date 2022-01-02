@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Business.BusinessMailer;
 using Business.Concretes;
 using Castle.DynamicProxy;
 using Core.Entity;
@@ -12,10 +13,11 @@ using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using Core.Utilities.Mailer;
 using DataAccess.Concretes;
+using Entity.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Core.Aspects.Autofac
+namespace Business.BusinessAspect
 {
 
     public class MailerAspect : MethodInterception
@@ -39,8 +41,14 @@ namespace Core.Aspects.Autofac
 
         protected override void OnAfter(IInvocation invocation)
         {
-            var email = "beratyesbekk@gmail.com"; //_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-            var mailer = (IMailer)Activator.CreateInstance(_mailerType);
+            var email = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+
+            var mailer = (IMailer) Activator.CreateInstance(_mailerType);
+            if (typeof(VerifyEmailMailer).IsAssignableFrom(_mailerType))
+            {
+                var user = (UserForRegisterDto) invocation.Arguments[0];
+                email = user.Email;
+            }
             var userService = new UserManager(new EfUserDal());
             var result = userService.GetByMail(email);
             if (!result.Success)

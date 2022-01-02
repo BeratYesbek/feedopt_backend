@@ -918,3 +918,5 @@ C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\WebApi.dl
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\ref\WebApi.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\WebApi.pdb
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\WebApi.genruntimeconfig.cache
+C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\Razor\wwwroot\static\mailer\TicketAnswerEmail.cshtml.g.cs
+C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\Razor\wwwroot\static\mailer\TicketInfoEmail.cshtml.g.cs

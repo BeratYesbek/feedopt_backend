@@ -27,7 +27,7 @@ namespace Business.Concretes
     {
         private readonly ITicketDal _ticketDal;
         private readonly ITicketFileService _ticketFileService;
-        public TicketManager(ITicketDal ticketDal,ITicketFileService ticketFileService)
+        public TicketManager(ITicketDal ticketDal, ITicketFileService ticketFileService)
         {
             _ticketDal = ticketDal;
             _ticketFileService = ticketFileService;
@@ -38,7 +38,7 @@ namespace Business.Concretes
         [ValidationAspect(typeof(TicketValidator))]
         [CacheRemoveAspect("ITicketService.GetAll")]
         [LogAspect(typeof(FileLogger))]
-        [MailerAspect(typeof(TicketEmailMailer),EmailType.TicketEmail)]
+        [MailerAspect(typeof(TicketEmailMailer), EmailType.TicketEmail)]
         [PerformanceAspect(5)]
         public IDataResult<Ticket> Add(Ticket ticket)
         {
@@ -52,7 +52,10 @@ namespace Business.Concretes
                     return new ErrorDataResult<Ticket>(null, result.Message);
                 }
 
-                var ticketFile = new TicketFile(result.Message, null, data.Id);
+                // result.message contains fileUrl and publicId
+                var fileUrl = result.Message.Split("&&")[0];
+                var publicId = result.Message.Split("&&")[1];
+                var ticketFile = new TicketFile(fileUrl, publicId, data.Id);
                 _ticketFileService.Add(ticketFile);
             }
 

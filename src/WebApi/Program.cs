@@ -20,13 +20,6 @@ namespace WebApi
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-
-            var service = (IServiceScopeFactory) host.Services.GetService(typeof(IServiceScopeFactory));
-            /*using (var db = service.CreateScope().ServiceProvider.GetService<NervioDbContext>())
-            {
-                //db.Database.Migrate();
-            }*/
-
             host.Run();
         }
 

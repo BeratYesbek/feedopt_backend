@@ -21,27 +21,31 @@ namespace Core.Utilities.Mailer
     public class Mailer
     {
 
-        private static readonly string DefaultEmail = "beratyesbek@gmail.com";
+        public static string EmailOption { get; set; }
+        public static string PasswordOption { get; set; }
+        public static string HostOption { get; set; }
+        public static int PortOption { get; set; }
+
         public static IFluentEmail StartMailer(string subject, string email)
         {
             var smtp = new SmtpSender(() => new SmtpClient()
             {
-                Host = "smtp.gmail.com",
-                Port = 587,
+                Host = HostOption,
+                Port = PortOption,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential()
                 {
-                    UserName = DefaultEmail,
-                    Password = "amuvquvxlmrgtjjk"
+                    UserName = EmailOption,
+                    Password = PasswordOption
                 }
             });
 
             Email.DefaultSender = smtp;
             Email.DefaultRenderer = new RazorRenderer();
 
-           var fluentEmail = Email.From(DefaultEmail)
+           var fluentEmail = Email.From(EmailOption)
                 .To(email)
                 .Subject(subject);
            return fluentEmail;

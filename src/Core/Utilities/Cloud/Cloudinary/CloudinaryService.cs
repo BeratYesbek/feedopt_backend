@@ -44,7 +44,7 @@ namespace Core.Utilities.Cloud.Cloudinary
              imageUploadResult = cloudinary.Upload(uploadParams);
 
 
-            return new SuccessResult(imageUploadResult.SecureUrl.ToString());
+            return new SuccessResult($"{imageUploadResult.SecureUrl}&&{imageUploadResult.PublicId}");
          }
  
          public IResult Delete(string filePath, string publicId)

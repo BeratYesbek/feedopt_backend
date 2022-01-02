@@ -12,7 +12,8 @@ namespace Business.BusinessMailer
     public class TicketEmailMailer : IMailer
     {
         private static readonly string _currentDirectory = $"{Environment.CurrentDirectory}\\wwwroot\\static\\mailer\\";
-        private const string _ticketEmailHtmlPage = "VerifyEmail.cshtml";
+        private const string _ticketInfoEmailHtmlPage = "TicketAnswerEmail.cshtml";
+        private const string _ticketAnswerEmailHtmlPage = "TicketInfoEmail.cshtml";
 
 
         public void SendEmail(EmailType emailType, User user)
@@ -33,14 +34,14 @@ namespace Business.BusinessMailer
         private async void SendAnswerEmail(User user, string subject)
         {
             var _email = Mailer.StartMailer(subject, user.Email);
-            await _email.UsingTemplateFromFile($"{_currentDirectory}{_ticketEmailHtmlPage}", new { User = user })
+            await _email.UsingTemplateFromFile($"{_currentDirectory}{_ticketAnswerEmailHtmlPage}", new { User = user })
                 .SendAsync();
         }
 
         private async void InfoTicketEmail(User user, string subject)
         {
             var _email = Mailer.StartMailer(subject, user.Email);
-            await _email.UsingTemplateFromFile($"{_currentDirectory}{_ticketEmailHtmlPage}", new { User = user })
+            await _email.UsingTemplateFromFile($"{_currentDirectory}{_ticketInfoEmailHtmlPage}", new { User = user })
                 .SendAsync();
         }
     }

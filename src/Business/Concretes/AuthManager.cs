@@ -4,7 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Business.BusinessAspect;
+using Business.BusinessMailer;
+using Core.Aspects.Autofac;
 using Core.Entity;
+using Core.Utilities.Mailer;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using Core.Utilities.Security.Hashing;
@@ -24,6 +28,7 @@ namespace Business.Concretes
             _tokenHelper = tokenHelper;
         }
 
+        [MailerAspect(typeof(VerifyEmailMailer), EmailType.VerifyEmail)]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -35,7 +40,12 @@ namespace Business.Concretes
                 LastName = userForRegisterDto.LastName,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Status = true
+                PhoneNumber = userForRegisterDto.PhoneNumber,
+
+                // change later
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+
             };
             _userService.Add(user);
             return new SuccessDataResult<User>(user);
@@ -44,7 +54,7 @@ namespace Business.Concretes
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
-            if (userToCheck.Data.Status != true)
+            if (userToCheck.Data.EmailConfirmed != true && userToCheck.Data.PhoneNumberConfirmed != true)
             {
                 return new ErrorDataResult<User>(null, "You have to verify your email");
             }

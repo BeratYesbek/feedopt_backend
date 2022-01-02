@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Utilities.Cloud.Cloudinary;
+using Core.Utilities.Mailer;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,16 @@ namespace WebApi.Config
         {
             DatabaseMigration();
             SetCloudinaryOptions();
+            SetMailerOptions();
+        }
+
+        private void SetMailerOptions()
+        {
+            IConfigurationSection section = Configuration.GetSection("Mailer");
+            Mailer.EmailOption = section["Email"];
+            Mailer.PasswordOption = section["Password"];
+            Mailer.HostOption = section["Host"];
+            Mailer.PortOption = Convert.ToInt32(section["Port"]);
         }
 
         private void SetCloudinaryOptions()
@@ -43,7 +54,7 @@ namespace WebApi.Config
             {
                 if (db != null)
                 {
-                     db.Database.Migrate();
+                    db.Database.Migrate();
 
                 }
             }
