@@ -56,7 +56,7 @@ namespace Core.Utilities.FileHelper
             switch (fileExtension)
             {
                 case FileExtension.DocumentExtension:
-                    return null;
+                    return FileExtensions.DocumentExtensions;
                     break;
                 case FileExtension.ImageExtension:
                     return FileExtensions.ImageExtensions;

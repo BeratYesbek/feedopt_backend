@@ -11,11 +11,17 @@ using RazorLight.Extensions;
 
 namespace Core.Utilities.Mailer
 {
+    public enum EmailType
+    {
+        TicketEmail,
+        TicketAnswer,
+        VerifyEmail,
+    }
+
     public class Mailer
     {
+
         private static readonly string DefaultEmail = "beratyesbek@gmail.com";
-
-
         public static IFluentEmail StartMailer(string subject, string email)
         {
             var smtp = new SmtpSender(() => new SmtpClient()
@@ -28,7 +34,7 @@ namespace Core.Utilities.Mailer
                 Credentials = new NetworkCredential()
                 {
                     UserName = DefaultEmail,
-                    Password = "............................"
+                    Password = "amuvquvxlmrgtjjk"
                 }
             });
 

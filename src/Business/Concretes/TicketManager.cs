@@ -5,13 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
+using Business.BusinessMailer;
 using Business.Validation.FluentValidation;
+using Core.Aspects.Autofac;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Utilities.FileHelper;
+using Core.Utilities.Mailer;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
@@ -24,10 +27,10 @@ namespace Business.Concretes
     {
         private readonly ITicketDal _ticketDal;
         private readonly ITicketFileService _ticketFileService;
-
-        public TicketManager(ITicketDal ticketDal)
+        public TicketManager(ITicketDal ticketDal,ITicketFileService ticketFileService)
         {
             _ticketDal = ticketDal;
+            _ticketFileService = ticketFileService;
         }
 
 
@@ -35,6 +38,7 @@ namespace Business.Concretes
         [ValidationAspect(typeof(TicketValidator))]
         [CacheRemoveAspect("ITicketService.GetAll")]
         [LogAspect(typeof(FileLogger))]
+        [MailerAspect(typeof(TicketEmailMailer),EmailType.TicketEmail)]
         [PerformanceAspect(5)]
         public IDataResult<Ticket> Add(Ticket ticket)
         {
