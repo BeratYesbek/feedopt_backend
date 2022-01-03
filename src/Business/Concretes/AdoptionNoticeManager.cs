@@ -18,6 +18,7 @@ using DataAccess.Abstracts;
 using DataAccess.Concretes;
 using Entity.concretes;
 using Entity.Concretes;
+using Entity.Dtos;
 
 namespace Business.Concretes
 {
@@ -32,10 +33,12 @@ namespace Business.Concretes
         }
 
         [LogAspect(typeof(FileLogger))]
-        //[ValidationAspect(typeof(AdoptionNoticeValidator))]
+        [ValidationAspect(typeof(AdoptionNoticeValidator))]
         //[SecuredOperation("AdoptionNotice.Add,User")]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
+        [CacheRemoveAspect("IAdoptionNoticeService.GetAllAdoptionNoticeDetail")]
+        [CacheRemoveAspect("IAdoptionNoticeService.GetAdoptionNoticeDetailById")]
         public IDataResult<AdoptionNotice> Add(AdoptionNotice adoptionNotice)
         {
             var data = _adoptionNoticeDal.Add(adoptionNotice);
@@ -67,6 +70,8 @@ namespace Business.Concretes
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
+        [CacheRemoveAspect("IAdoptionNoticeService.GetAllAdoptionNoticeDetail")]
+        [CacheRemoveAspect("IAdoptionNoticeService.GetAdoptionNoticeDetailById")]
         [SecuredOperation("AdoptionNotice.Update,User")]
         [ValidationAspect(typeof(AdoptionNoticeValidator))]
         public IResult Update(AdoptionNotice adoptionNotice)
@@ -99,6 +104,8 @@ namespace Business.Concretes
 
         [LogAspect(typeof(FileLogger))]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
+        [CacheRemoveAspect("IAdoptionNoticeService.GetAllAdoptionNoticeDetail")]
+        [CacheRemoveAspect("IAdoptionNoticeService.GetAdoptionNoticeDetailById")]
         [SecuredOperation("AdoptionNotice.Delete,User")]
         [PerformanceAspect(5)]
         public IResult Delete(AdoptionNotice adoptionNotice)
@@ -142,6 +149,36 @@ namespace Business.Concretes
             }
 
             return new ErrorDataResult<List<AdoptionNotice>>(null);
+        }
+
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        //[SecuredOperation("AdoptionNotice.GetAllAdoptionNoticeDetail,User")]
+        [CacheAspect]
+        public IDataResult<List<AdoptionNoticeDto>> GetAllAdoptionNoticeDetail()
+        {
+            var data = _adoptionNoticeDal.GetAllAdoptionNoticeDetail();
+            if (data.Count > 0)
+            {
+                return new SuccessDataResult<List<AdoptionNoticeDto>>(data);
+            }
+
+            return new ErrorDataResult<List<AdoptionNoticeDto>>(null);
+        }
+
+        [CacheAspect]
+        [PerformanceAspect(5)]
+       // [SecuredOperation("AdoptionNotice.GetAdoptionNoticeDetailById,User")]
+        [CacheAspect]
+        public IDataResult<AdoptionNoticeDto> GetAdoptionNoticeDetailById(int id)
+        {
+            var data = _adoptionNoticeDal.GetAdoptionNoticeDetailById(id);
+            if (data != null)
+            {
+                return new SuccessDataResult<AdoptionNoticeDto>(data);
+            }
+
+            return new ErrorDataResult<AdoptionNoticeDto>(null);
         }
     }
 }

@@ -7,6 +7,7 @@ using Core.Utilities.Result.Abstracts;
 using Entity;
 using Entity.concretes;
 using Entity.Concretes;
+using Entity.Dtos;
 using Microsoft.AspNetCore.Http;
 
 namespace Business.Abstracts
@@ -22,5 +23,9 @@ namespace Business.Abstracts
         IDataResult<MissingDeclaration> Get(int id);
 
         IDataResult<List<MissingDeclaration>> GetAll();
+
+        IDataResult<List<MissingDeclarationDto>> GetAllMissingDeclarationDetail();
+
+        IDataResult<MissingDeclarationDto> GetMissingDeclarationDetailById(int id);
     }
 }

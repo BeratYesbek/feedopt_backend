@@ -85,5 +85,31 @@ namespace WebApi.Controllers
 
             return BadRequest();
         }
+
+       [HttpGet("getAllAdoptionNoticeDetail")]
+        public IActionResult GetAllAdoptionNoticeDetail()
+        {
+            var result = _adoptionNoticeService.GetAllAdoptionNoticeDetail();
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet("GetAdoptionNoticeDetailById")]
+        public IActionResult GetAdoptionNoticeDetailById(int id)
+        {
+            var result = _adoptionNoticeService.GetAdoptionNoticeDetailById(id);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
     }
 }

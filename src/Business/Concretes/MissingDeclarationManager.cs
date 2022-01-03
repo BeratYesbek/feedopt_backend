@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
 using Business.Validation.FluentValidation;
@@ -15,10 +13,9 @@ using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
-using DataAccess.Concretes;
 using Entity;
-using Entity.concretes;
 using Entity.Concretes;
+using Entity.Dtos;
 
 namespace Business.Concretes
 {
@@ -35,6 +32,8 @@ namespace Business.Concretes
 
         [ValidationAspect(typeof(MissingDeclarationValidator))]
         [CacheRemoveAspect("IMissingDeclarationService.GetAll")]
+        [CacheRemoveAspect("IMissingDeclarationService.GetAllMissingDeclarationDetail")]
+        [CacheRemoveAspect("IMissingDeclarationService.GetMissingDeclarationDetailById")]
         //[SecuredOperation("MissingDeclaration.Add,User")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
@@ -68,6 +67,8 @@ namespace Business.Concretes
 
         [ValidationAspect(typeof(MissingDeclarationValidator))]
         [CacheRemoveAspect("IMissingDeclarationService.GetAll")]
+        [CacheRemoveAspect("IMissingDeclarationService.GetAllMissingDeclarationDetail")]
+        [CacheRemoveAspect("IMissingDeclarationService.GetMissingDeclarationDetailById")]
         [SecuredOperation("MissingDeclaration.Update,User")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
@@ -99,6 +100,8 @@ namespace Business.Concretes
 
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IMissingDeclarationService.GetAll")]
+        [CacheRemoveAspect("IMissingDeclarationService.GetAllMissingDeclarationDetail")]
+        [CacheRemoveAspect("IMissingDeclarationService.GetMissingDeclarationDetailById")]
         [SecuredOperation("MissingDeclaration.Delete,User")]
         [LogAspect(typeof(FileLogger))]
         public IResult Delete(MissingDeclaration missingDeclaration)
@@ -142,6 +145,36 @@ namespace Business.Concretes
             }
 
             return new ErrorDataResult<List<MissingDeclaration>>(null);
+        }
+
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        [SecuredOperation("MissingDeclaration.GetAllAdoptionNoticeDetail,User")]
+        [LogAspect(typeof(FileLogger))]
+        public IDataResult<List<MissingDeclarationDto>> GetAllMissingDeclarationDetail()
+        {
+            var data = _missingDeclarationDal.GetAllMissingDeclarationsDetail();
+            if (data.Count > 0)
+            {
+                return new SuccessDataResult<List<MissingDeclarationDto>>(data);
+            }
+
+            return new ErrorDataResult<List<MissingDeclarationDto>>(null);
+        }
+
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        [SecuredOperation("MissingDeclaration.GetAdoptionNoticeDetailById,User")]
+        [LogAspect(typeof(FileLogger))]
+        public IDataResult<MissingDeclarationDto> GetMissingDeclarationDetailById(int id)
+        {
+            var data = _missingDeclarationDal.GetMissingDeclarationDetailById(id);
+            if (data != null)
+            {
+                return new SuccessDataResult<MissingDeclarationDto>(data);
+            }
+
+            return new ErrorDataResult<MissingDeclarationDto>(null);
         }
     }
 }

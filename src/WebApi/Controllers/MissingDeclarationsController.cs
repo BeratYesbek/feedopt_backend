@@ -87,5 +87,31 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
         }
+
+
+        [HttpGet("getAllMissingDeclarationDetail")]
+        public IActionResult GetAllMissingDeclarationDetail()
+        {
+            var result = _missingDeclarationService.GetAllMissingDeclarationDetail();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+
+        [HttpGet("getMissingDeclarationDetailById")]
+        public IActionResult GetMissingDeclarationDetailById(int id)
+        {
+            var result = _missingDeclarationService.GetMissingDeclarationDetailById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
     }
 }
