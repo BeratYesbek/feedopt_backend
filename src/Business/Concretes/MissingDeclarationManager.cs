@@ -11,21 +11,26 @@ using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
+using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
 using DataAccess.Concretes;
 using Entity;
+using Entity.concretes;
+using Entity.Concretes;
 
 namespace Business.Concretes
 {
     public class MissingDeclarationManager : IMissingDeclarationService
     {
         private readonly IMissingDeclarationDal _missingDeclarationDal;
+        private readonly IMissingDeclarationImageService _missingDeclarationImageService;
 
-        public MissingDeclarationManager(IMissingDeclarationDal missingDeclarationDal)
+        public MissingDeclarationManager(IMissingDeclarationDal missingDeclarationDal, IMissingDeclarationImageService missingDeclarationImageService)
         {
             _missingDeclarationDal = missingDeclarationDal;
+            _missingDeclarationImageService = missingDeclarationImageService;
         }
 
         [ValidationAspect(typeof(MissingDeclarationValidator))]
@@ -35,6 +40,23 @@ namespace Business.Concretes
         [LogAspect(typeof(FileLogger))]
         public IDataResult<MissingDeclaration> Add(MissingDeclaration missingDeclaration)
         {
+            foreach (var file in missingDeclaration.FormFiles)
+            {
+                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
+                var fileResult = fileHelper.Upload(file);
+                if (fileResult.Success)
+                {
+                    var missingDeclarationImage = new MissingDeclarationImage();
+                    missingDeclaration.Id = 0;
+                    missingDeclarationImage.ImagePath = fileResult.Message.Split("&&")[0];
+                    missingDeclarationImage.PublicId = fileResult.Message.Split("&&")[1];
+                    var result = _missingDeclarationImageService.Add(missingDeclarationImage);
+                    if (!result.Success)
+                    {
+                        return new ErrorDataResult<MissingDeclaration>(null);
+                    }
+                }
+            }
             var data = _missingDeclarationDal.Add(missingDeclaration);
             return new SuccessDataResult<MissingDeclaration>(data);
         }
@@ -46,6 +68,26 @@ namespace Business.Concretes
         [LogAspect(typeof(FileLogger))]
         public IResult Update(MissingDeclaration missingDeclaration)
         {
+            var missingDeclarationList = _missingDeclarationImageService.GetByMissingDeclarationId(missingDeclaration.Id);
+            if (missingDeclaration.FormFiles != null)
+            {
+                for (int i = 0; i < missingDeclaration.FormFiles.Count(); i++)
+                {
+                    var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
+                    var fileResult = fileHelper.Update(missingDeclaration.FormFiles[i], missingDeclarationList.Data[i].ImagePath,
+                        missingDeclarationList.Data[i].PublicId);
+                    var missingDeclarationImage = new MissingDeclarationImage();
+                    missingDeclarationImage.ImagePath = fileResult.Message.Split("&&")[0];
+                    missingDeclarationImage.PublicId = fileResult.Message.Split("&&")[1];
+                    missingDeclarationImage.Id = missingDeclarationList.Data[0].Id;
+                    missingDeclarationImage.MissingDeclarationId = missingDeclaration.Id;
+                    var result = _missingDeclarationImageService.Update(missingDeclarationImage);
+                    if (!result.Success)
+                    {
+                        return new ErrorResult();
+                    }
+                }
+            }
             _missingDeclarationDal.Update(missingDeclaration);
             return new SuccessResult();
         }
@@ -56,6 +98,13 @@ namespace Business.Concretes
         [LogAspect(typeof(FileLogger))]
         public IResult Delete(MissingDeclaration missingDeclaration)
         {
+            var imageList = _missingDeclarationImageService.GetByMissingDeclarationId(missingDeclaration.Id);
+            for (int i = 0; i < imageList.Data.Count; i++)
+            {
+                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
+                fileHelper.Delete(imageList.Data[i].ImagePath, imageList.Data[i].PublicId);
+            }
+
             _missingDeclarationDal.Delete(missingDeclaration);
             return new SuccessResult();
         }

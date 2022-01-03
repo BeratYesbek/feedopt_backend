@@ -40,24 +40,9 @@ namespace Business.Concretes
         //  [SecuredOperation("MissingDeclarationImage.Add,User")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
-        public IResult Add(MissingDeclarationImage missingDeclarationImage, IFormFile[] formFiles)
+        public IResult Add(MissingDeclarationImage missingDeclarationImage)
         {
-            foreach (var file in formFiles)
-            {
-                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
-                var result = fileHelper.Upload(file);
-                if (!result.Success)
-                {
-                    return new ErrorResult(result.Message);
-                }
-
-                // result.message contains image path
-                missingDeclarationImage.ImagePath = result.Message;
-                _missingDeclarationImageDal.Add(missingDeclarationImage);
-                // always must assigned zero to missingDeclarationImageId after saved
-                missingDeclarationImage.Id = 0;
-            }
-
+            _missingDeclarationImageDal.Add(missingDeclarationImage);
             return new SuccessResult();
         }
 
@@ -65,24 +50,9 @@ namespace Business.Concretes
         [SecuredOperation("MissingDeclarationImage.Update,User")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
-        public IResult Update(MissingDeclarationImage[] missingDeclarationImage, IFormFile[] formFiles)
+        public IResult Update(MissingDeclarationImage missingDeclarationImage)
         {
-            for (int i = 0; i < formFiles.Length; i++)
-            {
-            
-                //var result = _cloudinaryService.Upload(formFiles[i], image);
-                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
-                var result = fileHelper.Update(formFiles[i], missingDeclarationImage[i].ImagePath, missingDeclarationImage[i].PublicId);
-                if (!result.Success)
-                {
-                    return new ErrorResult(result.Message);
-                }
-
-                //result.message contains image path
-                missingDeclarationImage[i].ImagePath = result.Message;
-                _missingDeclarationImageDal.Update(missingDeclarationImage[i]);
-            }
-
+            _missingDeclarationImageDal.Update(missingDeclarationImage);
             return new SuccessResult();
         }
 
@@ -90,14 +60,9 @@ namespace Business.Concretes
         [SecuredOperation("MissingDeclarationImage.Delete,User")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
-        public IResult Delete(MissingDeclarationImage[] missingDeclarationImage)
+        public IResult Delete(MissingDeclarationImage missingDeclarationImage)
         {
-            foreach (var image in missingDeclarationImage)
-            {
-                var result = _cloudinaryService.Delete(image.PublicId);
-                _missingDeclarationImageDal.Delete(image);
-            }
-
+            _missingDeclarationImageDal.Delete(missingDeclarationImage);
             return new SuccessResult();
         }
 

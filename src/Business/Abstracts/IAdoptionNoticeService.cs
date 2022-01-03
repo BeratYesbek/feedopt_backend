@@ -19,5 +19,7 @@ namespace Business.Abstracts
         IDataResult<AdoptionNotice> Get(int id);
 
         IDataResult<List<AdoptionNotice>> GetAll();
+
+
     }
 }

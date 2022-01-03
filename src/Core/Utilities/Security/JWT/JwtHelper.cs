@@ -41,7 +41,6 @@ namespace Core.Utilities.Security.JWT
             var jwt = CreateJwtSecurityToken(_tokenOptions, user, signingCredentials, operationClaims);
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var token = jwtSecurityTokenHandler.WriteToken(jwt);
-            Sessions.Sessions.AddSession(token, _accessTokenExpiration.Date.ToString());
             return new AccessToken
             {
                 Token = token,

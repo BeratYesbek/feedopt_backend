@@ -28,12 +28,9 @@ namespace Business.Concretes
     public class AdoptionNoticeImageManager : IAdoptionNoticeImageService
     {
         private readonly IAdoptionNoticeImageDal _adoptionNoticeImageDal;
-        private readonly ICloudinaryService _cloudinaryService;
 
-        public AdoptionNoticeImageManager(IAdoptionNoticeImageDal adoptionNoticeImageDal,
-            ICloudinaryService cloudinaryService)
+        public AdoptionNoticeImageManager(IAdoptionNoticeImageDal adoptionNoticeImageDal)
         {
-            _cloudinaryService = cloudinaryService;
             _adoptionNoticeImageDal = adoptionNoticeImageDal;
         }
 
@@ -42,22 +39,9 @@ namespace Business.Concretes
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
         // [SecuredOperation("AdoptionNotice.Add,User")]
-        public IResult Add(AdoptionNoticeImage adoptionNoticeImage, IFormFile[] formFiles)
+        public IResult Add(AdoptionNoticeImage adoptionNoticeImage)
         {
-            foreach (var file in formFiles)
-            {
-                var fileHelper = new FileHelper(RecordType.Storage, FileExtension.ImageExtension, FolderName.Images);
-                var result = fileHelper.Upload(file);
-                if (!result.Success)
-                {
-                    return new ErrorResult(result.Message);
-                }
-
-                //result.message contains image path
-                adoptionNoticeImage.Id = 0;
-                adoptionNoticeImage.ImagePath = result.Message;
-                _adoptionNoticeImageDal.Add(adoptionNoticeImage);
-            }
+            _adoptionNoticeImageDal.Add(adoptionNoticeImage);
 
             return new SuccessResult();
         }
@@ -65,15 +49,9 @@ namespace Business.Concretes
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
         [SecuredOperation("AdoptionNotice.Delete,User")]
-        public IResult Delete(AdoptionNoticeImage[] adoptionNoticeImages)
+        public IResult Delete(AdoptionNoticeImage adoptionNoticeImages)
         {
-            // delete file in wwwroot and adoptionNoticeImages table
-            foreach (var image in adoptionNoticeImages)
-            {
-                var result = _cloudinaryService.Delete(image.PublicId);
-                _adoptionNoticeImageDal.Delete(image);
-            }
-
+            _adoptionNoticeImageDal.Delete(adoptionNoticeImages);
             return new SuccessResult();
         }
 
@@ -130,24 +108,9 @@ namespace Business.Concretes
         [LogAspect(typeof(FileLogger))]
         [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
         [SecuredOperation("AdoptionNotice.Update,User")]
-        public IResult Update(AdoptionNoticeImage[] adoptionNoticeImage, IFormFile[] formFiles)
+        public IResult Update(AdoptionNoticeImage adoptionNoticeImage)
         {
-
-            for (int i = 0; i < formFiles.Length; i++)
-            {
-                //after this method exchange our files with old files before updating, update table 
-                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
-                var result = fileHelper.Upload(formFiles[i]);
-                if (!result.Success)
-                {
-                    return new ErrorResult(result.Message);
-                }
-
-                //result.message contains image path
-                adoptionNoticeImage[i].ImagePath = result.Message;
-                _adoptionNoticeImageDal.Update(adoptionNoticeImage[i]);
-            }
-
+            _adoptionNoticeImageDal.Update(adoptionNoticeImage);
             return new SuccessResult();
         }
     }

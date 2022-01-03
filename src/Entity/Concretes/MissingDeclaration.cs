@@ -10,10 +10,11 @@ using Core.Entity;
 using Core.Entity.Abstracts;
 using Entity.concretes;
 using Entity.Concretes;
+using Microsoft.AspNetCore.Http;
 
 namespace Entity
 {
-    public class MissingDeclaration : IEntity
+    public class MissingDeclaration : Animal,IEntity
     {
         public int Id { get; set; }
 
@@ -24,5 +25,10 @@ namespace Entity
         public int UserId { get; set; }
 
         public int LocationId { get; set; }
+
+        public int AnimalSpeciesId { get; set; }
+
+        [NotMapped]
+        public IFormFile[] FormFiles { get; set; }
     }
 }

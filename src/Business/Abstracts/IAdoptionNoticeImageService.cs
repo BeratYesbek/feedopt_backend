@@ -11,16 +11,17 @@ namespace Business.Abstracts
 {
     public interface IAdoptionNoticeImageService
     {
-        IResult Add(AdoptionNoticeImage adoptionNoticeImage, IFormFile[] formFiles);
+        IResult Add(AdoptionNoticeImage adoptionNoticeImage);
 
-        IResult Update(AdoptionNoticeImage[] adoptionNoticeImage, IFormFile[] formFiles);
+        IResult Update(AdoptionNoticeImage adoptionNoticeImage);
 
-        IResult Delete(AdoptionNoticeImage[] adoptionNoticeImage);
+        IResult Delete(AdoptionNoticeImage adoptionNoticeImage);
 
         IDataResult<List<AdoptionNoticeImage>> GetByAdoptionNoticeId(int id);
 
         IDataResult<AdoptionNoticeImage> Get(int id);
 
         IDataResult<List<AdoptionNoticeImage>> GetAll();
+
     }
 }

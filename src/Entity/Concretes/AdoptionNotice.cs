@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 using Core.Entity;
 using Core.Entity.Abstracts;
 using Entity.Concretes;
+using Microsoft.AspNetCore.Http;
 
 namespace Entity.concretes
 {
-    public class AdoptionNotice : IEntity
+
+    public class AdoptionNotice : Animal, IEntity
     {
         public int Id { get; set; }
 
@@ -21,7 +23,12 @@ namespace Entity.concretes
 
         public int LocationId { get; set; }
 
-        public int AnimalId { get; set; }
+
+
+        public int AnimalSpeciesId { get; set; }
+
+        [NotMapped]
+        public IFormFile[] FormFiles { get; set; }
 
     }
 }

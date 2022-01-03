@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.Concretes;
-using Entity.ApiEntity;
 using Entity.Concretes;
 using Newtonsoft.Json;
 
@@ -21,55 +20,6 @@ namespace WebApi.Controllers
         public AdoptionNoticeImagesController(IAdoptionNoticeImageService adoptionNoticeImageService)
         {
             _adoptionNoticeImageService = adoptionNoticeImageService;
-        }
-
-        [HttpPost("add")]
-        public IActionResult Add([FromForm] AdoptionNoticeImageApiEntity adoptionNoticeImageApi)
-        {
-            AdoptionNoticeImage[] adoptionNoticeImages = null;
-            if (adoptionNoticeImageApi.AdoptionNoticeImage != null)
-            {
-                adoptionNoticeImages =
-                    JsonConvert.DeserializeObject<AdoptionNoticeImage[]>(adoptionNoticeImageApi.AdoptionNoticeImage);
-            }
-
-            var result = _adoptionNoticeImageService.Add(adoptionNoticeImages[0],
-                adoptionNoticeImageApi.FormFiles);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpPost("update")]
-        public IActionResult Update([FromForm] AdoptionNoticeImageApiEntity adoptionNoticeImageApi)
-        {
-            AdoptionNoticeImage[] adoptionNoticeImages =
-                JsonConvert.DeserializeObject<AdoptionNoticeImage[]>(adoptionNoticeImageApi.AdoptionNoticeImage);
-            var result = _adoptionNoticeImageService.Update(adoptionNoticeImages,
-                adoptionNoticeImageApi.FormFiles);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest();
-        }
-
-        [HttpPost("delete")]
-        public IActionResult Delete(AdoptionNoticeImage[] adoptionNoticeImages)
-        {
-            var result = _adoptionNoticeImageService.Delete(adoptionNoticeImages);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
         }
 
         [HttpGet("getById")]

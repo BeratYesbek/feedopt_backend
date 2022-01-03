@@ -22,7 +22,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(AdoptionNotice adoptionNotice)
+        public IActionResult Add([FromForm] AdoptionNotice adoptionNotice)
         {
             var result = _adoptionNoticeService.Add(adoptionNotice);
 
@@ -35,7 +35,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(AdoptionNotice adoptionNotice)
+        public IActionResult Update([FromForm] AdoptionNotice adoptionNotice)
         {
             var result = _adoptionNoticeService.Update(adoptionNotice);
 

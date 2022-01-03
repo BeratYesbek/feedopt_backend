@@ -242,11 +242,20 @@ namespace DataAccess.Migrations
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
 
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
                     b.Property<int>("AnimalId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("AnimalSpeciesId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("integer");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("integer");
@@ -266,11 +275,17 @@ namespace DataAccess.Migrations
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
 
-                    b.Property<int>("AnimalId")
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("AnimalSpeciesId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("integer");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("integer");
@@ -308,28 +323,12 @@ namespace DataAccess.Migrations
                     b.Property<int>("AnimalCategoryId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Kind")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("AnimalSpecies");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("AnimalSpecies");
-                });
-
-            modelBuilder.Entity("Entity.Concretes.Animal", b =>
-                {
-                    b.HasBaseType("Entity.concretes.AnimalSpecies");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("integer");
-
-                    b.HasDiscriminator().HasValue("Animal");
                 });
 #pragma warning restore 612, 618
         }

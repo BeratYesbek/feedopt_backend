@@ -23,7 +23,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(MissingDeclaration missingDeclaration)
+        public IActionResult Add([FromForm] MissingDeclaration missingDeclaration)
         {
             var result = _missingDeclarationService.Add(missingDeclaration);
             if (result.Success)
@@ -35,7 +35,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(MissingDeclaration missingDeclaration)
+        public IActionResult Update([FromForm] MissingDeclaration missingDeclaration)
         {
             var result = _missingDeclarationService.Update(missingDeclaration);
 

@@ -11,21 +11,24 @@ using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
+using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
 using DataAccess.Concretes;
 using Entity.concretes;
+using Entity.Concretes;
 
 namespace Business.Concretes
 {
     public class AdoptionNoticeManager : IAdoptionNoticeService
     {
         private readonly IAdoptionNoticeDal _adoptionNoticeDal;
-
-        public AdoptionNoticeManager(IAdoptionNoticeDal adoptionNoticeDal)
+        private readonly IAdoptionNoticeImageService _adoptionNoticeImageService;
+        public AdoptionNoticeManager(IAdoptionNoticeDal adoptionNoticeDal, IAdoptionNoticeImageService adoptionNoticeImageService)
         {
             _adoptionNoticeDal = adoptionNoticeDal;
+            _adoptionNoticeImageService = adoptionNoticeImageService;
         }
 
         [LogAspect(typeof(FileLogger))]
@@ -35,6 +38,23 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
         public IDataResult<AdoptionNotice> Add(AdoptionNotice adoptionNotice)
         {
+            foreach (var file in adoptionNotice.FormFiles)
+            {
+                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
+                var fileResult = fileHelper.Upload(file);
+                if (fileResult.Success)
+                {
+                    var adoptionNoticeImage = new AdoptionNoticeImage();
+                    adoptionNoticeImage.AdoptionNoticeId = 0;
+                    adoptionNoticeImage.ImagePath = fileResult.Message.Split("&&")[0];
+                    adoptionNoticeImage.PublicId = fileResult.Message.Split("&&")[1];
+                    var result = _adoptionNoticeImageService.Add(adoptionNoticeImage);
+                    if (!result.Success)
+                    {
+                        return new ErrorDataResult<AdoptionNotice>(null);
+                    }
+                }
+            }
             return new SuccessDataResult<AdoptionNotice>(_adoptionNoticeDal.Add(adoptionNotice));
         }
 
@@ -45,7 +65,29 @@ namespace Business.Concretes
         [ValidationAspect(typeof(AdoptionNoticeValidator))]
         public IResult Update(AdoptionNotice adoptionNotice)
         {
+            var adoptionNoticeImageList = _adoptionNoticeImageService.GetByAdoptionNoticeId(adoptionNotice.Id);
+            if (adoptionNotice.FormFiles != null)
+            {
+                for (int i = 0; i < adoptionNotice.FormFiles.Count(); i++)
+                {
+                    var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
+                    var fileResult = fileHelper.Update(adoptionNotice.FormFiles[i], adoptionNoticeImageList.Data[i].ImagePath,
+                        adoptionNoticeImageList.Data[i].PublicId);
+                    var adoptionNoticeImage = new AdoptionNoticeImage();
+                    adoptionNoticeImage.ImagePath = fileResult.Message.Split("&&")[0];
+                    adoptionNoticeImage.PublicId = fileResult.Message.Split("&&")[1];
+                    adoptionNoticeImage.Id = adoptionNoticeImageList.Data[0].Id;
+                    adoptionNoticeImage.AdoptionNoticeId = adoptionNotice.Id;
+                    var result = _adoptionNoticeImageService.Update(adoptionNoticeImage);
+                    if (!result.Success)
+                    {
+                        return new ErrorResult();
+                    }
+                }
+            }
+
             _adoptionNoticeDal.Update(adoptionNotice);
+
             return new SuccessResult();
         }
 
@@ -55,6 +97,13 @@ namespace Business.Concretes
         [PerformanceAspect(5)]
         public IResult Delete(AdoptionNotice adoptionNotice)
         {
+            var imageList = _adoptionNoticeImageService.GetByAdoptionNoticeId(adoptionNotice.Id);
+            for (int i = 0; i < imageList.Data.Count; i++)
+            {
+                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
+                fileHelper.Delete(imageList.Data[i].ImagePath, imageList.Data[i].PublicId);
+            }
+
             _adoptionNoticeDal.Delete(adoptionNotice);
             return new SuccessResult();
         }
