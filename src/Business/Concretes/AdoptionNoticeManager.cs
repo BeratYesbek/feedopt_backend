@@ -38,6 +38,11 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
         public IDataResult<AdoptionNotice> Add(AdoptionNotice adoptionNotice)
         {
+            var data = _adoptionNoticeDal.Add(adoptionNotice);
+            if (data == null)
+            {
+                return new ErrorDataResult<AdoptionNotice>(null);
+            }
             foreach (var file in adoptionNotice.FormFiles)
             {
                 var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
@@ -45,9 +50,10 @@ namespace Business.Concretes
                 if (fileResult.Success)
                 {
                     var adoptionNoticeImage = new AdoptionNoticeImage();
-                    adoptionNoticeImage.AdoptionNoticeId = 0;
+                    adoptionNoticeImage.Id = 0;
                     adoptionNoticeImage.ImagePath = fileResult.Message.Split("&&")[0];
                     adoptionNoticeImage.PublicId = fileResult.Message.Split("&&")[1];
+                    adoptionNoticeImage.AdoptionNoticeId = data.Id;
                     var result = _adoptionNoticeImageService.Add(adoptionNoticeImage);
                     if (!result.Success)
                     {
@@ -55,7 +61,7 @@ namespace Business.Concretes
                     }
                 }
             }
-            return new SuccessDataResult<AdoptionNotice>(_adoptionNoticeDal.Add(adoptionNotice));
+            return new SuccessDataResult<AdoptionNotice>(data);
         }
 
         [LogAspect(typeof(FileLogger))]

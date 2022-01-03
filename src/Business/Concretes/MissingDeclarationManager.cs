@@ -40,6 +40,11 @@ namespace Business.Concretes
         [LogAspect(typeof(FileLogger))]
         public IDataResult<MissingDeclaration> Add(MissingDeclaration missingDeclaration)
         {
+            var data = _missingDeclarationDal.Add(missingDeclaration);
+            if (data == null)
+            {
+                return new ErrorDataResult<MissingDeclaration>(null);
+            }
             foreach (var file in missingDeclaration.FormFiles)
             {
                 var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
@@ -50,6 +55,7 @@ namespace Business.Concretes
                     missingDeclaration.Id = 0;
                     missingDeclarationImage.ImagePath = fileResult.Message.Split("&&")[0];
                     missingDeclarationImage.PublicId = fileResult.Message.Split("&&")[1];
+                    missingDeclarationImage.MissingDeclarationId = data.Id;
                     var result = _missingDeclarationImageService.Add(missingDeclarationImage);
                     if (!result.Success)
                     {
@@ -57,7 +63,6 @@ namespace Business.Concretes
                     }
                 }
             }
-            var data = _missingDeclarationDal.Add(missingDeclaration);
             return new SuccessDataResult<MissingDeclaration>(data);
         }
 
