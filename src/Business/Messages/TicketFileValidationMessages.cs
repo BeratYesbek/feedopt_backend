@@ -8,6 +8,7 @@ namespace Business.Messages
 {
     public class TicketFileValidationMessages
     {
-
+        public static string TicketFileExtensionMessage =
+            "Invalid extension. Extension must be pdf";
     }
 }

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Business.Messages
 {
-    class AdoptionNoticeImageValidationMessages
+    public class AdoptionNoticeImageValidationMessages
     {
+        public static string AdoptionNoticeImageExtensionMessage =
+            "Invalid extension. Extensions must be jpeg, jpg and png";
     }
 }

@@ -124,6 +124,18 @@
     <value>-------------------------------------------------------------------</value>
     <comment>-------------------------------------------------------------------------------</comment>
   </data>
+  <data name="Animal Category cannot be blank" xml:space="preserve">
+    <value>Hayvan kategorisi boş olamaz</value>
+    <comment>Animal Species Validation Message</comment>
+  </data>
+  <data name="Animal kind cannot be blank" xml:space="preserve">
+    <value>Hayvan türü boş olamaz</value>
+    <comment>Animal Species Validation Message</comment>
+  </data>
+  <data name="Animal kind cannot be less than 2 and grater than 30 character" xml:space="preserve">
+    <value>Hayvan türü ismi 2 karekterden küçük 30 karekterden büyük olamaz</value>
+    <comment>Animal Species Validation Message</comment>
+  </data>
   <data name="Description cannot be blank" xml:space="preserve">
     <value>Açıklama boş olamaz.</value>
     <comment>Adoption Notice Validation Message &amp;&amp; Missing Declaration Validation Message &amp;&amp; Ticket Validation Message</comment>
@@ -140,6 +152,10 @@
     <value>Konum boş olamaz.</value>
     <comment>Adoption Notice Validation Message &amp;&amp; Missing Declaration Validation Message</comment>
   </data>
+  <data name="Message cannot be blank" xml:space="preserve">
+    <value>Mesaj boş olamaz.</value>
+    <comment>Chat Validation Message</comment>
+  </data>
   <data name="Name cannot be blank" xml:space="preserve">
     <value>İsim boş olamaz</value>
     <comment>Animal Category Validation Message</comment>
@@ -147,6 +163,18 @@
   <data name="Name cannot be less 2 character and grater than 20 character" xml:space="preserve">
     <value>İsim 2 karekterden küçük 20 karekterden büyük olamaz.</value>
     <comment>Animal Category Validation Message</comment>
+  </data>
+  <data name="Operation claim cannot be blank" xml:space="preserve">
+    <value>Operasyon türü boş geçilemez</value>
+    <comment>User Operation Claim Validation Message</comment>
+  </data>
+  <data name="Receiver cannot be blank" xml:space="preserve">
+    <value>Alıcı boş olamaz</value>
+    <comment>Chat Validation Message</comment>
+  </data>
+  <data name="Sender cannot be blank" xml:space="preserve">
+    <value>Gönderici boş olamaz</value>
+    <comment>Chat Validation Message</comment>
   </data>
   <data name="Title cannot be blank" xml:space="preserve">
     <value>Başlık boş olamaz</value>
@@ -158,6 +186,6 @@
   </data>
   <data name="User cannot be blank" xml:space="preserve">
     <value>Kullanıcı boş olamaz.</value>
-    <comment>Adoption Notice Validation Message &amp;&amp; Missing Declaration Validation Message &amp;&amp; Ticket Validation Message</comment>
+    <comment>Adoption Notice Validation Message &amp;&amp; Missing Declaration Validation Message &amp;&amp; Ticket Validation Message &amp;&amp; User Operation Claim Validation Message</comment>
   </data>
 </root>

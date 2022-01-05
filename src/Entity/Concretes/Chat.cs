@@ -17,9 +17,9 @@ namespace Entity.Concretes
 
         public string Message { get; set; }
 
-        public bool IsSeen { get; set; }
+        public bool IsSeen { get; set; } = false;
 
-        public  DateTime Date { get; set; }
+        public DateTime Date { get; set; }
     }
 }
 

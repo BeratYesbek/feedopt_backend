@@ -12,7 +12,6 @@ namespace Business.Validation.FluentValidation
     {
         public AdoptionNoticeImageValidator()
         {
-            
         }
     }
 }

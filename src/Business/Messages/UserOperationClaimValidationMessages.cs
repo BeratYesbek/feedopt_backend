@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace Business.Messages
 {
-    class UserOperationClaimValidationMessages
+    public class UserOperationClaimValidationMessages
     {
+        public static string UserOperationClaimsOperationIdEmptyMessage = "Operation claim cannot be blank";
+
+        public static string UserOperationClaimsOperationIdZeroMessage = "Operation claim cannot be zero";
+
+        public static string UserOperationClaimsUserIdEmptyMessage = "User cannot be blank";
+
+
     }
 }
