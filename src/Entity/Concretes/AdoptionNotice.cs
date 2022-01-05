@@ -23,8 +23,6 @@ namespace Entity.concretes
 
         public int LocationId { get; set; }
 
-
-
         public int AnimalSpeciesId { get; set; }
 
         [NotMapped]

@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Business.Messages
 {
-    class AnimalCategoryValidationMessages
+    public class AnimalCategoryValidationMessages
     {
+        public static string AnimalCategoryNameEmptyMessages = "Name cannot be blank";
+        public static string AnimalCategoryNameLengthMessages = "Name cannot be less 2 character and grater than 20 character";
+
     }
 }

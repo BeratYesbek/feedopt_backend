@@ -50,7 +50,7 @@ namespace Core.Extensions
         {
             var message = exception.Message;
             
-            httpContext.Response.Redirect($"{Configuration.GetSection("ErrorsUrl")["ValidationError"]}?culture=fr&message={message}");
+            httpContext.Response.Redirect($"{Configuration.GetSection("ErrorsUrl")["ValidationError"]}?culture=tr&message={message}");
 
         }
 

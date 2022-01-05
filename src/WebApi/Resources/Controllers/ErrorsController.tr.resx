@@ -117,7 +117,47 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Camonnnnnnnnnnnnnn" xml:space="preserve">
-    <value>camon</value>
+  <data name="----------------------------------------------------------------------------" xml:space="preserve">
+    <value>-------------------------------------------------------------------</value>
+  </data>
+  <data name="------------------------------------------------------------------------------" xml:space="preserve">
+    <value>-------------------------------------------------------------------</value>
+    <comment>-------------------------------------------------------------------------------</comment>
+  </data>
+  <data name="Description cannot be blank" xml:space="preserve">
+    <value>Açıklama boş olamaz.</value>
+    <comment>Adoption Notice Validation Message &amp;&amp; Missing Declaration Validation Message &amp;&amp; Ticket Validation Message</comment>
+  </data>
+  <data name="Description cannot be less than 100 character and greater than 500 character" xml:space="preserve">
+    <value>Açıklama 100 karekterden az 500 karekterden fazla olamaz.</value>
+    <comment>Adoption Notice Validation Message &amp;&amp; Missing Declaration Validation Message</comment>
+  </data>
+  <data name="Description cannot be less than 150 character and greater than 600 character" xml:space="preserve">
+    <value>Açıklama 150 karekterden küçük 600 karekterden büyük olamaz</value>
+    <comment>Ticket Validation Message</comment>
+  </data>
+  <data name="Location cannot be blank" xml:space="preserve">
+    <value>Konum boş olamaz.</value>
+    <comment>Adoption Notice Validation Message &amp;&amp; Missing Declaration Validation Message</comment>
+  </data>
+  <data name="Name cannot be blank" xml:space="preserve">
+    <value>İsim boş olamaz</value>
+    <comment>Animal Category Validation Message</comment>
+  </data>
+  <data name="Name cannot be less 2 character and grater than 20 character" xml:space="preserve">
+    <value>İsim 2 karekterden küçük 20 karekterden büyük olamaz.</value>
+    <comment>Animal Category Validation Message</comment>
+  </data>
+  <data name="Title cannot be blank" xml:space="preserve">
+    <value>Başlık boş olamaz</value>
+    <comment>Ticket Validation Message</comment>
+  </data>
+  <data name="Title cannot be less than 10 character and greater than 35 character" xml:space="preserve">
+    <value>Başlık 10 karekterden küçük 35 karekterden büyük olamaz</value>
+    <comment>Ticket Validation Message</comment>
+  </data>
+  <data name="User cannot be blank" xml:space="preserve">
+    <value>Kullanıcı boş olamaz.</value>
+    <comment>Adoption Notice Validation Message &amp;&amp; Missing Declaration Validation Message &amp;&amp; Ticket Validation Message</comment>
   </data>
 </root>

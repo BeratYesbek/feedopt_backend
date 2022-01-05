@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Business.Messages
 {
-    class TicketFileValidationMessages
+    public class TicketFileValidationMessages
     {
+
     }
 }
