@@ -32,7 +32,7 @@ namespace Business.Concretes
         }
 
         //[SecuredOperation("AnimalCategory.Add,Admin")]
-        //[ValidationAspect(typeof(AnimalCategoryValidator))]
+        [ValidationAspect(typeof(AnimalCategoryValidator))]
         /*[LogAspect(typeof(FileLogger))]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [PerformanceAspect(5)]*/

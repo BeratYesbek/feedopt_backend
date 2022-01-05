@@ -28,7 +28,7 @@ namespace Business.Concretes
             _tokenHelper = tokenHelper;
         }
 
-        [MailerAspect(typeof(VerifyEmailMailer), EmailType.VerifyEmail)]
+       // [MailerAspect(typeof(VerifyEmailMailer), EmailType.VerifyEmail)]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -41,6 +41,7 @@ namespace Business.Concretes
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 PhoneNumber = userForRegisterDto.PhoneNumber,
+                PreferredLanguage = userForRegisterDto.PreferredLanguage,
 
                 // change later
                 EmailConfirmed = true,

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Entity.Abstracts;
+using Core.Utilities.Language;
 
 namespace Entity.Dtos
 {
@@ -18,5 +19,8 @@ namespace Entity.Dtos
         public string LastName { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public PreferredLanguage PreferredLanguage { get; set; }
+
     }
 }

@@ -9,6 +9,7 @@ using Business.Abstracts;
 using Business.Concretes;
 using Entity.concretes;
 using System.Globalization;
+using Microsoft.Extensions.Localization;
 
 namespace WebApi.Controllers
 {
@@ -17,10 +18,12 @@ namespace WebApi.Controllers
     public class AnimalCategoriesController : ControllerBase
     {
         private readonly IAnimalCategoryService _animalCategoryService;
+        private readonly IStringLocalizer<AnimalCategoriesController> _localizer;
 
-        public AnimalCategoriesController(IAnimalCategoryService animalCategoryService)
+        public AnimalCategoriesController(IAnimalCategoryService animalCategoryService,IStringLocalizer<AnimalCategoriesController> localizer)
         {
             _animalCategoryService = animalCategoryService;
+            _localizer = localizer;
         }
 
         [HttpPost("add")]
@@ -28,6 +31,7 @@ namespace WebApi.Controllers
         {
 
             var result = _animalCategoryService.Add(animalCategory);
+            result.Message = _localizer[result.Message].Value;
             if (result.Success)
             {
                 return Ok(result);

@@ -5,19 +5,25 @@ using System.Net;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
+using CloudinaryDotNet;
 using Core.CustomExceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Localization;
 
 namespace Core.Extensions
 {
     public class ExceptionMiddleware
     {
-        private readonly RequestDelegate _requestDelegate;
 
-        public ExceptionMiddleware(RequestDelegate requestDelegate)
+        private readonly RequestDelegate _requestDelegate;
+        private  IConfiguration Configuration { get; }
+
+        public ExceptionMiddleware(RequestDelegate requestDelegate, IConfiguration configuration)
         {
             _requestDelegate = requestDelegate;
+            Configuration = configuration;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
@@ -28,14 +34,30 @@ namespace Core.Extensions
             }
             catch (Exception exception)
             {
-                await HandleExceptionAsync(httpContext, exception);
+                if (exception.GetType() == typeof(ValidationException))
+                {
+                    ThrowValidationException(httpContext, exception);
+                }
+                else
+                {
+                    await HandleExceptionAsync(httpContext, exception);
+
+                }
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext httpContext,Exception exception)
+        private void ThrowValidationException(HttpContext httpContext, Exception exception)
+        {
+            var message = exception.Message;
+            
+            httpContext.Response.Redirect($"{Configuration.GetSection("ErrorsUrl")["ValidationError"]}?culture=fr&message={message}");
+
+        }
+
+        private Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
         {
             httpContext.Response.ContentType = "application/json";
-            httpContext.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+            httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
             string message = "Internal Server Error";
             if (exception.GetType() == typeof(ValidationException))
@@ -45,7 +67,7 @@ namespace Core.Extensions
             else if (exception.GetType() == typeof(AuthenticationFailedException) || exception.GetType() == typeof(AuthenticationException))
             {
                 message = exception.Message;
-                httpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
 
             }
 

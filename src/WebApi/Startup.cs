@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using CloudinaryDotNet;
 using Microsoft.AspNetCore.Builder;
@@ -19,6 +21,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Session;
 using Microsoft.EntityFrameworkCore;
 using CloudinaryDotNet.Actions;
+using Core.Utilities.Language;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Extensions.Options;
 using WebApi.Config;
 using WebApi.SignalR;
 
@@ -43,6 +48,7 @@ namespace WebApi
 
 
             services.AddDbContext<NervioDbContext>();
+
             services.AddScoped<IConfig, Config.Config>();
 
             services.AddSignalR();
@@ -86,7 +92,7 @@ namespace WebApi
             }));
 
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebApi", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" }); });
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
@@ -98,6 +104,12 @@ namespace WebApi
             services.AddControllersWithViews();
 
             services.AddMvcCore();
+
+            /// Globalization and Localization
+            services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
+            services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
 
             services.AddDependencyResolvers(new ICoreModule[]
             {
@@ -111,7 +123,7 @@ namespace WebApi
         public void Configure(IApplicationBuilder app, IConfig config)
         {
             // this method will be set our configuration
-             config.Run();
+            config.Run();
 
             app.UseDeveloperExceptionPage();
 
@@ -133,11 +145,20 @@ namespace WebApi
 
             app.UseAuthorization();
 
+            var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(Language.SupportedLanguage[0])
+                .AddSupportedCultures(Language.SupportedLanguage)
+                .AddSupportedUICultures(Language.SupportedLanguage);
+
+            app.UseRequestLocalization(localizationOptions);
+
+
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<NotificationHub>("/notificationHub");
+                endpoints.MapHub<NotificationHub>("/chatHub");
+
             });
         }
     }
