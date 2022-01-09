@@ -184,8 +184,20 @@
     <value>Başlık 10 karekterden küçük 35 karekterden büyük olamaz</value>
     <comment>Ticket Validation Message</comment>
   </data>
+  <data name="Token expire is up" xml:space="preserve">
+    <value>Token süreniz dolmuş</value>
+    <comment>Authorization Message</comment>
+  </data>
   <data name="User cannot be blank" xml:space="preserve">
     <value>Kullanıcı boş olamaz.</value>
     <comment>Adoption Notice Validation Message &amp;&amp; Missing Declaration Validation Message &amp;&amp; Ticket Validation Message &amp;&amp; User Operation Claim Validation Message</comment>
+  </data>
+  <data name="You are not authenticated. You need to sign in" xml:space="preserve">
+    <value>Kimliğiniz doğrulanmadı. Oturum açmanız gerekiyor</value>
+    <comment>Authentication Message</comment>
+  </data>
+  <data name="You have no authorization" xml:space="preserve">
+    <value>Yetkiniz yok</value>
+    <comment>Authorization Message</comment>
   </data>
 </root>

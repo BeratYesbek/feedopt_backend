@@ -121,6 +121,9 @@ namespace Business.Concretes
         [LogAspect(typeof(FileLogger))]
         public IDataResult<List<ChatDto>> GetAllLastMessages(int id)
         {
+
+
+
             var data = _chatDal.GetAllLastMessages(c => c.ReceiverId == id || c.SenderId == id, id);
 
             if (data.Count > 0)

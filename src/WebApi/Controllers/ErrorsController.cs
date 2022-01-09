@@ -21,7 +21,6 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("validationException")]
-       
         public IActionResult ValidationException(string message)
         {
             var splittedMessages = message.Split("*");
