@@ -11,18 +11,18 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TicketsController : ControllerBase
+    public class SupportsController : ControllerBase
     {
-        private readonly ITicketService _ticketService;
-        public TicketsController(ITicketService ticketService)
+        private readonly ISupportService _supportService;
+        public SupportsController(ISupportService supportService)
         {
-            _ticketService = ticketService;
+            _supportService = supportService;
         }
 
         [HttpPost("Add")]
-        public IActionResult Add([FromForm] Ticket ticket)
+        public IActionResult Add([FromForm] Support ticket)
         {
-            var result =_ticketService.Add(ticket);
+            var result = _supportService.Add(ticket);
             if (result.Success)
             {
                 return Ok(result);

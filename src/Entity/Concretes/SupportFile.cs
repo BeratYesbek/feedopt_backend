@@ -7,7 +7,7 @@ using Core.Entity.Abstracts;
 
 namespace Entity.Concretes
 {
-    public class TicketFile : IEntity
+    public class SupportFile : IEntity
     {
         public int Id { get; set; }
 
@@ -17,17 +17,17 @@ namespace Entity.Concretes
 
         public int TicketId { get; set; }
 
-        public TicketFile()
+        public SupportFile()
         {
 
         }
 
-        public TicketFile(int id,string fileUrl,string publicId,int ticketId):this(fileUrl, publicId, ticketId)
+        public SupportFile(int id,string fileUrl,string publicId,int ticketId):this(fileUrl, publicId, ticketId)
         {
             Id = id;
         }
 
-        public TicketFile(string fileUrl, string publicId, int ticketId)
+        public SupportFile(string fileUrl, string publicId, int ticketId)
         {
             FileUrl = fileUrl;
             PublicId = publicId;

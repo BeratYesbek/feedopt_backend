@@ -18,32 +18,32 @@ using Entity.Concretes;
 
 namespace Business.Concretes
 {
-    public class TicketFileManager : ITicketFileService
+    public class SupportFileManager : ISupportFileService
     {
         private readonly ITicketFileDal _ticketFileDal;
 
-        public TicketFileManager(ITicketFileDal ticketFileDal)
+        public SupportFileManager(ITicketFileDal ticketFileDal)
         {
             _ticketFileDal = ticketFileDal;
         }
 
         //[SecuredOperation("TicketFile.Add,User")]
-        [ValidationAspect(typeof(TicketFileValidator))]
+        [ValidationAspect(typeof(SupportFileValidator))]
         [CacheRemoveAspect("ITicketFileService.GetAll")]
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        public IDataResult<TicketFile> Add(TicketFile ticketFile)
+        public IDataResult<SupportFile> Add(SupportFile ticketFile)
         {
             var data = _ticketFileDal.Add(ticketFile);
-            return new SuccessDataResult<TicketFile>(data);
+            return new SuccessDataResult<SupportFile>(data);
         }
 
         [SecuredOperation("TicketFile.Update,User")]
-        [ValidationAspect(typeof(TicketFileValidator))]
+        [ValidationAspect(typeof(SupportFileValidator))]
         [CacheRemoveAspect("ITicketFileService.GetAll")]
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        public IResult Update(TicketFile ticketFile)
+        public IResult Update(SupportFile ticketFile)
         {
             _ticketFileDal.Update(ticketFile);
             return new SuccessResult();
@@ -53,7 +53,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("ITicketFileService.GetAll")]
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        public IResult Delete(TicketFile ticketFile)
+        public IResult Delete(SupportFile ticketFile)
         {
             _ticketFileDal.Delete(ticketFile);
             return new SuccessResult();
@@ -63,15 +63,15 @@ namespace Business.Concretes
         [CacheAspect]
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        public IDataResult<TicketFile> Get(int id)
+        public IDataResult<SupportFile> Get(int id)
         {
             var data = _ticketFileDal.Get(t => t.Id == id);
             if (data != null)
             {
-                return new SuccessDataResult<TicketFile>(data);
+                return new SuccessDataResult<SupportFile>(data);
             }
 
-            return new ErrorDataResult<TicketFile>(null);
+            return new ErrorDataResult<SupportFile>(null);
         }
 
 
@@ -79,15 +79,15 @@ namespace Business.Concretes
         [CacheAspect]
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        public IDataResult<List<TicketFile>> GetAll()
+        public IDataResult<List<SupportFile>> GetAll()
         {
             var data = _ticketFileDal.GetAll();
             if (data.Count > 0)
             {
-                return new SuccessDataResult<List<TicketFile>>(data);
+                return new SuccessDataResult<List<SupportFile>>(data);
             }
 
-            return new ErrorDataResult<List<TicketFile>>(null);
+            return new ErrorDataResult<List<SupportFile>>(null);
         }
     }
 }

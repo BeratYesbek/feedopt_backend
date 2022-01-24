@@ -9,7 +9,7 @@ using Entity.Concretes;
 
 namespace DataAccess.Concretes
 {
-    public class EfTicketFileDal : EfEntityRepositoryBase<TicketFile, NervioDbContext>, ITicketFileDal
+    public class EfTicketFileDal : EfEntityRepositoryBase<SupportFile, NervioDbContext>, ITicketFileDal
     {
     }
 }

@@ -9,9 +9,9 @@ using FluentValidation;
 
 namespace Business.Validation.FluentValidation
 {
-    public class TicketValidator : AbstractValidator<Ticket>
+    public class SupportValidator : AbstractValidator<Support>
     {
-        public TicketValidator()
+        public SupportValidator()
         {
             RuleFor(t => t.Description).NotEmpty()
                 .WithMessage(TicketValidationMessages.TicketEmptyDescriptionMessage);

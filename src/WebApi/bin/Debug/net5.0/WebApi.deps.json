@@ -325,9 +325,6 @@
           "WebApi.dll": {}
         },
         "resources": {
-          "en/WebApi.resources.dll": {
-            "locale": "en"
-          },
           "tr/WebApi.resources.dll": {
             "locale": "tr"
           }

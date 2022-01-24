@@ -9,11 +9,11 @@ using Core.Utilities.Mailer;
 
 namespace Business.BusinessMailer
 {
-    public class TicketEmailMailer : IMailer
+    public class SupportEmailMailer : IMailer
     {
         private static readonly string _currentDirectory = $"{Environment.CurrentDirectory}\\wwwroot\\static\\mailer\\";
-        private const string _ticketInfoEmailHtmlPage = "TicketAnswerEmail.cshtml";
-        private const string _ticketAnswerEmailHtmlPage = "TicketInfoEmail.cshtml";
+        private const string _ticketInfoEmailHtmlPage = "SupportAnswerEmail.cshtml";
+        private const string _ticketAnswerEmailHtmlPage = "SupportInfoEmail.cshtml";
 
 
         public void SendEmail(EmailType emailType, User user)

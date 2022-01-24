@@ -8,7 +8,7 @@ using FluentValidation;
 
 namespace Business.Validation.FluentValidation
 {
-    public class TicketFileValidator : AbstractValidator<TicketFile>
+    public class SupportFileValidator : AbstractValidator<SupportFile>
     {
     }
 }

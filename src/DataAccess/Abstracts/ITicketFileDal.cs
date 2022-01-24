@@ -9,7 +9,7 @@ using Entity.Concretes;
 
 namespace DataAccess.Abstracts
 {
-    public interface ITicketFileDal :  IEntityRepository<TicketFile>
+    public interface ITicketFileDal :  IEntityRepository<SupportFile>
     {
     }
 }

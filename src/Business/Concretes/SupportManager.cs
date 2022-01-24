@@ -23,11 +23,11 @@ using Entity.Concretes;
 
 namespace Business.Concretes
 {
-    public class TicketManager : ITicketService
+    public class SupportManager : ISupportService
     {
         private readonly ITicketDal _ticketDal;
-        private readonly ITicketFileService _ticketFileService;
-        public TicketManager(ITicketDal ticketDal, ITicketFileService ticketFileService)
+        private readonly ISupportFileService _ticketFileService;
+        public SupportManager(ITicketDal ticketDal, ISupportFileService ticketFileService)
         {
             _ticketDal = ticketDal;
             _ticketFileService = ticketFileService;
@@ -35,12 +35,12 @@ namespace Business.Concretes
 
 
         //[SecuredOperation("Ticket.Add,User")]
-        [ValidationAspect(typeof(TicketValidator))]
-        [CacheRemoveAspect("ITicketService.GetAll")]
+        [ValidationAspect(typeof(SupportValidator))]
+        [CacheRemoveAspect("ISupportFileService.GetAll")]
         [LogAspect(typeof(FileLogger))]
-        [MailerAspect(typeof(TicketEmailMailer), EmailType.TicketEmail)]
+        [MailerAspect(typeof(SupportEmailMailer), EmailType.TicketEmail)]
         [PerformanceAspect(5)]
-        public IDataResult<Ticket> Add(Ticket ticket)
+        public IDataResult<Support> Add(Support ticket)
         {
             var data = _ticketDal.Add(ticket);
             foreach (var file in ticket.FormFiles)
@@ -49,69 +49,69 @@ namespace Business.Concretes
                 var result = formFiles.Upload(file);
                 if (!result.Success)
                 {
-                    return new ErrorDataResult<Ticket>(null, result.Message);
+                    return new ErrorDataResult<Support>(null, result.Message);
                 }
 
                 // result.message contains fileUrl and publicId
                 var fileUrl = result.Message.Split("&&")[0];
                 var publicId = result.Message.Split("&&")[1];
-                var ticketFile = new TicketFile(fileUrl, publicId, data.Id);
+                var ticketFile = new SupportFile(fileUrl, publicId, data.Id);
                 _ticketFileService.Add(ticketFile);
             }
 
-            return new SuccessDataResult<Ticket>(data);
+            return new SuccessDataResult<Support>(data);
         }
 
-        [SecuredOperation("Ticket.Update,User")]
-        [ValidationAspect(typeof(TicketValidator))]
-        [CacheRemoveAspect("ITicketService.GetAll")]
+        [SecuredOperation("Support.Update,User")]
+        [ValidationAspect(typeof(SupportValidator))]
+        [CacheRemoveAspect("ISupportFileService.GetAll")]
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        public IResult Update(Ticket ticket)
+        public IResult Update(Support ticket)
         {
             _ticketDal.Update(ticket);
             return new SuccessResult();
         }
 
-        [SecuredOperation("Ticket.Delete,User")]
-        [CacheRemoveAspect("ITicketService.GetAll")]
+        [SecuredOperation("Support.Delete,User")]
+        [CacheRemoveAspect("ISupportFileService.GetAll")]
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        public IResult Delete(Ticket ticket)
+        public IResult Delete(Support ticket)
         {
             _ticketDal.Delete(ticket);
             return new SuccessResult();
         }
 
 
-        [SecuredOperation("Ticket.Get,User")]
+        [SecuredOperation("Support.Get,User")]
         [CacheAspect]
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        public IDataResult<Ticket> Get(int id)
+        public IDataResult<Support> Get(int id)
         {
             var data = _ticketDal.Get(t => t.Id == id);
             if (data != null)
             {
-                return new SuccessDataResult<Ticket>(data);
+                return new SuccessDataResult<Support>(data);
             }
 
-            return new ErrorDataResult<Ticket>(null);
+            return new ErrorDataResult<Support>(null);
         }
 
-        [SecuredOperation("Ticket.GetAll,User")]
+        [SecuredOperation("Support.GetAll,User")]
         [CacheAspect]
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        public IDataResult<List<Ticket>> GetAll()
+        public IDataResult<List<Support>> GetAll()
         {
             var data = _ticketDal.GetAll();
             if (data.Count > 0)
             {
-                return new SuccessDataResult<List<Ticket>>(data);
+                return new SuccessDataResult<List<Support>>(data);
             }
 
-            return new ErrorDataResult<List<Ticket>>(null);
+            return new ErrorDataResult<List<Support>>(null);
         }
     }
 }

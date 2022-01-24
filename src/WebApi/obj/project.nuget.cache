@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "I+BGGfnhgQ90+jZnRKSh9TeONHv2N3MwHuaI4sjI3MWdgzm8U3LhHyffUMEnrnow309AxG9PTHJ44X/DvfJ6Zg==",
+  "dgSpecHash": "VDZYKdQj0aqATLsvkV4iVTJxtKYoyVHB/UTKEZVQuPd8ClmHkBUf0PeEV7si06eWMRsFCDfRDw3vlgLWyFEA2w==",
   "success": true,
   "projectFilePath": "C:\\Users\\berat\\source\\repos\\nervio_backend\\src\\WebApi\\WebApi.csproj",
   "expectedPackageFiles": [
@@ -240,7 +240,11 @@
     "C:\\Users\\berat\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\berat\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\berat\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\berat\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
+    "C:\\Users\\berat\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
+    "C:\\Users\\berat\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.13\\microsoft.netcore.app.host.win-x64.5.0.13.nupkg.sha512",
+    "C:\\Users\\berat\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\5.0.0\\microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\berat\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\5.0.0\\microsoft.windowsdesktop.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\berat\\.nuget\\packages\\microsoft.netcore.app.ref\\5.0.0\\microsoft.netcore.app.ref.5.0.0.nupkg.sha512"
   ],
   "logs": [
     {

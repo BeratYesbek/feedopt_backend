@@ -9,16 +9,16 @@ using Entity.Concretes;
 
 namespace Business.Abstracts
 {
-    public interface ITicketService 
+    public interface ISupportService 
     {
-        IDataResult<Ticket> Add(Ticket ticket);
+        IDataResult<Support> Add(Support ticket);
 
-        IResult Update(Ticket ticket);
+        IResult Update(Support ticket);
 
-        IResult Delete(Ticket ticket);
+        IResult Delete(Support ticket);
 
-        IDataResult<Ticket> Get(int id);
+        IDataResult<Support> Get(int id);
 
-        IDataResult<List<Ticket>> GetAll();
+        IDataResult<List<Support>> GetAll();
     }
 }
