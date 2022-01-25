@@ -151,9 +151,9 @@ namespace Business.Concretes
         [PerformanceAspect(5)]
         [SecuredOperation("MissingDeclaration.GetAllAdoptionNoticeDetail,User")]
         [LogAspect(typeof(FileLogger))]
-        public IDataResult<List<MissingDeclarationDto>> GetAllMissingDeclarationDetail()
+        public IDataResult<List<MissingDeclarationDto>> GetAllMissingDeclarationDetail(int pageNumber)
         {
-            var data = _missingDeclarationDal.GetAllMissingDeclarationsDetail();
+            var data = _missingDeclarationDal.GetAllMissingDeclarationsDetail(pageNumber);
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<MissingDeclarationDto>>(data);

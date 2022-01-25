@@ -13,7 +13,7 @@ namespace DataAccess.Concretes
 {
     public class EfMissingDeclarationDal : EfEntityRepositoryBase<MissingDeclaration, NervioDbContext>, IMissingDeclarationDal
     {
-        public List<MissingDeclarationDto> GetAllMissingDeclarationsDetail()
+        public List<MissingDeclarationDto> GetAllMissingDeclarationsDetail(int pageNumber, int pageSize = 20)
         {
             using (NervioDbContext context = new NervioDbContext())
             {
@@ -26,11 +26,11 @@ namespace DataAccess.Concretes
                                  AnimalSpecies = animalSpecies
 
                              };
-                return result.ToList();
+                return result.Skip(pageNumber * pageSize).Take(pageSize).ToList();
             }
         }
 
-        public List<MissingDeclarationDto> GetMissingDeclarationsDetailByFilter(Expression<Func<MissingDeclaration, bool>> filter)
+        public List<MissingDeclarationDto> GetMissingDeclarationsDetailByFilter(Expression<Func<MissingDeclaration, bool>> filter, int pageNumber, int pageSize = 10)
         {
             using (NervioDbContext context = new NervioDbContext())
             {
@@ -43,7 +43,7 @@ namespace DataAccess.Concretes
                                  AnimalSpecies = animalSpecies
 
                              };
-                return result.ToList();
+                return result.Skip(pageNumber * pageSize).Take(pageSize).ToList();
             }
         }
 

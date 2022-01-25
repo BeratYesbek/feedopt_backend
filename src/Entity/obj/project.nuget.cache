@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "h+IP8bIHxHEJGEeVvLtuPs6iDHN4cWDLbmkOLzWBTV0bmLjK25w/4q0OVvhWyBtvszvLpjQAnYaN2jnzuMl4IA==",
+  "dgSpecHash": "2ICESw/fTP4NEbrYSFbcS2kGN4hRzMFBaNAgvwkigW6OhifE5p5mzpL34AjUYYxMMedEPgynqTZD6UQR/10RDw==",
   "success": true,
   "projectFilePath": "C:\\Users\\berat\\source\\repos\\nervio_backend\\src\\Entity\\Entity.csproj",
   "expectedPackageFiles": [
@@ -181,10 +181,7 @@
     "C:\\Users\\berat\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
     "C:\\Users\\berat\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\berat\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\berat\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\berat\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\5.0.0\\microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
-    "C:\\Users\\berat\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\5.0.0\\microsoft.windowsdesktop.app.ref.5.0.0.nupkg.sha512",
-    "C:\\Users\\berat\\.nuget\\packages\\microsoft.netcore.app.ref\\5.0.0\\microsoft.netcore.app.ref.5.0.0.nupkg.sha512"
+    "C:\\Users\\berat\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512"
   ],
   "logs": [
     {

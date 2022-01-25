@@ -14,25 +14,23 @@ namespace DataAccess.Concretes
 {
     public class EfAdoptionNoticeDal : EfEntityRepositoryBase<AdoptionNotice, NervioDbContext>, IAdoptionNoticeDal
     {
-        public List<AdoptionNoticeDto> GetAllAdoptionNoticeDetail()
+        public List<AdoptionNoticeDto> GetAllAdoptionNoticeDetail(int pageNumber,int pageSize = 20)
         {
             using (NervioDbContext context = new NervioDbContext())
             {
-                var result = from adoption in context.AdoptionNotices
-                             join animalSpecies in context.AnimalSpecies on adoption.AnimalSpeciesId equals animalSpecies.Id
-                             select new AdoptionNoticeDto
-                             {
-                                 AdoptionNotice = adoption,
-                                 AdoptionNoticeImage = (from image in context.AdoptionNoticeImages where adoption.Id == image.AdoptionNoticeId select image).ToArray(),
-                                 AnimalSpecies = animalSpecies
-
-                             };
-                return result.ToList();
+                var result = from adoption in context.AdoptionNotices 
+                    join animalSpecies in context.AnimalSpecies on adoption.AnimalSpeciesId equals animalSpecies.Id
+                    select new AdoptionNoticeDto
+                    {
+                        AdoptionNotice = adoption,
+                        AdoptionNoticeImage = (from image in context.AdoptionNoticeImages where adoption.Id == image.AdoptionNoticeId select image).ToArray(),
+                        AnimalSpecies = null
+                    };
+                return result.Skip(pageNumber * pageSize).Take(pageSize).ToList();
             }
-
         }
 
-        public List<AdoptionNoticeDto> GetAdoptionNoticeDetailsByFilter(Expression<Func<AdoptionNotice, bool>> filter)
+        public List<AdoptionNoticeDto> GetAdoptionNoticeDetailsByFilter(Expression<Func<AdoptionNotice, bool>> filter, int pageNumber, int pageSize = 10)
         {
             using (NervioDbContext context = new NervioDbContext())
             {
@@ -45,7 +43,7 @@ namespace DataAccess.Concretes
                                  AnimalSpecies = animalSpecies
 
                              };
-                return result.ToList();
+                return result.Skip(pageNumber * pageSize).Take(pageSize).ToList();
             }
         }
 

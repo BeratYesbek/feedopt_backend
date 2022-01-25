@@ -22,7 +22,7 @@ namespace Business.Abstracts
 
         IDataResult<List<AdoptionNotice>> GetAll();
 
-        IDataResult<List<AdoptionNoticeDto>> GetAllAdoptionNoticeDetail();
+        IDataResult<List<AdoptionNoticeDto>> GetAllAdoptionNoticeDetail(int pageNumber);
 
         IDataResult<AdoptionNoticeDto> GetAdoptionNoticeDetailById(int id);
 

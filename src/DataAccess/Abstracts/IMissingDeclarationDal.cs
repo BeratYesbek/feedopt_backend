@@ -12,8 +12,8 @@ namespace DataAccess.Abstracts
 {
     public interface IMissingDeclarationDal : IEntityRepository<MissingDeclaration>
     {
-        List<MissingDeclarationDto> GetAllMissingDeclarationsDetail();
-        List<MissingDeclarationDto> GetMissingDeclarationsDetailByFilter(Expression<Func<MissingDeclaration, bool>> filter);
+        List<MissingDeclarationDto> GetAllMissingDeclarationsDetail(int pageNumber, int pageSize = 20);
+        List<MissingDeclarationDto> GetMissingDeclarationsDetailByFilter(Expression<Func<MissingDeclaration, bool>> filter, int pageNumber, int pageSize = 10);
         MissingDeclarationDto GetMissingDeclarationDetailById(int id);
     }
 }

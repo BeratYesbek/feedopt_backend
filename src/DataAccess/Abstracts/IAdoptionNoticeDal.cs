@@ -12,8 +12,8 @@ namespace DataAccess.Abstracts
 {
     public interface IAdoptionNoticeDal : IEntityRepository<AdoptionNotice>
     {
-        List<AdoptionNoticeDto> GetAllAdoptionNoticeDetail();
-        List<AdoptionNoticeDto> GetAdoptionNoticeDetailsByFilter(Expression<Func<AdoptionNotice, bool>> filter);
+        List<AdoptionNoticeDto> GetAllAdoptionNoticeDetail(int pageNumber, int pageSize = 20);
+        List<AdoptionNoticeDto> GetAdoptionNoticeDetailsByFilter(Expression<Func<AdoptionNotice, bool>> filter, int pageNumber, int pageSize = 10);
         AdoptionNoticeDto GetAdoptionNoticeDetailById(int id);
 
     }

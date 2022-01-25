@@ -90,9 +90,9 @@ namespace WebApi.Controllers
 
 
         [HttpGet("getAllMissingDeclarationDetail")]
-        public IActionResult GetAllMissingDeclarationDetail()
+        public IActionResult GetAllMissingDeclarationDetail(int pageNumber)
         {
-            var result = _missingDeclarationService.GetAllMissingDeclarationDetail();
+            var result = _missingDeclarationService.GetAllMissingDeclarationDetail(pageNumber);
             if (result.Success)
             {
                 return Ok(result);

@@ -87,9 +87,9 @@ namespace WebApi.Controllers
         }
 
        [HttpGet("getAllAdoptionNoticeDetail")]
-        public IActionResult GetAllAdoptionNoticeDetail()
+        public IActionResult GetAllAdoptionNoticeDetail(int pageNumber)
         {
-            var result = _adoptionNoticeService.GetAllAdoptionNoticeDetail();
+            var result = _adoptionNoticeService.GetAllAdoptionNoticeDetail(pageNumber);
 
             if (result.Success)
             {

@@ -138,8 +138,8 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("AdoptionNotice.GetAll,User")]
-        [CacheAspect]
+        //[SecuredOperation("AdoptionNotice.GetAll,User")]
+       // [CacheAspect]
         public IDataResult<List<AdoptionNotice>> GetAll()
         {
             var data = _adoptionNoticeDal.GetAll();
@@ -151,13 +151,13 @@ namespace Business.Concretes
             return new ErrorDataResult<List<AdoptionNotice>>(null);
         }
 
-        [CacheAspect]
+     //   [CacheAspect]
         [PerformanceAspect(5)]
         //[SecuredOperation("AdoptionNotice.GetAllAdoptionNoticeDetail,User")]
         [CacheAspect]
-        public IDataResult<List<AdoptionNoticeDto>> GetAllAdoptionNoticeDetail()
+        public IDataResult<List<AdoptionNoticeDto>> GetAllAdoptionNoticeDetail(int pageNumber)
         {
-            var data = _adoptionNoticeDal.GetAllAdoptionNoticeDetail();
+            var data = _adoptionNoticeDal.GetAllAdoptionNoticeDetail(pageNumber);
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<AdoptionNoticeDto>>(data);

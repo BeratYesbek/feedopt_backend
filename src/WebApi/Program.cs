@@ -23,6 +23,8 @@ namespace WebApi
         {
             var host = CreateHostBuilder(args).Build();
             host.Run();
+
+            
          
         }
 

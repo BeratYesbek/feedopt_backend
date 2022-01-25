@@ -24,7 +24,7 @@ namespace Business.Abstracts
 
         IDataResult<List<MissingDeclaration>> GetAll();
 
-        IDataResult<List<MissingDeclarationDto>> GetAllMissingDeclarationDetail();
+        IDataResult<List<MissingDeclarationDto>> GetAllMissingDeclarationDetail(int pageNumber);
 
         IDataResult<MissingDeclarationDto> GetMissingDeclarationDetailById(int id);
     }
