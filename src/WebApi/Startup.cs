@@ -105,7 +105,7 @@ namespace WebApi
 
             services.AddMvcCore();
 
-            /// Globalization and Localization
+            //Globalization and Localization
             services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
             services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();

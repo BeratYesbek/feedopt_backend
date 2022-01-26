@@ -27,7 +27,7 @@ namespace WebApi.Controllers
             var errorList = new List<string>();
             foreach (var splittedMessage in splittedMessages)
             {
-                errorList.Add(_localizer[splittedMessage]);
+                errorList.Add(_localizer[splittedMessage].Value);
             }
             errorList.RemoveAt(0);
             return BadRequest(new ErrorDetails

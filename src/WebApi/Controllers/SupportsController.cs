@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Entity.Concretes;
+using Microsoft.Extensions.Localization;
 
 namespace WebApi.Controllers
 {
@@ -14,9 +15,12 @@ namespace WebApi.Controllers
     public class SupportsController : ControllerBase
     {
         private readonly ISupportService _supportService;
-        public SupportsController(ISupportService supportService)
+        private readonly IStringLocalizer<SupportsController> _localizer;
+
+        public SupportsController(ISupportService supportService, IStringLocalizer<SupportsController> localizer)
         {
             _supportService = supportService;
+            _localizer = localizer;
         }
 
         [HttpPost("Add")]
@@ -30,6 +34,13 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
 
+        }
+
+        [HttpGet("get")]
+        public IActionResult Get()
+        {
+            var message = _localizer["Hello"].Value;
+            return Ok(message);
         }
     }
 }

@@ -49,8 +49,9 @@ namespace Core.Extensions
         private void ThrowValidationException(HttpContext httpContext, Exception exception)
         {
             var message = exception.Message;
-            
-            httpContext.Response.Redirect($"{Configuration.GetSection("ErrorsUrl")["ValidationError"]}?culture=tr&message={message}");
+            var t = Configuration.GetSection("ErrorsUrl")["ValidationError"];
+            Uri redirectURI = new Uri($"{Configuration.GetSection("ErrorsUrl")["ValidationError"]}?&message={message}");
+            httpContext.Response.Redirect(redirectURI.AbsoluteUri);
 
         }
 

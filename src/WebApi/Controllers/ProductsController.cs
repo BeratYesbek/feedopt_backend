@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Business.Abstracts;
 using Core.Utilities.Result.Abstracts;
 using Entity.Concretes;
+using Microsoft.Extensions.Localization;
 
 namespace WebApi.Controllers
 {
@@ -15,26 +16,31 @@ namespace WebApi.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
+        private readonly IStringLocalizer<ProductsController> _localizer;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IProductService productService, IStringLocalizer<ProductsController> localizer)
         {
             _productService = productService;
+            _localizer = localizer;
+            
         }
 
         [HttpPost("add")]
-        private IActionResult Add(Product product)
+        public IActionResult Add(Product product)
         {
-            var result = _productService.Add(product);
+
+            return Ok(_localizer["Hello"]);
+            /*var result = _productService.Add(product);
             if (result.Success)
             {
                 return Ok(result);
             }
 
-            return BadRequest(result);
+            return BadRequest(result);*/
         }
 
         [HttpPost("update")]
-        private IActionResult Update(Product product)
+        public IActionResult Update(Product product)
         {
             var result = _productService.Update(product);
             if (result.Success)
@@ -46,7 +52,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("Delete")]
-        private IActionResult Delete(Product product)
+        public IActionResult Delete(Product product)
         {
             var result = _productService.Delete(product);
             if (result.Success)
@@ -58,7 +64,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getById")]
-        private IActionResult GetById(int id)
+        public IActionResult GetById(int id)
         {
             var result = _productService.Get(id);
             if (result.Success)
@@ -70,7 +76,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getAll")]
-        private IActionResult GetAll()
+        public IActionResult GetAll()
         {
             var result = _productService.GetAll();
             if (result.Success)
