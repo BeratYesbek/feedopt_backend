@@ -27,7 +27,7 @@ namespace Business.Concretes
             _categoryDal = categoryDal;
         }
 
-        [SecuredOperation("Category.Add,Admin")]
+        //[SecuredOperation("Category.Add,Admin")]
         //[ValidationAspect(typeof(CategoryValidator))]
         [CacheRemoveAspect("ICategoryService.GetAll")]
         [PerformanceAspect(5)]
@@ -37,7 +37,7 @@ namespace Business.Concretes
             return new SuccessDataResult<Category>(_categoryDal.Add(category));
         }
 
-        [SecuredOperation("Category.Update,Admin")]
+       // [SecuredOperation("Category.Update,Admin")]
         [ValidationAspect(typeof(CategoryValidator))]
         [CacheRemoveAspect("ICategoryService.GetAll")]
         [PerformanceAspect(5)]
@@ -48,7 +48,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
-        [SecuredOperation("Category.Delete,Admin")]
+     //   [SecuredOperation("Category.Delete,Admin")]
         [CacheRemoveAspect("ICategoryService.GetAll")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
@@ -59,7 +59,7 @@ namespace Business.Concretes
         }
 
 
-        [SecuredOperation("Category.Get,Admin")]
+       // [SecuredOperation("Category.Get,Admin")]
         [CacheAspect]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
@@ -74,7 +74,7 @@ namespace Business.Concretes
             return new ErrorDataResult<Category>(null);
         }
 
-        [SecuredOperation("Category.GetAll,Admin")]
+      //  [SecuredOperation("Category.GetAll,Admin")]
         [CacheAspect]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]

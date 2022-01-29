@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using Core.Entity.Abstracts;
 using Core.Utilities.Language;
 using Newtonsoft.Json;
+
 
 namespace Core.Entity
 {

@@ -24,6 +24,7 @@ using CloudinaryDotNet.Actions;
 using Core.Utilities.Language;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Serialization;
 using WebApi.Config;
 using WebApi.SignalR;
 
@@ -38,7 +39,6 @@ namespace WebApi
             Configuration = configuration;
 
         }
-
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -89,7 +89,9 @@ namespace WebApi
                 builder.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader();
-            }));
+            })); 
+              
+
 
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" }); });
@@ -99,9 +101,14 @@ namespace WebApi
                 options.Cookie.IsEssential = true;
             });
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver =
+                    new DefaultContractResolver();
+            });
 
             services.AddControllersWithViews();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvcCore();
 

@@ -27,7 +27,7 @@ namespace Business.Concretes
             _cartSummaryDal = cartSummaryDal;
         }
 
-        [SecuredOperation("CartSummary.Add,User")]
+        //[SecuredOperation("CartSummary.Add,User")]
         [ValidationAspect(typeof(CartSummaryValidator))]
         [CacheRemoveAspect("ICartSummaryService.GetAll")]
         [PerformanceAspect(5)]
@@ -38,7 +38,7 @@ namespace Business.Concretes
             return new SuccessDataResult<CartSummary>(data);
         }
 
-        [SecuredOperation("CartSummary.Update,User")]
+       // [SecuredOperation("CartSummary.Update,User")]
         [ValidationAspect(typeof(CartSummaryValidator))]
         [CacheRemoveAspect("ICartSummaryService.GetAll")]
         [PerformanceAspect(5)]
@@ -49,7 +49,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
-        [SecuredOperation("CartSummary.Delete,User")]
+       // [SecuredOperation("CartSummary.Delete,User")]
         [CacheRemoveAspect("ICartSummaryService.GetAll")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
@@ -60,7 +60,7 @@ namespace Business.Concretes
         }
 
 
-        [SecuredOperation("CartSummary.Get,User")]
+        //[SecuredOperation("CartSummary.Get,User")]
         [CacheAspect]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
@@ -75,7 +75,7 @@ namespace Business.Concretes
             return new ErrorDataResult<CartSummary>(null);
         }
 
-        [SecuredOperation("CartSummary.GetAll,User")]
+       // [SecuredOperation("CartSummary.GetAll,User")]
         [CacheAspect]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]

@@ -386,7 +386,6 @@ C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.Extensions.Configuration.KeyPerFile.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.Extensions.Configuration.UserSecrets.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.Extensions.Configuration.Xml.dll
-C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.Extensions.Diagnostics.HealthChecks.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.Extensions.FileProviders.Abstractions.dll
@@ -410,7 +409,6 @@ C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.Extensions.ObjectPool.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.Extensions.Options.ConfigurationExtensions.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.Extensions.Options.DataAnnotations.dll
-C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.Extensions.Options.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.JSInterop.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.Net.Http.Headers.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\Microsoft.VisualBasic.Core.dll
@@ -508,7 +506,6 @@ C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\System.Resources.Reader.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\System.Resources.ResourceManager.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\System.Resources.Writer.dll
-C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\System.Runtime.CompilerServices.Unsafe.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\System.Runtime.CompilerServices.VisualC.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\System.Runtime.dll
 C:\Users\berat\source\repos\nervio_backend\src\DataAccess\bin\Debug\net5.0\refs\System.Runtime.Extensions.dll

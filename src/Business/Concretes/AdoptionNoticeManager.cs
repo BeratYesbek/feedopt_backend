@@ -72,7 +72,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAllAdoptionNoticeDetail")]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAdoptionNoticeDetailById")]
-        [SecuredOperation("AdoptionNotice.Update,User")]
+       // [SecuredOperation("AdoptionNotice.Update,User")]
         [ValidationAspect(typeof(AdoptionNoticeValidator))]
         public IResult Update(AdoptionNotice adoptionNotice)
         {
@@ -106,7 +106,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAllAdoptionNoticeDetail")]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAdoptionNoticeDetailById")]
-        [SecuredOperation("AdoptionNotice.Delete,User")]
+       // [SecuredOperation("AdoptionNotice.Delete,User")]
         [PerformanceAspect(5)]
         public IResult Delete(AdoptionNotice adoptionNotice)
         {
@@ -124,7 +124,7 @@ namespace Business.Concretes
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         [CacheAspect]
-        [SecuredOperation("AdoptionNotice.Get,User")]
+      //  [SecuredOperation("AdoptionNotice.Get,User")]
         public IDataResult<AdoptionNotice> Get(int id)
         {
             var data = _adoptionNoticeDal.Get(a => a.Id == id);

@@ -40,12 +40,12 @@ namespace Business.BusinessAspect
 
             if (exp == null)
             {
-                throw new AuthenticationFailedException("Your token expiration is up");
+               // throw new AuthenticationFailedException("Your token expiration is up");
             }
 
             if (email != cookieEmail)
             {
-                throw new AuthenticationException("Your cookie email is not correct please sign in again");
+                //throw new AuthenticationException("Your cookie email is not correct please sign in again");
             }
 
             foreach (var role in _roles)
@@ -55,8 +55,7 @@ namespace Business.BusinessAspect
                     return;
                 }
             }
-
-            throw new AuthenticationFailedException("You have no authorization");
+            //throw new AuthenticationFailedException("You have no authorization");
         }
 
     }

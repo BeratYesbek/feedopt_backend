@@ -48,7 +48,7 @@ namespace Business.Concretes
 
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
-        [SecuredOperation("AdoptionNotice.Delete,User")]
+        //[SecuredOperation("AdoptionNotice.Delete,User")]
         public IResult Delete(AdoptionNoticeImage adoptionNoticeImages)
         {
             _adoptionNoticeImageDal.Delete(adoptionNoticeImages);
@@ -59,7 +59,7 @@ namespace Business.Concretes
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         [CacheAspect]
-        [SecuredOperation("AdoptionNotice.Get,User")]
+        //[SecuredOperation("AdoptionNotice.Get,User")]
         public IDataResult<AdoptionNoticeImage> Get(int id)
         {
             var data = _adoptionNoticeImageDal.Get(a => a.Id == id);
@@ -75,7 +75,7 @@ namespace Business.Concretes
         [LogAspect(typeof(FileLogger))]
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("AdoptionNotice.GetAll,User")]
+        //[SecuredOperation("AdoptionNotice.GetAll,User")]
         public IDataResult<List<AdoptionNoticeImage>> GetAll()
         {
             var data = _adoptionNoticeImageDal.GetAll();
@@ -91,7 +91,7 @@ namespace Business.Concretes
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         [CacheAspect]
-        [SecuredOperation("AdoptionNotice.Get,User")]
+        //[SecuredOperation("AdoptionNotice.Get,User")]
         public IDataResult<List<AdoptionNoticeImage>> GetByAdoptionNoticeId(int id)
         {
             var data = _adoptionNoticeImageDal.GetAll(a => a.AdoptionNoticeId == id);
@@ -107,7 +107,7 @@ namespace Business.Concretes
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
         [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
-        [SecuredOperation("AdoptionNotice.Update,User")]
+       // [SecuredOperation("AdoptionNotice.Update,User")]
         public IResult Update(AdoptionNoticeImage adoptionNoticeImage)
         {
             _adoptionNoticeImageDal.Update(adoptionNoticeImage);

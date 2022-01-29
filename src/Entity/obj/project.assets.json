@@ -40,17 +40,29 @@
           "lib/netstandard2.1/Autofac.Extras.DynamicProxy.dll": {}
         }
       },
-      "AutoMapper/10.1.1": {
+      "AutoMapper/11.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.CSharp": "4.7.0",
-          "System.Reflection.Emit": "4.7.0"
+          "Microsoft.CSharp": "4.7.0"
         },
         "compile": {
-          "lib/netstandard2.0/AutoMapper.dll": {}
+          "lib/netstandard2.1/AutoMapper.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.0/AutoMapper.dll": {}
+          "lib/netstandard2.1/AutoMapper.dll": {}
+        }
+      },
+      "AutoMapper.Extensions.Microsoft.DependencyInjection/11.0.0": {
+        "type": "package",
+        "dependencies": {
+          "AutoMapper": "11.0.0",
+          "Microsoft.Extensions.Options": "6.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
       "Castle.Core/4.4.0": {
@@ -778,13 +790,16 @@
           "lib/net5.0/Microsoft.Extensions.DependencyInjection.dll": {}
         }
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/5.0.0": {
+      "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {
         "type": "package",
         "compile": {
-          "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
+          "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
+          "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {}
+        },
+        "build": {
+          "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
       "Microsoft.Extensions.DependencyModel/5.0.0": {
@@ -879,26 +894,32 @@
           "lib/netstandard2.0/Microsoft.Extensions.ObjectPool.dll": {}
         }
       },
-      "Microsoft.Extensions.Options/5.0.0": {
+      "Microsoft.Extensions.Options/6.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "5.0.0",
-          "Microsoft.Extensions.Primitives": "5.0.0"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Primitives": "6.0.0"
         },
         "compile": {
-          "lib/net5.0/Microsoft.Extensions.Options.dll": {}
+          "lib/netstandard2.1/Microsoft.Extensions.Options.dll": {}
         },
         "runtime": {
-          "lib/net5.0/Microsoft.Extensions.Options.dll": {}
+          "lib/netstandard2.1/Microsoft.Extensions.Options.dll": {}
         }
       },
-      "Microsoft.Extensions.Primitives/5.0.1": {
+      "Microsoft.Extensions.Primitives/6.0.0": {
         "type": "package",
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        },
         "compile": {
-          "lib/netcoreapp3.0/Microsoft.Extensions.Primitives.dll": {}
+          "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.dll": {}
         },
         "runtime": {
-          "lib/netcoreapp3.0/Microsoft.Extensions.Primitives.dll": {}
+          "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.dll": {}
+        },
+        "build": {
+          "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
       "Microsoft.Extensions.WebEncoders/5.0.3": {
@@ -2014,13 +2035,20 @@
           "ref/netstandard1.5/System.Reflection.dll": {}
         }
       },
-      "System.Reflection.Emit/4.7.0": {
+      "System.Reflection.Emit/4.3.0": {
         "type": "package",
+        "dependencies": {
+          "System.IO": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Reflection.Emit.ILGeneration": "4.3.0",
+          "System.Reflection.Primitives": "4.3.0",
+          "System.Runtime": "4.3.0"
+        },
         "compile": {
-          "ref/netcoreapp2.0/_._": {}
+          "ref/netstandard1.1/System.Reflection.Emit.dll": {}
         },
         "runtime": {
-          "lib/netcoreapp2.0/_._": {}
+          "lib/netstandard1.3/System.Reflection.Emit.dll": {}
         }
       },
       "System.Reflection.Emit.ILGeneration/4.3.0": {
@@ -2031,7 +2059,7 @@
           "System.Runtime": "4.3.0"
         },
         "compile": {
-          "ref/netstandard1.0/_._": {}
+          "ref/netstandard1.0/System.Reflection.Emit.ILGeneration.dll": {}
         },
         "runtime": {
           "lib/netstandard1.3/System.Reflection.Emit.ILGeneration.dll": {}
@@ -2120,13 +2148,16 @@
           "ref/netstandard1.5/System.Runtime.dll": {}
         }
       },
-      "System.Runtime.CompilerServices.Unsafe/4.7.1": {
+      "System.Runtime.CompilerServices.Unsafe/6.0.0": {
         "type": "package",
         "compile": {
-          "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+          "lib/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.dll": {}
         },
         "runtime": {
-          "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+          "lib/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.dll": {}
+        },
+        "build": {
+          "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
       "System.Runtime.Extensions/4.3.0": {
@@ -2766,20 +2797,33 @@
         "lib/netstandard2.1/Autofac.Extras.DynamicProxy.xml"
       ]
     },
-    "AutoMapper/10.1.1": {
-      "sha512": "uMgbqOdu9ZG5cIOty0C85hzzayBH2i9BthnS5FlMqKtMSHDv4ts81a2jS1VFaDBVhlBeIqJ/kQKjQY95BZde9w==",
+    "AutoMapper/11.0.0": {
+      "sha512": "+596AnKykYCk9RxXCEF4GYuapSebQtFVvIA1oVG1rrRkCLAC7AkWehJ0brCfYUbdDW3v1H/p0W3hob7JoXGjMw==",
       "type": "package",
-      "path": "automapper/10.1.1",
+      "path": "automapper/11.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "automapper.10.1.1.nupkg.sha512",
+        "README.md",
+        "automapper.11.0.0.nupkg.sha512",
         "automapper.nuspec",
         "icon.png",
-        "lib/net461/AutoMapper.dll",
-        "lib/net461/AutoMapper.xml",
-        "lib/netstandard2.0/AutoMapper.dll",
-        "lib/netstandard2.0/AutoMapper.xml"
+        "lib/netstandard2.1/AutoMapper.dll",
+        "lib/netstandard2.1/AutoMapper.xml"
+      ]
+    },
+    "AutoMapper.Extensions.Microsoft.DependencyInjection/11.0.0": {
+      "sha512": "0asw5WxdCFh2OTi9Gv+oKyH9SzxwYQSnO8TV5Dd0GggovILzJW4UimP26JAcxc3yB5NnC5urooZ1BBs8ElpiBw==",
+      "type": "package",
+      "path": "automapper.extensions.microsoft.dependencyinjection/11.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
+        "automapper.extensions.microsoft.dependencyinjection.nuspec",
+        "icon.png",
+        "lib/netstandard2.1/AutoMapper.Extensions.Microsoft.DependencyInjection.dll"
       ]
     },
     "Castle.Core/4.4.0": {
@@ -3742,24 +3786,29 @@
         "version.txt"
       ]
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/5.0.0": {
-      "sha512": "ORj7Zh81gC69TyvmcUm9tSzytcy8AVousi+IVRAI8nLieQjOFryRusSFh7+aLk16FN9pQNqJAiMd7BTKINK0kA==",
+    "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {
+      "sha512": "xlzi2IYREJH3/m6+lUrQlujzX8wDitm4QGnUu6kUXTQAWPuZY8i+ticFJbzfqaetLA6KR/rO6Ew/HuYD+bxifg==",
       "type": "package",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/5.0.0",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/6.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.DependencyInjection.Abstractions.targets",
+        "buildTransitive/netcoreapp3.1/_._",
         "lib/net461/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/net461/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
+        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
+        "microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "useSharedDesignerContext.txt"
       ]
     },
     "Microsoft.Extensions.DependencyModel/5.0.0": {
@@ -3916,10 +3965,10 @@
         "microsoft.extensions.objectpool.nuspec"
       ]
     },
-    "Microsoft.Extensions.Options/5.0.0": {
-      "sha512": "CBvR92TCJ5uBIdd9/HzDSrxYak+0W/3+yxrNg8Qm6Bmrkh5L+nu6m3WeazQehcZ5q1/6dDA7J5YdQjim0165zg==",
+    "Microsoft.Extensions.Options/6.0.0": {
+      "sha512": "dzXN0+V1AyjOe2xcJ86Qbo233KHuLEY0njf/P2Kw8SfJU+d45HNS2ctJdnEnrWbM9Ye2eFgaC5Mj9otRMU6IsQ==",
       "type": "package",
-      "path": "microsoft.extensions.options/5.0.0",
+      "path": "microsoft.extensions.options/6.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3928,36 +3977,38 @@
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net461/Microsoft.Extensions.Options.dll",
         "lib/net461/Microsoft.Extensions.Options.xml",
-        "lib/net5.0/Microsoft.Extensions.Options.dll",
-        "lib/net5.0/Microsoft.Extensions.Options.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Options.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Options.xml",
-        "microsoft.extensions.options.5.0.0.nupkg.sha512",
+        "lib/netstandard2.1/Microsoft.Extensions.Options.dll",
+        "lib/netstandard2.1/Microsoft.Extensions.Options.xml",
+        "microsoft.extensions.options.6.0.0.nupkg.sha512",
         "microsoft.extensions.options.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Primitives/5.0.1": {
-      "sha512": "5WPSmL4YeP7eW+Vc8XZ4DwjYWBAiSwDV9Hm63JJWcz1Ie3Xjv4KuJXzgCstj48LkLfVCYa7mLcx7y+q6yqVvtw==",
+    "Microsoft.Extensions.Primitives/6.0.0": {
+      "sha512": "9+PnzmQFfEFNR9J2aDTfJGGupShHjOuGw4VUv+JB044biSHrnmCIMD+mJHmb2H7YryrfBEXDurxQ47gJZdCKNQ==",
       "type": "package",
-      "path": "microsoft.extensions.primitives/5.0.1",
+      "path": "microsoft.extensions.primitives/6.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.Primitives.targets",
+        "buildTransitive/netcoreapp3.1/_._",
         "lib/net461/Microsoft.Extensions.Primitives.dll",
         "lib/net461/Microsoft.Extensions.Primitives.xml",
-        "lib/netcoreapp3.0/Microsoft.Extensions.Primitives.dll",
-        "lib/netcoreapp3.0/Microsoft.Extensions.Primitives.xml",
+        "lib/net6.0/Microsoft.Extensions.Primitives.dll",
+        "lib/net6.0/Microsoft.Extensions.Primitives.xml",
+        "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.dll",
+        "lib/netcoreapp3.1/Microsoft.Extensions.Primitives.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Primitives.xml",
-        "microsoft.extensions.primitives.5.0.1.nupkg.sha512",
+        "microsoft.extensions.primitives.6.0.0.nupkg.sha512",
         "microsoft.extensions.primitives.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "useSharedDesignerContext.txt"
       ]
     },
     "Microsoft.Extensions.WebEncoders/5.0.3": {
@@ -6734,34 +6785,26 @@
         "system.reflection.nuspec"
       ]
     },
-    "System.Reflection.Emit/4.7.0": {
-      "sha512": "VR4kk8XLKebQ4MZuKuIni/7oh+QGFmZW3qORd1GvBq/8026OpW501SzT/oypwiQl4TvT8ErnReh/NzY9u+C6wQ==",
+    "System.Reflection.Emit/4.3.0": {
+      "sha512": "228FG0jLcIwTVJyz8CLFKueVqQK36ANazUManGaJHkO0icjiIypKW7YLWLIWahyIkdh5M7mV2dJepllLyA1SKg==",
       "type": "package",
-      "path": "system.reflection.emit/4.7.0",
+      "path": "system.reflection.emit/4.3.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
-        "lib/MonoTouch10/_._",
+        "lib/monotouch10/_._",
         "lib/net45/_._",
         "lib/netcore50/System.Reflection.Emit.dll",
-        "lib/netcoreapp2.0/_._",
-        "lib/netstandard1.1/System.Reflection.Emit.dll",
-        "lib/netstandard1.1/System.Reflection.Emit.xml",
         "lib/netstandard1.3/System.Reflection.Emit.dll",
-        "lib/netstandard2.0/System.Reflection.Emit.dll",
-        "lib/netstandard2.0/System.Reflection.Emit.xml",
-        "lib/netstandard2.1/_._",
         "lib/xamarinios10/_._",
         "lib/xamarinmac20/_._",
         "lib/xamarintvos10/_._",
         "lib/xamarinwatchos10/_._",
         "ref/MonoAndroid10/_._",
-        "ref/MonoTouch10/_._",
         "ref/net45/_._",
-        "ref/netcoreapp2.0/_._",
         "ref/netstandard1.1/System.Reflection.Emit.dll",
         "ref/netstandard1.1/System.Reflection.Emit.xml",
         "ref/netstandard1.1/de/System.Reflection.Emit.xml",
@@ -6773,19 +6816,9 @@
         "ref/netstandard1.1/ru/System.Reflection.Emit.xml",
         "ref/netstandard1.1/zh-hans/System.Reflection.Emit.xml",
         "ref/netstandard1.1/zh-hant/System.Reflection.Emit.xml",
-        "ref/netstandard2.0/System.Reflection.Emit.dll",
-        "ref/netstandard2.0/System.Reflection.Emit.xml",
-        "ref/netstandard2.1/_._",
-        "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
-        "ref/xamarintvos10/_._",
-        "ref/xamarinwatchos10/_._",
-        "runtimes/aot/lib/netcore50/System.Reflection.Emit.dll",
-        "runtimes/aot/lib/netcore50/System.Reflection.Emit.xml",
-        "system.reflection.emit.4.7.0.nupkg.sha512",
-        "system.reflection.emit.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "system.reflection.emit.4.3.0.nupkg.sha512",
+        "system.reflection.emit.nuspec"
       ]
     },
     "System.Reflection.Emit.ILGeneration/4.3.0": {
@@ -7219,34 +7252,29 @@
         "system.runtime.nuspec"
       ]
     },
-    "System.Runtime.CompilerServices.Unsafe/4.7.1": {
-      "sha512": "zOHkQmzPCn5zm/BH+cxC1XbUS3P4Yoi3xzW7eRgVpDR2tPGSzyMZ17Ig1iRkfJuY0nhxkQQde8pgePNiA7z7TQ==",
+    "System.Runtime.CompilerServices.Unsafe/6.0.0": {
+      "sha512": "/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg==",
       "type": "package",
-      "path": "system.runtime.compilerservices.unsafe/4.7.1",
+      "path": "system.runtime.compilerservices.unsafe/6.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.targets",
+        "buildTransitive/netcoreapp3.1/_._",
         "lib/net461/System.Runtime.CompilerServices.Unsafe.dll",
         "lib/net461/System.Runtime.CompilerServices.Unsafe.xml",
-        "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
-        "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.xml",
-        "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
-        "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/net6.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "lib/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.xml",
         "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
         "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
-        "ref/net461/System.Runtime.CompilerServices.Unsafe.dll",
-        "ref/net461/System.Runtime.CompilerServices.Unsafe.xml",
-        "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
-        "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
-        "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
-        "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
-        "system.runtime.compilerservices.unsafe.4.7.1.nupkg.sha512",
+        "system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
         "system.runtime.compilerservices.unsafe.nuspec",
-        "useSharedDesignerContext.txt",
-        "version.txt"
+        "useSharedDesignerContext.txt"
       ]
     },
     "System.Runtime.Extensions/4.3.0": {
@@ -8718,6 +8746,8 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "AutoMapper >= 11.0.0",
+      "AutoMapper.Extensions.Microsoft.DependencyInjection >= 11.0.0",
       "Core >= 1.0.0",
       "Microsoft.AspNet.Mvc >= 5.2.7",
       "Microsoft.AspNetCore.Mvc.Abstractions >= 2.2.0",
@@ -8767,6 +8797,14 @@
       "net5.0": {
         "targetAlias": "net5.0",
         "dependencies": {
+          "AutoMapper": {
+            "target": "Package",
+            "version": "[11.0.0, )"
+          },
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+            "target": "Package",
+            "version": "[11.0.0, )"
+          },
           "Microsoft.AspNet.Mvc": {
             "target": "Package",
             "version": "[5.2.7, )"

@@ -42,7 +42,7 @@ namespace Business.Concretes
             return new SuccessDataResult<AnimalCategory>(result);
         }
 
-        [SecuredOperation("AnimalCategory.Update,Admin")]
+     //   [SecuredOperation("AnimalCategory.Update,Admin")]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [ValidationAspect(typeof(AnimalCategoryValidator))]
         [PerformanceAspect(5)]
@@ -53,7 +53,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
-        [SecuredOperation("AnimalCategory.Update,Admin")]
+       // [SecuredOperation("AnimalCategory.Update,Admin")]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
@@ -64,7 +64,7 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
-        [SecuredOperation("AnimalCategory.Get,User")]
+       // [SecuredOperation("AnimalCategory.Get,User")]
         [CacheAspect]
         [LogAspect(typeof(FileLogger))]
         public IDataResult<AnimalCategory> Get(int id)
@@ -80,7 +80,7 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("AnimalCategory.GetAll,User")]
+        //[SecuredOperation("AnimalCategory.GetAll,User")]
         [LogAspect(typeof(FileLogger))]
         public IDataResult<List<AnimalCategory>> GetAll()
         {

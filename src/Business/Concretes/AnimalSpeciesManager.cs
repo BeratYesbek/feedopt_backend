@@ -38,7 +38,7 @@ namespace Business.Abstracts
             return new SuccessResult();
         }
 
-        [SecuredOperation("AnimalSpecies.Update,Admin")]
+        //[SecuredOperation("AnimalSpecies.Update,Admin")]
         [ValidationAspect(typeof(AnimalSpeciesValidator))]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
         [PerformanceAspect(5)]
@@ -49,7 +49,7 @@ namespace Business.Abstracts
             return new SuccessResult();
         }
 
-        [SecuredOperation("AnimalSpecies.Delete,Admin")]
+       // [SecuredOperation("AnimalSpecies.Delete,Admin")]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
         [LogAspect(typeof(FileLogger))]
@@ -61,7 +61,7 @@ namespace Business.Abstracts
 
         [PerformanceAspect(5)]
         [CacheAspect]
-        [SecuredOperation("AnimalSpecies.Get,User")]
+        //[SecuredOperation("AnimalSpecies.Get,User")]
         [LogAspect(typeof(FileLogger))]
         public IDataResult<AnimalSpecies> Get(int id)
         {
@@ -76,7 +76,7 @@ namespace Business.Abstracts
 
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("AnimalSpecies.GetAll,User")]
+       // [SecuredOperation("AnimalSpecies.GetAll,User")]
         [LogAspect(typeof(FileLogger))]
         public IDataResult<List<AnimalSpecies>> GetAll()
         {

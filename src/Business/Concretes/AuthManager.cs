@@ -21,7 +21,6 @@ namespace Business.Concretes
     {
         private readonly ITokenHelper _tokenHelper;
         private readonly IUserService _userService;
-
         public AuthManager(IUserService userService, ITokenHelper tokenHelper)
         {
             _userService = userService;
@@ -42,10 +41,8 @@ namespace Business.Concretes
                 PasswordSalt = passwordSalt,
                 PhoneNumber = userForRegisterDto.PhoneNumber,
                 PreferredLanguage = userForRegisterDto.PreferredLanguage,
-
-                // change later
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                EmailConfirmed = false,
+                PhoneNumberConfirmed = false
 
             };
             _userService.Add(user);
