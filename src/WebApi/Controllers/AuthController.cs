@@ -38,7 +38,7 @@ namespace WebApi.Controllers
             var userToLogin = _authService.Login(userForLoginDto);
             if (!userToLogin.Success)
             {
-                return BadRequest(userForLoginDto);
+                return BadRequest(userToLogin);
             }
 
             var result = _authService.CreateAccessToken(userToLogin.Data);
@@ -52,7 +52,7 @@ namespace WebApi.Controllers
                 HttpContext.SetCookie(cookieParams);
                 return Ok(result);
             }
-            return BadRequest(userForLoginDto);
+            return BadRequest(userToLogin);
         }
 
         [HttpPost("register")]

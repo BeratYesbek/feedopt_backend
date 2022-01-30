@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,6 +55,7 @@ namespace Business.Concretes
        
             if (!userToCheck.Success)
             {
+                Debug.Print("");
                 return new ErrorDataResult<User>(null, "Password or email is wrong");
             }
           /*  if (userToCheck.Data.EmailConfirmed != true && userToCheck.Data.PhoneNumberConfirmed != true)
