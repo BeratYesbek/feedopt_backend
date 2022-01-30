@@ -54,7 +54,7 @@ namespace WebApi.Config
             {
                 if (db != null)
                 {
-                    db.Database.Migrate();
+                    //db.Database.Migrate();
 
                 }
             }

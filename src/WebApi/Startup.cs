@@ -131,8 +131,7 @@ namespace WebApi
                         builder
                             .AllowAnyOrigin()
                             .AllowAnyMethod()
-                            .AllowAnyHeader()
-                            .AllowCredentials();
+                            .AllowAnyHeader();
                     });
             });
         }
@@ -164,6 +163,8 @@ namespace WebApi
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(Language.SupportedLanguage[0])
                 .AddSupportedCultures(Language.SupportedLanguage)
