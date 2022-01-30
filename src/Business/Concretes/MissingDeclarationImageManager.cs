@@ -38,8 +38,7 @@ namespace Business.Concretes
 
         [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
         //  [SecuredOperation("MissingDeclarationImage.Add,User")]
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(FileLogger))]
+        [PerformanceAspect(5)] //[LogAspect(typeof(FileLogger))]
         public IResult Add(MissingDeclarationImage missingDeclarationImage)
         {
             _missingDeclarationImageDal.Add(missingDeclarationImage);
@@ -47,9 +46,9 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
-        [SecuredOperation("MissingDeclarationImage.Update,User")]
+      //  [SecuredOperation("MissingDeclarationImage.Update,User")]
         [PerformanceAspect(5)]
-        [LogAspect(typeof(FileLogger))]
+       // [LogAspect(typeof(FileLogger))]
         public IResult Update(MissingDeclarationImage missingDeclarationImage)
         {
             _missingDeclarationImageDal.Update(missingDeclarationImage);
@@ -57,9 +56,9 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("IMissingDeclarationImageService.GetAll")]
-        [SecuredOperation("MissingDeclarationImage.Delete,User")]
+      //  [SecuredOperation("MissingDeclarationImage.Delete,User")]
         [PerformanceAspect(5)]
-        [LogAspect(typeof(FileLogger))]
+       // [LogAspect(typeof(FileLogger))]
         public IResult Delete(MissingDeclarationImage missingDeclarationImage)
         {
             _missingDeclarationImageDal.Delete(missingDeclarationImage);
@@ -67,9 +66,9 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
-        [SecuredOperation("MissingDeclarationImage.Get,User")]
-        [LogAspect(typeof(FileLogger))]
-        [CacheAspect]
+        //[SecuredOperation("MissingDeclarationImage.Get,User")]
+       // [LogAspect(typeof(FileLogger))]
+       [CacheAspect]
         public IDataResult<List<MissingDeclarationImage>> GetByMissingDeclarationId(int id)
         {
             var data = _missingDeclarationImageDal.GetAll(m => m.MissingDeclarationId == id);
@@ -82,8 +81,8 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
-        [SecuredOperation("MissingDeclarationImage.Get,User")]
-        [LogAspect(typeof(FileLogger))]
+      //  [SecuredOperation("MissingDeclarationImage.Get,User")]
+     //   [LogAspect(typeof(FileLogger))]
         [CacheAspect]
         public IDataResult<MissingDeclarationImage> Get(int id)
         {
@@ -98,8 +97,8 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("MissingDeclarationImage.GetAll,User")]
-        [LogAspect(typeof(FileLogger))]
+        //[SecuredOperation("MissingDeclarationImage.GetAll,User")]
+        //[LogAspect(typeof(FileLogger))]
         public IDataResult<List<MissingDeclarationImage>> GetAll()
         {
             var data = _missingDeclarationImageDal.GetAll();

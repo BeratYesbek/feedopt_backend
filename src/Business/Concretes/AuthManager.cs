@@ -27,7 +27,7 @@ namespace Business.Concretes
             _tokenHelper = tokenHelper;
         }
 
-       [MailerAspect(typeof(VerifyEmailMailer), EmailType.VerifyEmail)]
+       //[MailerAspect(typeof(VerifyEmailMailer), EmailType.VerifyEmail)]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -35,8 +35,7 @@ namespace Business.Concretes
             var user = new User
             {
                 Email = userForRegisterDto.Email,
-                FirstName = userForRegisterDto.FirstName,
-                LastName = userForRegisterDto.LastName,
+                FullName = userForRegisterDto.FullName,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 PhoneNumber = userForRegisterDto.PhoneNumber,
@@ -57,10 +56,10 @@ namespace Business.Concretes
             {
                 return new ErrorDataResult<User>(null, "Password or email is wrong");
             }
-            if (userToCheck.Data.EmailConfirmed != true && userToCheck.Data.PhoneNumberConfirmed != true)
+          /*  if (userToCheck.Data.EmailConfirmed != true && userToCheck.Data.PhoneNumberConfirmed != true)
             {
                 return new ErrorDataResult<User>(null, "You have to verify your email");
-            }
+            }*/
 
 
             if (!HashingHelper.verifPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash,

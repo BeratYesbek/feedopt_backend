@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DataAccess.Migrations
 {
-    public partial class firstMigration : Migration
+    public partial class first : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -200,14 +200,14 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FirstName = table.Column<string>(type: "text", nullable: true),
-                    LastName = table.Column<string>(type: "text", nullable: true),
+                    FullName = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true),
                     PhoneNumber = table.Column<string>(type: "text", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
                     EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
                     Status = table.Column<bool>(type: "boolean", nullable: false),
+                    PreferredLanguage = table.Column<int>(type: "integer", nullable: false),
                     PasswordHash = table.Column<byte[]>(type: "bytea", nullable: true),
                     PasswordSalt = table.Column<byte[]>(type: "bytea", nullable: true)
                 },

@@ -27,7 +27,7 @@ namespace Business.Concretes
             _locationDal = locationDal;
         }
         
-        [ValidationAspect(typeof(LocationValidator))]
+       // [ValidationAspect(typeof(LocationValidator))]
         [CacheRemoveAspect("ILocationService.GetAll")]
        // [SecuredOperation("Location.Add,User")]
         [PerformanceAspect(5)]
@@ -37,9 +37,9 @@ namespace Business.Concretes
             return new SuccessDataResult<Location>(data);
         }
 
-        [ValidationAspect(typeof(LocationValidator))]
+        //[ValidationAspect(typeof(LocationValidator))]
         [CacheRemoveAspect("ILocationService.GetAll")]
-        [SecuredOperation("Location.Update,User")]
+       // [SecuredOperation("Location.Update,User")]
         [PerformanceAspect(5)]
         public IResult Update(Location location)
         {
@@ -48,7 +48,7 @@ namespace Business.Concretes
         }
 
         [CacheRemoveAspect("ILocationService.GetAll")]
-        [SecuredOperation("Location.Delete,User")]
+      //  [SecuredOperation("Location.Delete,User")]
         [PerformanceAspect(5)]
         public IResult Delete(Location location)
         {
@@ -57,7 +57,7 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
-        [SecuredOperation("Location.Get,User")]
+       // [SecuredOperation("Location.Get,User")]
         public IDataResult<Location> Get(int id)
         {
             var data = _locationDal.Get(l => l.Id == id);
@@ -71,7 +71,7 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("Location.GetAll,User")]
+        //[SecuredOperation("Location.GetAll,User")]
         public IDataResult<List<Location>> GetAll()
         {
             var data = _locationDal.GetAll();

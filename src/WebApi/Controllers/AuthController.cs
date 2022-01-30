@@ -52,7 +52,7 @@ namespace WebApi.Controllers
                 HttpContext.SetCookie(cookieParams);
                 return Ok(result);
             }
-            return BadRequest();
+            return BadRequest(userForLoginDto);
         }
 
         [HttpPost("register")]

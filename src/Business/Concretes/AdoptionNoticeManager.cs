@@ -32,8 +32,8 @@ namespace Business.Concretes
             _adoptionNoticeImageService = adoptionNoticeImageService;
         }
 
-        [LogAspect(typeof(FileLogger))]
-        [ValidationAspect(typeof(AdoptionNoticeValidator))]
+        //[LogAspect(typeof(FileLogger))]
+        //[ValidationAspect(typeof(AdoptionNoticeValidator))]
         //[SecuredOperation("AdoptionNotice.Add,User")]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
@@ -67,13 +67,13 @@ namespace Business.Concretes
             return new SuccessDataResult<AdoptionNotice>(data);
         }
 
-        [LogAspect(typeof(FileLogger))]
+        //[LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAllAdoptionNoticeDetail")]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAdoptionNoticeDetailById")]
        // [SecuredOperation("AdoptionNotice.Update,User")]
-        [ValidationAspect(typeof(AdoptionNoticeValidator))]
+        //[ValidationAspect(typeof(AdoptionNoticeValidator))]
         public IResult Update(AdoptionNotice adoptionNotice)
         {
             var adoptionNoticeImageList = _adoptionNoticeImageService.GetByAdoptionNoticeId(adoptionNotice.Id);
@@ -102,7 +102,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
-        [LogAspect(typeof(FileLogger))]
+        //[LogAspect(typeof(FileLogger))]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAll")]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAllAdoptionNoticeDetail")]
         [CacheRemoveAspect("IAdoptionNoticeService.GetAdoptionNoticeDetailById")]
@@ -121,7 +121,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
-        [LogAspect(typeof(FileLogger))]
+        //[LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         [CacheAspect]
       //  [SecuredOperation("AdoptionNotice.Get,User")]

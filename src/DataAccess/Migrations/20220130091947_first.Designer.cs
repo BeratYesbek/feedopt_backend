@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(NervioDbContext))]
-    [Migration("20220105101727_secondMigration")]
-    partial class secondMigration
+    [Migration("20220130091947_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,10 +67,7 @@ namespace DataAccess.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
+                    b.Property<string>("FullName")
                         .HasColumnType("text");
 
                     b.Property<byte[]>("PasswordHash")
@@ -198,7 +195,7 @@ namespace DataAccess.Migrations
                     b.ToTable("MissingDeclarationImages");
                 });
 
-            modelBuilder.Entity("Entity.Concretes.Ticket", b =>
+            modelBuilder.Entity("Entity.Concretes.Support", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -219,7 +216,7 @@ namespace DataAccess.Migrations
                     b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("Entity.Concretes.TicketFile", b =>
+            modelBuilder.Entity("Entity.Concretes.SupportFile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

@@ -30,13 +30,13 @@ namespace Business.Concretes
             _missingDeclarationImageService = missingDeclarationImageService;
         }
 
-        [ValidationAspect(typeof(MissingDeclarationValidator))]
+        //[ValidationAspect(typeof(MissingDeclarationValidator))]
         [CacheRemoveAspect("IMissingDeclarationService.GetAll")]
         [CacheRemoveAspect("IMissingDeclarationService.GetAllMissingDeclarationDetail")]
         [CacheRemoveAspect("IMissingDeclarationService.GetMissingDeclarationDetailById")]
         //[SecuredOperation("MissingDeclaration.Add,User")]
         [PerformanceAspect(5)]
-        [LogAspect(typeof(FileLogger))]
+       //[LogAspect(typeof(FileLogger))]
         public IDataResult<MissingDeclaration> Add(MissingDeclaration missingDeclaration)
         {
             var data = _missingDeclarationDal.Add(missingDeclaration);
@@ -65,13 +65,13 @@ namespace Business.Concretes
             return new SuccessDataResult<MissingDeclaration>(data);
         }
 
-        [ValidationAspect(typeof(MissingDeclarationValidator))]
+        //[ValidationAspect(typeof(MissingDeclarationValidator))]
         [CacheRemoveAspect("IMissingDeclarationService.GetAll")]
         [CacheRemoveAspect("IMissingDeclarationService.GetAllMissingDeclarationDetail")]
         [CacheRemoveAspect("IMissingDeclarationService.GetMissingDeclarationDetailById")]
-        [SecuredOperation("MissingDeclaration.Update,User")]
+        //[SecuredOperation("MissingDeclaration.Update,User")]
         [PerformanceAspect(5)]
-        [LogAspect(typeof(FileLogger))]
+        //[LogAspect(typeof(FileLogger))]
         public IResult Update(MissingDeclaration missingDeclaration)
         {
             var missingDeclarationList = _missingDeclarationImageService.GetByMissingDeclarationId(missingDeclaration.Id);
@@ -102,8 +102,8 @@ namespace Business.Concretes
         [CacheRemoveAspect("IMissingDeclarationService.GetAll")]
         [CacheRemoveAspect("IMissingDeclarationService.GetAllMissingDeclarationDetail")]
         [CacheRemoveAspect("IMissingDeclarationService.GetMissingDeclarationDetailById")]
-        [SecuredOperation("MissingDeclaration.Delete,User")]
-        [LogAspect(typeof(FileLogger))]
+       // [SecuredOperation("MissingDeclaration.Delete,User")]
+        //[LogAspect(typeof(FileLogger))]
         public IResult Delete(MissingDeclaration missingDeclaration)
         {
             var imageList = _missingDeclarationImageService.GetByMissingDeclarationId(missingDeclaration.Id);
@@ -118,9 +118,9 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
-        [SecuredOperation("MissingDeclaration.Get,User")]
+       //[SecuredOperation("MissingDeclaration.Get,User")]
         [CacheAspect]
-        [LogAspect(typeof(FileLogger))]
+        //[LogAspect(typeof(FileLogger))]
         public IDataResult<MissingDeclaration> Get(int id)
         {
             var data = _missingDeclarationDal.Get(m => m.Id == id);
@@ -134,8 +134,8 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("MissingDeclaration.GetAll,User")]
-        [LogAspect(typeof(FileLogger))]
+        //[SecuredOperation("MissingDeclaration.GetAll,User")]
+       //[LogAspect(typeof(FileLogger))]
         public IDataResult<List<MissingDeclaration>> GetAll()
         {
             var data = _missingDeclarationDal.GetAll();
@@ -149,8 +149,8 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("MissingDeclaration.GetAllAdoptionNoticeDetail,User")]
-        [LogAspect(typeof(FileLogger))]
+       // [SecuredOperation("MissingDeclaration.GetAllAdoptionNoticeDetail,User")]
+       // [LogAspect(typeof(FileLogger))]
         public IDataResult<List<MissingDeclarationDto>> GetAllMissingDeclarationDetail(int pageNumber)
         {
             var data = _missingDeclarationDal.GetAllMissingDeclarationsDetail(pageNumber);
@@ -164,8 +164,8 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("MissingDeclaration.GetAdoptionNoticeDetailById,User")]
-        [LogAspect(typeof(FileLogger))]
+        //[SecuredOperation("MissingDeclaration.GetAdoptionNoticeDetailById,User")]
+       //[LogAspect(typeof(FileLogger))]
         public IDataResult<MissingDeclarationDto> GetMissingDeclarationDetailById(int id)
         {
             var data = _missingDeclarationDal.GetMissingDeclarationDetailById(id);

@@ -35,7 +35,7 @@ namespace Business.Concretes
         }
 
 
-        [LogAspect(typeof(FileLogger))]
+       // [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
         // [SecuredOperation("AdoptionNotice.Add,User")]
@@ -55,8 +55,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(FileLogger))]
+//        [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         [CacheAspect]
         //[SecuredOperation("AdoptionNotice.Get,User")]
@@ -72,7 +71,7 @@ namespace Business.Concretes
             return new ErrorDataResult<AdoptionNoticeImage>(null);
         }
 
-        [LogAspect(typeof(FileLogger))]
+       // [LogAspect(typeof(FileLogger))]
         [CacheAspect]
         [PerformanceAspect(5)]
         //[SecuredOperation("AdoptionNotice.GetAll,User")]
@@ -88,7 +87,7 @@ namespace Business.Concretes
             return new ErrorDataResult<List<AdoptionNoticeImage>>(null);
         }
 
-        [LogAspect(typeof(FileLogger))]
+       // [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         [CacheAspect]
         //[SecuredOperation("AdoptionNotice.Get,User")]
@@ -104,7 +103,7 @@ namespace Business.Concretes
             return new ErrorDataResult<List<AdoptionNoticeImage>>(null);
         }
 
-        [PerformanceAspect(5)]
+        //[PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
         [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
        // [SecuredOperation("AdoptionNotice.Update,User")]

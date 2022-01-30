@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.Concretes;
 using Entity.concretes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {

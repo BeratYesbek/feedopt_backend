@@ -44,7 +44,7 @@ namespace Business.Concretes
 
      //   [SecuredOperation("AnimalCategory.Update,Admin")]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
-        [ValidationAspect(typeof(AnimalCategoryValidator))]
+        //[ValidationAspect(typeof(AnimalCategoryValidator))]
         [PerformanceAspect(5)]
         [LogAspect(typeof(FileLogger))]
         public IResult Update(AnimalCategory animalCategory)
@@ -56,7 +56,7 @@ namespace Business.Concretes
        // [SecuredOperation("AnimalCategory.Update,Admin")]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [PerformanceAspect(5)]
-        [LogAspect(typeof(FileLogger))]
+        //[LogAspect(typeof(FileLogger))]
         public IResult Delete(AnimalCategory animalCategory)
         {
             _animalCategoryDal.Delete(animalCategory);
@@ -66,7 +66,7 @@ namespace Business.Concretes
         [PerformanceAspect(5)]
        // [SecuredOperation("AnimalCategory.Get,User")]
         [CacheAspect]
-        [LogAspect(typeof(FileLogger))]
+        //[LogAspect(typeof(FileLogger))]
         public IDataResult<AnimalCategory> Get(int id)
         {
             var data = _animalCategoryDal.Get(a => a.Id == id);

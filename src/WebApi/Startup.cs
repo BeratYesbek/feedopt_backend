@@ -122,6 +122,19 @@ namespace WebApi
             {
                 new CoreModule()
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    });
+            });
         }
         //
 
@@ -167,6 +180,7 @@ namespace WebApi
                 endpoints.MapHub<NotificationHub>("/chatHub");
 
             });
+
         }
     }
 }
