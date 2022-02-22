@@ -13,7 +13,7 @@ namespace Business.Abstracts
     {
         IDataResult<User> Add(User user);
 
-        IResult Update(User user);
+        Task<IResult> Update(User user);
 
         IResult Delete(User user);
 

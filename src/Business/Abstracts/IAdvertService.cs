@@ -7,14 +7,15 @@ using Core.Utilities.Result.Abstracts;
 using Entity.concretes;
 using Entity.Concretes;
 using Entity.Dtos;
+using Microsoft.AspNetCore.Http;
 
 namespace Business.Abstracts
 {
     public interface IAdvertService
     {
-        Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, Location location);
+        Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location);
 
-        Task<IResult> Update(Advert advert, AdvertImage advertImage, Location location);
+        Task<IResult> Update(Advert advert, AdvertImage advertImage,IFormFile[] files, Location location);
 
         Task<IResult> Delete(Advert advert);
 

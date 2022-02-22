@@ -14,6 +14,7 @@ using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Entity;
 using Core.Entity.Concretes;
+using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
@@ -44,15 +45,31 @@ namespace Business.Concretes
         }
 
         //[LogAspect(typeof(FileLogger))]
-        [PerformanceAspect(5)]
-        public IResult Update(User user)
+        //[PerformanceAspect(5)]
+        public async Task<IResult> Update(User user)
         {
+            if (user.File is not null)
+            {
+                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
+                var imageResult = await fileHelper.UploadAsync(user.File);
+                if (imageResult.Success)
+                {
+                    user.ImagePath = imageResult.Message.Split("&&")[0];
+                    _userDal.Update(user);
+                    return new SuccessResult();
+                }
+                else
+                {
+                    return new ErrorResult();
+                }
+            }
             _userDal.Update(user);
+
             return new SuccessResult();
         }
 
 
-       //[LogAspect(typeof(FileLogger))]
+        //[LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         public IResult Delete(User user)
         {
@@ -61,7 +78,7 @@ namespace Business.Concretes
         }
 
 
-      //  [LogAspect(typeof(FileLogger))]
+        //  [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         public IDataResult<User> Get(int id)
         {
@@ -75,7 +92,7 @@ namespace Business.Concretes
         }
 
 
-      //  [LogAspect(typeof(FileLogger))]
+        //  [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         public IDataResult<List<User>> GetAll()
         {
@@ -89,14 +106,14 @@ namespace Business.Concretes
         }
 
 
-      //  [LogAspect(typeof(FileLogger))]
+        //  [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         public List<OperationClaim> GetClaims(User user)
         {
             return _userDal.GetClaims(user);
         }
 
-       // [LogAspect(typeof(FileLogger))]
+        // [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
         public IDataResult<User> GetByMail(string email)
         {

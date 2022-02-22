@@ -1,31 +1,27 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Business.Abstracts;
-using Business.Concretes;
+﻿using Business.Abstracts;
+using Entity.concretes;
 using Entity.Concretes;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LocationsController : ControllerBase
+    public class AdvertCategoriesController : ControllerBase
     {
-        private readonly ILocationService _locationService;
+        private readonly IAdvertCategoryService _advertCategory;
 
-        public LocationsController(ILocationService locationService)
+        public AdvertCategoriesController(IAdvertCategoryService advertCategory)
         {
-            _locationService = locationService;
+            _advertCategory = advertCategory;
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Location location)
+        public IActionResult Add(AdvertCategory category)
         {
-            var result = _locationService.Add(location);
 
+            var result = _advertCategory.Add(category);
             if (result.Success)
             {
                 return Ok(result);
@@ -33,11 +29,12 @@ namespace WebApi.Controllers
 
             return BadRequest();
         }
+
 
         [HttpPut("update")]
-        public IActionResult Update(Location location)
+        public IActionResult Update(AdvertCategory category)
         {
-            var result = _locationService.Update(location);
+            var result = _advertCategory.Update(category);
 
             if (result.Success)
             {
@@ -46,11 +43,12 @@ namespace WebApi.Controllers
 
             return BadRequest();
         }
+
 
         [HttpDelete("delete")]
-        public IActionResult Delete(Location location)
+        public IActionResult Delete(AdvertCategory category)
         {
-            var result = _locationService.Delete(location);
+            var result = _advertCategory.Delete(category);
 
             if (result.Success)
             {
@@ -59,11 +57,12 @@ namespace WebApi.Controllers
 
             return BadRequest();
         }
+
 
         [HttpGet("getById/{id}")]
         public IActionResult Get(int id)
         {
-            var result = _locationService.Get(id);
+            var result = _advertCategory.Get(id);
 
             if (result.Success)
             {
@@ -73,10 +72,11 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
+
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            var result = _locationService.GetAll();
+            var result = _advertCategory.GetAll();
 
             if (result.Success)
             {

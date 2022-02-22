@@ -35,7 +35,7 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("update")]
+        [HttpPut("update")]
         public IActionResult Update(Chat chat)
         {
             var result = _chatService.Update(chat);
@@ -47,7 +47,7 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("delete")]
+        [HttpDelete("delete")]
         public IActionResult Delete(Chat chat)
         {
             var result = _chatService.Delete(chat);
@@ -59,7 +59,7 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getById")]
+        [HttpGet("getById{id}")]
         public IActionResult GetById(int id)
         {
             var result = _chatService.Get(id);

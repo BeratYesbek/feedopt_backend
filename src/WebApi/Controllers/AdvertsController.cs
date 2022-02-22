@@ -29,7 +29,7 @@ namespace WebApi.Controllers
             var advertImage = _mapper.Map<AdvertImage>(advertCreateDto);
             var location = _mapper.Map<Location>(advertCreateDto);
 
-            var result = await _advertService.Add(advert, advertImage, location);
+            var result = await _advertService.Add(advert, advertImage, advertCreateDto.Files, location);
             if (result.Success)
             {
                 return Ok();
@@ -44,7 +44,7 @@ namespace WebApi.Controllers
             var advertImage = _mapper.Map<AdvertImage>(advertUpdateDto);
             var location = _mapper.Map<Location>(advertUpdateDto);
 
-            var result = await _advertService.Update(advert, advertImage, location);
+            var result = await _advertService.Update(advert, advertImage, advertUpdateDto.Files, location);
             if (result.Success)
             {
                 return Ok(result);

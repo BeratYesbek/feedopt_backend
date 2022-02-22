@@ -583,3 +583,4 @@ C:\Users\berat\source\repos\nervio_backend\src\Core\obj\Debug\net5.0\Core.dll
 C:\Users\berat\source\repos\nervio_backend\src\Core\obj\Debug\net5.0\ref\Core.dll
 C:\Users\berat\source\repos\nervio_backend\src\Core\obj\Debug\net5.0\Core.pdb
 C:\Users\berat\source\repos\nervio_backend\src\Core\obj\Debug\net5.0\Core.genruntimeconfig.cache
+C:\Users\berat\source\repos\nervio_backend\src\Core\obj\Debug\net5.0\Core.csproj.AssemblyReference.cache

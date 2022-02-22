@@ -11,6 +11,7 @@ using DataAccess.Abstracts;
 using Entity.concretes;
 using Entity.Concretes;
 using Entity.Dtos;
+using Microsoft.AspNetCore.Http;
 
 namespace Business.Concretes
 {
@@ -29,7 +30,7 @@ namespace Business.Concretes
             _locationService = locationService;
         }
 
-        public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, Location location)
+        public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var locationResult = _locationService.Add(location);
             if (locationResult is null)
@@ -41,7 +42,7 @@ namespace Business.Concretes
             if (result is not null)
             {
 
-                foreach (var file in advertImage.Files)
+                foreach (var file in files)
                 {
                     var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
                     var fileResult = await fileHelper.UploadAsync(file);
@@ -137,17 +138,17 @@ namespace Business.Concretes
             return new ErrorDataResult<List<Advert>>(null);
         }
 
-        public async Task<IResult> Update(Advert advert, AdvertImage advertImage, Location location)
+        public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var image = _imageService.GetByAdvertId(advert.Id);
 
-            if (advertImage.Files is not null)
+            if (files is not null)
             {
                 var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
 
-                for (int i = 0; i < advertImage.Files.Count(); i++)
+                for (int i = 0; i < files.Count(); i++)
                 {
-                    var fileResult = await fileHelper.UpdateAsync(advertImage.Files[i], image.Data[i].ImagePath, image.Data[i].PublicId);
+                    var fileResult = await fileHelper.UpdateAsync(files[i], image.Data[i].ImagePath, image.Data[i].PublicId);
                     var result = _imageService.Update(new AdvertImage
                     {
                         ImagePath = fileResult.Message.Split("&&")[0],
