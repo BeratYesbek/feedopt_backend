@@ -15,9 +15,9 @@ namespace WebApi.Controllers
     [ApiController]
     public class AdoptionNoticeImagesController : ControllerBase
     {
-        private readonly IAdoptionNoticeImageService _adoptionNoticeImageService;
+        private readonly IAdvertImageService _adoptionNoticeImageService;
 
-        public AdoptionNoticeImagesController(IAdoptionNoticeImageService adoptionNoticeImageService)
+        public AdoptionNoticeImagesController(IAdvertImageService adoptionNoticeImageService)
         {
             _adoptionNoticeImageService = adoptionNoticeImageService;
         }

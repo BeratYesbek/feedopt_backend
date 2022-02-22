@@ -38,14 +38,6 @@ namespace WebApi.Config
             Mailer.PortOption = Convert.ToInt32(section["Port"]);
         }
 
-        private void SetCloudinaryOptions()
-        {
-            IConfigurationSection section = Configuration.GetSection("CloudinaryOptions");
-            CloudinaryOptions.ApiKey = section["ApiKey"];
-            CloudinaryOptions.ApiSecret = section["ApiSecret"];
-            CloudinaryOptions.Cloud = section["Cloud"];
-        }
-
         private void DatabaseMigration()
         {
             ConnectionString.DataBaseConnectionString = Configuration.GetConnectionString("DB_CONNECTION_STRING");

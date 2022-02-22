@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.DataAccess;
+using DataAccess.Abstracts;
 using Entity.Concretes;
 
-namespace DataAccess.Abstracts
+namespace DataAccess.Concretes
 {
-    public interface IAdoptionNoticeImageDal : IEntityRepository<AdoptionNoticeImage>
+    public class EfAdvertCategoryDal : EfEntityRepositoryBase<AdvertCategory, NervioDbContext>, IAdvertCategoryDal
     {
     }
 }

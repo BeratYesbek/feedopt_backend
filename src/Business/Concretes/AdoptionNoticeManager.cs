@@ -25,8 +25,8 @@ namespace Business.Concretes
     public class AdoptionNoticeManager : IAdoptionNoticeService
     {
         private readonly IAdoptionNoticeDal _adoptionNoticeDal;
-        private readonly IAdoptionNoticeImageService _adoptionNoticeImageService;
-        public AdoptionNoticeManager(IAdoptionNoticeDal adoptionNoticeDal, IAdoptionNoticeImageService adoptionNoticeImageService)
+        private readonly IAdvertImageService _adoptionNoticeImageService;
+        public AdoptionNoticeManager(IAdoptionNoticeDal adoptionNoticeDal, IAdvertImageService adoptionNoticeImageService)
         {
             _adoptionNoticeDal = adoptionNoticeDal;
             _adoptionNoticeImageService = adoptionNoticeImageService;

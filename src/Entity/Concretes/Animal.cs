@@ -15,6 +15,8 @@ namespace Entity.Concretes
 
     public class Animal
     {
+        public string AnimalName { get; set; }
+
         public int Age { get; set; }
 
         public Gender Gender { get; set; }

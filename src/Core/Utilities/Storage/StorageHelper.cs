@@ -19,7 +19,7 @@ namespace Core.Utilities.FileHelper
         public StorageHelper(string folderName)
         {
             _folderName = $"\\{folderName}\\"; ;
-           
+
         }
 
         public IResult Upload(IFormFile file)
@@ -57,6 +57,53 @@ namespace Core.Utilities.FileHelper
         {
             DeleteOldFile((_currentDirectory + filePath).Replace("/", "\\"));
             return new SuccessResult();
+        }
+
+        public async Task<IResult> UploadAsync(IFormFile file)
+        {
+            if (file == null && file.Length <= 0)
+            {
+                return new ErrorResult("File doesn't exist");
+            }
+
+            var randomName = Guid.NewGuid().ToString();
+            var type = Path.GetExtension(file.FileName);
+            CheckDirectoryExists(_currentDirectory + _folderName);
+            await CreateFileAsync(_currentDirectory + _folderName + randomName + type, file);
+
+            return new SuccessResult((_folderName + randomName + type).Replace("\\", "/"));
+        }
+
+        public async Task<IResult> UpdateAsync(IFormFile file, string filePath, string publicId = default)
+        {
+            if (file == null && file.Length <= 0)
+            {
+                return new ErrorResult("File doesn't exist");
+            }
+
+            var type = Path.GetExtension(file.FileName);
+            var randomName = Guid.NewGuid().ToString();
+
+            DeleteOldFile((_currentDirectory + filePath).Replace("/", "\\"));
+            CheckDirectoryExists(_currentDirectory + _folderName);
+            await CreateFileAsync(_currentDirectory + _folderName + randomName + type, file);
+            return new SuccessResult((_folderName + randomName + type).Replace("\\", "/"));
+        }
+
+        public async Task<IResult> DeleteAsync(string filePath, string publicId = default)
+        {
+            DeleteOldFile((_currentDirectory + filePath).Replace("/", "\\"));
+            return new SuccessResult();
+        }
+
+        private async Task CreateFileAsync(string directory, IFormFile file)
+        {
+            using (FileStream fileStream = File.Create(directory))
+            {
+                file.CopyTo(fileStream);
+                await fileStream.FlushAsync();
+            }
+
         }
 
         private void DeleteOldFile(string directory)

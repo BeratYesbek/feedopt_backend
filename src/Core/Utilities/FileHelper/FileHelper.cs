@@ -31,7 +31,7 @@ namespace Core.Utilities.FileHelper
         Documents = 2
     }
 
-    public class FileHelper 
+    public class FileHelper
     {
         private readonly IFileHelper _fileHelper;
         private string[] FileType { get; }
@@ -98,7 +98,7 @@ namespace Core.Utilities.FileHelper
 
         public IResult Delete(string filePath, string publicId = null)
         {
-           return  _fileHelper.Delete(filePath, publicId);
+            return _fileHelper.Delete(filePath, publicId);
         }
 
         /// <summary>
@@ -116,6 +116,33 @@ namespace Core.Utilities.FileHelper
                 return _fileHelper.Upload(file);
             }
 
+            return result;
+        }
+
+
+        public async Task<IResult> DeleteAsync(string filePath, string publicId = null)
+        {
+            return await _fileHelper.DeleteAsync(filePath, publicId);
+        }
+
+        public async Task<IResult> UpdateAsync(IFormFile file, string filePath, string publicId = null)
+        {
+            var result = CheckFileTypeValid(Path.GetExtension(file.FileName));
+            if (result.Success)
+            {
+                return await _fileHelper.UpdateAsync(file, filePath, publicId);
+            }
+
+            return result;
+        }
+
+        public async Task<IResult> UploadAsync(IFormFile file)
+        {
+            var result = CheckFileTypeValid(Path.GetExtension(file.FileName));
+            if (result.Success)
+            {
+                return await _fileHelper.UploadAsync(file);
+            }
             return result;
         }
     }

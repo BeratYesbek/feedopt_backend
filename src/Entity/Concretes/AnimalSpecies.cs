@@ -10,8 +10,6 @@ using Core.Entity.Abstracts;
 
 namespace Entity.concretes
 {
-
-
     public class AnimalSpecies : IEntity
     {
         public int Id { get; set; }

@@ -26,6 +26,12 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<AdvertCategoryManager>().As<IAdvertCategoryService>().SingleInstance();
+            builder.RegisterType<EfAdvertCategoryDal>().As<IAdvertCategoryDal>().SingleInstance();
+
+            builder.RegisterType<AdvertManager>().As<IAdvertService>().SingleInstance();
+            builder.RegisterType<EfAdvertDal>().As<IAdvertDal>().SingleInstance();
+
             builder.RegisterType<AnimalCategoryManager>().As<IAnimalCategoryService>().SingleInstance();
             builder.RegisterType<EfAnimalCategoryDal>().As<IAnimalCategoryDal>().SingleInstance();
 
@@ -42,8 +48,8 @@ namespace Business.DependencyResolver.Autofac
                 .SingleInstance();
             builder.RegisterType<EfMissingDeclarationImageDal>().As<IMissingDeclarationImageDal>().SingleInstance();
 
-            builder.RegisterType<AdoptionNoticeImageManager>().As<IAdoptionNoticeImageService>().SingleInstance();
-            builder.RegisterType<EfAdoptionNoticeImageDal>().As<IAdoptionNoticeImageDal>().SingleInstance();
+            builder.RegisterType<AdvertImageManager>().As<IAdvertImageService>().SingleInstance();
+            builder.RegisterType<EfAdvertImageDal>().As<IAdvertImageDal>().SingleInstance();
 
             builder.RegisterType<LocationManager>().As<ILocationService>().SingleInstance();
             builder.RegisterType<EfLocationDal>().As<ILocationDal>().SingleInstance();
