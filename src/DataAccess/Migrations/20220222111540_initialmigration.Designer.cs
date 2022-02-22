@@ -9,9 +9,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DataAccess.Migrations
 {
-    [DbContext(typeof(NervioDbContext))]
-    [Migration("20220130091947_first")]
-    partial class first
+    [DbContext(typeof(AppDbContext))]
+    [Migration("20220222111540_initialmigration")]
+    partial class initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -96,14 +96,65 @@ namespace DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Entity.Concretes.AdoptionNoticeImage", b =>
+            modelBuilder.Entity("Entity.Concretes.Advert", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
 
-                    b.Property<int>("AdoptionNoticeId")
+                    b.Property<int>("AdvertCategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("AnimalName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("AnimalSpeciesId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Adverts");
+                });
+
+            modelBuilder.Entity("Entity.Concretes.AdvertCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdvertCategories");
+                });
+
+            modelBuilder.Entity("Entity.Concretes.AdvertImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("AdvertId")
                         .HasColumnType("integer");
 
                     b.Property<string>("ImagePath")
@@ -114,7 +165,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AdoptionNoticeImages");
+                    b.ToTable("AdvertImages");
                 });
 
             modelBuilder.Entity("Entity.Concretes.Chat", b =>
@@ -151,48 +202,24 @@ namespace DataAccess.Migrations
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
 
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
                     b.Property<string>("City")
                         .HasColumnType("text");
 
                     b.Property<string>("Country")
                         .HasColumnType("text");
 
-                    b.Property<string>("Latitude")
+                    b.Property<string>("County")
                         .HasColumnType("text");
 
-                    b.Property<string>("Longitude")
-                        .HasColumnType("text");
+                    b.Property<decimal>("Latitude")
+                        .HasColumnType("numeric");
 
-                    b.Property<string>("PlaceId")
-                        .HasColumnType("text");
+                    b.Property<decimal>("Longitude")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
                     b.ToTable("Locations");
-                });
-
-            modelBuilder.Entity("Entity.Concretes.MissingDeclarationImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
-
-                    b.Property<string>("ImagePath")
-                        .HasColumnType("text");
-
-                    b.Property<int>("MissingDeclarationId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PublicId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MissingDeclarationImages");
                 });
 
             modelBuilder.Entity("Entity.Concretes.Support", b =>
@@ -235,69 +262,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TicketFiles");
-                });
-
-            modelBuilder.Entity("Entity.MissingDeclaration", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
-
-                    b.Property<int>("Age")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("AnimalId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("AnimalSpeciesId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("LocationId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MissingDeclarations");
-                });
-
-            modelBuilder.Entity("Entity.concretes.AdoptionNotice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .UseIdentityByDefaultColumn();
-
-                    b.Property<int>("Age")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("AnimalSpeciesId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("LocationId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AdoptionNotices");
                 });
 
             modelBuilder.Entity("Entity.concretes.AnimalCategory", b =>

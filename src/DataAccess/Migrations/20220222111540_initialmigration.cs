@@ -4,41 +4,56 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DataAccess.Migrations
 {
-    public partial class first : Migration
+    public partial class initialmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AdoptionNoticeImages",
+                name: "AdvertCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ImagePath = table.Column<string>(type: "text", nullable: true),
-                    PublicId = table.Column<string>(type: "text", nullable: true),
-                    AdoptionNoticeId = table.Column<int>(type: "integer", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AdoptionNoticeImages", x => x.Id);
+                    table.PrimaryKey("PK_AdvertCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AdoptionNotices",
+                name: "AdvertImages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AdvertId = table.Column<int>(type: "integer", nullable: false),
+                    ImagePath = table.Column<string>(type: "text", nullable: true),
+                    PublicId = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdvertImages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Adverts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Description = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<int>(type: "integer", nullable: false),
-                    LocationId = table.Column<int>(type: "integer", nullable: false),
                     AnimalSpeciesId = table.Column<int>(type: "integer", nullable: false),
+                    AdvertCategoryId = table.Column<int>(type: "integer", nullable: false),
+                    LocationId = table.Column<int>(type: "integer", nullable: false),
+                    AnimalName = table.Column<string>(type: "text", nullable: true),
                     Age = table.Column<int>(type: "integer", nullable: false),
                     Gender = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AdoptionNotices", x => x.Id);
+                    table.PrimaryKey("PK_Adverts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -91,50 +106,15 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Address = table.Column<string>(type: "text", nullable: true),
+                    Latitude = table.Column<decimal>(type: "numeric", nullable: false),
+                    Longitude = table.Column<decimal>(type: "numeric", nullable: false),
                     City = table.Column<string>(type: "text", nullable: true),
                     Country = table.Column<string>(type: "text", nullable: true),
-                    PlaceId = table.Column<string>(type: "text", nullable: true),
-                    Latitude = table.Column<string>(type: "text", nullable: true),
-                    Longitude = table.Column<string>(type: "text", nullable: true)
+                    County = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Locations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MissingDeclarationImages",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ImagePath = table.Column<string>(type: "text", nullable: true),
-                    PublicId = table.Column<string>(type: "text", nullable: true),
-                    MissingDeclarationId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MissingDeclarationImages", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MissingDeclarations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    AnimalId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
-                    LocationId = table.Column<int>(type: "integer", nullable: false),
-                    AnimalSpeciesId = table.Column<int>(type: "integer", nullable: false),
-                    Age = table.Column<int>(type: "integer", nullable: false),
-                    Gender = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MissingDeclarations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,10 +200,13 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AdoptionNoticeImages");
+                name: "AdvertCategories");
 
             migrationBuilder.DropTable(
-                name: "AdoptionNotices");
+                name: "AdvertImages");
+
+            migrationBuilder.DropTable(
+                name: "Adverts");
 
             migrationBuilder.DropTable(
                 name: "AnimalCategories");
@@ -236,12 +219,6 @@ namespace DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Locations");
-
-            migrationBuilder.DropTable(
-                name: "MissingDeclarationImages");
-
-            migrationBuilder.DropTable(
-                name: "MissingDeclarations");
 
             migrationBuilder.DropTable(
                 name: "OperationClaims");

@@ -9,7 +9,7 @@ using Entity.Concretes;
 
 namespace DataAccess.Concretes
 {
-    public class EfAdvertImageDal : EfEntityRepositoryBase<AdvertImage, NervioDbContext>,IAdvertImageDal
+    public class EfAdvertImageDal : EfEntityRepositoryBase<AdvertImage, AppDbContext>,IAdvertImageDal
     {
     }
 }

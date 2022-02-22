@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace Entity.Dtos
 {
-    public class AdvertCreateDto : IDto
+    public class AdvertUpdateDto : IDto
     {
+        public int Id { get; set; }
 
         public string Description { get; set; }
 
-        public int UserId { get; set; }
 
         public int AnimalSpeciesId { get; set; }
 
@@ -31,6 +31,9 @@ namespace Entity.Dtos
         /// <summary>
         ///   Location Data
         /// </summary>
+
+        public int LocationId { get; set; }
+
         public decimal Latitude { get; set; }
 
         public decimal Longitude { get; set; }
@@ -40,6 +43,5 @@ namespace Entity.Dtos
         public string Country { get; set; }
 
         public string County { get; set; }
-
     }
 }

@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
+using AutoMapper;
+using Business.Abstracts;
+using Entity.Concretes;
+using Entity.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -7,46 +12,116 @@ namespace WebApi.Controllers
     [ApiController]
     public class AdvertsController : ControllerBase
     {
-        
+        private readonly IAdvertService _advertService;
 
-        public AdvertsController()
+        private readonly IMapper _mapper;
+
+        public AdvertsController(IAdvertService advertService, IMapper mapper)
         {
-            
+            _advertService = advertService;
+            _mapper = mapper;
         }
 
-        public IActionResult Add()
+        [HttpPost("add")]
+        public async Task<IActionResult> Add([FromForm] AdvertCreateDto advertCreateDto)
         {
-            return Ok();
+            var advert = _mapper.Map<Advert>(advertCreateDto);
+            var advertImage = _mapper.Map<AdvertImage>(advertCreateDto);
+            var location = _mapper.Map<Location>(advertCreateDto);
+
+            var result = await _advertService.Add(advert, advertImage, location);
+            if (result.Success)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
 
-        public IActionResult Update()
+        [HttpPut("update")]
+        public async Task<IActionResult> Update([FromForm] AdvertUpdateDto advertUpdateDto)
         {
-            return Ok();
+            var advert = _mapper.Map<Advert>(advertUpdateDto);
+            var advertImage = _mapper.Map<AdvertImage>(advertUpdateDto);
+            var location = _mapper.Map<Location>(advertUpdateDto);
+
+            var result = await _advertService.Update(advert, advertImage, location);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
         }
 
-        public IActionResult Delete()
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete(Advert advert)
         {
-            return Ok();
+            var result = await _advertService.Delete(advert);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
         }
 
-        public IActionResult GetAllDetail()
+        [HttpGet("getAllAdvertDetail")]
+        public IActionResult GetAllAdvertDetail(int pageNumber)
         {
-            return Ok();
+            var result = _advertService.GetAllAdvertDetail(pageNumber);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
         }
 
+        [HttpGet("getAllAdvertDetailByFilter")]
+        public IActionResult getAllAdvertDetailByFilter(int pageNumber)
+        {
+            var result = _advertService.GetAllAdvertDetail(pageNumber);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+
+        [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            return Ok();
+            var result = _advertService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
         }
 
-        public IActionResult GetById()
+        [HttpGet("getById/{id}")]
+        public IActionResult GetById(int id)
         {
-            return Ok();
+            var result = _advertService.Get(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
-        public IActionResult GetDetailById()
+        [HttpGet("getDetailById/{id}")]
+        public IActionResult GetDetailById(int id)
         {
-            return Ok();
+            var result = _advertService.GetAdvertDetailById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }

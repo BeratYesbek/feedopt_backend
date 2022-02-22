@@ -9,7 +9,7 @@ using Entity.concretes;
 
 namespace DataAccess.Concretes
 {
-    public class EfAnimalCategoryDal : EfEntityRepositoryBase<AnimalCategory, NervioDbContext>, IAnimalCategoryDal
+    public class EfAnimalCategoryDal : EfEntityRepositoryBase<AnimalCategory, AppDbContext>, IAnimalCategoryDal
     {
     
     }

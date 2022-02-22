@@ -10,11 +10,11 @@ using DataAccess.Abstracts;
 
 namespace DataAccess.Concretes
 {
-    public class EfUserDal : EfEntityRepositoryBase<User, NervioDbContext>, IUserDal
+    public class EfUserDal : EfEntityRepositoryBase<User, AppDbContext>, IUserDal
     {
         public List<OperationClaim> GetClaims(User user)
         {
-            using (var context = new NervioDbContext())
+            using (var context = new AppDbContext())
             {
                 var result = from operationClaim in context.OperationClaims
                     join UserOperationClaim in context.UserOperationClaims

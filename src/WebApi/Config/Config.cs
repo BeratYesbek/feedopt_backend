@@ -25,7 +25,6 @@ namespace WebApi.Config
         public void Run()
         {
             DatabaseMigration();
-            SetCloudinaryOptions();
             SetMailerOptions();
         }
 
@@ -42,7 +41,7 @@ namespace WebApi.Config
         {
             ConnectionString.DataBaseConnectionString = Configuration.GetConnectionString("DB_CONNECTION_STRING");
 
-            using (var db = ServiceProvider.GetService<NervioDbContext>())
+            using (var db = ServiceProvider.GetService<AppDbContext>())
             {
                 if (db != null)
                 {

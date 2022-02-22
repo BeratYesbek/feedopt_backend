@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
 {
-    public class NervioDbContext : DbContext
+    public class AppDbContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -17,11 +17,11 @@ namespace DataAccess
 
         public DbSet<AnimalCategory> AnimalCategories { get; set; }
         public DbSet<AnimalSpecies> AnimalSpecies { get; set; }
-        public DbSet<MissingDeclaration> MissingDeclarations { get; set; }
-        public DbSet<AdoptionNotice> AdoptionNotices { get; set; }
         public DbSet<Location> Locations { get; set; }
-        public DbSet<AdoptionNoticeImage> AdoptionNoticeImages { get; set; }
-        public DbSet<MissingDeclarationImage> MissingDeclarationImages { get; set; }
+        public DbSet<Advert> Adverts { get; set; }
+        public DbSet<AdvertCategory> AdvertCategories { get; set; }
+        public DbSet<AdvertImage> AdvertImages { get; set; }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }

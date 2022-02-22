@@ -27,7 +27,7 @@ namespace Core.Utilities.Cloud.Cloudinary
         {
             Configuration = ServiceTool.ServiceProvider.GetService<IConfiguration>();
             CloudinaryOptions options = Configuration.GetSection("CloudinaryOptions").Get<CloudinaryOptions>();
-            Account account = new Account(options.Cloud, options.ApiKey, options.ApiSecret);
+            var account = new Account(options.Cloud, options.ApiKey, options.ApiSecret);
 
             _cloudinary = new CloudinaryDotNet.Cloudinary(account);
             _cloudinary.Api.Secure = true;

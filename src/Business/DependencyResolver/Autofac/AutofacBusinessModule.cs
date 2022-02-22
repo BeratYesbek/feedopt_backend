@@ -38,16 +38,6 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<AnimalSpeciesManager>().As<IAnimalSpeciesService>().SingleInstance();
             builder.RegisterType<EfAnimalSpeciesDal>().As<IAnimalSpeciesDal>().SingleInstance();
 
-            builder.RegisterType<AdoptionNoticeManager>().As<IAdoptionNoticeService>().SingleInstance();
-            builder.RegisterType<EfAdoptionNoticeDal>().As<IAdoptionNoticeDal>().SingleInstance();
-
-            builder.RegisterType<MissingDeclarationManager>().As<IMissingDeclarationService>().SingleInstance();
-            builder.RegisterType<EfMissingDeclarationDal>().As<IMissingDeclarationDal>().SingleInstance();
-
-            builder.RegisterType<MissingDeclarationImageManager>().As<IMissingDeclarationImageService>()
-                .SingleInstance();
-            builder.RegisterType<EfMissingDeclarationImageDal>().As<IMissingDeclarationImageDal>().SingleInstance();
-
             builder.RegisterType<AdvertImageManager>().As<IAdvertImageService>().SingleInstance();
             builder.RegisterType<EfAdvertImageDal>().As<IAdvertImageDal>().SingleInstance();
 

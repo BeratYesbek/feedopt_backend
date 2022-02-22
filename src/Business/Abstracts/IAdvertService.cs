@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Core.Utilities.Result.Abstracts;
 using Entity.concretes;
 using Entity.Concretes;
+using Entity.Dtos;
 
 namespace Business.Abstracts
 {
@@ -18,6 +19,12 @@ namespace Business.Abstracts
         Task<IResult> Delete(Advert advert);
 
         IDataResult<Advert> Get(int id);
+
+        IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber);
+
+        IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(int pageNumber);
+
+        IDataResult<AdvertReadDto> GetAdvertDetailById(int id);
 
         IDataResult<List<Advert>> GetAll();
     }

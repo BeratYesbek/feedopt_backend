@@ -9,7 +9,7 @@ using Entity.Concretes;
 
 namespace DataAccess.Concretes
 {
-    public class EfAdvertCategoryDal : EfEntityRepositoryBase<AdvertCategory, NervioDbContext>, IAdvertCategoryDal
+    public class EfAdvertCategoryDal : EfEntityRepositoryBase<AdvertCategory, AppDbContext>, IAdvertCategoryDal
     {
     }
 }

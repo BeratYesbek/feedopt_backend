@@ -9,7 +9,7 @@ using Entity.Concretes;
 
 namespace DataAccess.Concretes
 {
-    public class EfLocationDal : EfEntityRepositoryBase<Location, NervioDbContext>, ILocationDal
+    public class EfLocationDal : EfEntityRepositoryBase<Location, AppDbContext>, ILocationDal
     {
     }
 }

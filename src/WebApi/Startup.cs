@@ -47,7 +47,7 @@ namespace WebApi
             services.AddDistributedMemoryCache();
 
 
-            services.AddDbContext<NervioDbContext>();
+            services.AddDbContext<AppDbContext>();
 
             services.AddScoped<IConfig, Config.Config>();
 

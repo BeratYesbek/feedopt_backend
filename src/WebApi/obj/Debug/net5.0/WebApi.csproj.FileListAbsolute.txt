@@ -750,6 +750,7 @@ C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Autofac.E
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Autofac.Extras.DynamicProxy2.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Autofac.Integration.Mvc.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\AutoMapper.dll
+C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Castle.Core.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\CloudinaryDotNet.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Docker.DotNet.dll
@@ -790,9 +791,11 @@ C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Sqlite.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.SqlServer.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft.Extensions.DependencyModel.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft.Extensions.Options.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft.Extensions.Primitives.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft.Extensions.WebEncoders.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft.Identity.Client.dll
@@ -823,6 +826,7 @@ C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\System.Id
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\System.IO.Pipelines.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\System.Net.WebSockets.WebSocketProtocol.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\System.Runtime.Caching.dll
+C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\cs\Microsoft.CodeAnalysis.resources.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\de\Microsoft.CodeAnalysis.resources.dll
@@ -921,7 +925,3 @@ C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\WebApi.dl
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\ref\WebApi.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\WebApi.pdb
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\WebApi.genruntimeconfig.cache
-C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
-C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\Microsoft.Extensions.Options.dll
-C:\Users\berat\source\repos\nervio_backend\src\WebApi\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll

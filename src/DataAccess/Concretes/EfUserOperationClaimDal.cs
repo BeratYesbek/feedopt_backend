@@ -9,7 +9,7 @@ using DataAccess.Abstracts;
 
 namespace DataAccess.Concretes
 {
-    public class EfUserOperationClaimDal : EfEntityRepositoryBase<UserOperationClaim, NervioDbContext>, IUserOperationClaimDal
+    public class EfUserOperationClaimDal : EfEntityRepositoryBase<UserOperationClaim, AppDbContext>, IUserOperationClaimDal
     {
     }
 }

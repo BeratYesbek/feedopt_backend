@@ -13,11 +13,11 @@ using Entity.Dtos;
 
 namespace DataAccess.Concretes
 {
-    public class EfChatDal : EfEntityRepositoryBase<Chat, NervioDbContext>, IChatDal
+    public class EfChatDal : EfEntityRepositoryBase<Chat, AppDbContext>, IChatDal
     {
         public List<ChatDto> GetAllByReceiverIdAndSenderId(Expression<Func<Chat, bool>> filter)
         {
-            using (NervioDbContext context = new NervioDbContext())
+            using (AppDbContext context = new AppDbContext())
             {
                 // purpose of this query if you want to get data from database by senderID and receiverID,firstly
                 // it will control senderUser equals coming senderID and receiverUser equals coming receiverID
@@ -67,7 +67,7 @@ namespace DataAccess.Concretes
     },
              *
              */
-            using (NervioDbContext context = new NervioDbContext())
+            using (AppDbContext context = new AppDbContext())
             {
                 var result = from chat in context.Chats.Where(filter).ToList()
                         .GroupBy(c => c.SenderId == id ? c.ReceiverId : c.SenderId)
