@@ -81,7 +81,7 @@ namespace Business.Concretes
         [CacheAspect]
         [PerformanceAspect(5)]
         //[SecuredOperation("AnimalCategory.GetAll,User")]
-        [LogAspect(typeof(FileLogger))]
+        //[LogAspect(typeof(FileLogger))]
         public IDataResult<List<AnimalCategory>> GetAll()
         {
             var data = _animalCategoryDal.GetAll();
