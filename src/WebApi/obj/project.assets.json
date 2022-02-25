@@ -3598,7 +3598,10 @@
         },
         "runtime": {
           "bin/placeholder/Business.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "Core/1.0.0": {
         "type": "project",
@@ -3632,7 +3635,10 @@
         },
         "runtime": {
           "bin/placeholder/Core.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "DataAccess/1.0.0": {
         "type": "project",
@@ -3654,7 +3660,10 @@
         },
         "runtime": {
           "bin/placeholder/DataAccess.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "Entity/1.0.0": {
         "type": "project",
@@ -3672,7 +3681,10 @@
         },
         "runtime": {
           "bin/placeholder/Entity.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },

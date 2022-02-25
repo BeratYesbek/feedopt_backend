@@ -3402,7 +3402,10 @@
         },
         "runtime": {
           "bin/placeholder/Core.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "DataAccess/1.0.0": {
         "type": "project",
@@ -3424,7 +3427,10 @@
         },
         "runtime": {
           "bin/placeholder/DataAccess.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "Entity/1.0.0": {
         "type": "project",
@@ -3442,7 +3448,10 @@
         },
         "runtime": {
           "bin/placeholder/Entity.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },
@@ -10561,6 +10570,9 @@
         "assetTargetFallback": true,
         "warn": true,
         "frameworkReferences": {
+          "Microsoft.AspNetCore.App": {
+            "privateAssets": "none"
+          },
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
