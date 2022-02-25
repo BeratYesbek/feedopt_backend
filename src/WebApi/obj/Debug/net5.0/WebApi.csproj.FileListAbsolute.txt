@@ -925,3 +925,5 @@ C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\WebApi.dl
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\ref\WebApi.dll
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\WebApi.pdb
 C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\WebApi.genruntimeconfig.cache
+C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\fr\WebApi.resources.cs
+C:\Users\berat\source\repos\nervio_backend\src\WebApi\obj\Debug\net5.0\tr\WebApi.resources.cs

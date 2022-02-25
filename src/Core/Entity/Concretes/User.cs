@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using Core.Entity.Abstracts;
 using Core.Utilities.Language;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 
 namespace Core.Entity
@@ -36,7 +37,7 @@ namespace Core.Entity
         public string ImagePath { get; set; }
 
         [NotMapped]
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public IFormFile File { get; set; }
 
         [Newtonsoft.Json.JsonIgnore]

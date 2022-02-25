@@ -196,6 +196,27 @@ namespace DataAccess.Migrations
                     b.ToTable("Chats");
                 });
 
+            modelBuilder.Entity("Entity.Concretes.FavoriteAdvert", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("AdvertId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FavoriteAdverts");
+                });
+
             modelBuilder.Entity("Entity.Concretes.Location", b =>
                 {
                     b.Property<int>("Id")
