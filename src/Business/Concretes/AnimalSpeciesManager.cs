@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.BusinessAspect;
+using Business.Security.Role;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
@@ -27,32 +28,33 @@ namespace Business.Abstracts
             _animalSpeciesDal = animalSpeciesDal;
         }
 
-        //[SecuredOperation("AnimalSpecies.Add,Admin")]
-        //[ValidationAspect(typeof(AnimalSpeciesValidator))]
+        [SecuredOperation($"{Role.AnimalCategoryAdd},{Role.Admin},{Role.SuperAdmin}")]
+        [ValidationAspect(typeof(AnimalSpeciesValidator))]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
         [PerformanceAspect(5)]
-       // [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         public IResult Add(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Add(animalSpecies);
             return new SuccessResult();
         }
 
-        //[SecuredOperation("AnimalSpecies.Update,Admin")]
-       // [ValidationAspect(typeof(AnimalSpeciesValidator))]
+        [SecuredOperation($"{Role.AnimalSpeciesUpdate},{Role.Admin},{Role.SuperAdmin}")]
+        [ValidationAspect(typeof(AnimalSpeciesValidator))]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
         [PerformanceAspect(5)]
-      //  [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         public IResult Update(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Update(animalSpecies);
             return new SuccessResult();
         }
 
-       // [SecuredOperation("AnimalSpecies.Delete,Admin")]
-        [PerformanceAspect(5)]
+        [SecuredOperation($"{Role.AnimalSpeciesDelete},{Role.Admin},{Role.SuperAdmin}")]
+        [ValidationAspect(typeof(AnimalSpeciesValidator))]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
-       // [LogAspect(typeof(FileLogger))]
+        [PerformanceAspect(5)]
+        [LogAspect(typeof(DatabaseLogger))]
         public IResult Delete(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Delete(animalSpecies);
@@ -61,8 +63,8 @@ namespace Business.Abstracts
 
         [PerformanceAspect(5)]
         [CacheAspect]
-        //[SecuredOperation("AnimalSpecies.Get,User")]
-        //[LogAspect(typeof(FileLogger))]
+        [SecuredOperation($"{Role.AnimalSpeciesGet},{Role.Admin},{Role.User},{Role.SuperAdmin}")]
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<AnimalSpecies> Get(int id)
         {
             var data = _animalSpeciesDal.Get(a => a.Id == id);
@@ -74,10 +76,10 @@ namespace Business.Abstracts
             return new ErrorDataResult<AnimalSpecies>(null);
         }
 
-        [CacheAspect]
         [PerformanceAspect(5)]
-       // [SecuredOperation("AnimalSpecies.GetAll,User")]
-        //[LogAspect(typeof(FileLogger))]
+        [CacheAspect]
+        [SecuredOperation($"{Role.AnimalSpeciesGetAll},{Role.Admin},{Role.User},{Role.SuperAdmin}")]
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<List<AnimalSpecies>> GetAll()
         {
             var data = _animalSpeciesDal.GetAll();

@@ -51,18 +51,14 @@ namespace Core.Utilities.FileHelper
         }
 
 
-        private string[] GetExtensions(FileExtension fileExtension)
+        private static string[] GetExtensions(FileExtension fileExtension)
         {
-            switch (fileExtension)
+            return fileExtension switch
             {
-                case FileExtension.DocumentExtension:
-                    return FileExtensions.DocumentExtensions;
-                    break;
-                case FileExtension.ImageExtension:
-                    return FileExtensions.ImageExtensions;
-                default:
-                    return null;
-            }
+                FileExtension.DocumentExtension => FileExtensions.DocumentExtensions,
+                FileExtension.ImageExtension => FileExtensions.ImageExtensions,
+                _ => null
+            };
         }
 
         public IResult CheckFileTypeValid(string type)

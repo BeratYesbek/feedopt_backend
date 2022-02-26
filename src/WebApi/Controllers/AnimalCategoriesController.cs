@@ -18,12 +18,10 @@ namespace WebApi.Controllers
     public class AnimalCategoriesController : ControllerBase
     {
         private readonly IAnimalCategoryService _animalCategoryService;
-        private readonly IStringLocalizer<AnimalCategoriesController> _localizer;
 
-        public AnimalCategoriesController(IAnimalCategoryService animalCategoryService,IStringLocalizer<AnimalCategoriesController> localizer)
+        public AnimalCategoriesController(IAnimalCategoryService animalCategoryService)
         {
             _animalCategoryService = animalCategoryService;
-            _localizer = localizer;
         }
 
         [HttpPost("add")]
@@ -31,7 +29,6 @@ namespace WebApi.Controllers
         {
 
             var result = _animalCategoryService.Add(animalCategory);
-            result.Message = _localizer[result.Message].Value;
             if (result.Success)
             {
                 return Ok(result);
@@ -41,7 +38,7 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpPost("update")]
+        [HttpPut("update")]
         public IActionResult Update(AnimalCategory animalCategory)
         {
             var result = _animalCategoryService.Update(animalCategory);
@@ -55,7 +52,7 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpPost("delete")]
+        [HttpDelete("delete")]
         public IActionResult Delete(AnimalCategory animalCategory)
         {
             var result = _animalCategoryService.Delete(animalCategory);
@@ -69,7 +66,7 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpGet("getById")]
+        [HttpGet("getById/{id}")]
         public IActionResult Get(int id)
         {
             var result = _animalCategoryService.Get(id);

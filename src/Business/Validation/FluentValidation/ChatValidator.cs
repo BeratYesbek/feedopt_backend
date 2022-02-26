@@ -13,15 +13,12 @@ namespace Business.Validation.FluentValidation
     {
         public ChatValidator()
         {
-            RuleFor(c => c.Message).NotNull().NotEmpty()
-                .WithMessage(ChatValidationMessages.CharMessageEmptyMessage);
+            RuleFor(c => c.Message).NotNull().NotEmpty();
 
-            RuleFor(c => c.ReceiverId).NotNull().NotEmpty()
-                .WithMessage(ChatValidationMessages.ChatReceiverIdEmptyMessage);
+            RuleFor(c => c.ReceiverId).NotNull().NotEmpty();
 
-            RuleFor(c => c.SenderId).NotNull().NotEmpty()
-                .WithMessage(ChatValidationMessages.ChatSenderIdEmptyMessage);
-
+            RuleFor(c => c.SenderId).NotNull().NotEmpty();
+            
         }
     }
 }

@@ -33,7 +33,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("update")]
+        [HttpPut("update")]
         public IActionResult Update(UserOperationClaim userOperationClaim)
         {
             var result = _userOperationClaimService.Update(userOperationClaim);
@@ -46,7 +46,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("delete")]
+        [HttpDelete("delete")]
         public IActionResult Delete(UserOperationClaim userOperationClaim)
         {
             var result = _userOperationClaimService.Delete(userOperationClaim);
@@ -59,7 +59,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("getById")]
+        [HttpGet("getById/{id}")]
         public IActionResult Get(int id)
         {
             var result = _userOperationClaimService.Get(id);

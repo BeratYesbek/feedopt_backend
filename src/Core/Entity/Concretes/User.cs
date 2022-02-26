@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 using Core.Entity.Abstracts;
 using Core.Utilities.Language;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 
@@ -31,10 +34,16 @@ namespace Core.Entity
 
         public PreferredLanguage PreferredLanguage { get; set; }
 
-        [JsonIgnore]
+        public string ImagePath { get; set; }
+
+        [NotMapped]
+        [Newtonsoft.Json.JsonIgnore]
+        public IFormFile File { get; set; }
+
+        [Newtonsoft.Json.JsonIgnore]
         public byte[] PasswordHash { get; set; }
 
-        [JsonIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public byte[] PasswordSalt { get; set; }
     }
 }

@@ -44,12 +44,14 @@ namespace WebApi.Controllers
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
-                var user = _userService.GetByMail(userToLogin.Data.Email);
-                result.Data.User = user.Data;
-                var cookieParams = new CookieParams();
-                cookieParams.AccessToken = result.Data;
-                cookieParams.User = user.Data;
-                HttpContext.SetCookie(cookieParams);
+              
+                result.Data.User = userToLogin.Data;
+                HttpContext.SetCookie(new CookieParams
+                {
+                    AccessToken = result.Data,
+                    User = userToLogin.Data,
+
+                });
                 return Ok(result);
             }
             return BadRequest(userToLogin);
@@ -69,20 +71,19 @@ namespace WebApi.Controllers
             var result = _authService.CreateAccessToken(registerResult.Data);
             if (result.Success)
             {
-                var user = _userService.GetByMail(registerResult.Data.Email);
-                result.Data.User = user.Data;
+                result.Data.User = registerResult.Data;
+                HttpContext.SetCookie(new CookieParams
+                {
+                    AccessToken = result.Data,
+                    User = registerResult.Data,
+
+                });
                 return Ok(result);
             }
 
             return BadRequest(result.Message);
         }
 
-        [HttpPost("Update")]
-        public IActionResult Update(User user)
-        {
-
-            return Ok(_userService.Update(user));
-        }
 
         [HttpGet("verify")]
         public IActionResult Verify(string param)

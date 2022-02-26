@@ -18,7 +18,7 @@ services:
       - '5432:5432'
     container_name: accman-postgresql
     environment:
-      - POSTGRES_DB=nerviotestdb
+      - POSTGRES_DB=AppTestDb
       - POSTGRES_PASSWORD=123456
     volumes:
       - 'nervio-postgresql-volume:/var/lib/postgresql/data'

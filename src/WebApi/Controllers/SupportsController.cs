@@ -35,12 +35,5 @@ namespace WebApi.Controllers
             return BadRequest(result);
 
         }
-
-        [HttpGet("get")]
-        public IActionResult Get()
-        {
-            var message = _localizer["Hello"].Value;
-            return Ok(message);
-        }
     }
 }

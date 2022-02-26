@@ -34,7 +34,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("update")]
+        [HttpPut("update")]
         public IActionResult Update(Location location)
         {
             var result = _locationService.Update(location);
@@ -47,7 +47,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("delete")]
+        [HttpDelete("delete")]
         public IActionResult Delete(Location location)
         {
             var result = _locationService.Delete(location);
@@ -60,7 +60,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("getById")]
+        [HttpGet("getById/{id}")]
         public IActionResult Get(int id)
         {
             var result = _locationService.Get(id);

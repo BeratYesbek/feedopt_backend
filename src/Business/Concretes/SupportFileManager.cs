@@ -27,7 +27,7 @@ namespace Business.Concretes
             _ticketFileDal = ticketFileDal;
         }
 
-        //[SecuredOperation("TicketFile.Add,User")]
+        [SecuredOperation("TicketFile.Add,User")]
         [ValidationAspect(typeof(SupportFileValidator))]
         [CacheRemoveAspect("ITicketFileService.GetAll")]
         [LogAspect(typeof(FileLogger))]

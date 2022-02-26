@@ -15,8 +15,8 @@ namespace Business.Validation.FluentValidation
     {
         public AnimalCategoryValidator()
         {
-            RuleFor(a => a.AnimalCategoryName).NotNull().NotEmpty().WithMessage(AnimalCategoryValidationMessages.AnimalCategoryNameEmptyMessages);
-            RuleFor(a => a.AnimalCategoryName).MinimumLength(2).WithMessage(AnimalCategoryValidationMessages.AnimalCategoryNameLengthMessages);
+            RuleFor(a => a.AnimalCategoryName).NotNull().NotEmpty();
+            RuleFor(a => a.AnimalCategoryName).MinimumLength(2);
         }
     }
 }

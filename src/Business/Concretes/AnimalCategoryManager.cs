@@ -5,7 +5,9 @@ using DataAccess.Concretes;
 using Entity.concretes;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using Business.BusinessAspect;
+using Business.Security.Role;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
@@ -14,6 +16,7 @@ using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Utilities.IoC;
 using DataAccess.Abstracts;
+using Entity.Concretes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,37 +29,38 @@ namespace Business.Concretes
         public AnimalCategoryManager(IAnimalCategoryDal animalCategoryDal)
         {
             _animalCategoryDal = animalCategoryDal;
-            var _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
-            _httpContextAccessor.HttpContext.Session.SetString("a", "123456789");
-
         }
 
-        //[SecuredOperation("AnimalCategory.Add,Admin")]
+        [SecuredOperation($"{Role.AnimalCategoryAdd},{Role.Admin},{Role.SuperAdmin}")]
         [ValidationAspect(typeof(AnimalCategoryValidator))]
-        /*[LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
-        [PerformanceAspect(5)]*/
+        [PerformanceAspect(5)]
         public IDataResult<AnimalCategory> Add(AnimalCategory animalCategory)
         {
             var result = _animalCategoryDal.Add(animalCategory);
-            return new SuccessDataResult<AnimalCategory>(result);
+            if (result is not  null)
+            {
+                return new SuccessDataResult<AnimalCategory>(result);
+            }
+            return new SuccessDataResult<AnimalCategory>(null);
         }
 
-     //   [SecuredOperation("AnimalCategory.Update,Admin")]
+        [SecuredOperation($"{Role.AnimalCategoryUpdate},{Role.Admin},{Role.SuperAdmin}")]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
-        //[ValidationAspect(typeof(AnimalCategoryValidator))]
+        [ValidationAspect(typeof(AnimalCategoryValidator))]
         [PerformanceAspect(5)]
-        [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         public IResult Update(AnimalCategory animalCategory)
         {
             _animalCategoryDal.Update(animalCategory);
             return new SuccessResult();
         }
 
-       // [SecuredOperation("AnimalCategory.Update,Admin")]
+        [SecuredOperation($"{Role.AnimalCategoryDelete},{Role.Admin},{Role.SuperAdmin}")]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [PerformanceAspect(5)]
-        //[LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         public IResult Delete(AnimalCategory animalCategory)
         {
             _animalCategoryDal.Delete(animalCategory);
@@ -64,9 +68,9 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
-       // [SecuredOperation("AnimalCategory.Get,User")]
+        [SecuredOperation($"{Role.AnimalSpeciesGet},{Role.User},{Role.Admin},{Role.SuperAdmin}")]
         [CacheAspect]
-        //[LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<AnimalCategory> Get(int id)
         {
             var data = _animalCategoryDal.Get(a => a.Id == id);
@@ -80,8 +84,8 @@ namespace Business.Concretes
 
         [CacheAspect]
         [PerformanceAspect(5)]
-        //[SecuredOperation("AnimalCategory.GetAll,User")]
-        [LogAspect(typeof(FileLogger))]
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.Admin},{Role.SuperAdmin}")]
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<List<AnimalCategory>> GetAll()
         {
             var data = _animalCategoryDal.GetAll();

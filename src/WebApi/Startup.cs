@@ -51,7 +51,7 @@ namespace WebApi
 
             services.AddScoped<IConfig, Config.Config>();
 
-            services.AddSignalR();
+            //  services.AddSignalR();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -84,14 +84,6 @@ namespace WebApi
                     };
                 });
 
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-            {
-                builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            })); 
-              
-
 
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" }); });
@@ -117,12 +109,6 @@ namespace WebApi
             services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 
-
-            services.AddDependencyResolvers(new ICoreModule[]
-            {
-                new CoreModule()
-            });
-
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll",
@@ -133,6 +119,11 @@ namespace WebApi
                             .AllowAnyMethod()
                             .AllowAnyHeader();
                     });
+            });
+
+            services.AddDependencyResolvers(new ICoreModule[]
+            {
+                new CoreModule()
             });
         }
         //
@@ -171,17 +162,20 @@ namespace WebApi
                 .AddSupportedUICultures(Language.SupportedLanguage);
 
             app.UseRequestLocalization(localizationOptions);
-
-
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapDefaultControllerRoute();
+                    endpoints.MapControllers();
+                });
+        }
+        /*  app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<NotificationHub>("/notificationHub");
                 endpoints.MapHub<NotificationHub>("/chatHub");
 
-            });
-
-        }
+            });*/
     }
 }

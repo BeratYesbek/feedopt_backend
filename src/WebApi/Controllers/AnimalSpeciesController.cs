@@ -34,7 +34,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("update")]
+        [HttpPut("update")]
         public IActionResult Update(AnimalSpecies animalSpecies)
         {
             var result = _animalSpeciesService.Update(animalSpecies);
@@ -47,7 +47,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("delete")]
+        [HttpDelete("delete")]
         public IActionResult Delete(AnimalSpecies animalSpecies)
         {
             var result = _animalSpeciesService.Delete(animalSpecies);
@@ -60,7 +60,7 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("getById")]
+        [HttpGet("getById/{id}")]
         public IActionResult GetById(int id)
         {
             var result = _animalSpeciesService.Get(id);

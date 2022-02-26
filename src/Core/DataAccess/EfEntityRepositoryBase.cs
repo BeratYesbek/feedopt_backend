@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Core.Entity.Abstracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -29,8 +32,20 @@ namespace Core.DataAccess
         {
             using (TContext context = new TContext())
             {
-                var updatedEntity = context.Entry(entity);
-                updatedEntity.State = EntityState.Modified;
+
+                context.Attach(entity);
+                context.Entry(entity).State = EntityState.Modified;
+
+                var entry = context.Entry(entity);
+
+                PropertyInfo[] properties = typeof(TEntity).GetProperties();
+                foreach (PropertyInfo property in properties)
+                {
+                    if (property.GetValue(entity, null) == null && property.GetType() != typeof(IFormFile))
+                    {
+                        entry.Property(property.Name).IsModified = false;
+                    }
+                }
                 context.SaveChanges();
             }
         }
