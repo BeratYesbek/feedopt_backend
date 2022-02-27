@@ -4,6 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Business.BusinessAspect;
+using Business.Security.Role;
+using Business.Validation.FluentValidation;
+using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Logging;
+using Core.Aspects.Autofac.Performance;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
@@ -12,6 +20,7 @@ using Entity.concretes;
 using Entity.Concretes;
 using Entity.Dtos;
 using Microsoft.AspNetCore.Http;
+using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 namespace Business.Concretes
 {
@@ -29,7 +38,15 @@ namespace Business.Concretes
             _advertDal = advertDal;
             _locationService = locationService;
         }
-
+        
+        [LogAspect(typeof(DatabaseLogger))]
+        [PerformanceAspect(5)]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
+        [CacheRemoveAspect("IAdvertService.GetAll")]
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [ValidationAspect(typeof(AdvertValidator))]
         public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var locationResult = _locationService.Add(location);
@@ -68,7 +85,14 @@ namespace Business.Concretes
 
             return new ErrorDataResult<Advert>(null);
         }
-
+        
+        [LogAspect(typeof(DatabaseLogger))]
+        [PerformanceAspect(5)]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
+        [CacheRemoveAspect("IAdvertService.GetAll")]
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public async Task<IResult> Delete(Advert advert)
         {
             var imageList = _imageService.GetByAdvertId(advert.Id);
@@ -82,7 +106,9 @@ namespace Business.Concretes
             _advertDal.Delete(advert);
             return new SuccessResult();
         }
-
+        [LogAspect(typeof(DatabaseLogger))]
+        [PerformanceAspect(5)]
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<Advert> Get(int id)
         {
             var data = _advertDal.Get(a => a.Id == id);
@@ -93,7 +119,10 @@ namespace Business.Concretes
 
             return new ErrorDataResult<Advert>(null);
         }
-
+        [LogAspect(typeof(DatabaseLogger))]
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber)
         {
             var data = _advertDal.GetAllAdvertDetail(pageNumber);
@@ -104,7 +133,10 @@ namespace Business.Concretes
 
             return new ErrorDataResult<List<AdvertReadDto>>(null);
         }
-
+        [LogAspect(typeof(DatabaseLogger))]
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(int pageNumber)
         {
             var data = _advertDal.GetAllAdvertDetailsByFilter(null, pageNumber);
@@ -115,7 +147,10 @@ namespace Business.Concretes
 
             return new ErrorDataResult<List<AdvertReadDto>>(null);
         }
-
+        [LogAspect(typeof(DatabaseLogger))]
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<AdvertReadDto> GetAdvertDetailById(int id)
         {
             var data = _advertDal.GetAdvertDetailById(id);
@@ -126,7 +161,10 @@ namespace Business.Concretes
 
             return new ErrorDataResult<AdvertReadDto>(null);
         }
-
+        [LogAspect(typeof(DatabaseLogger))]
+        [CacheAspect]
+        [PerformanceAspect(5)]
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<Advert>> GetAll()
         {
             var data = _advertDal.GetAll();
@@ -137,7 +175,15 @@ namespace Business.Concretes
 
             return new ErrorDataResult<List<Advert>>(null);
         }
-
+        
+        [LogAspect(typeof(DatabaseLogger))]
+        [PerformanceAspect(5)]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
+        [CacheRemoveAspect("IAdvertService.GetAll")]
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [ValidationAspect(typeof(AdvertValidator))]
         public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var image = _imageService.GetByAdvertId(advert.Id);

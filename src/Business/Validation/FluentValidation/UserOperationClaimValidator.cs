@@ -13,14 +13,11 @@ namespace Business.Validation.FluentValidation
     {
         public UserOperationClaimValidator()
         {
-            RuleFor(u => u.OperationClaimId).NotEqual(0)
-                .WithMessage(UserOperationClaimValidationMessages.UserOperationClaimsOperationIdZeroMessage);
+            RuleFor(u => u.OperationClaimId).NotEqual(0);
+            
+            RuleFor(u => u.OperationClaimId).NotEmpty().NotNull();
 
-            RuleFor(u => u.OperationClaimId).NotEmpty().NotNull()
-                .WithMessage(UserOperationClaimValidationMessages.UserOperationClaimsOperationIdEmptyMessage);
-
-            RuleFor(u => u.UserId).NotEmpty().NotNull().NotEqual(0)
-                .WithMessage(UserOperationClaimValidationMessages.UserOperationClaimsUserIdEmptyMessage);
+            RuleFor(u => u.UserId).NotEmpty().NotNull().NotEqual(0);
         }
     }
 }

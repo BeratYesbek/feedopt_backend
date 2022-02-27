@@ -30,7 +30,7 @@ namespace Business.Concretes
             _userDal = userDal;
         }
 
-        //[LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         public IDataResult<User> Add(User user)
         {
@@ -44,8 +44,8 @@ namespace Business.Concretes
             return new ErrorDataResult<User>(null);
         }
 
-        //[LogAspect(typeof(FileLogger))]
-        //[PerformanceAspect(5)]
+        [LogAspect(typeof(DatabaseLogger))]
+        [PerformanceAspect(5)]
         public async Task<IResult> Update(User user)
         {
             if (user.File is not null)
@@ -69,7 +69,7 @@ namespace Business.Concretes
         }
 
 
-        //[LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         public IResult Delete(User user)
         {
@@ -78,7 +78,7 @@ namespace Business.Concretes
         }
 
 
-        //  [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         public IDataResult<User> Get(int id)
         {
@@ -92,7 +92,7 @@ namespace Business.Concretes
         }
 
 
-        //  [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         public IDataResult<List<User>> GetAll()
         {
@@ -106,14 +106,14 @@ namespace Business.Concretes
         }
 
 
-        //  [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         public List<OperationClaim> GetClaims(User user)
         {
             return _userDal.GetClaims(user);
         }
 
-        // [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         public IDataResult<User> GetByMail(string email)
         {

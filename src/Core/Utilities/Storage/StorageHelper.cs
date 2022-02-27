@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using Microsoft.AspNetCore.Http;
+using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 namespace Core.Utilities.FileHelper
 {
@@ -90,23 +91,20 @@ namespace Core.Utilities.FileHelper
             return new SuccessResult((_folderName + randomName + type).Replace("\\", "/"));
         }
 
-        public async Task<IResult> DeleteAsync(string filePath, string publicId = default)
+        public  Task<IResult> DeleteAsync(string filePath, string publicId = default)
         {
             DeleteOldFile((_currentDirectory + filePath).Replace("/", "\\"));
-            return new SuccessResult();
+            return Task.FromResult<IResult>(new SuccessResult());
         }
 
-        private async Task CreateFileAsync(string directory, IFormFile file)
+        private static async Task CreateFileAsync(string directory, IFormFile file)
         {
-            using (FileStream fileStream = File.Create(directory))
-            {
-                file.CopyTo(fileStream);
-                await fileStream.FlushAsync();
-            }
-
+            using FileStream fileStream = File.Create(directory);
+            await file.CopyToAsync(fileStream);
+            await fileStream.FlushAsync();
         }
 
-        private void DeleteOldFile(string directory)
+        private static void DeleteOldFile(string directory)
         {
             if (File.Exists(directory.Replace("/", "\\")))
             {
@@ -114,18 +112,14 @@ namespace Core.Utilities.FileHelper
             }
         }
 
-        private void CreateFile(string directory, IFormFile file)
+        private static void CreateFile(string directory, IFormFile file)
         {
-
-            using (FileStream fileStream = File.Create(directory))
-            {
-                file.CopyTo(fileStream);
-                fileStream.Flush();
-            }
-
+            using FileStream fileStream = File.Create(directory);
+            file.CopyTo(fileStream);
+            fileStream.Flush();
         }
 
-        private void CheckDirectoryExists(string directory)
+        private static void CheckDirectoryExists(string directory)
         {
             if (!Directory.Exists((directory)))
             {

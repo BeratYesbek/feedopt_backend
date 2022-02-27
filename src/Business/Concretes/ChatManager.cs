@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
+using Business.Security.Role;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
@@ -30,42 +31,45 @@ namespace Business.Concretes
             _chatDal = chatDal;
         }
 
-        //[SecuredOperation("Chat.Add,User")]
-       // [ValidationAspect(typeof(CategoryValidator))]
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatAdd}")]
+        [ValidationAspect(typeof(ChatValidator))]
         [CacheRemoveAspect("IChatService.GetAllByReceiverIdAndSenderId")]
+        [CacheRemoveAspect("IChatService.GetAllLastMessages")]
         [PerformanceAspect(5)]
-      //  [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<Chat> Add(Chat chat)
         {
             return new SuccessDataResult<Chat>(_chatDal.Add(chat));
         }
 
-        //[SecuredOperation("Chat.Update,User")]
-       // [ValidationAspect(typeof(CategoryValidator))]
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatUpdate}")]
+        [ValidationAspect(typeof(ChatValidator))]
         [CacheRemoveAspect("IChatService.GetAllByReceiverIdAndSenderId")]
+        [CacheRemoveAspect("IChatService.GetAllLastMessages")]
         [PerformanceAspect(5)]
-       // [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         public IResult Update(Chat chat)
         {
             _chatDal.Update(chat);
             return new SuccessResult();
         }
 
-       // [SecuredOperation("Chat.Delete,User")]
+        [SecuredOperation($"{Role.Admin},{Role.SuperAdmin},{Role.ChatDelete}")]
         [ValidationAspect(typeof(ChatValidator))]
         [CacheRemoveAspect("IChatService.GetAllByReceiverIdAndSenderId")]
-       // [PerformanceAspect(5)]
-        //[LogAspect(typeof(FileLogger))]
+        [CacheRemoveAspect("IChatService.GetAllLastMessages")]
+        [PerformanceAspect(5)]
+        [LogAspect(typeof(DatabaseLogger))]
         public IResult Delete(Chat chat)
         {
             _chatDal.Delete(chat);
             return new SuccessResult();
         }
 
-       // [SecuredOperation("Chat.Get,User")]
-        [CacheRemoveAspect("IChatService.GetAllByReceiverIdAndSenderId")]
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGet}")] 
+        [CacheAspect]
         [PerformanceAspect(5)]
-       // [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<Chat> Get(int id)
         {
             var data = _chatDal.Get(c => c.Id == id);
@@ -77,10 +81,10 @@ namespace Business.Concretes
             return new ErrorDataResult<Chat>(null);
         }
 
-        //[SecuredOperation("Chat.GetAll,User")]
-        [CacheRemoveAspect("IChatService.GetAllByReceiverIdAndSenderId")]
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}")] 
+        [CacheAspect]
         [PerformanceAspect(5)]
-       // [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<List<Chat>> GetAll()
         {
             var data = _chatDal.GetAll();
@@ -97,10 +101,10 @@ namespace Business.Concretes
             return null;
         }
 
-        //[SecuredOperation("Chat.GetAllByReceiverIdAndSenderId,User")]
-        [CacheRemoveAspect("IChatService.GetAllByReceiverIdAndSenderId")]
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}")] 
+        [CacheAspect]
         [PerformanceAspect(5)]
-       // [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<List<ChatDto>> GetAllByReceiverIdAndSenderId(int senderId, int receiverId)
         {
             var data = _chatDal.GetAllByReceiverIdAndSenderId(c => c.SenderId == senderId && c.ReceiverId == receiverId
@@ -115,15 +119,12 @@ namespace Business.Concretes
             return new ErrorDataResult<List<ChatDto>>(null);
         }
 
-        //[SecuredOperation("Chat.GetAllLastMessages,User")]
-        [CacheRemoveAspect("IChatService.GetAllLastMessages")]
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}")] 
+        [CacheAspect]
         [PerformanceAspect(5)]
-        //[LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<List<ChatDto>> GetAllLastMessages(int id)
         {
-
-
-
             var data = _chatDal.GetAllLastMessages(c => c.ReceiverId == id || c.SenderId == id, id);
 
             if (data.Count > 0)

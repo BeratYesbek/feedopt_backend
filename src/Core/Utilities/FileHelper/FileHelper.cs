@@ -9,6 +9,7 @@ using Core.Utilities.Cloud.Cloudinary;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using Microsoft.AspNetCore.Http;
+using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 namespace Core.Utilities.FileHelper
 {
@@ -51,18 +52,14 @@ namespace Core.Utilities.FileHelper
         }
 
 
-        private string[] GetExtensions(FileExtension fileExtension)
+        private static string[] GetExtensions(FileExtension fileExtension)
         {
-            switch (fileExtension)
+            return fileExtension switch
             {
-                case FileExtension.DocumentExtension:
-                    return FileExtensions.DocumentExtensions;
-                    break;
-                case FileExtension.ImageExtension:
-                    return FileExtensions.ImageExtensions;
-                default:
-                    return null;
-            }
+                FileExtension.DocumentExtension => FileExtensions.DocumentExtensions,
+                FileExtension.ImageExtension => FileExtensions.ImageExtensions,
+                _ => null
+            };
         }
 
         public IResult CheckFileTypeValid(string type)

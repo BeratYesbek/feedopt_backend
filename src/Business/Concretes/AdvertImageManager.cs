@@ -1,26 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Business.Abstracts;
 using Business.BusinessAspect;
+using Business.Security.Role;
+using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
-using Core.Utilities;
-using Core.Utilities.Cloud.Cloudinary;
-using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
-using DataAccess.Concretes;
 using Entity.Concretes;
-using Microsoft.AspNetCore.Http;
+using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 
 namespace Business.Concretes
@@ -37,8 +29,11 @@ namespace Business.Concretes
 
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
-        [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
-        [SecuredOperation("AdoptionNotice.Add,User")]
+        [CacheRemoveAspect("IAdvertImageService.GetByAdvertId")]
+        [CacheRemoveAspect("IAdvertImageService.Get")]
+        [CacheRemoveAspect("IAdvertImageService.GetAll")]
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [ValidationAspect(typeof(AdvertImageValidator))]
         public IResult Add(AdvertImage image)
         {
             _advertImageDal.Add(image);
@@ -47,18 +42,21 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
-        [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
-        [SecuredOperation("AdoptionNotice.Delete,User")]
+        [LogAspect(typeof(DatabaseLogger))]
+        [CacheRemoveAspect("IAdvertImageService.GetByAdvertId")]
+        [CacheRemoveAspect("IAdvertImageService.Get")]
+        [CacheRemoveAspect("IAdvertImageService.GetAll")]
+        [SecuredOperation($"{Role.AdvertImageUpdate},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IResult Delete(AdvertImage image)
         {
             _advertImageDal.Delete(image);
             return new SuccessResult();
         }
 
-        [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [CacheAspect]
-        [SecuredOperation("AdoptionNotice.Get,User")]
+        [SecuredOperation($"{Role.AdvertCategoryGet},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<AdvertImage> Get(int id)
         {
             var data = _advertImageDal.Get(a => a.Id == id);
@@ -71,10 +69,10 @@ namespace Business.Concretes
             return new ErrorDataResult<AdvertImage>(null);
         }
 
-        [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation("AdoptionNotice.GetAll,User")]
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertImage>> GetAll()
         {
             var data = _advertImageDal.GetAll();
@@ -87,10 +85,10 @@ namespace Business.Concretes
             return new ErrorDataResult<List<AdvertImage>>(null);
         }
 
-        [LogAspect(typeof(FileLogger))]
+        [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [CacheAspect]
-        [SecuredOperation("AdoptionNotice.Get,User")]
+        [SecuredOperation($"{Role.AdvertCategoryGet},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertImage>> GetByAdvertId(int id)
         {
             var data = _advertImageDal.GetAll(a => a.AdvertId == id);
@@ -104,9 +102,13 @@ namespace Business.Concretes
         }
 
         [PerformanceAspect(5)]
-        [LogAspect(typeof(FileLogger))]
-        [CacheRemoveAspect("IAdoptionNoticeImageService.GetByAdoptionNoticeId")]
-        [SecuredOperation("AdoptionNotice.Update,User")]
+        [LogAspect(typeof(DatabaseLogger))]
+        [CacheRemoveAspect("IAdvertImageService.GetByAdvertId")]
+        [CacheRemoveAspect("IAdvertImageService.Get")]
+        [CacheRemoveAspect("IAdvertImageService.GetAll")]
+        [SecuredOperation($"{Role.AdvertUpdate},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [ValidationAspect(typeof(AdvertImageValidator))]
+
         public IResult Update(AdvertImage image)
         {
             _advertImageDal.Update(image);
@@ -114,16 +116,3 @@ namespace Business.Concretes
         }
     }
 }
-
-/*Image image = ImageScaling.ResizeImage(Image.FromStream(file.OpenReadStream(), true, true),
-      ImageScaling.ImageWidth, ImageScaling.ImageHeight);*/
-
-
-
-
-
-
-
-/* Image image = ImageScaling.ResizeImage(Image.FromStream(formFiles[i].OpenReadStream(), true, true),
-          ImageScaling.ImageWidth, ImageScaling.ImageHeight);*/
-//  var result = _cloudinaryService.Update(formFiles[i], adoptionNoticeImage[i].PublicId, image);

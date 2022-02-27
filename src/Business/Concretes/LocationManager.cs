@@ -5,10 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
+using Business.Security.Role;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
@@ -27,37 +30,41 @@ namespace Business.Concretes
             _locationDal = locationDal;
         }
         
-       // [ValidationAspect(typeof(LocationValidator))]
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationAdd}")]
+        [ValidationAspect(typeof(LocationValidator))]
         [CacheRemoveAspect("ILocationService.GetAll")]
-       // [SecuredOperation("Location.Add,User")]
         [PerformanceAspect(5)]
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<Location> Add(Location location)
         {
             var data = _locationDal.Add(location);
             return new SuccessDataResult<Location>(data);
         }
 
-        //[ValidationAspect(typeof(LocationValidator))]
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationUpdate}")]
+        [ValidationAspect(typeof(LocationValidator))]
         [CacheRemoveAspect("ILocationService.GetAll")]
-       // [SecuredOperation("Location.Update,User")]
         [PerformanceAspect(5)]
+        [LogAspect(typeof(DatabaseLogger))]
         public IResult Update(Location location)
         {
             _locationDal.Update(location);
             return new SuccessResult();
         }
 
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationDelete}")]
         [CacheRemoveAspect("ILocationService.GetAll")]
-      //  [SecuredOperation("Location.Delete,User")]
         [PerformanceAspect(5)]
+        [LogAspect(typeof(DatabaseLogger))]
         public IResult Delete(Location location)
         {
             _locationDal.Delete(location);
             return new SuccessResult();
         }
 
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationGet}")]
         [PerformanceAspect(5)]
-       // [SecuredOperation("Location.Get,User")]
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<Location> Get(int id)
         {
             var data = _locationDal.Get(l => l.Id == id);
@@ -69,9 +76,10 @@ namespace Business.Concretes
             return new ErrorDataResult<Location>(null);
         }
 
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationGetAll}")]
         [CacheAspect]
         [PerformanceAspect(5)]
-        //[SecuredOperation("Location.GetAll,User")]
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<List<Location>> GetAll()
         {
             var data = _locationDal.GetAll();

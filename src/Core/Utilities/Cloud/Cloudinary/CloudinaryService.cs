@@ -16,6 +16,7 @@ using Core.Utilities.Result.Concretes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 namespace Core.Utilities.Cloud.Cloudinary
 {

@@ -18,12 +18,10 @@ namespace WebApi.Controllers
     public class AnimalCategoriesController : ControllerBase
     {
         private readonly IAnimalCategoryService _animalCategoryService;
-        private readonly IStringLocalizer<AnimalCategoriesController> _localizer;
 
-        public AnimalCategoriesController(IAnimalCategoryService animalCategoryService,IStringLocalizer<AnimalCategoriesController> localizer)
+        public AnimalCategoriesController(IAnimalCategoryService animalCategoryService)
         {
             _animalCategoryService = animalCategoryService;
-            _localizer = localizer;
         }
 
         [HttpPost("add")]

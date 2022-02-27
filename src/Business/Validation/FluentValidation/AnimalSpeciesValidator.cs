@@ -13,15 +13,10 @@ namespace Business.Validation.FluentValidation
     {
         public AnimalSpeciesValidator()
         {
-            RuleFor(a => a.AnimalCategoryId).NotNull().NotEmpty()
-                .WithMessage(AnimalSpeciesValidationMessages.AnimalSpeciesAnimalCategoryEmptyMessage);
+            RuleFor(a => a.AnimalCategoryId).NotNull().NotEmpty();
+            RuleFor(a => a.Kind).NotEmpty();
 
-            RuleFor(a => a.Kind).NotEmpty()
-                .WithMessage(AnimalSpeciesValidationMessages.AnimalSpeciesKindEmptyMessage);
-
-
-            RuleFor(a => a.Kind).MinimumLength(2).MaximumLength(30)
-                .WithMessage(AnimalSpeciesValidationMessages.AnimalSpeciesKindLengthMessage);
+            RuleFor(a => a.Kind).MinimumLength(2).MaximumLength(30);
         }
     }
 }

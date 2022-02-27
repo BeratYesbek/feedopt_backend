@@ -8,6 +8,7 @@ using Entity.concretes;
 using Entity.Concretes;
 using Entity.Dtos;
 using Microsoft.AspNetCore.Http;
+using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 namespace Business.Abstracts
 {
