@@ -46,9 +46,14 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
         [CacheRemoveAspect("IAdvertService.GetAll")]
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        [ValidationAspect(typeof(AdvertValidator))]
+        //[ValidationAspect(typeof(AdvertValidator))]
         public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
+            if (files is null)
+            {
+                return new ErrorDataResult<Advert>(null, "image cannot be blank");
+            }
+
             var locationResult = _locationService.Add(location);
             if (locationResult is null)
             {
@@ -58,7 +63,7 @@ namespace Business.Concretes
             var result = _advertDal.Add(advert);
             if (result is not null)
             {
-
+             
                 foreach (var file in files)
                 {
                     var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
@@ -183,7 +188,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
         [CacheRemoveAspect("IAdvertService.GetAll")]
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        [ValidationAspect(typeof(AdvertValidator))]
+      //  [ValidationAspect(typeof(AdvertValidator))]
         public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var image = _imageService.GetByAdvertId(advert.Id);
