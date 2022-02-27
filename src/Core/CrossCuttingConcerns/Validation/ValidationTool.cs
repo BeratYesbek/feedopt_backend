@@ -23,7 +23,7 @@ namespace Core.CrossCuttingConcerns.Validation
 
             if (!result.IsValid)
             {
-                throw new ValidationException(errorMessages, result.Errors);
+             //   throw new ValidationException(errorMessages, result.Errors);
             }
         }
     }

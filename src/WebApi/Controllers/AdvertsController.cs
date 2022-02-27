@@ -32,9 +32,9 @@ namespace WebApi.Controllers
             var result = await _advertService.Add(advert, advertImage, advertCreateDto.Files, location);
             if (result.Success)
             {
-                return Ok();
+                return Ok(result);
             }
-            return BadRequest();
+            return BadRequest(result);
         }
 
         [HttpPut("update")]
