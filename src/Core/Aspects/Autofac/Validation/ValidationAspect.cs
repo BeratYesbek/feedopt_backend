@@ -18,7 +18,7 @@ namespace Core.Aspects.Autofac.Validation
             //defensive coding
             if (!typeof(IValidator).IsAssignableFrom(validatorType))
             {
-               // throw new System.Exception("this is not a validation class");
+                throw new System.Exception("this is not a validation class");
             }
 
             _validatorType = validatorType;
@@ -27,11 +27,11 @@ namespace Core.Aspects.Autofac.Validation
         protected override void OnBefore(IInvocation invocation)
         {
             var validator = (IValidator)Activator.CreateInstance(_validatorType);
-            var entityType = _validatorType.BaseType.GetGenericArguments()[0];
-            var entities = invocation.Arguments.Where(t => t.GetType() == entityType);
+            var entityType = _validatorType.BaseType?.GetGenericArguments()[0];
+            var entities = invocation.Arguments.Where(t => t?.GetType() == entityType);
             foreach (var entity in entities)
             {
-               // ValidationTool.Validate(validator, entity);
+                ValidationTool.Validate(validator, entity);
             }
 
         }

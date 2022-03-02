@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
+using Business.BusinessRules;
 using Business.Security.Role;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
@@ -16,12 +16,11 @@ using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
-using Entity.concretes;
 using Entity.Concretes;
 using Entity.Dtos;
 using Microsoft.AspNetCore.Http;
 using IResult = Core.Utilities.Result.Abstracts.IResult;
-
+using Core.Utilities.Business;
 namespace Business.Concretes
 {
     public class AdvertManager : IAdvertService
@@ -38,7 +37,7 @@ namespace Business.Concretes
             _advertDal = advertDal;
             _locationService = locationService;
         }
-        
+
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
@@ -46,12 +45,16 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
         [CacheRemoveAspect("IAdvertService.GetAll")]
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        //[ValidationAspect(typeof(AdvertValidator))]
+        [ValidationAspect(typeof(AdvertValidator))]
         public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
-            if (files is null)
+            var ruleResult = Core.Utilities.Business.BusinessRules.Run(
+                AdvertBusinessRules.CheckFilesSize(files),
+                AdvertBusinessRules.CheckDescriptionIllegalKeyword(advert.Description));
+
+            if (!ruleResult.Success)
             {
-                return new ErrorDataResult<Advert>(null, "image cannot be blank");
+                return new ErrorDataResult<Advert>(null, ruleResult.Message);
             }
 
             var locationResult = _locationService.Add(location);
@@ -63,7 +66,7 @@ namespace Business.Concretes
             var result = _advertDal.Add(advert);
             if (result is not null)
             {
-             
+
                 foreach (var file in files)
                 {
                     var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
@@ -90,7 +93,7 @@ namespace Business.Concretes
 
             return new ErrorDataResult<Advert>(null);
         }
-        
+
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
@@ -180,7 +183,7 @@ namespace Business.Concretes
 
             return new ErrorDataResult<List<Advert>>(null);
         }
-        
+
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
@@ -188,7 +191,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
         [CacheRemoveAspect("IAdvertService.GetAll")]
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-      //  [ValidationAspect(typeof(AdvertValidator))]
+        //  [ValidationAspect(typeof(AdvertValidator))]
         public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var image = _imageService.GetByAdvertId(advert.Id);

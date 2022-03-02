@@ -761,3 +761,11 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/Core/obj
+/DataAccess/obj
+/DataAccess/bin
+/Core/bin
+/Business/bin
+/Business/obj
+/WebApi/bin
+/WebApi/obj
