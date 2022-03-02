@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Core.Utilities.Result.Abstracts;
 using Entity.Concretes;
 using Microsoft.AspNetCore.Http;
+using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 namespace Business.Abstracts
 {

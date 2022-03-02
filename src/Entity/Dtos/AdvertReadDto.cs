@@ -50,6 +50,7 @@ namespace Entity.Dtos
 
         public string County { get; set; }
 
+        public int Distance { get; set; }
 
 
 

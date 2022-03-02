@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.DataAccess;
 using Core.Entity;
+using Core.Utilities.Calculator;
 using DataAccess.Abstracts;
 using Entity.Concretes;
 using Entity.Dtos;
@@ -14,7 +15,7 @@ namespace DataAccess.Concretes
 {
     public class EfAdvertDal : EfEntityRepositoryBase<Advert, AppDbContext>, IAdvertDal
     {
-        public List<AdvertReadDto> GetAllAdvertDetail(int pageNumber, int pageSize = 20)
+        public List<AdvertReadDto> GetAllAdvertDetail(int pageNumber, double latitude, double longitude, int pageSize = 20)
         {
             using (var context = new AppDbContext())
             {
@@ -34,7 +35,7 @@ namespace DataAccess.Concretes
                                  AdvertImages =
                                      (from image in context.AdvertImages where advert.Id == image.AdvertId select image)
                                      .ToArray(),
-
+                                 Distance = (int) Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude), Decimal.ToDouble(location.Longitude)),
                                  Id = advert.Id,
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,

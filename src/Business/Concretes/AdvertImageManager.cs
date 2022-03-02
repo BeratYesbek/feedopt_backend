@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Business.Abstracts;
 using Business.BusinessAspect;
 using Business.Security.Role;
@@ -14,15 +8,11 @@ using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
-using Core.Utilities;
-using Core.Utilities.Cloud.Cloudinary;
-using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
-using DataAccess.Concretes;
 using Entity.Concretes;
-using Microsoft.AspNetCore.Http;
+using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 
 namespace Business.Concretes

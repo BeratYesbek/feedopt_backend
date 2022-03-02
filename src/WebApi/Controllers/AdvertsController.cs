@@ -3,6 +3,7 @@ using AutoMapper;
 using Business.Abstracts;
 using Entity.Concretes;
 using Entity.Dtos;
+using Entity.Dtos.Filter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,9 +33,9 @@ namespace WebApi.Controllers
             var result = await _advertService.Add(advert, advertImage, advertCreateDto.Files, location);
             if (result.Success)
             {
-                return Ok();
+                return Ok(result);
             }
-            return BadRequest();
+            return BadRequest(result);
         }
 
         [HttpPut("update")]
@@ -66,9 +67,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getAllAdvertDetail")]
-        public IActionResult GetAllAdvertDetail(int pageNumber)
+        public IActionResult GetAllAdvertDetail(int pageNumber, double latitude, double longitude)
         {
-            var result = _advertService.GetAllAdvertDetail(pageNumber);
+            var result = _advertService.GetAllAdvertDetail(pageNumber, latitude, longitude);
             if (result.Success)
             {
                 return Ok(result);
@@ -78,14 +79,13 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getAllAdvertDetailByFilter")]
-        public IActionResult getAllAdvertDetailByFilter(int pageNumber)
+        public IActionResult getAllAdvertDetailByFilter(int pageNumber, double latitude, double longitude)
         {
-            var result = _advertService.GetAllAdvertDetail(pageNumber);
+            var result = _advertService.GetAllAdvertDetail(pageNumber, latitude, longitude);
             if (result.Success)
             {
                 return Ok(result);
             }
-
             return BadRequest(result);
         }
 

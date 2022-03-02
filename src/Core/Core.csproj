@@ -1,9 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <Deterministic>True</Deterministic>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <Deterministic>True</Deterministic>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.3.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
@@ -17,13 +27,13 @@
     <PackageReference Include="FluentEmail.Smtp" Version="3.0.0" />
     <PackageReference Include="FluentValidation" Version="10.3.6" />
     <PackageReference Include="log4net" Version="2.0.14" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.14" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.14" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.14" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.14" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.14">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

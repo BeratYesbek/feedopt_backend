@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.Utilities.Result.Abstracts;
 using Microsoft.AspNetCore.Http;
+using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 namespace Core.Utilities.FileHelper
 {

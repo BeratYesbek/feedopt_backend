@@ -1,11 +1,8 @@
 ﻿using Business.Abstracts;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
-using DataAccess.Concretes;
 using Entity.concretes;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using Business.BusinessAspect;
 using Business.Security.Role;
 using Business.Validation.FluentValidation;
@@ -14,11 +11,9 @@ using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
-using Core.Utilities.IoC;
 using DataAccess.Abstracts;
-using Entity.Concretes;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
+
+using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 namespace Business.Concretes
 {
