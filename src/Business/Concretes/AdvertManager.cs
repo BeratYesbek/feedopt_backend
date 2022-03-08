@@ -21,9 +21,20 @@ using Entity.Dtos;
 using Microsoft.AspNetCore.Http;
 using IResult = Core.Utilities.Result.Abstracts.IResult;
 using Core.Utilities.Business;
+using Entity.Dtos.Filter;
+using System.Linq.Expressions;
+using System.Reflection;
+using Autofac;
+using AutoMapper.Execution;
+using AutoMapper.Internal;
+using Business.Filters;
+using Castle.Core.Internal;
+using Core.Extensions;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+
 namespace Business.Concretes
 {
-    public class AdvertManager : IAdvertService
+    public class AdvertManager : AdvertFilter, IAdvertService
     {
         private readonly IAdvertDal _advertDal;
 
@@ -133,7 +144,7 @@ namespace Business.Concretes
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber, double latitude, double longitude)
         {
-            var data = _advertDal.GetAllAdvertDetail(pageNumber,latitude,longitude);
+            var data = _advertDal.GetAllAdvertDetail(pageNumber, latitude, longitude);
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<AdvertReadDto>>(data);
@@ -145,16 +156,10 @@ namespace Business.Concretes
         [CacheAspect]
         [PerformanceAspect(5)]
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        public IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(int pageNumber)
-        {
-            var data = _advertDal.GetAllAdvertDetailsByFilter(null, pageNumber);
-            if (data.Count > 0)
-            {
-                return new SuccessDataResult<List<AdvertReadDto>>(data);
-            }
 
-            return new ErrorDataResult<List<AdvertReadDto>>(null);
-        }
+
+
+
         [LogAspect(typeof(DatabaseLogger))]
         [CacheAspect]
         [PerformanceAspect(5)]
@@ -223,5 +228,33 @@ namespace Business.Concretes
 
             return new SuccessResult();
         }
+
+        public IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto filter, int pageNumber)
+        {
+            Expression<Func<Advert, bool>> filters = c => true;
+            var properties = filter.GetType().GetProperties();
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(filter, null);
+                if (value is not null)
+                {
+                    if (value is int and not 0)
+                    {
+                        object[] methodParams = { filters, value };
+                        filters = (Expression<Func<Advert, bool>>) GetInvokeMethod($"{property.Name}Condition",
+                            methodParams);
+                    }
+                }
+            }
+
+            var data = _advertDal.GetAllAdvertDetailsByFilter(filters, pageNumber);
+            if (data is not null)
+            {
+                return new SuccessDataResult<List<AdvertReadDto>>(data);
+            }
+            return new ErrorDataResult<List<AdvertReadDto>>(null);
+        }
+
+
     }
 }

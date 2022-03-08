@@ -1,15 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿
+using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstracts;
 using Entity.Concretes;
 using Entity.Dtos;
 using Entity.Dtos.Filter;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
     public class AdvertsController : ControllerBase
     {
@@ -77,11 +77,10 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
         }
-
         [HttpGet("getAllAdvertDetailByFilter")]
-        public IActionResult getAllAdvertDetailByFilter(int pageNumber, double latitude, double longitude)
+        public IActionResult GetAllAdvertDetailByFilter([FromQuery] AdvertFilterDto filter, int pageNumber)
         {
-            var result = _advertService.GetAllAdvertDetail(pageNumber, latitude, longitude);
+            var result = _advertService.GetAllAdvertDetailsByFilter(filter, pageNumber);
             if (result.Success)
             {
                 return Ok(result);
