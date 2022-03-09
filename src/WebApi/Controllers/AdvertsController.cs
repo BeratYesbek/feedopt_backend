@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstracts;
+using Core.Utilities.IoC;
 using Entity.Concretes;
 using Entity.Dtos;
 using Entity.Dtos.Filter;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApi.Controllers
 {
@@ -17,10 +19,17 @@ namespace WebApi.Controllers
 
         private readonly IMapper _mapper;
 
+        private readonly IWebSocketConnectionService _connectionService;
+
+        private readonly IUserService _userService;
+
         public AdvertsController(IAdvertService advertService, IMapper mapper)
         {
             _advertService = advertService;
             _mapper = mapper;
+
+            _connectionService = ServiceTool.ServiceProvider.GetService<IWebSocketConnectionService>();
+            _userService = ServiceTool.ServiceProvider.GetService<IUserService>();
         }
 
         [HttpPost("add")]

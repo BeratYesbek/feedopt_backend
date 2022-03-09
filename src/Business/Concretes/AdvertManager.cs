@@ -20,17 +20,10 @@ using Entity.Concretes;
 using Entity.Dtos;
 using Microsoft.AspNetCore.Http;
 using IResult = Core.Utilities.Result.Abstracts.IResult;
-using Core.Utilities.Business;
 using Entity.Dtos.Filter;
 using System.Linq.Expressions;
-using System.Reflection;
-using Autofac;
-using AutoMapper.Execution;
-using AutoMapper.Internal;
 using Business.Filters;
-using Castle.Core.Internal;
-using Core.Extensions;
-using Microsoft.EntityFrameworkCore.Query.Internal;
+
 
 namespace Business.Concretes
 {

@@ -26,6 +26,9 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<WebSocketConnectionManager>().As<IWebSocketConnectionService>().SingleInstance();
+            builder.RegisterType<EfWebSocketConnectionDal>().As<IWebSocketConnectionDal>().SingleInstance();
+
             builder.RegisterType<FavoriteAdvertManager>().As<IFavoriteAdvertService>().SingleInstance();
             builder.RegisterType<EfFavoriteAdvertDal>().As<IFavoriteAdvertDal>().SingleInstance();
             

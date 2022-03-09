@@ -153,6 +153,7 @@ namespace WebApi
 
             app.UseRouting();
 
+
             app.UseAuthorization();
 
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
@@ -168,6 +169,7 @@ namespace WebApi
                 {
                     endpoints.MapDefaultControllerRoute();
                     endpoints.MapControllers();
+                    endpoints.MapHub<ChatHub>("/chatHub");
                 });
         }
         /*  app.UseEndpoints(endpoints =>
