@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
@@ -36,6 +37,8 @@ namespace WebApi.Controllers
         public IActionResult Login(UserForLoginDto userForLoginDto)
         {
             var userToLogin = _authService.Login(userForLoginDto);
+            var head = Request.Headers;
+            var cookie = Request.Cookies;
             if (!userToLogin.Success)
             {
                 return BadRequest(userToLogin);
@@ -52,6 +55,9 @@ namespace WebApi.Controllers
                     User = userToLogin.Data,
 
                 });
+                
+
+                Console.WriteLine("--> ");
                 return Ok(result);
             }
             return BadRequest(userToLogin);
@@ -72,13 +78,14 @@ namespace WebApi.Controllers
             if (result.Success)
             {
                 result.Data.User = registerResult.Data;
-                HttpContext.SetCookie(new CookieParams
-                {
-                    AccessToken = result.Data,
-                    User = registerResult.Data,
+                 HttpContext.SetCookie(new CookieParams
+                 {
+                     AccessToken = result.Data,
+                     User = registerResult.Data,
 
-                });
-                return Ok(result);
+                 });
+
+                 return Ok(result);
             }
 
             return BadRequest(result.Message);

@@ -50,8 +50,7 @@ namespace WebApi
             services.AddDbContext<AppDbContext>();
 
             services.AddScoped<IConfig, Config.Config>();
-
-            //  services.AddSignalR();
+            services.AddSignalR();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -79,6 +78,7 @@ namespace WebApi
                         OnMessageReceived = context =>
                         {
                             context.Token = context.Request.Cookies["Authorization"];
+                            context.Response.Cookies.Append("Email", "beratyesbek@gmail.com");
                             return Task.CompletedTask;
                         }
                     };
@@ -109,17 +109,17 @@ namespace WebApi
             services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAll",
-                    builder =>
-                    {
-                        builder
-                            .AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader();
-                    });
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("AllowAll",
+            //        builder =>
+            //        {
+            //            builder
+            //                .AllowAnyOrigin()
+            //                .AllowAnyMethod()
+            //                .AllowAnyHeader();
+            //        });
+            //});
 
             services.AddDependencyResolvers(new ICoreModule[]
             {
@@ -155,6 +155,8 @@ namespace WebApi
 
 
             app.UseAuthorization();
+            app.UseCors(builder => builder.WithOrigins("http://localhost:5500", "http://127.0.0.1:5500")
+                .AllowAnyHeader().AllowCredentials().AllowAnyMethod());
 
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
@@ -162,22 +164,16 @@ namespace WebApi
                 .AddSupportedCultures(Language.SupportedLanguage)
                 .AddSupportedUICultures(Language.SupportedLanguage);
 
+
             app.UseRequestLocalization(localizationOptions);
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
 
             app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapDefaultControllerRoute();
-                    endpoints.MapControllers();
-                    endpoints.MapHub<ChatHub>("/chatHub");
-                });
-        }
-        /*  app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
-                endpoints.MapHub<NotificationHub>("/notificationHub");
-                endpoints.MapHub<NotificationHub>("/chatHub");
-
-            });*/
+                endpoints.MapHub<ChatHub>("/chatHub", map => { });
+            });
+        }
     }
 }

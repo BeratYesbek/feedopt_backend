@@ -184,11 +184,12 @@ namespace Business.Concretes
 
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
         [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
         [CacheRemoveAspect("IAdvertService.GetAll")]
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         //  [ValidationAspect(typeof(AdvertValidator))]
         public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {

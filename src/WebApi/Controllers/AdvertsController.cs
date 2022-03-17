@@ -19,7 +19,7 @@ namespace WebApi.Controllers
 
         private readonly IMapper _mapper;
 
-        private readonly IWebSocketConnectionService _connectionService;
+
 
         private readonly IUserService _userService;
 
@@ -27,8 +27,6 @@ namespace WebApi.Controllers
         {
             _advertService = advertService;
             _mapper = mapper;
-
-            _connectionService = ServiceTool.ServiceProvider.GetService<IWebSocketConnectionService>();
             _userService = ServiceTool.ServiceProvider.GetService<IUserService>();
         }
 
@@ -100,7 +98,7 @@ namespace WebApi.Controllers
 
         [HttpGet("getAll")]
         public IActionResult GetAll()
-        {
+        {   
             var result = _advertService.GetAll();
             if (result.Success)
             {
