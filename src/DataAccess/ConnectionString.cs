@@ -9,6 +9,6 @@ namespace DataAccess
     public static class ConnectionString
     {
         public static string DataBaseConnectionString { get; set; } =
-            "Server=(localdb)\\MSSQLLocalDB;Database=NervioTestDb;Trusted_Connection=true";
+            "Server=(localdb)\\MSSQLLocalDB;Database=NervioTestDb;Trusted_Connection=true  ";
     }
 }
