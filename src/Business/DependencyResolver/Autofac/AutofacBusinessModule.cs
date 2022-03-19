@@ -1,24 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Business.Abstracts;
 using Business.Concretes;
 using Castle.DynamicProxy;
 using Core.Utilities.Cloud.Cloudinary;
-using Core.Utilities.FileHelper;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstracts;
 using DataAccess.Concretes;
-using Entity.concretes;
-using Entity.Concretes;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
-using Microsoft.Extensions.Logging;
 
 namespace Business.DependencyResolver.Autofac
 {
@@ -26,9 +16,11 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+
+
             builder.RegisterType<FavoriteAdvertManager>().As<IFavoriteAdvertService>().SingleInstance();
             builder.RegisterType<EfFavoriteAdvertDal>().As<IFavoriteAdvertDal>().SingleInstance();
-            
+
             builder.RegisterType<AdvertCategoryManager>().As<IAdvertCategoryService>().SingleInstance();
             builder.RegisterType<EfAdvertCategoryDal>().As<IAdvertCategoryDal>().SingleInstance();
 
@@ -69,7 +61,6 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
 
             builder.RegisterType<DistributedSessionStore>().As<ISessionStore>();
-
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

@@ -24,7 +24,6 @@ using Entity.Dtos.Filter;
 using System.Linq.Expressions;
 using Business.Filters;
 
-
 namespace Business.Concretes
 {
     public class AdvertManager : AdvertFilter, IAdvertService
@@ -34,6 +33,7 @@ namespace Business.Concretes
         private readonly IAdvertImageService _imageService;
 
         private readonly ILocationService _locationService;
+
 
         public AdvertManager(IAdvertDal advertDal, IAdvertImageService imageService, ILocationService locationService)
         {
@@ -52,7 +52,7 @@ namespace Business.Concretes
         [ValidationAspect(typeof(AdvertValidator))]
         public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
-            var ruleResult = Core.Utilities.Business.BusinessRules.Run(
+            /*var ruleResult = Core.Utilities.Business.BusinessRules.Run(
                 AdvertBusinessRules.CheckFilesSize(files),
                 AdvertBusinessRules.CheckDescriptionIllegalKeyword(advert.Description));
 
@@ -60,7 +60,7 @@ namespace Business.Concretes
             {
                 return new ErrorDataResult<Advert>(null, ruleResult.Message);
             }
-
+            */
             var locationResult = _locationService.Add(location);
             if (locationResult is null)
             {
@@ -182,10 +182,15 @@ namespace Business.Concretes
             return new ErrorDataResult<List<Advert>>(null);
         }
 
+        public IResult UpdateStatus(Advert advert)
+        {
+            _advertDal.Update(advert);
+            return new SuccessResult();
+        }
+
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-
+        //[SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
         [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
@@ -235,7 +240,7 @@ namespace Business.Concretes
                     if (value is int and not 0)
                     {
                         object[] methodParams = { filters, value };
-                        filters = (Expression<Func<Advert, bool>>) GetInvokeMethod($"{property.Name}Condition",
+                        filters = (Expression<Func<Advert, bool>>)GetInvokeMethod($"{property.Name}Condition",
                             methodParams);
                     }
                 }
@@ -248,7 +253,6 @@ namespace Business.Concretes
             }
             return new ErrorDataResult<List<AdvertReadDto>>(null);
         }
-
 
     }
 }

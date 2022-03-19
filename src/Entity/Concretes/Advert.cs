@@ -20,5 +20,7 @@ namespace Entity.Concretes
         public int AdvertCategoryId { get; set; }
 
         public int LocationId { get; set; }
+
+        public bool Status { get; set; } = false;
     }
 }

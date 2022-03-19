@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading;
 using System.Threading.Tasks;
 using Business.Abstracts;
-using Castle.DynamicProxy;
+using Core.CrossCuttingConcerns.Cache;
+using Core.Utilities.Cloud.FCM;
 using Core.Utilities.IoC;
-using Core.Utilities.Result.Abstracts;
-using Entity.Concretes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,10 +16,15 @@ namespace WebApi.SignalR
     {
         private readonly IHttpContextAccessor _context;
         private readonly IUserService _userService;
+        private readonly INotificationService _notificationService;
+        private readonly ICacheManager _cacheManager;
         private static int count;
-        public ChatHub(IUserService userService)
+
+        public ChatHub(IUserService userService,ICacheManager cacheManager,INotificationService notificationService)
         {
             _userService = userService;
+            _cacheManager = cacheManager;
+            _notificationService = notificationService;
             _context = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
@@ -35,7 +34,18 @@ namespace WebApi.SignalR
             Console.WriteLine("--> Connection Opened: " + Context.ConnectionId);
 
             var groupName = GetGroupName();
+            
             Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+            if (CheckGroupIsExists(groupName))
+            {
+                int members = GetGroupMember(groupName);
+                members++;
+                UpdateGroupMember(groupName,members);
+            }
+            else
+            {
+                AddGroup(groupName,1);
+            }
             Clients.Client(Context.ConnectionId).SendAsync("ReceiveConnId", Context.ConnectionId);
 
             return base.OnConnectedAsync();
@@ -47,6 +57,14 @@ namespace WebApi.SignalR
             Console.WriteLine("--> Connection Closed: " + Context.ConnectionId);
             var groupName = GetGroupName();
             Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+            var members = GetGroupMember(groupName);
+            members--;
+            if (members == 0)
+            {
+                RemoveGroup(groupName);
+                return base.OnDisconnectedAsync(exception);
+            }
+            UpdateGroupMember(groupName,members);
             return base.OnDisconnectedAsync(exception);
         }
 
@@ -62,9 +80,17 @@ namespace WebApi.SignalR
 
             }
             var groupName = (string)routeOb?.To.ToString();
+
+            if (!CheckGroupIsExists(groupName))
+            {
+                await _notificationService.PushNotification("", "", "", "");
+            }
+
             await Clients.Group(groupName).SendAsync("ReceiveMessage", message);
 
         }
+
+
 
         private string GetGroupName()
         {
@@ -72,8 +98,35 @@ namespace WebApi.SignalR
             {
                 return _email;
             }
-
             throw new ArgumentNullException("--> User email is null");
         }
+
+        private void AddGroup(string groupName,int numberOfMember)
+        {
+            _cacheManager.Add(groupName, numberOfMember,150);
+
+        }
+
+        private void UpdateGroupMember(string groupName,int numberOfMember)
+        {
+            AddGroup(groupName,numberOfMember);
+        }
+
+        private void RemoveGroup(string groupName)
+        {
+            _cacheManager.Remove(groupName);
+        }
+
+        private int GetGroupMember(string groupName)
+        {
+            return _cacheManager.Get<int>(groupName);
+        }
+
+        private bool CheckGroupIsExists(string groupName)
+        {
+            return _cacheManager.IsAdd(groupName);
+        }
+
+
     }
 }

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.CrossCuttingConcerns.Cache;
 using Core.CrossCuttingConcerns.Cache.Microsoft;
+using Core.Utilities.Cloud.FCM;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,7 @@ namespace Core.DependencyResolvers
             serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             serviceCollection.AddSingleton<ICacheManager, MemoryCacheManager>();
             serviceCollection.AddSingleton<Stopwatch>();
+            serviceCollection.AddSingleton<INotificationService, NotificationService>();
 
         }
 

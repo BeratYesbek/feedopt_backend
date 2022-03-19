@@ -122,7 +122,7 @@
             },
             "Autofac.Extras.DynamicProxy": {
               "target": "Package",
-              "version": "[6.0.0, )"
+              "version": "[6.0.1, )"
             },
             "CloudinaryDotNet": {
               "target": "Package",
@@ -131,6 +131,10 @@
             "EntityFramework": {
               "target": "Package",
               "version": "[6.4.4, )"
+            },
+            "FirebaseAdmin": {
+              "target": "Package",
+              "version": "[2.2.0, )"
             },
             "FluentEmail.Core": {
               "target": "Package",
@@ -177,6 +181,14 @@
             "Microsoft.Extensions.Caching.Redis": {
               "target": "Package",
               "version": "[2.2.0, )"
+            },
+            "Quartz": {
+              "target": "Package",
+              "version": "[3.3.3, )"
+            },
+            "Quartz.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[3.3.3, )"
             },
             "StackExchange.Redis": {
               "target": "Package",

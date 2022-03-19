@@ -1,13 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
-using CloudinaryDotNet;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Core.DependencyResolvers;
 using Core.Extensions;
@@ -18,12 +13,8 @@ using DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Session;
-using Microsoft.EntityFrameworkCore;
-using CloudinaryDotNet.Actions;
 using Core.Utilities.Language;
 using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
 using WebApi.Config;
 using WebApi.SignalR;
@@ -86,7 +77,7 @@ namespace WebApi
 
 
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" }); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebApi", Version = "v1"}); });
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
@@ -175,5 +166,6 @@ namespace WebApi
                 endpoints.MapHub<ChatHub>("/chatHub", map => { });
             });
         }
+
     }
 }

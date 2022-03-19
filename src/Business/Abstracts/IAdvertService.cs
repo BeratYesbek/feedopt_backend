@@ -30,5 +30,7 @@ namespace Business.Abstracts
         IDataResult<AdvertReadDto> GetAdvertDetailById(int id);
 
         IDataResult<List<Advert>> GetAll();
+
+        IResult UpdateStatus(Advert advert);
     }
 }

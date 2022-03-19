@@ -29,6 +29,8 @@
 
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 
+    <PackageReference Include="RabbitMQ.Client" Version="6.2.4" />
+
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
 
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
@@ -41,6 +43,12 @@
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\Entity\Entity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="feedopt-firebase-adminsdk-592d1-8df2e87481.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

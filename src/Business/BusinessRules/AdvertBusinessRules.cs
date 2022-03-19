@@ -10,6 +10,10 @@ namespace Business.BusinessRules
 
         internal static IResult CheckFilesSize(IFormFile[] files)
         {
+            if (files == null)
+            {
+                return new ErrorResult("Files is empty");
+            }
             if (files.Length > 3)
             {
                 return new ErrorResult(AdvertBusinessRulesMessages.GreaterFileSizeMessage);
