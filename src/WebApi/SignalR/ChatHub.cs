@@ -52,7 +52,7 @@ namespace WebApi.SignalR
 
         }
 
-        public override Task OnDisconnectedAsync(Exception? exception)
+        public override Task OnDisconnectedAsync(Exception exception)
         {
             Console.WriteLine("--> Connection Closed: " + Context.ConnectionId);
             var groupName = GetGroupName();
@@ -89,8 +89,6 @@ namespace WebApi.SignalR
             await Clients.Group(groupName).SendAsync("ReceiveMessage", message);
 
         }
-
-
 
         private string GetGroupName()
         {

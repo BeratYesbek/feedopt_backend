@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Http;
 using IResult = Core.Utilities.Result.Abstracts.IResult;
 using Entity.Dtos.Filter;
 using System.Linq.Expressions;
+using Business.BackgroundJob.Hangfire;
 using Business.Filters;
 
 namespace Business.Concretes
@@ -34,12 +35,13 @@ namespace Business.Concretes
 
         private readonly ILocationService _locationService;
 
-
         public AdvertManager(IAdvertDal advertDal, IAdvertImageService imageService, ILocationService locationService)
         {
             _imageService = imageService;
             _advertDal = advertDal;
             _locationService = locationService;
+
+            
         }
 
         [LogAspect(typeof(DatabaseLogger))]
@@ -52,7 +54,7 @@ namespace Business.Concretes
         [ValidationAspect(typeof(AdvertValidator))]
         public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
-            /*var ruleResult = Core.Utilities.Business.BusinessRules.Run(
+            var ruleResult = Core.Utilities.Business.BusinessRules.Run(
                 AdvertBusinessRules.CheckFilesSize(files),
                 AdvertBusinessRules.CheckDescriptionIllegalKeyword(advert.Description));
 
@@ -60,7 +62,7 @@ namespace Business.Concretes
             {
                 return new ErrorDataResult<Advert>(null, ruleResult.Message);
             }
-            */
+            
             var locationResult = _locationService.Add(location);
             if (locationResult is null)
             {
@@ -89,10 +91,8 @@ namespace Business.Concretes
                         }
                     }
                 }
-
+                Job.Create<AdvertJob>().UpdateAdvertStatusJob(this,result);
                 return new SuccessDataResult<Advert>(result);
-
-
             }
 
             return new ErrorDataResult<Advert>(null);

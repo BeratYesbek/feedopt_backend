@@ -88,6 +88,22 @@
               "target": "Package",
               "version": "[10.3.6, )"
             },
+            "Hangfire": {
+              "target": "Package",
+              "version": "[1.7.28, )"
+            },
+            "Hangfire.Core": {
+              "target": "Package",
+              "version": "[1.7.28, )"
+            },
+            "Hangfire.PostgreSql": {
+              "target": "Package",
+              "version": "[1.9.7, )"
+            },
+            "Hangfire.SqlServer": {
+              "target": "Package",
+              "version": "[1.7.28, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[6.0.2, )"
@@ -117,14 +133,6 @@
             "Microsoft.Extensions.Caching.Redis": {
               "target": "Package",
               "version": "[2.2.0, )"
-            },
-            "Quartz": {
-              "target": "Package",
-              "version": "[3.3.3, )"
-            },
-            "Quartz.Extensions.DependencyInjection": {
-              "target": "Package",
-              "version": "[3.3.3, )"
             },
             "StackExchange.Redis": {
               "target": "Package",

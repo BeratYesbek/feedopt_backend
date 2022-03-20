@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Core.Utilities.Language;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Newtonsoft.Json.Serialization;
 using WebApi.Config;
@@ -36,12 +38,11 @@ namespace WebApi
         {
             services.AddControllers();
             services.AddDistributedMemoryCache();
-
-
+            services.AddHangfireServer();
             services.AddDbContext<AppDbContext>();
-
             services.AddScoped<IConfig, Config.Config>();
             services.AddSignalR();
+            services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("DB_CONNECTION_STRING")));
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -75,9 +76,7 @@ namespace WebApi
                     };
                 });
 
-
-
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "WebApi", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" }); });
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
@@ -92,7 +91,6 @@ namespace WebApi
 
             services.AddControllersWithViews();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
             services.AddMvcCore();
 
             //Globalization and Localization
@@ -100,64 +98,37 @@ namespace WebApi
             services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("AllowAll",
-            //        builder =>
-            //        {
-            //            builder
-            //                .AllowAnyOrigin()
-            //                .AllowAnyMethod()
-            //                .AllowAnyHeader();
-            //        });
-            //});
-
             services.AddDependencyResolvers(new ICoreModule[]
             {
                 new CoreModule()
             });
         }
-        //
+        
 
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IConfig config)
         {
-            // this method will be set our configuration
             config.Run();
-
             app.UseDeveloperExceptionPage();
+            app.UseStaticFiles();
+            app.UseSession();
+            app.ConfigureCustomExceptionMiddleware();
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseHangfireDashboard();
+            app.UseRouting();
+            app.UseAuthorization();
 
             app.UseSwagger();
-
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
 
-            app.UseStaticFiles();
-
-            app.UseSession();
-
-            app.ConfigureCustomExceptionMiddleware();
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthentication();
-
-            app.UseRouting();
-
-
-            app.UseAuthorization();
             app.UseCors(builder => builder.WithOrigins("http://localhost:5500", "http://127.0.0.1:5500")
                 .AllowAnyHeader().AllowCredentials().AllowAnyMethod());
-
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(Language.SupportedLanguage[0])
                 .AddSupportedCultures(Language.SupportedLanguage)
                 .AddSupportedUICultures(Language.SupportedLanguage);
-
-
             app.UseRequestLocalization(localizationOptions);
-
 
             app.UseEndpoints(endpoints =>
             {
@@ -165,7 +136,7 @@ namespace WebApi
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chatHub", map => { });
             });
-        }
 
+        }
     }
 }
