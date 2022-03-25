@@ -761,11 +761,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-<<<<<<< HEAD
-/DataAccess/Migrations/20220302182248_initialmigration.cs
-/DataAccess/Migrations/20220302182248_initialmigration.Designer.cs
-/DataAccess/Migrations/AppDbContextModelSnapshot.cs
-=======
+
 /Core/obj
 /DataAccess/obj
 /DataAccess/bin
@@ -774,8 +770,4 @@ FodyWeavers.xsd
 /Business/obj
 /WebApi/bin
 /WebApi/obj
->>>>>>> 66743339614abcc66ef1ac1612136aadcea51a48
 /WebApi/feedopt-firebase-adminsdk-592d1-8df2e87481.json
-/WebApi/appsettings.Development.json
-/WebApi/appsettings.Production.json
-/WebApi/appsettings.json
