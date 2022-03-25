@@ -8,8 +8,8 @@ namespace Business.Messages.BusinessRulesMessages
 {
     internal class AdvertBusinessRulesMessages
     {
-        internal const string LessFileSizeMessage = "You must upload at least three file";
-        internal const string GreaterFileSizeMessage = "You must upload at most three file";
+        internal const string LessFileSizeMessage = "You must upload at least five file";
+        internal const string GreaterFileSizeMessage = "You must upload at most one file";
 
         internal const string BannedKeywordMessage =
             "You must check your description. It includes  some illegal keywords. they are: ";

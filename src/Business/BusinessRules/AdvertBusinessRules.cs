@@ -10,12 +10,16 @@ namespace Business.BusinessRules
 
         internal static IResult CheckFilesSize(IFormFile[] files)
         {
-            if (files.Length > 3)
+            if (files == null)
+            {
+                return new ErrorResult("Files is empty");
+            }
+            if (files.Length == 0)
             {
                 return new ErrorResult(AdvertBusinessRulesMessages.GreaterFileSizeMessage);
             }
 
-            if (files.Length < 3)
+            if (files.Length > 5)
             {
                 return new ErrorResult(AdvertBusinessRulesMessages.LessFileSizeMessage);
             }
@@ -26,13 +30,13 @@ namespace Business.BusinessRules
 
         internal static IResult CheckDescriptionIllegalKeyword(string description)
         {
-            foreach (var keyword in BannedKeyword.BannedKeyword.SearchedKeyword)
+          /*  foreach (var keyword in BannedKeyword.BannedKeyword.SearchedKeyword)
             {
                 if (description.Contains(keyword))
                 {
                     return new ErrorResult($"{AdvertBusinessRulesMessages.BannedKeywordMessage}{BannedKeyword.BannedKeyword.SearchedKeyword}");
                 }
-            }
+            }*/
             return new SuccessResult();
         }
     }

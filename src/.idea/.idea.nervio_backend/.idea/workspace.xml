@@ -13,26 +13,7 @@
   <component name="ChangeListManager">
     <list default="true" id="47b3f185-ec64-4fee-9e3d-6ba3f7b82a60" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.vs/nervio_backend/DesignTimeBuild/.dtbcache.v2" beforeDir="false" afterPath="$PROJECT_DIR$/.vs/nervio_backend/DesignTimeBuild/.dtbcache.v2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/obj/Business.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/obj/Business.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/obj/Business.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Business/obj/Business.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Business/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/obj/Core.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Core/obj/Core.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/obj/Core.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Core/obj/Core.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Core/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Core/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/obj/DataAccess.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/DataAccess.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/obj/DataAccess.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/DataAccess.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entity/obj/Entity.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Entity/obj/Entity.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entity/obj/Entity.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Entity/obj/Entity.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entity/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Entity/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entity/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Entity/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApi/obj/WebApi.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApi/obj/WebApi.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApi/obj/WebApi.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/WebApi/obj/WebApi.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApi/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApi/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApi/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WebApi/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Concretes/WebSocketConnectionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Concretes/WebSocketConnectionManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +33,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="Toolset" />
   </component>
   <component name="ProjectId" id="25ZWFcMkjy7xZA1VOvQ12NzECt8" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -128,6 +112,7 @@
       <workItem from="1645819349603" duration="489000" />
       <workItem from="1645854233104" duration="2073000" />
       <workItem from="1645979921029" duration="617000" />
+      <workItem from="1646923626892" duration="76000" />
     </task>
     <servers />
   </component>

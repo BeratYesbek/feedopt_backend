@@ -72,6 +72,18 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
+        [HttpGet("getAllByAnimalCategoryId")]
+        public IActionResult GetAllByAnimalCategoryId(int animalCategoryId)
+        {
+            var result = _animalSpeciesService.GetAllByAnimalCategoryId(animalCategoryId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {

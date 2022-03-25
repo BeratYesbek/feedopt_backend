@@ -61,6 +61,20 @@ namespace Business.Abstracts
             return new SuccessResult();
         }
 
+        [CacheAspect]
+        [SecuredOperation($"{Role.AnimalSpeciesGet},{Role.Admin},{Role.User},{Role.SuperAdmin}")]
+        [LogAspect(typeof(DatabaseLogger))]
+        [PerformanceAspect(5)]
+        public IDataResult<List<AnimalSpecies>> GetAllByAnimalCategoryId(int animalCategoryId)
+        {
+            var data = _animalSpeciesDal.GetAll(a => a.AnimalCategoryId == animalCategoryId);
+            if (data.Count > 0)
+            {
+                return new SuccessDataResult<List<AnimalSpecies>>(data);
+            }
+            return new ErrorDataResult<List<AnimalSpecies>>(null);
+        }
+
         [PerformanceAspect(5)]
         [CacheAspect]
         [SecuredOperation($"{Role.AnimalSpeciesGet},{Role.Admin},{Role.User},{Role.SuperAdmin}")]

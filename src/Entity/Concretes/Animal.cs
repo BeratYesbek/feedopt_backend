@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Entity.Abstracts;
+using Google.Apis.Util;
 
 namespace Entity.Concretes
 {
@@ -17,7 +18,9 @@ namespace Entity.Concretes
     {
         public string AnimalName { get; set; }
 
-        public int Age { get; set; }
+        public int AgeId { get; set; }
+
+        public string Color { get; set; }
 
         public Gender Gender { get; set; }
     }

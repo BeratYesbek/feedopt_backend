@@ -5,6 +5,7 @@ using Core.Utilities.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Net.Http.Headers;
 
 namespace Core.Extensions
 {
@@ -24,9 +25,12 @@ namespace Core.Extensions
             httpContext.Response.Cookies.Append(CookieKey.ExpireKey, cookieParams.AccessToken.Token,
                 new CookieOptions { Expires = cookieParams.AccessToken.Expiration, HttpOnly = true, Secure = true });
 
-            httpContext.Response.Cookies.Append(CookieKey.Email, cookieParams.User.Email,
+            httpContext.Response.Cookies.Append(CookieKey.Email, "elmir@gmail.com",
                 new CookieOptions { Expires = cookieParams.AccessToken.Expiration,HttpOnly = true,Secure = true});
+            httpContext.Response.Cookies.Append("Naber","iiy");
+          
         }
+
 
     }
 }

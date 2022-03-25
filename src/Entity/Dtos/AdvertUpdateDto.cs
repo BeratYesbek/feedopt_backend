@@ -22,9 +22,11 @@ namespace Entity.Dtos
 
         public string AnimalName { get; set; }
 
-        public int Age { get; set; }
+        public int AgeId { get; set; }
 
         public Gender Gender { get; set; }
+
+        public string Color { get; set; }
 
         public IFormFile[] Files { get; set; }
 

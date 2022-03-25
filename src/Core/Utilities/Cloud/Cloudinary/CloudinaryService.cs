@@ -36,13 +36,12 @@ namespace Core.Utilities.Cloud.Cloudinary
 
         public IResult Upload(IFormFile file)
         {
-            ImageUploadResult imageUploadResult = null;
             var uploadParams = new ImageUploadParams()
             {
                 File = new FileDescription(file.FileName, file.OpenReadStream())
             };
 
-            imageUploadResult = _cloudinary.Upload(uploadParams);
+            var imageUploadResult = _cloudinary.Upload(uploadParams);
 
 
             return new SuccessResult($"{imageUploadResult.SecureUrl}&&{imageUploadResult.PublicId}");
@@ -57,13 +56,12 @@ namespace Core.Utilities.Cloud.Cloudinary
 
         public async Task<IResult> UploadAsync(IFormFile file)
         {
-            ImageUploadResult imageUploadResult = null;
             var uploadParams = new ImageUploadParams()
             {
                 File = new FileDescription(file.FileName, file.OpenReadStream())
             };
 
-            imageUploadResult = await _cloudinary.UploadAsync(uploadParams);
+            var imageUploadResult = await _cloudinary.UploadAsync(uploadParams);
 
 
             return new SuccessResult($"{imageUploadResult.SecureUrl}&&{imageUploadResult.PublicId}");

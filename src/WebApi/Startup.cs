@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
+using System.Diagnostics;
 using System.Threading.Tasks;
-using CloudinaryDotNet;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Core.DependencyResolvers;
 using Core.Extensions;
@@ -18,12 +14,9 @@ using DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Session;
-using Microsoft.EntityFrameworkCore;
-using CloudinaryDotNet.Actions;
 using Core.Utilities.Language;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
 using WebApi.Config;
 using WebApi.SignalR;
@@ -45,13 +38,11 @@ namespace WebApi
         {
             services.AddControllers();
             services.AddDistributedMemoryCache();
-
-
+            services.AddHangfireServer();
             services.AddDbContext<AppDbContext>();
-
             services.AddScoped<IConfig, Config.Config>();
-
-            //  services.AddSignalR();
+            services.AddSignalR();
+            services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("DB_CONNECTION_STRING")));
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -79,12 +70,11 @@ namespace WebApi
                         OnMessageReceived = context =>
                         {
                             context.Token = context.Request.Cookies["Authorization"];
+                            context.Response.Cookies.Append("Email", "beratyesbek@gmail.com");
                             return Task.CompletedTask;
                         }
                     };
                 });
-
-
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" }); });
             services.AddSession(options =>
@@ -101,7 +91,6 @@ namespace WebApi
 
             services.AddControllersWithViews();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
             services.AddMvcCore();
 
             //Globalization and Localization
@@ -109,73 +98,45 @@ namespace WebApi
             services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAll",
-                    builder =>
-                    {
-                        builder
-                            .AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader();
-                    });
-            });
-
             services.AddDependencyResolvers(new ICoreModule[]
             {
                 new CoreModule()
             });
         }
-        //
+        
 
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IConfig config)
         {
-            // this method will be set our configuration
             config.Run();
-
             app.UseDeveloperExceptionPage();
-
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
-
             app.UseStaticFiles();
-
             app.UseSession();
-
             app.ConfigureCustomExceptionMiddleware();
-
             app.UseHttpsRedirection();
-
             app.UseAuthentication();
-
+            app.UseHangfireDashboard();
             app.UseRouting();
-
             app.UseAuthorization();
 
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
+
+            app.UseCors(builder => builder.WithOrigins("http://localhost:5500", "http://127.0.0.1:5500")
+                .AllowAnyHeader().AllowCredentials().AllowAnyMethod());
 
             var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(Language.SupportedLanguage[0])
                 .AddSupportedCultures(Language.SupportedLanguage)
                 .AddSupportedUICultures(Language.SupportedLanguage);
-
             app.UseRequestLocalization(localizationOptions);
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapDefaultControllerRoute();
-                    endpoints.MapControllers();
-                });
-        }
-        /*  app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
-                endpoints.MapHub<NotificationHub>("/notificationHub");
-                endpoints.MapHub<NotificationHub>("/chatHub");
+                endpoints.MapHub<ChatHub>("/chatHub", map => { });
+            });
 
-            });*/
+        }
     }
 }

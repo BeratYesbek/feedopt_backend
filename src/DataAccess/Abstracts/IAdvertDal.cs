@@ -12,7 +12,7 @@ namespace DataAccess.Abstracts
 {
     public interface IAdvertDal : IEntityRepository<Advert>
     {
-        List<AdvertReadDto> GetAllAdvertDetail(int pageNumber, int pageSize = 20);
+        List<AdvertReadDto> GetAllAdvertDetail(int pageNumber, double latitude, double longitude, int pageSize = 20);
         List<AdvertReadDto> GetAllAdvertDetailsByFilter(Expression<Func<Advert, bool>> filter, int pageNumber, int pageSize = 10);
         AdvertReadDto GetAdvertDetailById(int id);
     }

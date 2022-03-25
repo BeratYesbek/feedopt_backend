@@ -49,7 +49,6 @@ namespace Core.Extensions
         private void ThrowValidationException(HttpContext httpContext, Exception exception)
         {
             var message = exception.Message;
-            var t = Configuration.GetSection("ErrorsUrl")["ValidationError"];
             Uri redirectURI = new Uri($"{Configuration.GetSection("ErrorsUrl")["ValidationError"]}?&message={message}");
             httpContext.Response.Redirect(redirectURI.AbsoluteUri);
 
@@ -60,7 +59,7 @@ namespace Core.Extensions
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
-            string message = "Internal Server Error";
+            string message = exception.Message;
             if (exception.GetType() == typeof(ValidationException))
             {
                 message = exception.Message;

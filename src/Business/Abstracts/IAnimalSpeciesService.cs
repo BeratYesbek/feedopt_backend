@@ -16,6 +16,8 @@ namespace Business.Abstracts
 
         IResult Delete(AnimalSpecies animalSpecies);
 
+        IDataResult<List<AnimalSpecies>> GetAllByAnimalCategoryId(int animalCategoryId);
+
         IDataResult<AnimalSpecies> Get(int id);
 
         IDataResult<List<AnimalSpecies>> GetAll();

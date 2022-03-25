@@ -1,14 +1,17 @@
-﻿using System.Threading.Tasks;
+﻿
+using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstracts;
+using Core.Utilities.IoC;
 using Entity.Concretes;
 using Entity.Dtos;
-using Microsoft.AspNetCore.Http;
+using Entity.Dtos.Filter;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
     public class AdvertsController : ControllerBase
     {
@@ -20,7 +23,7 @@ namespace WebApi.Controllers
         {
             _advertService = advertService;
             _mapper = mapper;
-        }
+      }
 
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromForm] AdvertCreateDto advertCreateDto)
@@ -34,6 +37,18 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+            return BadRequest(result);
+        }
+
+        [HttpPut("updateStatus")]
+        public IActionResult UpdateStatus(Advert advert)
+        {
+            var result = _advertService.UpdateStatus(advert);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
             return BadRequest(result);
         }
 
@@ -66,9 +81,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getAllAdvertDetail")]
-        public IActionResult GetAllAdvertDetail(int pageNumber)
+        public IActionResult GetAllAdvertDetail(int pageNumber, double latitude, double longitude)
         {
-            var result = _advertService.GetAllAdvertDetail(pageNumber);
+            var result = _advertService.GetAllAdvertDetail(pageNumber, latitude, longitude);
             if (result.Success)
             {
                 return Ok(result);
@@ -76,16 +91,14 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
         }
-
         [HttpGet("getAllAdvertDetailByFilter")]
-        public IActionResult getAllAdvertDetailByFilter(int pageNumber)
+        public IActionResult GetAllAdvertDetailByFilter([FromQuery] AdvertFilterDto filter, int pageNumber)
         {
-            var result = _advertService.GetAllAdvertDetail(pageNumber);
+            var result = _advertService.GetAllAdvertDetailsByFilter(filter, pageNumber);
             if (result.Success)
             {
                 return Ok(result);
             }
-
             return BadRequest(result);
         }
 
@@ -117,6 +130,17 @@ namespace WebApi.Controllers
         public IActionResult GetDetailById(int id)
         {
             var result = _advertService.GetAdvertDetailById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("/getByUserId")]
+        public IActionResult GetByUserId(int userId, int pageNumber)
+        {
+            var result = _advertService.GetAdvertDetailByUserId(userId, pageNumber);
             if (result.Success)
             {
                 return Ok(result);

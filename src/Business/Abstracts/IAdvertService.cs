@@ -7,6 +7,7 @@ using Core.Utilities.Result.Abstracts;
 using Entity.concretes;
 using Entity.Concretes;
 using Entity.Dtos;
+using Entity.Dtos.Filter;
 using Microsoft.AspNetCore.Http;
 using IResult = Core.Utilities.Result.Abstracts.IResult;
 
@@ -22,12 +23,16 @@ namespace Business.Abstracts
 
         IDataResult<Advert> Get(int id);
 
-        IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber);
+        IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber,double latitude,double longitude);
 
-        IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(int pageNumber);
+        IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto advertFilterDto,int pageNumber);
 
         IDataResult<AdvertReadDto> GetAdvertDetailById(int id);
 
+        IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId,int pageNumber);
+
         IDataResult<List<Advert>> GetAll();
+
+        IResult UpdateStatus(Advert advert);
     }
 }
