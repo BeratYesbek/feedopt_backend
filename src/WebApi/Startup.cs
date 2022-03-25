@@ -38,12 +38,14 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDistributedMemoryCache();
-            services.AddHangfireServer();
+
             services.AddDbContext<AppDbContext>();
             services.AddScoped<IConfig, Config.Config>();
             services.AddSignalR();
-            services.AddHangfire(x => x.UsePostgreSqlStorage(Configuration.GetConnectionString("DB_CONNECTION_STRING")));
+
+            //services.AddHangfire(x => x.UsePostgreSqlStorage(Configuration.GetConnectionString("DB_CONNECTION_STRING")));
+            //services.AddDistributedMemoryCache();
+            //services.AddHangfireServer();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -104,7 +106,7 @@ namespace WebApi
                 new CoreModule()
             });
         }
-        
+
 
 
         public void Configure(IApplicationBuilder app, IConfig config)
