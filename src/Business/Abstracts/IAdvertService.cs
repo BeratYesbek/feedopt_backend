@@ -29,6 +29,8 @@ namespace Business.Abstracts
 
         IDataResult<AdvertReadDto> GetAdvertDetailById(int id);
 
+        IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId,int pageNumber);
+
         IDataResult<List<Advert>> GetAll();
 
         IResult UpdateStatus(Advert advert);

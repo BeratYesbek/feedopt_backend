@@ -45,6 +45,18 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
 
+        [HttpPut("updateStatus")]
+        public IActionResult UpdateStatus(Advert advert)
+        {
+            var result = _advertService.UpdateStatus(advert);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromForm] AdvertUpdateDto advertUpdateDto)
         {
@@ -98,7 +110,7 @@ namespace WebApi.Controllers
 
         [HttpGet("getAll")]
         public IActionResult GetAll()
-        {   
+        {
             var result = _advertService.GetAll();
             if (result.Success)
             {
@@ -123,6 +135,17 @@ namespace WebApi.Controllers
         public IActionResult GetDetailById(int id)
         {
             var result = _advertService.GetAdvertDetailById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("/getByUserId")]
+        public IActionResult GetByUserId(int userId, int pageNumber)
+        {
+            var result = _advertService.GetAdvertDetailByUserId(userId, pageNumber);
             if (result.Success)
             {
                 return Ok(result);

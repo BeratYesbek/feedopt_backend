@@ -17,7 +17,8 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-
+            builder.RegisterType<AgeRangeManager>().As<IAgeRangeService>().SingleInstance();
+            builder.RegisterType<EfAgeRangeDal>().As<IAgeRangeDal>().SingleInstance();
 
             builder.RegisterType<FavoriteAdvertManager>().As<IFavoriteAdvertService>().SingleInstance();
             builder.RegisterType<EfFavoriteAdvertDal>().As<IFavoriteAdvertDal>().SingleInstance();

@@ -7,6 +7,15 @@ using Core.Entity.Abstracts;
 
 namespace Entity.Concretes
 {
+    public enum Status
+    {
+
+        Pending,
+        Active,
+        Deactivate,
+
+    }
+    
     public class Advert : Animal, IEntity
     {
         public int Id { get; set; }
@@ -21,6 +30,8 @@ namespace Entity.Concretes
 
         public int LocationId { get; set; }
 
-        public bool Status { get; set; } = false;
+        public Status Status { get; set; } = Status.Pending;
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }

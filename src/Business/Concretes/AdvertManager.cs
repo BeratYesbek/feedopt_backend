@@ -40,8 +40,6 @@ namespace Business.Concretes
             _imageService = imageService;
             _advertDal = advertDal;
             _locationService = locationService;
-
-            
         }
 
         [LogAspect(typeof(DatabaseLogger))]
@@ -52,7 +50,8 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAll")]
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         [ValidationAspect(typeof(AdvertValidator))]
-        public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
+        public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files,
+            Location location)
         {
             var ruleResult = Core.Utilities.Business.BusinessRules.Run(
                 AdvertBusinessRules.CheckFilesSize(files),
@@ -62,17 +61,17 @@ namespace Business.Concretes
             {
                 return new ErrorDataResult<Advert>(null, ruleResult.Message);
             }
-            
+
             var locationResult = _locationService.Add(location);
             if (locationResult is null)
             {
                 return new ErrorDataResult<Advert>(null);
             }
+
             advert.LocationId = locationResult.Data.Id;
             var result = _advertDal.Add(advert);
             if (result is not null)
             {
-
                 foreach (var file in files)
                 {
                     var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
@@ -91,7 +90,8 @@ namespace Business.Concretes
                         }
                     }
                 }
-                Job.Create<AdvertJob>().UpdateAdvertStatusJob(this,result);
+
+                Job.Create<AdvertJob>().UpdateAdvertStatusJob(this, result);
                 return new SuccessDataResult<Advert>(result);
             }
 
@@ -118,6 +118,7 @@ namespace Business.Concretes
             _advertDal.Delete(advert);
             return new SuccessResult();
         }
+
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
@@ -131,6 +132,7 @@ namespace Business.Concretes
 
             return new ErrorDataResult<Advert>(null);
         }
+
         [LogAspect(typeof(DatabaseLogger))]
         [CacheAspect]
         [PerformanceAspect(5)]
@@ -145,14 +147,11 @@ namespace Business.Concretes
 
             return new ErrorDataResult<List<AdvertReadDto>>(null);
         }
+
         [LogAspect(typeof(DatabaseLogger))]
         [CacheAspect]
         [PerformanceAspect(5)]
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-
-
-
-
         [LogAspect(typeof(DatabaseLogger))]
         [CacheAspect]
         [PerformanceAspect(5)]
@@ -167,6 +166,18 @@ namespace Business.Concretes
 
             return new ErrorDataResult<AdvertReadDto>(null);
         }
+
+        public IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId, int pageNumber)
+        {
+            var data = _advertDal.GetAllAdvertDetailsByFilter(a => a.UserId == userId,pageNumber);
+            if (data.Count > 0)
+            {
+                return new SuccessDataResult<List<AdvertReadDto>>(data);
+            }
+
+            return new ErrorDataResult<List<AdvertReadDto>>(null);
+        }
+
         [LogAspect(typeof(DatabaseLogger))]
         [CacheAspect]
         [PerformanceAspect(5)]
@@ -182,6 +193,7 @@ namespace Business.Concretes
             return new ErrorDataResult<List<Advert>>(null);
         }
 
+        //[SecuredOperation($"{Role.SuperAdmin},{Role.Admin}")]
         public IResult UpdateStatus(Advert advert)
         {
             _advertDal.Update(advert);
@@ -206,7 +218,8 @@ namespace Business.Concretes
 
                 for (int i = 0; i < files.Count(); i++)
                 {
-                    var fileResult = await fileHelper.UpdateAsync(files[i], image.Data[i].ImagePath, image.Data[i].PublicId);
+                    var fileResult =
+                        await fileHelper.UpdateAsync(files[i], image.Data[i].ImagePath, image.Data[i].PublicId);
                     var result = _imageService.Update(new AdvertImage
                     {
                         ImagePath = fileResult.Message.Split("&&")[0],
@@ -251,8 +264,8 @@ namespace Business.Concretes
             {
                 return new SuccessDataResult<List<AdvertReadDto>>(data);
             }
+
             return new ErrorDataResult<List<AdvertReadDto>>(null);
         }
-
     }
 }

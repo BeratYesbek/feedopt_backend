@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220324175118_secondmigration")]
+    partial class secondmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,7 +116,7 @@ namespace DataAccess.Migrations
                     b.Property<int>("AdvertCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AgeId")
+                    b.Property<int>("Age")
                         .HasColumnType("int");
 
                     b.Property<string>("AnimalName")
@@ -185,22 +187,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AdvertImages");
-                });
-
-            modelBuilder.Entity("Entity.Concretes.Age", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("AgeRange")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Ages");
                 });
 
             modelBuilder.Entity("Entity.concretes.AnimalCategory", b =>

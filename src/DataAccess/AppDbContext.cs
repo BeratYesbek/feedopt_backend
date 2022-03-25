@@ -23,6 +23,7 @@ namespace DataAccess
         public DbSet<AdvertImage> AdvertImages { get; set; }
         public DbSet<FavoriteAdvert> FavoriteAdverts { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Age> Ages { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }

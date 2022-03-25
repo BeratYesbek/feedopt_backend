@@ -31,7 +31,7 @@ namespace Entity.Dtos
 
         public string AnimalName { get; set; }
 
-        public int Age { get; set; }
+        public Age Age { get; set; }
 
         public Gender Gender { get; set; }
 

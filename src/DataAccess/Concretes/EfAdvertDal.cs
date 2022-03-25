@@ -24,6 +24,7 @@ namespace DataAccess.Concretes
                              join animalSpecies in context.AnimalSpecies on advert.AnimalSpeciesId equals animalSpecies.Id
                              join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
                              join user in context.Users on advert.UserId equals user.Id
+                             join age in context.Ages on advert.AgeId equals age.Id
                              join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals
                                  animalCategory.Id
                              select new AdvertReadDto
@@ -39,7 +40,7 @@ namespace DataAccess.Concretes
                                  Id = advert.Id,
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
-                                 Age = advert.Age,
+                                 Age = age,
                                  Description = advert.Description,
                                  UserId = advert.UserId,
                                  Gender = advert.Gender,
@@ -72,6 +73,7 @@ namespace DataAccess.Concretes
                              join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory
                                  .Id
                              join user in context.Users on advert.UserId equals user.Id
+                             join age in context.Ages on advert.AgeId equals age.Id
                              join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals
                                  animalCategory.Id
                              select new AdvertReadDto
@@ -86,7 +88,7 @@ namespace DataAccess.Concretes
                                  Id = advert.Id,
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
-                                 Age = advert.Age,
+                                 Age = age,
                                  Description = advert.Description,
                                  UserId = advert.UserId,
                                  Gender = advert.Gender,
@@ -119,6 +121,7 @@ namespace DataAccess.Concretes
                              join animalSpecies in context.AnimalSpecies on advert.AnimalSpeciesId equals animalSpecies.Id
                              join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
                              join user in context.Users on advert.UserId equals user.Id
+                             join age in context.Ages on advert.AgeId equals age.Id
                              join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals
                                  animalCategory.Id
                              select new AdvertReadDto
@@ -134,7 +137,7 @@ namespace DataAccess.Concretes
                                  Id = advert.Id,
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
-                                 Age = advert.Age,
+                                 Age = age,
                                  Description = advert.Description,
                                  UserId = advert.UserId,
                                  Gender = advert.Gender,
