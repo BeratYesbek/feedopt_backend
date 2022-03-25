@@ -7,8 +7,11 @@
 
   <ItemGroup>
     <Compile Remove="Migrations\**" />
+    <Compile Remove="NewFolder\**" />
     <EmbeddedResource Remove="Migrations\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
     <None Remove="Migrations\**" />
+    <None Remove="NewFolder\**" />
   </ItemGroup>
 
 

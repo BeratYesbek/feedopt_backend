@@ -15,8 +15,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Core.Utilities.Language;
-using Hangfire;
-using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Newtonsoft.Json.Serialization;
 using WebApi.Config;
@@ -43,9 +41,9 @@ namespace WebApi
             services.AddScoped<IConfig, Config.Config>();
             services.AddSignalR();
 
-            //services.AddHangfire(x => x.UsePostgreSqlStorage(Configuration.GetConnectionString("DB_CONNECTION_STRING")));
-            //services.AddDistributedMemoryCache();
-            //services.AddHangfireServer();
+   /*         services.AddHangfire(x => x.UsePostgreSqlStorage(Configuration.GetConnectionString("DB_CONNECTION_STRING")));
+            services.AddDistributedMemoryCache();
+            services.AddHangfireServer();*/
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -118,7 +116,7 @@ namespace WebApi
             app.ConfigureCustomExceptionMiddleware();
             app.UseHttpsRedirection();
             app.UseAuthentication();
-            app.UseHangfireDashboard();
+            //app.UseHangfireDashboard();
             app.UseRouting();
             app.UseAuthorization();
 

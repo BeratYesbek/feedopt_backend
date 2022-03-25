@@ -91,7 +91,7 @@ namespace Business.Concretes
                     }
                 }
 
-                Job.Create<AdvertJob>().UpdateAdvertStatusJob(this, result);
+                //Job.Create<AdvertJob>().UpdateAdvertStatusJob(this, result);
                 return new SuccessDataResult<Advert>(result);
             }
 
