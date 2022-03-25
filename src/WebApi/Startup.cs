@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Core.Utilities.Language;
 using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Newtonsoft.Json.Serialization;
 using WebApi.Config;
@@ -42,7 +43,7 @@ namespace WebApi
             services.AddDbContext<AppDbContext>();
             services.AddScoped<IConfig, Config.Config>();
             services.AddSignalR();
-            services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("DB_CONNECTION_STRING")));
+            services.AddHangfire(x => x.UsePostgreSqlStorage(Configuration.GetConnectionString("DB_CONNECTION_STRING")));
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
