@@ -22,7 +22,7 @@ namespace Entity.Dtos
 
         public string AnimalName { get; set; }
 
-        public Age Age { get; set; }
+        public int AgeId { get; set; }
 
         public Gender Gender { get; set; }
 
