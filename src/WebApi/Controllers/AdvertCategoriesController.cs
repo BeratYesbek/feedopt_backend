@@ -1,7 +1,6 @@
 ﻿using Business.Abstracts;
 using Entity.concretes;
 using Entity.Concretes;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -20,13 +19,11 @@ namespace WebApi.Controllers
         [HttpPost("add")]
         public IActionResult Add(AdvertCategory category)
         {
-
             var result = _advertCategory.Add(category);
             if (result.Success)
             {
                 return Ok(result);
             }
-
             return BadRequest();
         }
 

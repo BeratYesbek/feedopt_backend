@@ -1,4 +1,6 @@
 ﻿
+using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstracts;
@@ -6,11 +8,13 @@ using Core.Utilities.IoC;
 using Entity.Concretes;
 using Entity.Dtos;
 using Entity.Dtos.Filter;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApi.Controllers
 {
+    [EnableCors("MyPolicy")]
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
     public class AdvertsController : ControllerBase
@@ -23,11 +27,14 @@ namespace WebApi.Controllers
         {
             _advertService = advertService;
             _mapper = mapper;
-      }
+        }
 
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromForm] AdvertCreateDto advertCreateDto)
         {
+            Debug.WriteLine(advertCreateDto.Files);
+            Console.WriteLine(advertCreateDto.Files);
+
             var advert = _mapper.Map<Advert>(advertCreateDto);
             var advertImage = _mapper.Map<AdvertImage>(advertCreateDto);
             var location = _mapper.Map<Location>(advertCreateDto);

@@ -105,6 +105,15 @@ namespace WebApi
             {
                 new CoreModule()
             });
+
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
         }
 
 
@@ -125,8 +134,9 @@ namespace WebApi
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
 
-            app.UseCors(builder => builder.WithOrigins("http://localhost:5500", "http://127.0.0.1:5500")
-                .AllowAnyHeader().AllowCredentials().AllowAnyMethod());
+
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 
             var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(Language.SupportedLanguage[0])
                 .AddSupportedCultures(Language.SupportedLanguage)

@@ -9,6 +9,7 @@ using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstracts;
 using DataAccess.Concretes;
+using Entity.Concretes;
 using Microsoft.AspNetCore.Session;
 
 namespace Business.DependencyResolver.Autofac
@@ -17,6 +18,9 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<ColorManager>().As<IColorService>().SingleInstance();
+            builder.RegisterType<EfColorDal>().As<IColorDal>().SingleInstance();
+
             builder.RegisterType<AgeRangeManager>().As<IAgeRangeService>().SingleInstance();
             builder.RegisterType<EfAgeRangeDal>().As<IAgeRangeDal>().SingleInstance();
 
