@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 using Core.Entity.Abstracts;
 using Entity.Concretes;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Entity.Dtos
 {
+    [Bind]
     public class AdvertCreateDto : IDto
     {
-
         public string Description { get; set; }
 
         public int UserId { get; set; }
@@ -21,6 +22,8 @@ namespace Entity.Dtos
 
         public int AdvertCategoryId { get; set; }
 
+        public int ColorId { get; set; }
+
         public string AnimalName { get; set; }
 
         public int AgeId { get; set; }
@@ -28,8 +31,6 @@ namespace Entity.Dtos
         public Gender Gender { get; set; }
 
         public Status Status { get; set; }
-
-        public string Color { get; set; }
 
         public IFormFile[] Files { get; set; }
 

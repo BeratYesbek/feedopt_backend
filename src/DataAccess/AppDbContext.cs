@@ -25,6 +25,7 @@ namespace DataAccess
         public DbSet<User> Users { get; set; }
         public DbSet<Age> Ages { get; set; }
         public DbSet<Chat> Chats { get; set; }
+        public DbSet<Color> Colors { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<Support> Tickets { get; set; }

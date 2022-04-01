@@ -24,7 +24,7 @@ namespace WebApi.Config
 
         public void Run()
         {
-            DatabaseMigration();
+            //DatabaseMigration();
             SetMailerOptions();
         }
 

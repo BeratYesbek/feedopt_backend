@@ -18,9 +18,9 @@ namespace Entity.Concretes
     {
         public string AnimalName { get; set; }
 
-        public int AgeId { get; set; }
+        public int ColorId { get; set; }
 
-        public string Color { get; set; }
+        public int AgeId { get; set; }
 
         public Gender Gender { get; set; }
     }

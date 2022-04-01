@@ -1,4 +1,5 @@
-﻿using Business.Messages.BusinessRulesMessages;
+﻿using System.Linq;
+using Business.Messages.BusinessRulesMessages;
 using Core.Utilities.Result.Concretes;
 using Microsoft.AspNetCore.Http;
 using IResult = Core.Utilities.Result.Abstracts.IResult;
@@ -30,13 +31,13 @@ namespace Business.BusinessRules
 
         internal static IResult CheckDescriptionIllegalKeyword(string description)
         {
-          /*  foreach (var keyword in BannedKeyword.BannedKeyword.SearchedKeyword)
+            foreach (var keyword in BannedKeyword.BannedKeyword.SearchedKeyword)
             {
                 if (description.Contains(keyword))
                 {
                     return new ErrorResult($"{AdvertBusinessRulesMessages.BannedKeywordMessage}{BannedKeyword.BannedKeyword.SearchedKeyword}");
                 }
-            }*/
+            }
             return new SuccessResult();
         }
     }

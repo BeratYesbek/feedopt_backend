@@ -32,9 +32,6 @@ namespace WebApi.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromForm] AdvertCreateDto advertCreateDto)
         {
-            Debug.WriteLine(advertCreateDto.Files);
-            Console.WriteLine(advertCreateDto.Files);
-
             var advert = _mapper.Map<Advert>(advertCreateDto);
             var advertImage = _mapper.Map<AdvertImage>(advertCreateDto);
             var location = _mapper.Map<Location>(advertCreateDto);

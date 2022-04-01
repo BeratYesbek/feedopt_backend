@@ -49,7 +49,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
         [CacheRemoveAspect("IAdvertService.GetAll")]
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        //[ValidationAspect(typeof(AdvertValidator))]
+        [ValidationAspect(typeof(AdvertValidator))]
         public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files,
             Location location)
         {
@@ -57,16 +57,14 @@ namespace Business.Concretes
                 AdvertBusinessRules.CheckFilesSize(files),
                 AdvertBusinessRules.CheckDescriptionIllegalKeyword(advert.Description));
 
-            if (!ruleResult.Success)
-            {
+            if (!ruleResult.Success) 
                 return new ErrorDataResult<Advert>(null, ruleResult.Message);
-            }
 
             var locationResult = _locationService.Add(location);
+
             if (locationResult is null)
-            {
                 return new ErrorDataResult<Advert>(null);
-            }
+            
 
             advert.LocationId = locationResult.Data.Id;
             var result = _advertDal.Add(advert);

@@ -23,6 +23,8 @@ namespace Entity.Dtos
 
         public int AdvertCategoryId { get; set; }
 
+        public int ColorId { get; set; }
+
         public string AdvertCategoryName { get; set; }
 
         public string Kind { get; set; }

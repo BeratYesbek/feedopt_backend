@@ -10,6 +10,6 @@ namespace DataAccess
     {
         
         public static string DataBaseConnectionString { get; set; } =
-            "User ID=qjqxswqywlfufk;Password=bb5b8cc0ff3a8d6bbf7842987df216d23667ca09755fb687d052be67cf3b90e6;Host=ec2-52-3-60-53.compute-1.amazonaws.com;Port=5432;Database=d2emgi1idit262;Pooling=true;SSL Mode=Require;TrustServerCertificate=True;";
+            "User ID=fisixumajozvqq;Password=52484d72b4ee82e5d65870e6cac72265006523d66efb46b9aa45e730d19c7ffd;Host=ec2-3-217-113-25.compute-1.amazonaws.com;Port=5432;Database=d8r6gm0vi2bmqh;Pooling=true;SSL Mode=Require;TrustServerCertificate=True;";
     }
 }
