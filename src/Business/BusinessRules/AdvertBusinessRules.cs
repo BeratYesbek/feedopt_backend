@@ -4,6 +4,9 @@ using Core.Utilities.Result.Concretes;
 using Microsoft.AspNetCore.Http;
 using IResult = Core.Utilities.Result.Abstracts.IResult;
 using Business.BusinessRules.BannedKeyword;
+using Core.Extensions;
+using Core.Utilities.Algorithms.SearchAlgorithm;
+
 namespace Business.BusinessRules
 {
     internal class AdvertBusinessRules
@@ -31,13 +34,17 @@ namespace Business.BusinessRules
 
         internal static IResult CheckDescriptionIllegalKeyword(string description)
         {
-            foreach (var keyword in BannedKeyword.BannedKeyword.SearchedKeyword)
+            var ahoCorasick = new AhoCorasick.AhoCorasick();
+            ahoCorasick.SetKeywords(BannedKeyword.BannedKeyword.SearchedKeyword);
+            ahoCorasick.Build();
+            foreach (var word in ahoCorasick.Find(description))
             {
-                if (description.Contains(keyword))
+                if (word is not null)
                 {
-                    return new ErrorResult($"{AdvertBusinessRulesMessages.BannedKeywordMessage}{BannedKeyword.BannedKeyword.SearchedKeyword}");
+                    return new ErrorResult($"{AdvertBusinessRulesMessages.BannedKeywordMessage} {string.Join(", ", BannedKeyword.BannedKeyword.SearchedKeyword)}");
                 }
             }
+
             return new SuccessResult();
         }
     }

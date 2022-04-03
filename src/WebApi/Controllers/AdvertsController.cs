@@ -14,8 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApi.Controllers
 {
-    [EnableCors("MyPolicy")]
-    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
+    [EnableCors()]
+    [Route("api/[controller]")]
     [ApiController]
     public class AdvertsController : ControllerBase
     {

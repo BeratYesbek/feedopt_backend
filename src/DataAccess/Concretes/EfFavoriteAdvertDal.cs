@@ -16,26 +16,44 @@ namespace DataAccess.Concretes
             using (var context = new AppDbContext())
             {
                 var result = from favorite in context.FavoriteAdverts.Where(filter)
-                    join advert in context.Adverts on favorite.AdvertId equals advert.Id
-                    join user in context.Users on favorite.UserId equals user.Id
-                    join animalSpecies in context.AnimalSpecies on advert.AnimalSpeciesId equals animalSpecies.Id
-                    join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
-                    join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals
-                        animalCategory.Id
-                    select new FavoriteAdvertReadDto
-                    {
-                        Id = favorite.Id,
-                        AdvertId = favorite.AdvertId,
-                        UserId = favorite.UserId,
-                        Advert = advert,
-                        User = user,
-                        AdvertCategory = advertCategory,
-                        AnimalSpecies = animalSpecies,
-                        AnimalCategory = animalCategory,
-                        Images = (from images in context.AdvertImages
-                            where images.AdvertId == advert.Id
-                            select images.ImagePath).ToArray()
-                    };
+                             join advert in context.Adverts on favorite.AdvertId equals advert.Id
+                             join user in context.Users on favorite.UserId equals user.Id
+                             join animalSpecies in context.AnimalSpecies on advert.AnimalSpeciesId equals animalSpecies.Id
+                             join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
+                             join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals animalCategory.Id
+                             join location in context.Locations on advert.LocationId equals location.Id
+                             join age in context.Ages on advert.AgeId equals age.Id
+                             select new FavoriteAdvertReadDto
+                             {
+                                 Location = location,
+                                 AnimalSpecies = animalSpecies,
+                                 AdvertCategory = advertCategory,
+                                 User = user,
+                                 AdvertImages =
+                            (from image in context.AdvertImages where advert.Id == image.AdvertId select image)
+                            .ToArray(),
+                                 Id = advert.Id,
+                                 AdvertCategoryId = advert.AdvertCategoryId,
+                                 AnimalSpeciesId = advert.AnimalSpeciesId,
+                                 Age = age,
+                                 Description = advert.Description,
+                                 UserId = advert.UserId,
+                                 Gender = advert.Gender,
+                                 AnimalName = advert.AnimalName,
+                                 AdvertCategoryName = advertCategory.Name,
+                                 AnimalCategoryName = animalCategory.AnimalCategoryName,
+                                 Kind = animalSpecies.Kind,
+                                 Latitude = location.Latitude,
+                                 Longitude = location.Longitude,
+                                 City = location.City,
+                                 Country = location.Country,
+                                 County = location.County,
+                                 Images = (from image in context.AdvertImages
+                                           where advert.Id == image.AdvertId
+                                           select image.ImagePath).ToArray(),
+                                 CreatedAt = advert.CreatedAt,
+                                 UpdatedAt = advert.UpdatedAt,
+                             };
                 return result.ToList();
             }
         }

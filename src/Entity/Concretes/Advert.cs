@@ -32,6 +32,8 @@ namespace Entity.Concretes
 
         public Status Status { get; set; } = Status.Pending;
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = default;
+
+        public DateTime UpdatedAt { get; set; } = default;
     }
 }

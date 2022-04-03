@@ -96,6 +96,7 @@ namespace WebApi
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddMvcCore();
 
+
             //Globalization and Localization
             services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
             services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
@@ -106,13 +107,13 @@ namespace WebApi
                 new CoreModule()
             });
 
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+  /*          services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
                 builder
-                    .AllowAnyOrigin()
+                    .WithOrigins("https://fierce-mesa-92839.herokuapp.com/")
                     .AllowAnyMethod()
                     .AllowAnyHeader();
-            }));
+            }));*/
 
         }
 

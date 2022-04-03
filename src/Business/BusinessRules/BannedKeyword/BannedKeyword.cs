@@ -14,5 +14,6 @@ namespace Business.BusinessRules.BannedKeyword
             "pazarlık payı", "pazarlik payi","satıyorum","tl","lira","satış","satmak","fiyat"
             ,"satıyorum","ucuz","pahalı" };
 
+
     }
 }

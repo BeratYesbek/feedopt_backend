@@ -1,93 +1,244 @@
-﻿using System;
+﻿
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-namespace Core.Utilities.Algorithms.SearchAlgorithm
+namespace AhoCorasick
 {
-    namespace AhoCorasick
+
+    public class AhoCorasick : AhoCorasick<string>
     {
-        public class AhoCorasick : AhoCorasick<string>,IAhoCorasick
+        /// <summary>
+        /// Adds a string.
+        /// </summary>
+        /// <param name="s">The string to add.</param>
+        public void Add(string s)
         {
-            public void Add<T>(T value)
+            Add(s, s);
+        }
+
+        /// <summary>
+        /// Adds multiple strings.
+        /// </summary>
+        /// <param name="strings">The strings to add.</param>
+        public void Add(IEnumerable<string> strings)
+        {
+            foreach (string s in strings)
             {
-                Add(value);
+                Add(s);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Trie that will find strings in a text and return values of type <typeparamref name="T"/>
+    /// for each string found.
+    /// </summary>
+    /// <typeparam name="TValue">Value type.</typeparam>
+    public class AhoCorasick<TValue> : AhoCorasick<char, TValue>
+    {
+    }
+
+    /// <summary>
+    /// Trie that will find strings or phrases and return values of type <typeparamref name="T"/>
+    /// for each string or phrase found.
+    /// </summary>
+    /// <remarks>
+    /// <typeparamref name="T"/> will typically be a char for finding strings
+    /// or a string for finding phrases or whole words.
+    /// </remarks>
+    /// <typeparam name="T">The type of a letter in a word.</typeparam>
+    /// <typeparam name="TValue">The type of the value that will be returned when the word is found.</typeparam>
+    public class AhoCorasick<T, TValue>
+    {
+        /// <summary>
+        /// Root of the trie. It has no value and no parent.
+        /// </summary>
+        private readonly Node<T, TValue> root = new Node<T, TValue>();
+
+        /// <summary>
+        /// Adds a word to the tree.
+        /// </summary>
+        /// <remarks>
+        /// A word consists of letters. A node is built for each letter.
+        /// If the letter type is char, then the word will be a string, since it consists of letters.
+        /// But a letter could also be a string which means that a node will be added
+        /// for each word and so the word is actually a phrase.
+        /// </remarks>
+        /// <param name="word">The word that will be searched.</param>
+        /// <param name="value">The value that will be returned when the word is found.</param>
+        public void Add(IEnumerable<T> word, TValue value)
+        {
+            // start at the root
+            var node = root;
+
+            // build a branch for the word, one letter at a time
+            // if a letter node doesn't exist, add it
+            foreach (T c in word)
+            {
+                var child = node[c];
+
+                if (child == null)
+                    child = node[c] = new Node<T, TValue>(c, node);
+
+                node = child;
             }
 
-            public void Add<T>(IEnumerable<T> values)
+            // mark the end of the branch
+            // by adding a value that will be returned when this word is found in a text
+            node.Values.Add(value);
+        }
+
+
+        /// <summary>
+        /// Constructs fail or fall links.
+        /// </summary>
+        public void Build()
+        {
+            // construction is done using breadth-first-search
+            var queue = new Queue<Node<T, TValue>>();
+            queue.Enqueue(root);
+
+            while (queue.Count > 0)
             {
-                foreach (var value in values)
+                var node = queue.Dequeue();
+
+                // visit children
+                foreach (var child in node)
+                    queue.Enqueue(child);
+
+                // fail link of root is root
+                if (node == root)
                 {
-                    Add(value);
+                    root.Fail = root;
+                    continue;
+                }
+
+                var fail = node.Parent.Fail;
+
+                while (fail[node.Word] == null && fail != root)
+                    fail = fail.Fail;
+
+                node.Fail = fail[node.Word] ?? root;
+                if (node.Fail == node)
+                    node.Fail = root;
+            }
+        }
+
+        /// <summary>
+        /// Finds all added words in a text.
+        /// </summary>
+        /// <param name="text">The text to search in.</param>
+        /// <returns>The values that were added for the found words.</returns>
+        public IEnumerable<TValue> Find(IEnumerable<T> text)
+        {
+            var node = root;
+
+            foreach (T c in text)
+            {
+                while (node[c] == null && node != root)
+                    node = node.Fail;
+
+                node = node[c] ?? root;
+
+                for (var t = node; t != root; t = t.Fail)
+                {
+                    foreach (TValue value in t.Values)
+                        yield return value;
                 }
             }
         }
 
-        public class AhoCorasick<TValue> : AhoCorasick<char, TValue>
+        /// <summary>
+        /// Node in a trie.
+        /// </summary>
+        /// <typeparam name="TNode">The same as the parent type.</typeparam>
+        /// <typeparam name="TNodeValue">The same as the parent value type.</typeparam>
+        private class Node<TNode, TNodeValue> : IEnumerable<Node<TNode, TNodeValue>>
         {
-        }
+            private readonly TNode word;
+            private readonly Node<TNode, TNodeValue> parent;
+            private readonly Dictionary<TNode, Node<TNode, TNodeValue>> children = new Dictionary<TNode, Node<TNode, TNodeValue>>();
+            private readonly List<TNodeValue> values = new List<TNodeValue>();
 
-        public class AhoCorasick<T, TValue>
-        {
-           // private readonly Node
-        }
-
-
-        internal class Node<TNode, TNodeValue> : IEnumerable<Node<TNode, TNodeValue>>
-        {
-            private readonly TNode _node;
-            private readonly Node<TNode, TNodeValue> _parent;
-            private readonly Dictionary<TNode,Node<TNode,TNodeValue>> _children = new Dictionary<TNode,Node<TNode, TNodeValue>>();
-            private readonly List<TNodeValue> _values = new List<TNodeValue>();
-
+            /// <summary>
+            /// Constructor for the root node.
+            /// </summary>
             public Node()
             {
-                
             }
 
-            public Node(TNode node, Node<TNode, TNodeValue> parent)
+            /// <summary>
+            /// Constructor for a node with a word
+            /// </summary>
+            /// <param name="word"></param>
+            /// <param name="parent"></param>
+            public Node(TNode word, Node<TNode, TNodeValue> parent)
             {
-                _node = node;
-                _parent = parent;
+                this.word = word;
+                this.parent = parent;
             }
 
-            public TNode Word => Word;
-            public Node<TNode, TNodeValue> Parent => _parent;
-            public Node<TNode,TNodeValue> Fail { get; set; }
-
-            public Node<TNode, TNodeValue> this[TNode node]
+            /// <summary>
+            /// Word (or letter) for this node.
+            /// </summary>
+            public TNode Word
             {
-                get => _children.ContainsKey(node) ? _children[node] : null;
-                set => _children[node] = value;
+                get { return word; }
             }
 
+            /// <summary>
+            /// Parent node.
+            /// </summary>
+            public Node<TNode, TNodeValue> Parent
+            {
+                get { return parent; }
+            }
 
-            public List<TNodeValue> Values => _values;
+            /// <summary>
+            /// Fail or fall node.
+            /// </summary>
+            public Node<TNode, TNodeValue> Fail
+            {
+                get;
+                set;
+            }
 
+            /// <summary>
+            /// Children for this node.
+            /// </summary>
+            /// <param name="c">Child word.</param>
+            /// <returns>Child node.</returns>
+            public Node<TNode, TNodeValue> this[TNode c]
+            {
+                get { return children.ContainsKey(c) ? children[c] : null; }
+                set { children[c] = value; }
+            }
 
+            /// <summary>
+            /// Values for words that end at this node.
+            /// </summary>
+            public List<TNodeValue> Values
+            {
+                get { return values; }
+            }
 
+            /// <inherit/>
             public IEnumerator<Node<TNode, TNodeValue>> GetEnumerator()
             {
-                return _children.Values.GetEnumerator();
+                return children.Values.GetEnumerator();
             }
 
+            /// <inherit/>
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return GetEnumerator();
             }
 
+            /// <inherit/>
             public override string ToString()
             {
                 return Word.ToString();
             }
         }
-
-
-
     }
-
-   
 }

@@ -55,11 +55,13 @@ namespace DataAccess.Concretes
                                  County = location.County,
                                  Images = (from image in context.AdvertImages
                                            where advert.Id == image.AdvertId
-                                           select image.ImagePath).ToArray()
+                                           select image.ImagePath).ToArray(),
+                                 CreatedAt = advert.CreatedAt,
+                                 UpdatedAt = advert.UpdatedAt,
 
                              };
 
-                return result.Skip(pageNumber * pageSize).Take(pageSize).ToList();
+                return result.OrderByDescending(t => t.Id).Skip(pageNumber * pageSize).Take(pageSize).ToList();
             }
         }
 
@@ -103,12 +105,14 @@ namespace DataAccess.Concretes
                                  County = location.County,
                                  Images = (from image in context.AdvertImages
                                            where advert.Id == image.AdvertId
-                                           select image.ImagePath).ToArray()
+                                           select image.ImagePath).ToArray(),
+                                 CreatedAt = advert.CreatedAt,
+                                 UpdatedAt = advert.UpdatedAt,
 
                              };
 
 
-                return result.Skip(pageNumber * pageSize).Take(pageSize).ToList();
+                return result.OrderByDescending(a => a.Id).Skip(pageNumber * pageSize).Take(pageSize).ToList();
             }
         }
 
@@ -152,7 +156,9 @@ namespace DataAccess.Concretes
                                  County = location.County,
                                  Images = (from image in context.AdvertImages
                                            where advert.Id == image.AdvertId
-                                           select image.ImagePath).ToArray()
+                                           select image.ImagePath).ToArray(),
+                                 CreatedAt = advert.CreatedAt,
+                                 UpdatedAt = advert.UpdatedAt,                                 
 
                              };
                 return result.First();

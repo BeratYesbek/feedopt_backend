@@ -13,11 +13,10 @@ namespace Business.Validation.FluentValidation
             RuleFor(a => a.AdvertCategoryId).NotEmpty().NotNull();
             RuleFor(a => a.AnimalSpeciesId).NotEmpty().NotNull();
             RuleFor(a => a.AnimalName).NotEmpty().NotNull();
-            RuleFor(a => a.Gender).NotEmpty().NotNull();
+            RuleFor(a => a.Gender).NotNull();
             RuleFor(a => a.UserId).NotEmpty().NotNull();
-
             RuleFor(a => a.Description).MinimumLength(150);
-            RuleFor(a => a.Description).MaximumLength(3000);
+            RuleFor(a => a.Description).MaximumLength(4000);
             RuleFor(a => a.AnimalName).MinimumLength(2);
         }
     }

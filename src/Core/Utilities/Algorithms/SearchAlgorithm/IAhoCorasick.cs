@@ -8,7 +8,6 @@ namespace Core.Utilities.Algorithms.SearchAlgorithm
 {
     public interface IAhoCorasick
     {
-        void Add<T>(T value);
-        void Add<T>(IEnumerable<T> value);
+        void Add(IEnumerable<string> value);
     }
 }

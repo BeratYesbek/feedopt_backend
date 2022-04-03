@@ -13,6 +13,7 @@ namespace Core.Extensions
         public List<string> Messages { get; set; }
         public int StatusCode { get; set; }
         public bool Status { get; set; }
+        public string Description { get; set; }
 
         public override string ToString()
         {
