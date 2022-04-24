@@ -200,7 +200,7 @@ namespace Business.Concretes
 
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
-        //[SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
         [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]

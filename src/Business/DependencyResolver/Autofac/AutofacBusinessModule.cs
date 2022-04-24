@@ -3,6 +3,8 @@ using Autofac.Extras.DynamicProxy;
 using Business.Abstracts;
 using Business.BackgroundJob.Hangfire;
 using Business.Concretes;
+using Business.Services.Abstracts;
+using Business.Services.Concretes;
 using Castle.DynamicProxy;
 using Core.Utilities.Cloud.Cloudinary;
 using Core.Utilities.Interceptors;
@@ -65,7 +67,9 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
 
-
+            builder.RegisterType<TelegramManager>().As<ITelegramService>().SingleInstance();
+            builder.RegisterType<SmsManager>().As<ISmsService>().SingleInstance();
+            
             builder.RegisterType<DistributedSessionStore>().As<ISessionStore>();
 
 
