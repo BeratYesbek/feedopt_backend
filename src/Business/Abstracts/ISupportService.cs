@@ -11,14 +11,14 @@ namespace Business.Abstracts
 {
     public interface ISupportService 
     {
-        IDataResult<Support> Add(Support ticket);
+        IDataResult<Ticket> Add(Ticket ticket);
 
-        IResult Update(Support ticket);
+        IResult Update(Ticket ticket);
 
-        IResult Delete(Support ticket);
+        IResult Delete(Ticket ticket);
 
-        IDataResult<Support> Get(int id);
+        IDataResult<Ticket> Get(int id);
 
-        IDataResult<List<Support>> GetAll();
+        IDataResult<List<Ticket>> GetAll();
     }
 }

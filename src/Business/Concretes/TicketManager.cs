@@ -23,11 +23,11 @@ using Entity.Concretes;
 
 namespace Business.Concretes
 {
-    public class SupportManager : ISupportService
+    public class TicketManager : ISupportService
     {
         private readonly ITicketDal _ticketDal;
         private readonly ISupportFileService _ticketFileService;
-        public SupportManager(ITicketDal ticketDal, ISupportFileService ticketFileService)
+        public TicketManager(ITicketDal ticketDal, ISupportFileService ticketFileService)
         {
             _ticketDal = ticketDal;
             _ticketFileService = ticketFileService;
@@ -40,7 +40,7 @@ namespace Business.Concretes
         [LogAspect(typeof(FileLogger))]
         [MailerAspect(typeof(SupportEmailMailer), EmailType.TicketEmail)]
         [PerformanceAspect(5)]
-        public IDataResult<Support> Add(Support ticket)
+        public IDataResult<Ticket> Add(Ticket ticket)
         {
             var data = _ticketDal.Add(ticket);
             foreach (var file in ticket.FormFiles)
@@ -49,17 +49,17 @@ namespace Business.Concretes
                 var result = formFiles.Upload(file);
                 if (!result.Success)
                 {
-                    return new ErrorDataResult<Support>(null, result.Message);
+                    return new ErrorDataResult<Ticket>(null, result.Message);
                 }
 
                 // result.message contains fileUrl and publicId
                 var fileUrl = result.Message.Split("&&")[0];
                 var publicId = result.Message.Split("&&")[1];
-                var ticketFile = new SupportFile(fileUrl, publicId, data.Id);
+                var ticketFile = new TicketFile(fileUrl, publicId, data.Id);
                 _ticketFileService.Add(ticketFile);
             }
 
-            return new SuccessDataResult<Support>(data);
+            return new SuccessDataResult<Ticket>(data);
         }
 
         [SecuredOperation("Support.Update,User")]
@@ -67,7 +67,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("ISupportFileService.GetAll")]
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        public IResult Update(Support ticket)
+        public IResult Update(Ticket ticket)
         {
             _ticketDal.Update(ticket);
             return new SuccessResult();
@@ -77,7 +77,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("ISupportFileService.GetAll")]
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        public IResult Delete(Support ticket)
+        public IResult Delete(Ticket ticket)
         {
             _ticketDal.Delete(ticket);
             return new SuccessResult();
@@ -88,30 +88,30 @@ namespace Business.Concretes
         [CacheAspect]
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        public IDataResult<Support> Get(int id)
+        public IDataResult<Ticket> Get(int id)
         {
             var data = _ticketDal.Get(t => t.Id == id);
             if (data != null)
             {
-                return new SuccessDataResult<Support>(data);
+                return new SuccessDataResult<Ticket>(data);
             }
 
-            return new ErrorDataResult<Support>(null);
+            return new ErrorDataResult<Ticket>(null);
         }
 
         [SecuredOperation("Support.GetAll,User")]
         [CacheAspect]
         [LogAspect(typeof(FileLogger))]
         [PerformanceAspect(5)]
-        public IDataResult<List<Support>> GetAll()
+        public IDataResult<List<Ticket>> GetAll()
         {
             var data = _ticketDal.GetAll();
             if (data.Count > 0)
             {
-                return new SuccessDataResult<List<Support>>(data);
+                return new SuccessDataResult<List<Ticket>>(data);
             }
 
-            return new ErrorDataResult<List<Support>>(null);
+            return new ErrorDataResult<List<Ticket>>(null);
         }
     }
 }

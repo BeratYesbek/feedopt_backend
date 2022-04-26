@@ -151,5 +151,16 @@ namespace WebApi.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet("getAllAdvertByDistance/{latitude}/{longitude}/{pageNumber}")]
+        public IActionResult GetAllAdvertByDistance(double latitude, double longitude, int pageNumber)
+        {
+            var result = _advertService.GetAllAdvertByDistance(latitude, longitude, pageNumber);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

@@ -8,7 +8,7 @@ using Entity.Concretes;
 
 namespace DataAccess.Abstracts
 {
-    public interface ITicketDal : IEntityRepository<Support>
+    public interface ITicketDal : IEntityRepository<Ticket>
     {
 
     }

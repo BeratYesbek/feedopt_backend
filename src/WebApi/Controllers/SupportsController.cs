@@ -24,7 +24,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("Add")]
-        public IActionResult Add([FromForm] Support ticket)
+        public IActionResult Add([FromForm] Ticket ticket)
         {
             var result = _supportService.Add(ticket);
             if (result.Success)

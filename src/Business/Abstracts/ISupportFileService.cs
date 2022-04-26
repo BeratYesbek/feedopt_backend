@@ -10,14 +10,14 @@ namespace Business.Abstracts
 {
     public interface ISupportFileService
     {
-        IDataResult<SupportFile> Add(SupportFile ticketFile);
+        IDataResult<TicketFile> Add(TicketFile ticketFile);
 
-        IResult Update(SupportFile ticketFile);
+        IResult Update(TicketFile ticketFile);
 
-        IResult Delete(SupportFile ticketFile);
+        IResult Delete(TicketFile ticketFile);
 
-        IDataResult<SupportFile> Get(int id);
+        IDataResult<TicketFile> Get(int id);
 
-        IDataResult<List<SupportFile>> GetAll();
+        IDataResult<List<TicketFile>> GetAll();
     }
 }

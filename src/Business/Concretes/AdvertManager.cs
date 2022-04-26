@@ -24,6 +24,7 @@ using Entity.Dtos.Filter;
 using System.Linq.Expressions;
 using Business.BackgroundJob.Hangfire;
 using Business.Filters;
+using Business.Services.Abstracts;
 
 namespace Business.Concretes
 {
@@ -35,11 +36,17 @@ namespace Business.Concretes
 
         private readonly ILocationService _locationService;
 
-        public AdvertManager(IAdvertDal advertDal, IAdvertImageService imageService, ILocationService locationService)
+        private readonly ITelegramService _telegramService;
+
+        private readonly IUserService _userService;
+
+        public AdvertManager(IAdvertDal advertDal, IAdvertImageService imageService, ILocationService locationService,ITelegramService telegramService,IUserService userService)
         {
             _imageService = imageService;
             _advertDal = advertDal;
             _locationService = locationService;
+            _telegramService = telegramService;
+            _userService = userService;
         }
 
         [LogAspect(typeof(DatabaseLogger))]
@@ -88,11 +95,14 @@ namespace Business.Concretes
                         }
                     }
                 }
-
+                
                 //Job.Create<AdvertJob>().UpdateAdvertStatusJob(this, result);
+                var user = _userService.Get(advert.Id);
+                // telegram service is going to send a message our telegram channel
+                await _telegramService.SendNewPostAsync(advert,user.Data);
+                
                 return new SuccessDataResult<Advert>(result);
             }
-
             return new ErrorDataResult<Advert>(null);
         }
 
@@ -163,6 +173,16 @@ namespace Business.Concretes
             }
 
             return new ErrorDataResult<AdvertReadDto>(null);
+        }
+
+        public IDataResult<List<AdvertReadDto>> GetAllAdvertByDistance(double latitude, double longitude, int pageNumber)
+        {
+            var data = _advertDal.GetAllAdvertByDistance(latitude, longitude, pageNumber);
+            if (data.Count > 0)
+            {
+                return new SuccessDataResult<List<AdvertReadDto>>(data);
+            }
+            return new ErrorDataResult<List<AdvertReadDto>>(null);
         }
 
         public IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId, int pageNumber)

@@ -56,10 +56,10 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<ChatManager>().As<IChatService>().SingleInstance();
             builder.RegisterType<EfChatDal>().As<IChatDal>().SingleInstance();
 
-            builder.RegisterType<SupportManager>().As<ISupportService>().SingleInstance();
+            builder.RegisterType<TicketManager>().As<ISupportService>().SingleInstance();
             builder.RegisterType<EfTicketDal>().As<ITicketDal>().SingleInstance();
 
-            builder.RegisterType<SupportFileManager>().As<ISupportFileService>().SingleInstance();
+            builder.RegisterType<TicketFileManager>().As<ISupportFileService>().SingleInstance();
             builder.RegisterType<EfTicketFileDal>().As<ITicketFileDal>().SingleInstance();
 
             builder.RegisterType<CloudinaryService>().As<ICloudinaryService>().SingleInstance();

@@ -17,19 +17,21 @@ namespace Business.Abstracts
     {
         Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location);
 
-        Task<IResult> Update(Advert advert, AdvertImage advertImage,IFormFile[] files, Location location);
+        Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location);
 
         Task<IResult> Delete(Advert advert);
 
         IDataResult<Advert> Get(int id);
 
-        IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber,double latitude,double longitude);
+        IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber, double latitude, double longitude);
 
-        IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto advertFilterDto,int pageNumber);
+        IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto advertFilterDto, int pageNumber);
 
         IDataResult<AdvertReadDto> GetAdvertDetailById(int id);
 
-        IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId,int pageNumber);
+        IDataResult<List<AdvertReadDto>> GetAllAdvertByDistance(double latitude, double longitude, int pageNumber);
+
+        IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId, int pageNumber);
 
         IDataResult<List<Advert>> GetAll();
 

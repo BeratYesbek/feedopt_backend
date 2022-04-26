@@ -9,7 +9,7 @@ using FluentValidation;
 
 namespace Business.Validation.FluentValidation
 {
-    public class SupportValidator : AbstractValidator<Support>
+    public class SupportValidator : AbstractValidator<Ticket>
     {
         public SupportValidator()
         {

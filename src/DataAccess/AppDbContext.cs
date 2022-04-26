@@ -28,7 +28,7 @@ namespace DataAccess
         public DbSet<Color> Colors { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
-        public DbSet<Support> Tickets { get; set; }
-        public DbSet<SupportFile> TicketFiles { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<TicketFile> TicketFiles { get; set; }
     }
 }

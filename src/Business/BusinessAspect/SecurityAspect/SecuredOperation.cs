@@ -27,7 +27,7 @@ namespace Business.BusinessAspect
         protected override void OnBefore(IInvocation invocation)
         {
             // a sample jwt encoded token string which is supposed to be extracted from 'Authorization' HTTP header in your Web Api controller
-
+            
             var cookieEmail = _httpContextAccessor.HttpContext.Request.Cookies["Email"];
 
             var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();

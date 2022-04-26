@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Entity.Concretes
 {
-    public class Support : IEntity
+    public class Ticket : IEntity
     {
         public int Id { get; set; }
 
