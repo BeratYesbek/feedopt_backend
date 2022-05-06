@@ -24,6 +24,7 @@ using Entity.Dtos.Filter;
 using System.Linq.Expressions;
 using Business.BackgroundJob.Hangfire;
 using Business.Filters;
+using Business.Messages.MethodMessages;
 using Business.Services.Abstracts;
 
 namespace Business.Concretes
@@ -40,7 +41,8 @@ namespace Business.Concretes
 
         private readonly IUserService _userService;
 
-        public AdvertManager(IAdvertDal advertDal, IAdvertImageService imageService, ILocationService locationService,ITelegramService telegramService,IUserService userService)
+        public AdvertManager(IAdvertDal advertDal, IAdvertImageService imageService, ILocationService locationService,
+            ITelegramService telegramService, IUserService userService)
         {
             _imageService = imageService;
             _advertDal = advertDal;
@@ -57,21 +59,20 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAll")]
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         [ValidationAspect(typeof(AdvertValidator))]
-        public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files,
-            Location location)
+        public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var ruleResult = Core.Utilities.Business.BusinessRules.Run(
                 AdvertBusinessRules.CheckFilesSize(files),
                 AdvertBusinessRules.CheckDescriptionIllegalKeyword(advert.Description));
 
-            if (!ruleResult.Success) 
+            if (!ruleResult.Success)
                 return new ErrorDataResult<Advert>(null, ruleResult.Message);
 
             var locationResult = _locationService.Add(location);
 
             if (locationResult is null)
-                return new ErrorDataResult<Advert>(null);
-            
+                return new SuccessDataResult<Advert>(null, AdvertMessages.AdvertAdd);
+
 
             advert.LocationId = locationResult.Data.Id;
             var result = _advertDal.Add(advert);
@@ -91,19 +92,20 @@ namespace Business.Concretes
                         });
                         if (!resultImage.Success)
                         {
-                            return new ErrorDataResult<Advert>(null);
+                            return new ErrorDataResult<Advert>(null,AdvertMessages.AdvertAdvertFailed);
                         }
                     }
                 }
-                
+
                 //Job.Create<AdvertJob>().UpdateAdvertStatusJob(this, result);
                 var user = _userService.Get(advert.Id);
                 // telegram service is going to send a message our telegram channel
-                await _telegramService.SendNewPostAsync(advert,user.Data);
-                
-                return new SuccessDataResult<Advert>(result);
+                await _telegramService.SendNewPostAsync(advert, user.Data);
+
+                return new SuccessDataResult<Advert>(result,AdvertMessages.AdvertAdd);
             }
-            return new ErrorDataResult<Advert>(null);
+
+            return new ErrorDataResult<Advert>(null,AdvertMessages.AdvertAdvertFailed);
         }
 
         [LogAspect(typeof(DatabaseLogger))]
@@ -113,18 +115,11 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
         [CacheRemoveAspect("IAdvertService.GetAll")]
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        public async Task<IResult> Delete(Advert advert)
+        public IResult Delete(Advert advert)
         {
-            var imageList = _imageService.GetByAdvertId(advert.Id);
-            for (int i = 0; i < imageList.Data.Count; i++)
-            {
-                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
-                await fileHelper.DeleteAsync(imageList.Data[i].ImagePath, imageList.Data[i].PublicId);
-                _imageService.Delete(imageList.Data[i]);
-            }
-
-            _advertDal.Delete(advert);
-            return new SuccessResult();
+            advert.IsDeleted = true;
+            _advertDal.Update(advert);
+            return new SuccessResult(AdvertMessages.AdvertDelete);
         }
 
         [LogAspect(typeof(DatabaseLogger))]
@@ -169,31 +164,33 @@ namespace Business.Concretes
             var data = _advertDal.GetAdvertDetailById(id);
             if (data is not null)
             {
-                return new SuccessDataResult<AdvertReadDto>(data);
+                return new SuccessDataResult<AdvertReadDto>(data,AdvertMessages.AdvertGet);
             }
 
-            return new ErrorDataResult<AdvertReadDto>(null);
+            return new ErrorDataResult<AdvertReadDto>(null,AdvertMessages.AdvertNotFound);
         }
 
-        public IDataResult<List<AdvertReadDto>> GetAllAdvertByDistance(double latitude, double longitude, int pageNumber)
+        public IDataResult<List<AdvertReadDto>> GetAllAdvertByDistance(double latitude, double longitude,
+            int pageNumber)
         {
             var data = _advertDal.GetAllAdvertByDistance(latitude, longitude, pageNumber);
             if (data.Count > 0)
             {
-                return new SuccessDataResult<List<AdvertReadDto>>(data);
+                return new SuccessDataResult<List<AdvertReadDto>>(data,AdvertMessages.AdvertGetAll);
             }
-            return new ErrorDataResult<List<AdvertReadDto>>(null);
+
+            return new ErrorDataResult<List<AdvertReadDto>>(null,AdvertMessages.AdvertsNotFound);
         }
 
         public IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId, int pageNumber)
         {
-            var data = _advertDal.GetAllAdvertDetailsByFilter(a => a.UserId == userId,pageNumber);
+            var data = _advertDal.GetAllAdvertDetailsByFilter(a => a.UserId == userId, pageNumber);
             if (data.Count > 0)
             {
-                return new SuccessDataResult<List<AdvertReadDto>>(data);
+                return new SuccessDataResult<List<AdvertReadDto>>(data,AdvertMessages.AdvertGetAll);
             }
 
-            return new ErrorDataResult<List<AdvertReadDto>>(null);
+            return new ErrorDataResult<List<AdvertReadDto>>(null,AdvertMessages.AdvertsNotFound);
         }
 
         [LogAspect(typeof(DatabaseLogger))]
@@ -205,17 +202,24 @@ namespace Business.Concretes
             var data = _advertDal.GetAll();
             if (data.Count > 0)
             {
-                return new SuccessDataResult<List<Advert>>(data);
+                return new SuccessDataResult<List<Advert>>(data,AdvertMessages.AdvertGetAll);
             }
 
-            return new ErrorDataResult<List<Advert>>(null);
+            return new ErrorDataResult<List<Advert>>(null,AdvertMessages.AdvertsNotFound);
+        }
+
+        //[SecuredOperation($"{Role.SuperAdmin},{Role.Admin}")]
+        public IResult UpdateAdvertCase(Advert advert)
+        {
+            _advertDal.Update(advert);
+            return new SuccessResult(AdvertMessages.AdvertStatus);
         }
 
         //[SecuredOperation($"{Role.SuperAdmin},{Role.Admin}")]
         public IResult UpdateStatus(Advert advert)
         {
             _advertDal.Update(advert);
-            return new SuccessResult();
+            return new SuccessResult(AdvertMessages.AdvertStatus);
         }
 
         [LogAspect(typeof(DatabaseLogger))]
@@ -247,7 +251,7 @@ namespace Business.Concretes
                     });
                     if (!result.Success)
                     {
-                        return new ErrorResult();
+                        return new ErrorResult(AdvertMessages.AdvertUpdateFailed);
                     }
                 }
             }
@@ -256,7 +260,7 @@ namespace Business.Concretes
 
             _advertDal.Update(advert);
 
-            return new SuccessResult();
+            return new SuccessResult(AdvertMessages.AdvertUpdate);
         }
 
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto filter, int pageNumber)
@@ -270,8 +274,8 @@ namespace Business.Concretes
                 {
                     if (value is int and not 0)
                     {
-                        object[] methodParams = { filters, value };
-                        filters = (Expression<Func<Advert, bool>>)GetInvokeMethod($"{property.Name}Condition",
+                        object[] methodParams = {filters, value};
+                        filters = (Expression<Func<Advert, bool>>) GetInvokeMethod($"{property.Name}Condition",
                             methodParams);
                     }
                 }
@@ -280,10 +284,10 @@ namespace Business.Concretes
             var data = _advertDal.GetAllAdvertDetailsByFilter(filters, pageNumber);
             if (data is not null)
             {
-                return new SuccessDataResult<List<AdvertReadDto>>(data);
+                return new SuccessDataResult<List<AdvertReadDto>>(data,AdvertMessages.AdvertGetAll);
             }
 
-            return new ErrorDataResult<List<AdvertReadDto>>(null);
+            return new ErrorDataResult<List<AdvertReadDto>>(null,AdvertMessages.AdvertsNotFound);
         }
     }
 }

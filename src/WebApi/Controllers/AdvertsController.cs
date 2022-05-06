@@ -73,9 +73,9 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("delete")]
-        public async Task<IActionResult> Delete(Advert advert)
+        public IActionResult Delete(Advert advert)
         {
-            var result = await _advertService.Delete(advert);
+            var result =  _advertService.Delete(advert);
             if (result.Success)
             {
                 return Ok(result);

@@ -19,7 +19,7 @@ namespace Business.Abstracts
 
         Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location);
 
-        Task<IResult> Delete(Advert advert);
+        IResult Delete(Advert advert);
 
         IDataResult<Advert> Get(int id);
 

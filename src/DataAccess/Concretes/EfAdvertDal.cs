@@ -20,7 +20,7 @@ namespace DataAccess.Concretes
         {
             using (var context = new AppDbContext())
             {
-                var result = from advert in context.Adverts
+                var result = from advert in context.Adverts.Where(x => x.IsDeleted != true)
                              join location in context.Locations on advert.LocationId equals location.Id
                              join animalSpecies in context.AnimalSpecies on advert.AnimalSpeciesId equals animalSpecies.Id
                              join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
@@ -62,7 +62,8 @@ namespace DataAccess.Concretes
 
                              };
 
-                return result.OrderByDescending(t => t.Id).Where(t => t.Distance <= diameter).Skip(pageNumber * pageSize).Take(pageSize).ToList();
+                //return result.OrderByDescending(t => t.Id).Where(t => t.Distance <= diameter).Skip(pageNumber * pageSize).Take(pageSize).ToList();
+                return result.OrderByDescending(t => t.Id).Skip(pageNumber * pageSize).Take(pageSize).ToList();
             }
         }
 
@@ -73,7 +74,7 @@ namespace DataAccess.Concretes
         {
             using (var context = new AppDbContext())
             {
-                var result = from advert in context.Adverts.Where(filter)
+                var result = from advert in context.Adverts.Where(filter).Where(x  => x.IsDeleted != true)
                              join location in context.Locations on advert.LocationId equals location.Id
                              join animalSpecies in context.AnimalSpecies on advert.AnimalSpeciesId equals animalSpecies.Id
                              join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory
@@ -170,9 +171,7 @@ namespace DataAccess.Concretes
 
                              };
 
-                return result.OrderByDescending(t => t.Id)
-                    .Skip(pageNumber * pageSize)
-                    .Take(pageSize).ToList();
+                return result.OrderByDescending(t => t.Id).Skip(pageNumber * pageSize).Take(pageSize).ToList();
             }
         }
 
@@ -180,7 +179,7 @@ namespace DataAccess.Concretes
         {
             using (var context = new AppDbContext())
             {
-                var result = from advert in context.Adverts.Where(advert => advert.Id == id)
+                var result = from advert in context.Adverts.Where(advert => advert.Id == id && advert.IsDeleted != true)
                              join location in context.Locations on advert.LocationId equals location.Id
                              join animalSpecies in context.AnimalSpecies on advert.AnimalSpeciesId equals animalSpecies.Id
                              join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
@@ -197,7 +196,7 @@ namespace DataAccess.Concretes
                                  AdvertImages =
                                   (from image in context.AdvertImages where advert.Id == image.AdvertId select image)
                                   .ToArray(),
-                                 // Distance = (int)Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude), Decimal.ToDouble(location.Longitude)),
+                                 //Distance = (int)Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude), Decimal.ToDouble(location.Longitude)),
                                  Id = advert.Id,
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
@@ -221,7 +220,7 @@ namespace DataAccess.Concretes
                                  UpdatedAt = advert.UpdatedAt,
 
                              };
-                return result.First();
+                return result.FirstOrDefault();
             }
         }
     }

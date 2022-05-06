@@ -15,6 +15,13 @@ namespace Entity.Concretes
         Deactivate,
 
     }
+
+    public enum AdvertCase
+    {
+        Nothing,
+        Adopted,
+        Found
+    }
     
     public class Advert : Animal, IEntity
     {
@@ -29,6 +36,10 @@ namespace Entity.Concretes
         public int AdvertCategoryId { get; set; }
 
         public int LocationId { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public AdvertCase AdvertCase { get; set; } = AdvertCase.Nothing;
 
         public Status Status { get; set; } = Status.Pending;
 
