@@ -22,10 +22,13 @@ using Microsoft.AspNetCore.Http;
 using IResult = Core.Utilities.Result.Abstracts.IResult;
 using Entity.Dtos.Filter;
 using System.Linq.Expressions;
-using Business.BackgroundJob.Hangfire;
+using System.Security.Claims;
 using Business.Filters;
 using Business.Messages.MethodMessages;
 using Business.Services.Abstracts;
+using Core.Entity;
+using Core.Utilities.IoC;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Concretes
 {
@@ -41,6 +44,8 @@ namespace Business.Concretes
 
         private readonly IUserService _userService;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         public AdvertManager(IAdvertDal advertDal, IAdvertImageService imageService, ILocationService locationService,
             ITelegramService telegramService, IUserService userService)
         {
@@ -49,6 +54,8 @@ namespace Business.Concretes
             _locationService = locationService;
             _telegramService = telegramService;
             _userService = userService;
+            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+
         }
 
         [LogAspect(typeof(DatabaseLogger))]
@@ -59,7 +66,8 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAll")]
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         [ValidationAspect(typeof(AdvertValidator))]
-        public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
+        public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files,
+            Location location)
         {
             var ruleResult = Core.Utilities.Business.BusinessRules.Run(
                 AdvertBusinessRules.CheckFilesSize(files),
@@ -92,7 +100,7 @@ namespace Business.Concretes
                         });
                         if (!resultImage.Success)
                         {
-                            return new ErrorDataResult<Advert>(null,AdvertMessages.AdvertAdvertFailed);
+                            return new ErrorDataResult<Advert>(null, AdvertMessages.AdvertAdvertFailed);
                         }
                     }
                 }
@@ -102,10 +110,10 @@ namespace Business.Concretes
                 // telegram service is going to send a message our telegram channel
                 await _telegramService.SendNewPostAsync(advert, user.Data);
 
-                return new SuccessDataResult<Advert>(result,AdvertMessages.AdvertAdd);
+                return new SuccessDataResult<Advert>(result, AdvertMessages.AdvertAdd);
             }
 
-            return new ErrorDataResult<Advert>(null,AdvertMessages.AdvertAdvertFailed);
+            return new ErrorDataResult<Advert>(null, AdvertMessages.AdvertAdvertFailed);
         }
 
         [LogAspect(typeof(DatabaseLogger))]
@@ -161,36 +169,48 @@ namespace Business.Concretes
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<AdvertReadDto> GetAdvertDetailById(int id)
         {
+            string userClaims = "";
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                userClaims = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            }
             var data = _advertDal.GetAdvertDetailById(id);
             if (data is not null)
             {
-                return new SuccessDataResult<AdvertReadDto>(data,AdvertMessages.AdvertGet);
+                return new SuccessDataResult<AdvertReadDto>(data, AdvertMessages.AdvertGet);
             }
 
-            return new ErrorDataResult<AdvertReadDto>(null,AdvertMessages.AdvertNotFound);
+            return new ErrorDataResult<AdvertReadDto>(null, AdvertMessages.AdvertNotFound);
         }
 
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertByDistance(double latitude, double longitude,
             int pageNumber)
         {
             var data = _advertDal.GetAllAdvertByDistance(latitude, longitude, pageNumber);
             if (data.Count > 0)
             {
-                return new SuccessDataResult<List<AdvertReadDto>>(data,AdvertMessages.AdvertGetAll);
+                return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
             }
 
-            return new ErrorDataResult<List<AdvertReadDto>>(null,AdvertMessages.AdvertsNotFound);
+            return new ErrorDataResult<List<AdvertReadDto>>(null, AdvertMessages.AdvertsNotFound);
         }
 
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId, int pageNumber)
         {
+            string userClaims = "";
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                userClaims = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            }
             var data = _advertDal.GetAllAdvertDetailsByFilter(a => a.UserId == userId, pageNumber);
             if (data.Count > 0)
             {
-                return new SuccessDataResult<List<AdvertReadDto>>(data,AdvertMessages.AdvertGetAll);
+                return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
             }
 
-            return new ErrorDataResult<List<AdvertReadDto>>(null,AdvertMessages.AdvertsNotFound);
+            return new ErrorDataResult<List<AdvertReadDto>>(null, AdvertMessages.AdvertsNotFound);
         }
 
         [LogAspect(typeof(DatabaseLogger))]
@@ -202,10 +222,10 @@ namespace Business.Concretes
             var data = _advertDal.GetAll();
             if (data.Count > 0)
             {
-                return new SuccessDataResult<List<Advert>>(data,AdvertMessages.AdvertGetAll);
+                return new SuccessDataResult<List<Advert>>(data, AdvertMessages.AdvertGetAll);
             }
 
-            return new ErrorDataResult<List<Advert>>(null,AdvertMessages.AdvertsNotFound);
+            return new ErrorDataResult<List<Advert>>(null, AdvertMessages.AdvertsNotFound);
         }
 
         //[SecuredOperation($"{Role.SuperAdmin},{Role.Admin}")]
@@ -263,8 +283,11 @@ namespace Business.Concretes
             return new SuccessResult(AdvertMessages.AdvertUpdate);
         }
 
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto filter, int pageNumber)
         {
+            
+
             Expression<Func<Advert, bool>> filters = c => true;
             var properties = filter.GetType().GetProperties();
             foreach (var property in properties)
@@ -272,11 +295,22 @@ namespace Business.Concretes
                 var value = property.GetValue(filter, null);
                 if (value is not null)
                 {
-                    if (value is int and not 0)
+                    if (value.GetType() == typeof(int[]))
                     {
-                        object[] methodParams = {filters, value};
-                        filters = (Expression<Func<Advert, bool>>) GetInvokeMethod($"{property.Name}Condition",
-                            methodParams);
+                        int[] arrayInteger = (int[]) value;
+                        if (arrayInteger.Length > 0)
+                        {
+                            object[] methodParams = { filters, value };
+                            filters = (Expression<Func<Advert, bool>>)GetInvokeMethod($"{property.Name}Condition", methodParams);
+                        }
+                    }
+                    else
+                    {
+                        if (value is int and not 0)
+                        {
+                            object[] methodParams = { filters, value };
+                            filters = (Expression<Func<Advert, bool>>)GetInvokeMethod($"{property.Name}Condition", methodParams);
+                        }
                     }
                 }
             }
@@ -284,10 +318,10 @@ namespace Business.Concretes
             var data = _advertDal.GetAllAdvertDetailsByFilter(filters, pageNumber);
             if (data is not null)
             {
-                return new SuccessDataResult<List<AdvertReadDto>>(data,AdvertMessages.AdvertGetAll);
+                return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
             }
 
-            return new ErrorDataResult<List<AdvertReadDto>>(null,AdvertMessages.AdvertsNotFound);
+            return new ErrorDataResult<List<AdvertReadDto>>(null, AdvertMessages.AdvertsNotFound);
         }
     }
 }

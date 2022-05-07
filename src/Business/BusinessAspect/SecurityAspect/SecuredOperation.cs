@@ -9,6 +9,7 @@ using Core.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Authentication;
 using Core.CustomExceptions;
+using Core.Entity.Concretes;
 
 
 namespace Business.BusinessAspect
@@ -27,12 +28,15 @@ namespace Business.BusinessAspect
         protected override void OnBefore(IInvocation invocation)
         {
             // a sample jwt encoded token string which is supposed to be extracted from 'Authorization' HTTP header in your Web Api controller
-            
-            var cookieEmail = _httpContextAccessor.HttpContext.Request.Cookies["Email"];
+            var nameIdentifier = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            var cookieEmail = _httpContextAccessor.HttpContext?.Request.Cookies["Email"];
 
-            var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
-            var exp = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(t => t.Type == "exp");
-            var email = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
+            var roleClaims = _httpContextAccessor.HttpContext?.User.ClaimRoles();
+            var exp = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(t => t.Type == "exp");
+            var email = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+
+            CurrentUser.UserId = nameIdentifier != null ? int.Parse(nameIdentifier) : 0;
+            CurrentUser.UserEmail = email ?? "";
 
             //var name = _httpContextAccessor.HttpContext.User.Identity.Name;
             //var userid = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;

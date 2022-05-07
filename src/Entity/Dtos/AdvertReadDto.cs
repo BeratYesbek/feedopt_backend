@@ -8,6 +8,7 @@ using Core.Entity.Abstracts;
 using Entity.concretes;
 using Entity.Concretes;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace Entity.Dtos
 {
@@ -58,13 +59,24 @@ namespace Entity.Dtos
 
         public DateTime UpdatedAt { get; set; }
 
-
-
-
+        public bool FavoriteStatus { get; set; } = false;
 
         public User User { get; set; }
 
         public AnimalSpecies AnimalSpecies { get; set; }
+
+        private FavoriteAdvert _favoriteAdvert;
+
+        public FavoriteAdvert FavoriteAdvert
+        {
+            get => _favoriteAdvert;
+            set
+            {
+                _favoriteAdvert = value;
+                if (value != null)
+                    FavoriteStatus = true;
+            }
+        }
 
         public AnimalCategory AnimalCategory { get; set; }
 

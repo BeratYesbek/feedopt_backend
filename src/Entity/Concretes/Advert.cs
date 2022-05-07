@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Entity.Abstracts;
+using Entity.concretes;
 
 namespace Entity.Concretes
 {
@@ -46,5 +47,7 @@ namespace Entity.Concretes
         public DateTime CreatedAt { get; set; } = default;
 
         public DateTime UpdatedAt { get; set; } = default;
+
+        public AnimalSpecies AnimalSpecies { get; set; }
     }
 }

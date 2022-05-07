@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Core.DataAccess;
 using Core.Entity;
+using Core.Entity.Concretes;
 using Core.Utilities.Calculator;
 using DataAccess.Abstracts;
 using Entity.Concretes;
@@ -26,8 +28,8 @@ namespace DataAccess.Concretes
                              join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
                              join user in context.Users on advert.UserId equals user.Id
                              join age in context.Ages on advert.AgeId equals age.Id
-                             join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals
-                                 animalCategory.Id
+                             join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals animalCategory.Id
+                             
                              select new AdvertReadDto
                              {
                                  Location = location,
@@ -42,10 +44,12 @@ namespace DataAccess.Concretes
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
                                  Age = age,
+                                 FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && CurrentUser.UserId == favorite.UserId select favorite).FirstOrDefault(),
                                  Description = advert.Description,
                                  UserId = advert.UserId,
                                  Gender = advert.Gender,
                                  AnimalName = advert.AnimalName,
+                                 AnimalCategory = animalCategory,
                                  AdvertCategoryName = advertCategory.Name,
                                  AnimalCategoryName = animalCategory.AnimalCategoryName,
                                  Kind = animalSpecies.Kind,
@@ -93,6 +97,7 @@ namespace DataAccess.Concretes
                                      (from image in context.AdvertImages where advert.Id == image.AdvertId select image)
                                      .ToArray(),
                                  Id = advert.Id,
+                                 FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && CurrentUser.UserId == favorite.UserId select favorite).FirstOrDefault(),
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
                                  Age = age,
@@ -104,6 +109,7 @@ namespace DataAccess.Concretes
                                  AnimalCategoryName = animalCategory.AnimalCategoryName,
                                  Kind = animalSpecies.Kind,
                                  Latitude = location.Latitude,
+                                 AnimalCategory = animalCategory,
                                  Longitude = location.Longitude,
                                  City = location.City,
                                  Country = location.Country,
@@ -150,6 +156,8 @@ namespace DataAccess.Concretes
                                  Id = advert.Id,
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
+                                 FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && CurrentUser.UserId == favorite.UserId select favorite).FirstOrDefault(),
+                                 AnimalCategory = animalCategory,
                                  Age = age,
                                  Description = advert.Description,
                                  UserId = advert.UserId,
@@ -204,6 +212,8 @@ namespace DataAccess.Concretes
                                  Description = advert.Description,
                                  UserId = advert.UserId,
                                  Gender = advert.Gender,
+                                 FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && CurrentUser.UserId == favorite.UserId select favorite).FirstOrDefault(),
+                                 AnimalCategory = animalCategory,
                                  AnimalName = advert.AnimalName,
                                  AdvertCategoryName = advertCategory.Name,
                                  AnimalCategoryName = animalCategory.AnimalCategoryName,

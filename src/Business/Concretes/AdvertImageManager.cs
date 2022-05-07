@@ -26,7 +26,11 @@ namespace Business.Concretes
             _advertImageDal = advertImageDal;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdvertImageService.GetByAdvertId")]

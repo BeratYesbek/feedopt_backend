@@ -11,10 +11,11 @@ namespace Entity.Dtos.Filter
     {
         public int UserId { get; set; } = default;
 
-        public int AnimalSpeciesId { get; set; } = default;
+        public int[] AnimalSpeciesId { get; set; }
 
-        public int AdvertCategoryId { get; set; } = default;
+        public int[] AdvertCategoryId { get; set; }
 
-        public int AnimalCategoryId { get; set; } = default;
+        public int[] AnimalCategoryId { get; set; }
+
     }
 }
