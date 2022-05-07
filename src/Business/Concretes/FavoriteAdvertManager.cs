@@ -28,8 +28,8 @@ namespace Business.Concretes
         
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatAdd}")]
         [ValidationAspect(typeof(FavoriteAdvertValidator))]
-        [CacheRemoveAspect("IChatService.GetAll")]
-        [CacheRemoveAspect("IChatService.GetAllDetailByUserId")]
+        [CacheRemoveAspect("IFavoriteAdvertService.GetAll")]
+        [CacheRemoveAspect("IFavoriteAdvertService.GetAllDetailByUserId")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<FavoriteAdvert> Add(FavoriteAdvert favorite)
@@ -45,8 +45,8 @@ namespace Business.Concretes
         
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertUpdate}")]
         [ValidationAspect(typeof(FavoriteAdvertValidator))]
-        [CacheRemoveAspect("IChatService.GetAll")]
-        [CacheRemoveAspect("IChatService.GetAllDetailByUserId")]
+        [CacheRemoveAspect("IFavoriteAdvertService.GetAll")]
+        [CacheRemoveAspect("IFavoriteAdvertService.GetAllDetailByUserId")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
         public IResult Update(FavoriteAdvert favorite)
@@ -57,8 +57,8 @@ namespace Business.Concretes
         
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertDelete}")]
         [ValidationAspect(typeof(FavoriteAdvertValidator))]
-        [CacheRemoveAspect("IChatService.GetAll")]
-        [CacheRemoveAspect("IChatService.GetAllDetailByUserId")]
+        [CacheRemoveAspect("IFavoriteAdvertService.GetAll")]
+        [CacheRemoveAspect("IFavoriteAdvertService.GetAllDetailByUserId")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
         public IResult Delete(FavoriteAdvert favorite)
