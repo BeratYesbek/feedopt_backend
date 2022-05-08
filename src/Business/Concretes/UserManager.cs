@@ -125,5 +125,17 @@ namespace Business.Concretes
 
             return new ErrorDataResult<User>(null);
         }
+
+        public IResult UpdateLocation(decimal latitude, decimal longitude, int userId)
+        {
+            var user = _userDal.Get(t => t.Id == userId);
+            if (user != null)
+            {
+
+                _userDal.Update(user);
+            }
+
+            return new SuccessResult();
+        }
     }
 }

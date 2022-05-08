@@ -163,10 +163,6 @@ namespace Business.Concretes
         [CacheAspect]
         [PerformanceAspect(5)]
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        [LogAspect(typeof(DatabaseLogger))]
-        [CacheAspect]
-        [PerformanceAspect(5)]
-        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<AdvertReadDto> GetAdvertDetailById(int id)
         {
             string userClaims = "";

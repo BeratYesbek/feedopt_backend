@@ -37,7 +37,7 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
         
-        [HttpDelete("delete")]
+        [HttpPost("delete")]
         public IActionResult Delete(FavoriteAdvert favorite)
         {
             var result = _favoriteAdvertService.Delete(favorite);

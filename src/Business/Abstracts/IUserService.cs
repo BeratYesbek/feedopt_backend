@@ -25,6 +25,8 @@ namespace Business.Abstracts
 
         IDataResult<User> GetByMail(string email);
 
+        IResult UpdateLocation(decimal latitude, decimal longitude,int userId);
+
 
     }
 }

@@ -14,6 +14,7 @@ using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
 using Entity.Concretes;
 using Entity.Dtos;
+using Hangfire;
 
 namespace Business.Concretes
 {
@@ -30,6 +31,10 @@ namespace Business.Concretes
         [ValidationAspect(typeof(FavoriteAdvertValidator))]
         [CacheRemoveAspect("IFavoriteAdvertService.GetAll")]
         [CacheRemoveAspect("IFavoriteAdvertService.GetAllDetailByUserId")]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
+        [CacheRemoveAspect("IAdvertService.GetAll")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<FavoriteAdvert> Add(FavoriteAdvert favorite)
@@ -47,6 +52,10 @@ namespace Business.Concretes
         [ValidationAspect(typeof(FavoriteAdvertValidator))]
         [CacheRemoveAspect("IFavoriteAdvertService.GetAll")]
         [CacheRemoveAspect("IFavoriteAdvertService.GetAllDetailByUserId")]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
+        [CacheRemoveAspect("IAdvertService.GetAll")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
         public IResult Update(FavoriteAdvert favorite)
@@ -56,9 +65,12 @@ namespace Business.Concretes
         }
         
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertDelete}")]
-        [ValidationAspect(typeof(FavoriteAdvertValidator))]
         [CacheRemoveAspect("IFavoriteAdvertService.GetAll")]
         [CacheRemoveAspect("IFavoriteAdvertService.GetAllDetailByUserId")]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
+        [CacheRemoveAspect("IAdvertService.GetAll")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
         public IResult Delete(FavoriteAdvert favorite)

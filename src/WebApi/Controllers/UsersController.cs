@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Globalization;
+using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstracts;
 using Core.Entity;
+using Core.Utilities.Result.Concretes;
 using Entity.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +47,12 @@ namespace WebApi.Controllers
             }
 
             return BadRequest(result);
+        }
+
+        [HttpPost("updateLocation")]
+        public IActionResult UpdateLocation(int latitude,int longitude,int userId)
+        {
+            return Ok();
         }
 
     }
