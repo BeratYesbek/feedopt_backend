@@ -106,7 +106,7 @@ namespace Business.Concretes
                 }
 
                 //Job.Create<AdvertJob>().UpdateAdvertStatusJob(this, result);
-                var user = _userService.Get(advert.Id);
+                var user = _userService.Get(advert.UserId);
                 // telegram service is going to send a message our telegram channel
                 await _telegramService.SendNewPostAsync(advert, user.Data);
 

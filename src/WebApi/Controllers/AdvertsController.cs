@@ -35,7 +35,7 @@ namespace WebApi.Controllers
             var advert = _mapper.Map<Advert>(advertCreateDto);
             var advertImage = _mapper.Map<AdvertImage>(advertCreateDto);
             var location = _mapper.Map<Location>(advertCreateDto);
-
+            advert.Status = Status.Pending;
             var result = await _advertService.Add(advert, advertImage, advertCreateDto.Files, location);
             if (result.Success)
             {
