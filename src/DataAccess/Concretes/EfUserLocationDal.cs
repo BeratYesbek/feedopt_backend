@@ -11,5 +11,14 @@ namespace DataAccess.Concretes
 {
     public class EfUserLocationDal : EfEntityRepositoryBase<UserLocation, AppDbContext>, IUserLocationDal
     {
+        public async Task<UserLocation> AddAsync(UserLocation userLocation)
+        {
+            using (var context = new AppDbContext())
+            {
+                var addedEntity = await context.UserLocations.AddAsync(userLocation);
+                return addedEntity.Entity;
+            }
+        }
+
     }
 }

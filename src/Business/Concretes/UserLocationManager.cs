@@ -44,7 +44,7 @@ namespace Business.Concretes
 
         public IDataResult<UserLocation> Get(int id)
         {
-            var data = _locationDal.Get(x => x.Id == id);
+            var data = _locationDal.GetAll(x => x.Id == id).Last();
             if (data != null)
             {
                 return new SuccessDataResult<UserLocation>(data);
@@ -62,6 +62,17 @@ namespace Business.Concretes
             }
 
             return new ErrorDataResult<List<UserLocation>>(null);
+        }
+
+        public async Task<IDataResult<UserLocation>> AddAsync(UserLocation userLocation)
+        {
+            var data = await _locationDal.AddAsync(userLocation);
+            if (data is not null)
+            {
+                return new SuccessDataResult<UserLocation>(data);
+            }
+
+            return new ErrorDataResult<UserLocation>(null);
         }
     }
 }

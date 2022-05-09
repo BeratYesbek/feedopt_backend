@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Core.Entity.Abstracts;
-using Entity.concretes;
 
 namespace Entity.Concretes
 {
@@ -23,7 +18,7 @@ namespace Entity.Concretes
         Adopted,
         Found
     }
-    
+
     public class Advert : Animal, IEntity
     {
         public int Id { get; set; }
@@ -36,6 +31,8 @@ namespace Entity.Concretes
 
         public int AdvertCategoryId { get; set; }
 
+        public int AnimalCategoryId { get; set; } = 1;
+
         public int LocationId { get; set; }
 
         public bool IsDeleted { get; set; }
@@ -47,7 +44,6 @@ namespace Entity.Concretes
         public DateTime CreatedAt { get; set; } = default;
 
         public DateTime UpdatedAt { get; set; } = default;
-
-        public AnimalSpecies AnimalSpecies { get; set; }
+        
     }
 }

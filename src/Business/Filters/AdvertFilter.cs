@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Extensions;
 using Entity.Concretes;
-using FluentEmail.Core;
 
 namespace Business.Filters
 {
@@ -25,7 +20,7 @@ namespace Business.Filters
 
         protected Expression<Func<Advert, bool>> AnimalCategoryIdCondition(Expression<Func<Advert, bool>> filter, int[] value)
         {
-            return filter.And(c => value.Contains(c.AnimalSpecies.AnimalCategoryId));
+            return filter.And(c => value.Contains(c.AnimalCategoryId));
         }
 
         protected Expression<Func<Advert, bool>> UserIdCondition(Expression<Func<Advert, bool>> filter, int value)

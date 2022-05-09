@@ -282,8 +282,6 @@ namespace Business.Concretes
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto filter, int pageNumber)
         {
-            
-
             Expression<Func<Advert, bool>> filters = c => true;
             var properties = filter.GetType().GetProperties();
             foreach (var property in properties)
@@ -310,9 +308,8 @@ namespace Business.Concretes
                     }
                 }
             }
-
             var data = _advertDal.GetAllAdvertDetailsByFilter(filters, pageNumber);
-            if (data is not null)
+            if (data is not null && data.Count > 0)
             {
                 return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
             }

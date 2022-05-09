@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Castle.Core.Internal;
 using Core.Entity.Abstracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -41,8 +39,9 @@ namespace Core.DataAccess
                 PropertyInfo[] properties = typeof(TEntity).GetProperties();
                 foreach (PropertyInfo property in properties)
                 {
-                    if (property.GetValue(entity, null) == null && property.GetType() != typeof(IFormFile))
+                    if (property.GetValue(entity, null) == null && property.GetType() != typeof(IFormFile) )
                     {
+                        Debug.WriteLine("---> " + property.GetType().FullName);
                         entry.Property(property.Name).IsModified = false;
                     }
                 }

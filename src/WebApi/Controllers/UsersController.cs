@@ -4,6 +4,7 @@ using AutoMapper;
 using Business.Abstracts;
 using Core.Entity;
 using Core.Utilities.Result.Concretes;
+using Entity.Concretes;
 using Entity.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +16,15 @@ namespace WebApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IUserLocationService _userLocationService;
         private readonly IMapper _mapper;
 
 
-        public UsersController(IUserService userService, IMapper mapper)
+        public UsersController(IUserService userService,IUserLocationService userLocationService, IMapper mapper)
         {
             _userService = userService;
             _mapper = mapper;
+            _userLocationService = userLocationService;
         }
 
         [HttpPut("update")]
@@ -50,10 +53,25 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("updateLocation")]
-        public IActionResult UpdateLocation(int latitude,int longitude,int userId)
+        public async Task<IActionResult> UpdateLocation(UserLocation userLocation)
         {
-            return Ok();
+            var result = await _userLocationService.AddAsync(userLocation);
+            if (result.Success)
+            {
+                 return Ok(result);
+            }
+            return BadRequest(result);
         }
-
+        
+        [HttpGet("getUserLastLocation")]
+        public IActionResult GetUserLastLocation(int userId)
+        {
+            var result = _userLocationService.Get(userId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

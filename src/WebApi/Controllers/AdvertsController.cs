@@ -95,8 +95,8 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
         }
-        [HttpPost("getAllAdvertDetailByFilter/{pageNumber}")]
-        public IActionResult GetAllAdvertDetailByFilter(AdvertFilterDto filter,int pageNumber)
+        [HttpGet("getAllAdvertDetailByFilter/{pageNumber}")]
+        public IActionResult GetAllAdvertDetailByFilter([FromQuery] AdvertFilterDto filter,int pageNumber)
         {
             var result = _advertService.GetAllAdvertDetailsByFilter(filter,pageNumber);
             if (result.Success)

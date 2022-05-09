@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Entity.Abstracts;
+﻿using Core.Entity.Abstracts;
 
 namespace Entity.Dtos.Filter
 {
@@ -16,6 +11,12 @@ namespace Entity.Dtos.Filter
         public int[] AdvertCategoryId { get; set; }
 
         public int[] AnimalCategoryId { get; set; }
+
+        public string[] AnimalSpeciesName { get; set; }
+
+        public string[] AdvertCategoryName { get; set; }
+
+        public string[] AnimalCategoryName { get; set; }
 
     }
 }
