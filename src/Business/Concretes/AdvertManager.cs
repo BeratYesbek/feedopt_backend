@@ -249,32 +249,40 @@ namespace Business.Concretes
         public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var image = _imageService.GetByAdvertId(advert.Id);
-            
             if (files is not null)
             {
-                
                 var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
 
                 for (int i = 0; i < files.Length; i++)
                 {
-                    var fileResult =
-                        await fileHelper.UpdateAsync(files[i], image.Data[i].ImagePath, image.Data[i].PublicId);
-                    var result = _imageService.Update(new AdvertImage
+                    if (image.Data is null)
                     {
-                        ImagePath = fileResult.Message.Split("&&")[0],
-                        PublicId = fileResult.Message.Split("&&")[1],
-                        AdvertId = advert.Id,
-                        Id = image.Data[i].Id
-                    });
-                    if (!result.Success)
+                        var result = await UploadFile(files[i], advert.Id);
+                        if (!result.Success)
+                            return new ErrorDataResult<Advert>(null, AdvertMessages.AdvertAdvertFailed);
+                    }
+                    else if (i > image.Data.Count)
                     {
-                        return new ErrorResult(AdvertMessages.AdvertUpdateFailed);
+                        var result = await UploadFile(files[i], advert.Id);
+                        if (!result.Success)
+                            return new ErrorDataResult<Advert>(null, AdvertMessages.AdvertAdvertFailed);
+                    }
+                    else
+                    {
+                        var fileResult = await fileHelper.UpdateAsync(files[i], image.Data[i].ImagePath, image.Data[i].PublicId);
+                        var result = _imageService.Update(new AdvertImage
+                        {
+                            ImagePath = fileResult.Message.Split("&&")[0],
+                            PublicId = fileResult.Message.Split("&&")[1],
+                            AdvertId = advert.Id,
+                            Id = image.Data[i].Id
+                        });
+                        if (!result.Success)
+                            return new ErrorResult(AdvertMessages.AdvertUpdateFailed);
                     }
                 }
             }
-
             _locationService.Update(location);
-
             _advertDal.Update(advert);
 
             return new SuccessResult(AdvertMessages.AdvertUpdate);
@@ -316,6 +324,20 @@ namespace Business.Concretes
             }
 
             return new ErrorDataResult<List<AdvertReadDto>>(null, AdvertMessages.AdvertsNotFound);
+        }
+
+        private async Task<IResult> UploadFile(IFormFile file,int advertId)
+        {
+            var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
+
+            var fileResult = await fileHelper.UploadAsync(file);
+            var result = _imageService.Add(new AdvertImage
+            {
+                ImagePath = fileResult.Message.Split("&&")[0],
+                PublicId = fileResult.Message.Split("&&")[1],
+                AdvertId = advertId
+            });
+            return result;
         }
     }
 }

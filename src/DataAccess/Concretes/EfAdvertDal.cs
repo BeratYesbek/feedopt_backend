@@ -27,9 +27,10 @@ namespace DataAccess.Concretes
                              join animalSpecies in context.AnimalSpecies on advert.AnimalSpeciesId equals animalSpecies.Id
                              join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
                              join user in context.Users on advert.UserId equals user.Id
+                             join color in context.Colors on advert.ColorId equals color.Id
                              join age in context.Ages on advert.AgeId equals age.Id
                              join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals animalCategory.Id
-                             
+
                              select new AdvertReadDto
                              {
                                  Location = location,
@@ -44,6 +45,7 @@ namespace DataAccess.Concretes
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
                                  Age = age,
+                                 Color = color,
                                  FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && CurrentUser.UserId == favorite.UserId select favorite).FirstOrDefault(),
                                  Description = advert.Description,
                                  UserId = advert.UserId,
@@ -78,21 +80,22 @@ namespace DataAccess.Concretes
         {
             using (var context = new AppDbContext())
             {
-                var result = from advert in context.Adverts.Where(filter).Where(x  => x.IsDeleted != true)
+                var result = from advert in context.Adverts.Where(filter).Where(x => x.IsDeleted != true)
                              join location in context.Locations on advert.LocationId equals location.Id
                              join animalSpecies in context.AnimalSpecies on advert.AnimalSpeciesId equals animalSpecies.Id
-                             join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory
-                                 .Id
+                             join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
                              join user in context.Users on advert.UserId equals user.Id
                              join age in context.Ages on advert.AgeId equals age.Id
-                             join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals
-                                 animalCategory.Id
+                             join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals animalCategory.Id
+                             join color in context.Colors on advert.ColorId equals color.Id
+
                              select new AdvertReadDto
                              {
                                  Location = location,
                                  AnimalSpecies = animalSpecies,
                                  AdvertCategory = advertCategory,
                                  User = user,
+                                 Color = color,
                                  AdvertImages =
                                      (from image in context.AdvertImages where advert.Id == image.AdvertId select image)
                                      .ToArray(),
@@ -137,23 +140,22 @@ namespace DataAccess.Concretes
                              join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
                              join user in context.Users on advert.UserId equals user.Id
                              join age in context.Ages on advert.AgeId equals age.Id
-                             join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals
-                                 animalCategory.Id
-                           //  where Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude),
-                              //   Decimal.ToDouble(location.Longitude)) <= 30
-                             
+                             join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals animalCategory.Id
+                             join color in context.Colors on advert.ColorId equals color.Id
+
+                             //  where Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude),
+                             //   Decimal.ToDouble(location.Longitude)) <= 30
+
                              select new AdvertReadDto
                              {
                                  Location = location,
                                  AnimalSpecies = animalSpecies,
                                  AdvertCategory = advertCategory,
                                  User = user,
-                                 AdvertImages =
-                            (from image in context.AdvertImages where advert.Id == image.AdvertId select image)
-                            .ToArray(),
-                                 Distance = (int)Calculator.CalculateDistance(latitude, longitude,
-                            Decimal.ToDouble(location.Latitude), Decimal.ToDouble(location.Longitude)),
+                                 AdvertImages = (from image in context.AdvertImages where advert.Id == image.AdvertId select image).ToArray(),
+                                 Distance = (int)Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude), Decimal.ToDouble(location.Longitude)),
                                  Id = advert.Id,
+                                 Color = color,
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
                                  FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && CurrentUser.UserId == favorite.UserId select favorite).FirstOrDefault(),
@@ -193,19 +195,18 @@ namespace DataAccess.Concretes
                              join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
                              join user in context.Users on advert.UserId equals user.Id
                              join age in context.Ages on advert.AgeId equals age.Id
-                             join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals
-                                 animalCategory.Id
+                             join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals animalCategory.Id
+                             join color in context.Colors on advert.ColorId equals color.Id
                              select new AdvertReadDto
                              {
                                  Location = location,
                                  AnimalSpecies = animalSpecies,
                                  AdvertCategory = advertCategory,
                                  User = user,
-                                 AdvertImages =
-                                  (from image in context.AdvertImages where advert.Id == image.AdvertId select image)
-                                  .ToArray(),
+                                 AdvertImages = (from image in context.AdvertImages where advert.Id == image.AdvertId select image).ToArray(),
                                  //Distance = (int)Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude), Decimal.ToDouble(location.Longitude)),
                                  Id = advert.Id,
+                                 Color = color,
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
                                  Age = age,

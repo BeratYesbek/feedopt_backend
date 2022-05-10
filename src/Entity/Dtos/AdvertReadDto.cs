@@ -65,6 +65,8 @@ namespace Entity.Dtos
 
         public AnimalSpecies AnimalSpecies { get; set; }
 
+        public Color Color { get; set; }
+
         private FavoriteAdvert _favoriteAdvert;
 
         public FavoriteAdvert FavoriteAdvert
