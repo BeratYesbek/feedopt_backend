@@ -108,7 +108,7 @@ namespace Business.Concretes
                 //Job.Create<AdvertJob>().UpdateAdvertStatusJob(this, result);
                 var user = _userService.Get(advert.UserId);
                 // telegram service is going to send a message our telegram channel
-                await _telegramService.SendNewPostAsync(advert, user.Data);
+            //    await _telegramService.SendNewPostAsync(advert, user.Data);
 
                 return new SuccessDataResult<Advert>(result, AdvertMessages.AdvertAdd);
             }
@@ -249,9 +249,10 @@ namespace Business.Concretes
         public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var image = _imageService.GetByAdvertId(advert.Id);
-
+            
             if (files is not null)
             {
+                
                 var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
 
                 for (int i = 0; i < files.Length; i++)

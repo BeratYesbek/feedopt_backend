@@ -1,5 +1,5 @@
 ﻿using Business.Abstracts;
-using Entity.Concretes;
+using Core.Entity.Concretes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,19 +7,19 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ColorsController : ControllerBase
+    public class OperationClaimsController : ControllerBase
     {
-        private readonly IColorService _colorService;
+        private readonly IOperationClaimService _operationClaimService;
 
-        public ColorsController(IColorService colorService)
+        public OperationClaimsController(IOperationClaimService operationClaimService)
         {
-            _colorService = colorService;
+            _operationClaimService = operationClaimService;
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Color color)
+        public IActionResult Add(OperationClaim operationClaim)
         {
-            var result = _colorService.Add(color);
+            var result = _operationClaimService.Add(operationClaim);
             if (result.Success)
             {
                 return Ok(result);
@@ -29,9 +29,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("update")]
-        public IActionResult Update(Color color)
+        public IActionResult Update(OperationClaim operationClaim)
         {
-            var result = _colorService.Update(color);
+            var result = _operationClaimService.Update(operationClaim);
             if (result.Success)
             {
                 return Ok(result);
@@ -41,9 +41,9 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("delete")]
-        public IActionResult Delete(Color color)
+        public IActionResult Delete(OperationClaim operationClaim)
         {
-            var result = _colorService.Delete(color);
+            var result = _operationClaimService.Delete(operationClaim);
             if (result.Success)
             {
                 return Ok(result);
@@ -55,7 +55,7 @@ namespace WebApi.Controllers
         [HttpGet("getById/{id}")]
         public IActionResult GetById(int id)
         {
-            var result = _colorService.Get(id);
+            var result = _operationClaimService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -66,7 +66,7 @@ namespace WebApi.Controllers
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            var result = _colorService.GetAll();
+            var result = _operationClaimService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -74,6 +74,5 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
         }
-
     }
 }

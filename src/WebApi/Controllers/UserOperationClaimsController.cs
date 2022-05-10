@@ -82,7 +82,7 @@ namespace WebApi.Controllers
                 return Ok(result);
             }
 
-            return BadRequest();
+            return BadRequest(result);
         }
     }
 }

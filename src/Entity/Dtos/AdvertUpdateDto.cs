@@ -20,13 +20,16 @@ namespace Entity.Dtos
 
         public int AdvertCategoryId { get; set; }
 
+        public int AnimalCategoryId { get; set; }
+
         public string AnimalName { get; set; }
+
+        public int ColorId { get; set; }
 
         public int AgeId { get; set; }
 
         public Gender Gender { get; set; }
 
-        public string Color { get; set; }
 
         public IFormFile[] Files { get; set; }
 

@@ -22,6 +22,8 @@ namespace Entity.Dtos
 
         public int AdvertCategoryId { get; set; }
 
+        public int AnimalCategoryId { get; set; }
+
         public int ColorId { get; set; }
 
         public string AnimalName { get; set; }
