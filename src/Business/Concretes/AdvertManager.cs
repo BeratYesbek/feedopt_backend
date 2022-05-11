@@ -32,6 +32,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Concretes
 {
+
+    /// <summary>
+    /// This class is working with dependency injection to manage our Advert using business logic
+    /// Moreover, this class includes aspect oriented programming design, Therefore Each of the methods is going to process something before the runtime or after the runtime
+    /// </summary>
     public class AdvertManager : AdvertFilter, IAdvertService
     {
         private readonly IAdvertDal _advertDal;
@@ -58,6 +63,16 @@ namespace Business.Concretes
 
         }
 
+
+        /// <summary>
+        /// This method run to add new Advert to the database. During the process it will add location and images.
+        /// It is going to work with O(n)
+        /// </summary>
+        /// <param name="advert">advert</param>
+        /// <param name="advertImage">advertImage</param>
+        /// <param name="files">files</param>
+        /// <param name="location">location</param>
+        /// <returns>It will return data result that includes added advert</returns>
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
@@ -66,8 +81,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAll")]
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         [ValidationAspect(typeof(AdvertValidator))]
-        public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files,
-            Location location)
+        public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var ruleResult = Core.Utilities.Business.BusinessRules.Run(
                 AdvertBusinessRules.CheckFilesSize(files),
@@ -108,7 +122,7 @@ namespace Business.Concretes
                 //Job.Create<AdvertJob>().UpdateAdvertStatusJob(this, result);
                 var user = _userService.Get(advert.UserId);
                 // telegram service is going to send a message our telegram channel
-            //    await _telegramService.SendNewPostAsync(advert, user.Data);
+                //    await _telegramService.SendNewPostAsync(advert, user.Data);
 
                 return new SuccessDataResult<Advert>(result, AdvertMessages.AdvertAdd);
             }
@@ -116,6 +130,13 @@ namespace Business.Concretes
             return new ErrorDataResult<Advert>(null, AdvertMessages.AdvertAdvertFailed);
         }
 
+
+        /// <summary>
+        /// This method run to update status so It will be delete in the system.
+        /// This method is going to work O(3)
+        /// </summary>
+        /// <param name="advert"></param>
+        /// <returns>It will return result that includes message</returns>
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
@@ -130,6 +151,12 @@ namespace Business.Concretes
             return new SuccessResult(AdvertMessages.AdvertDelete);
         }
 
+        /// <summary>
+        ///  This method to run get Advert by ID, It is going to work with O(4) without Linq expression
+        ///  This method should use if you don't need to detail of advert because of more efficient and faster
+        /// </summary>
+        /// <param name="id">advertId</param>
+        /// <returns>It will return data result that includes an advert</returns>
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
@@ -144,12 +171,19 @@ namespace Business.Concretes
             return new ErrorDataResult<Advert>(null);
         }
 
+        /// <summary>
+        /// This method to run get advert detail by descending, It is going to work with O(6) without Linq expression
+        /// </summary>
+        /// <param name="pageNumber">pageNumber</param>
+        /// <returns>It will return data result that includes list of advert</returns>
         [LogAspect(typeof(DatabaseLogger))]
         [CacheAspect]
         [PerformanceAspect(5)]
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        public IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber, double latitude, double longitude)
+        public IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber)
         {
+            double latitude = 0;
+            double longitude = 0;
             var data = _advertDal.GetAllAdvertDetail(pageNumber, latitude, longitude);
             if (data.Count > 0)
             {
@@ -159,17 +193,19 @@ namespace Business.Concretes
             return new ErrorDataResult<List<AdvertReadDto>>(null);
         }
 
+
+        /// <summary>
+        /// This method run to get an advert detail by Id. If you want to get an advert detail you can use this method.
+        /// This method is going to run with O(4) without Linq expression
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>It will return a data result that includes an advert</returns>
         [LogAspect(typeof(DatabaseLogger))]
         [CacheAspect]
         [PerformanceAspect(5)]
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<AdvertReadDto> GetAdvertDetailById(int id)
         {
-            string userClaims = "";
-            if (_httpContextAccessor.HttpContext != null)
-            {
-                userClaims = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            }
             var data = _advertDal.GetAdvertDetailById(id);
             if (data is not null)
             {
@@ -179,10 +215,17 @@ namespace Business.Concretes
             return new ErrorDataResult<AdvertReadDto>(null, AdvertMessages.AdvertNotFound);
         }
 
+
+        /// <summary>
+        /// This method run to get all advert by distance from close to far. It is going work with O(4) without Linq expression
+        /// </summary>
+        /// <param name="pageNumber">pageNumber</param>
+        /// <returns>It will return data result that includes adverts shorted by distance</returns>
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        public IDataResult<List<AdvertReadDto>> GetAllAdvertByDistance(double latitude, double longitude,
-            int pageNumber)
+        public IDataResult<List<AdvertReadDto>> GetAllAdvertByDistance(int pageNumber)
         {
+            double latitude = 0;
+            double longitude = 0;
             var data = _advertDal.GetAllAdvertByDistance(latitude, longitude, pageNumber);
             if (data.Count > 0)
             {
@@ -192,14 +235,15 @@ namespace Business.Concretes
             return new ErrorDataResult<List<AdvertReadDto>>(null, AdvertMessages.AdvertsNotFound);
         }
 
+        /// <summary>
+        /// This method run to get all advert belongs a user by user ID, It is going  to work with O(4) without Linq expression
+        /// </summary>
+        /// <param name="userId">userId</param>
+        /// <param name="pageNumber">pageNumber</param>
+        /// <returns>It will return data result that includes list of advert</returns>
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId, int pageNumber)
         {
-            string userClaims = "";
-            if (_httpContextAccessor.HttpContext != null)
-            {
-                userClaims = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            }
             var data = _advertDal.GetAllAdvertDetailsByFilter(a => a.UserId == userId, pageNumber);
             if (data.Count > 0)
             {
@@ -209,6 +253,11 @@ namespace Business.Concretes
             return new ErrorDataResult<List<AdvertReadDto>>(null, AdvertMessages.AdvertsNotFound);
         }
 
+        /// <summary>
+        /// This method run to get all advert. If you don't need to detail of advert you should prefer this method because of more efficient and faster
+        /// This method is going to run with O(4)
+        /// </summary>
+        /// <returns>It will return data result that includes list of adverts</returns>
         [LogAspect(typeof(DatabaseLogger))]
         [CacheAspect]
         [PerformanceAspect(5)]
@@ -224,20 +273,42 @@ namespace Business.Concretes
             return new ErrorDataResult<List<Advert>>(null, AdvertMessages.AdvertsNotFound);
         }
 
-        //[SecuredOperation($"{Role.SuperAdmin},{Role.Admin}")]
+        /// <summary>
+        /// This method run to update advert case. For instance, has it been adopted ? has it been found ?
+        /// This method is going to run with O(2) 
+        /// </summary>
+        /// <param name="advert">advert</param>
+        /// <returns>It will return a result that includes message</returns>
+        [SecuredOperation($"{Role.SuperAdmin},{Role.Admin}")]
         public IResult UpdateAdvertCase(Advert advert)
         {
             _advertDal.Update(advert);
             return new SuccessResult(AdvertMessages.AdvertStatus);
         }
 
-        //[SecuredOperation($"{Role.SuperAdmin},{Role.Admin}")]
+        /// <summary>
+        /// This method run to update status. For instance, has it been pending  ? has it been active ? has it been deactivate
+        /// It is going to work with O(2)
+        /// It would be pending to be default
+        /// </summary>
+        /// <param name="advert">advert</param>
+        /// <returns>It will return a result that includes message</returns>
+        [SecuredOperation($"{Role.SuperAdmin},{Role.Admin}")]
         public IResult UpdateStatus(Advert advert)
         {
             _advertDal.Update(advert);
             return new SuccessResult(AdvertMessages.AdvertStatus);
         }
 
+        /// <summary>
+        /// This method to run update an advert while the process it can update it's images
+        /// This method is going to run with O(n)
+        /// </summary>
+        /// <param name="advert">advert</param>
+        /// <param name="advertImage">advert</param>
+        /// <param name="files">files</param>
+        /// <param name="location">location</param>
+        /// <returns>It will return a result that includes message</returns>
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
@@ -245,7 +316,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
         [CacheRemoveAspect("IAdvertService.GetAll")]
-        //  [ValidationAspect(typeof(AdvertValidator))]
+        [ValidationAspect(typeof(AdvertValidator))]
         public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var image = _imageService.GetByAdvertId(advert.Id);
@@ -253,7 +324,7 @@ namespace Business.Concretes
             {
                 var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
 
-                for (int i = 0; i < files.Length; i++)
+                for (var i = 0; i < files.Length; i++)
                 {
                     if (image.Data is null)
                     {
@@ -288,22 +359,40 @@ namespace Business.Concretes
             return new SuccessResult(AdvertMessages.AdvertUpdate);
         }
 
+        /// <summary>
+        /// This method to run filter advert by coming params from request.
+        /// This method is going to run with O(n) without Linq expression.
+        /// Linq expression will check each property of object that is to pair an ID in the database.
+        /// For instance, advert category ID is to pair array which name is Advert Category ID in object (AdvertFilterDto) 
+        /// </summary>
+        /// <param name="filter">filter</param>
+        /// <param name="pageNumber">pageNumber</param>
+        /// <returns>It will return a data result of list of adverts</returns>
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto filter, int pageNumber)
         {
+            // create a linq expression for filters
             Expression<Func<Advert, bool>> filters = c => true;
+
+            // get properties from filter object, I mean AdvertFilterDto which mapped by coming params from request
             var properties = filter.GetType().GetProperties();
             foreach (var property in properties)
             {
+                // get value of each property
                 var value = property.GetValue(filter, null);
                 if (value is not null)
                 {
+                    // is it type of integer array
                     if (value.GetType() == typeof(int[]))
                     {
-                        int[] arrayInteger = (int[]) value;
+                        int[] arrayInteger = (int[])value;
                         if (arrayInteger.Length > 0)
                         {
+                            // object must include filters type of expression  and value, Value might be any type depend on situations
                             object[] methodParams = { filters, value };
+                            // AdvertManager inherited Advert Filter class and AdvertFilter class inherited BaseFilterInvoke class 
+                            // Base filter class include GetInvokeMethod that is taking few properties, one of it is name of method that run
+                            // first parameter methodName it must includes property name of AdvertFilterDto and filter method's is going to work 
                             filters = (Expression<Func<Advert, bool>>)GetInvokeMethod($"{property.Name}Condition", methodParams);
                         }
                     }
@@ -311,6 +400,7 @@ namespace Business.Concretes
                     {
                         if (value is int and not 0)
                         {
+                            // this place will run it if value is not an array and zero
                             object[] methodParams = { filters, value };
                             filters = (Expression<Func<Advert, bool>>)GetInvokeMethod($"{property.Name}Condition", methodParams);
                         }
@@ -322,14 +412,19 @@ namespace Business.Concretes
             {
                 return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
             }
-
             return new ErrorDataResult<List<AdvertReadDto>>(null, AdvertMessages.AdvertsNotFound);
         }
 
-        private async Task<IResult> UploadFile(IFormFile file,int advertId)
+        /// <summary>
+        /// This method to run upload file to cloud or local storage. It depends on what you want which storage
+        /// It is going to run asynchronous and with O(4)
+        /// </summary>
+        /// <param name="file">file</param>
+        /// <param name="advertId">advertId</param>
+        /// <returns>It will return a result that includes message</returns>
+        private async Task<IResult> UploadFile(IFormFile file, int advertId)
         {
             var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
-
             var fileResult = await fileHelper.UploadAsync(file);
             var result = _imageService.Add(new AdvertImage
             {

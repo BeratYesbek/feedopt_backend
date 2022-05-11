@@ -17,6 +17,10 @@ using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 namespace Business.Concretes
 {
+    /// <summary>
+    /// This class is working with dependency injection to manage Advert Images of an Advert using business logic
+    /// Moreover, this class includes aspect oriented programming design, Therefore Each of the methods is going to process something before the runtime or after the runtime
+    /// </summary>
     public class AdvertImageManager : IAdvertImageService
     {
         private readonly IAdvertImageDal _advertImageDal;
@@ -27,10 +31,10 @@ namespace Business.Concretes
         }
 
         /// <summary>
-        /// 
+        /// This method run to add a new AdvertImage, It is going to work with O(2)
         /// </summary>
-        /// <param name="image"></param>
-        /// <returns></returns>
+        /// <param name="image">image</param>
+        /// <returns>It will return result</returns>
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [CacheRemoveAspect("IAdvertImageService.GetByAdvertId")]
@@ -41,10 +45,14 @@ namespace Business.Concretes
         public IResult Add(AdvertImage image)
         {
             _advertImageDal.Add(image);
-
             return new SuccessResult();
         }
 
+        /// <summary>
+        /// This method run to delete an AdvertImage, It is going to work with O(2)
+        /// </summary>
+        /// <param name="image">image</param>
+        /// <returns>It will return result</returns>
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
         [CacheRemoveAspect("IAdvertImageService.GetByAdvertId")]
@@ -57,6 +65,11 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        /// <summary>
+        /// This method run to get single AdvertImage, It is going to work with O(4) without Linq expression
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>It will return data result that includes single data</returns>
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [CacheAspect]
@@ -73,6 +86,10 @@ namespace Business.Concretes
             return new ErrorDataResult<AdvertImage>(null);
         }
 
+        /// <summary>
+        /// This method run to get all AdvertImages, It is going to work with O(4) without Linq expression
+        /// </summary>
+        /// <returns>It will return data result that includes Advert Images</returns>
         [LogAspect(typeof(DatabaseLogger))]
         [CacheAspect]
         [PerformanceAspect(5)]
@@ -89,6 +106,12 @@ namespace Business.Concretes
             return new ErrorDataResult<List<AdvertImage>>(null);
         }
 
+
+        /// <summary>
+        /// This method to run get Advert Image by Advert ID, It is going to work with O(4) without Linq expression
+        /// </summary>
+        /// <param name="id">advertId</param>
+        /// <returns>It will return data result that includes list of Advert Images</returns>
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         [CacheAspect]
@@ -105,6 +128,12 @@ namespace Business.Concretes
             return new ErrorDataResult<List<AdvertImage>>(null);
         }
 
+
+        /// <summary>
+        /// This method to run update an Advert Image
+        /// </summary>
+        /// <param name="image">image</param>
+        /// <returns>It will return result</returns>
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
         [CacheRemoveAspect("IAdvertImageService.GetByAdvertId")]

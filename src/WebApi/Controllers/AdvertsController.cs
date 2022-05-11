@@ -84,10 +84,10 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getAllAdvertDetail")]
-        public IActionResult GetAllAdvertDetail(int pageNumber, double latitude, double longitude)
+        [HttpGet("getAllAdvertDetail/{pageNumber}")]
+        public IActionResult GetAllAdvertDetail(int pageNumber)
         {
-            var result = _advertService.GetAllAdvertDetail(pageNumber, latitude, longitude);
+            var result = _advertService.GetAllAdvertDetail(pageNumber);
             if (result.Success)
             {
                 return Ok(result);
@@ -152,10 +152,10 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getAllAdvertByDistance/{latitude}/{longitude}/{pageNumber}")]
-        public IActionResult GetAllAdvertByDistance(double latitude, double longitude, int pageNumber)
+        [HttpGet("getAllAdvertByDistance/{pageNumber}")]
+        public IActionResult GetAllAdvertByDistance(int pageNumber)
         {
-            var result = _advertService.GetAllAdvertByDistance(latitude, longitude, pageNumber);
+            var result = _advertService.GetAllAdvertByDistance(pageNumber);
             if (result.Success)
             {
                 return Ok(result);

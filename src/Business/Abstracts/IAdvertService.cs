@@ -23,13 +23,13 @@ namespace Business.Abstracts
 
         IDataResult<Advert> Get(int id);
 
-        IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber, double latitude, double longitude);
+        IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber);
 
         IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto advertFilterDto, int pageNumber);
 
         IDataResult<AdvertReadDto> GetAdvertDetailById(int id);
 
-        IDataResult<List<AdvertReadDto>> GetAllAdvertByDistance(double latitude, double longitude, int pageNumber);
+        IDataResult<List<AdvertReadDto>> GetAllAdvertByDistance(int pageNumber);
 
         IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId, int pageNumber);
 

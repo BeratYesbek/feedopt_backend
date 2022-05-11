@@ -16,8 +16,8 @@ using System.Collections.Generic;
 namespace Business.Concretes
 {
     /// <summary>
-    /// This class working with dependency injection to manage our Advert Category using business logic
-    /// Moreover this class includes aspect oriented programing design this is the reason. Each method 
+    /// This class is working with dependency injection to manage our Advert Category using business logic
+    /// Moreover, this class includes aspect oriented programming design, Therefore Each of the methods is going to process something either before the runtime or after the runtime
     /// </summary>
     public class AdvertCategoryManager : IAdvertCategoryService
     {
