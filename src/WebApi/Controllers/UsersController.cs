@@ -51,27 +51,5 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
         }
-
-        [HttpPost("updateLocation")]
-        public async Task<IActionResult> UpdateLocation(UserLocation userLocation)
-        {
-            var result = await _userLocationService.AddAsync(userLocation);
-            if (result.Success)
-            {
-                 return Ok(result);
-            }
-            return BadRequest(result);
-        }
-        
-        [HttpGet("getUserLastLocation")]
-        public IActionResult GetUserLastLocation(int userId)
-        {
-            var result = _userLocationService.Get(userId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
     }
 }

@@ -12,9 +12,9 @@ namespace DataAccess.Abstracts
 {
     public interface IAdvertDal : IEntityRepository<Advert>
     {
-        List<AdvertReadDto> GetAllAdvertDetail(int pageNumber, double latitude, double longitude,double diameter = 30, int pageSize = 10);
-        List<AdvertReadDto> GetAllAdvertDetailsByFilter(Expression<Func<Advert, bool>> filter, int pageNumber, int pageSize = 10);
-        List<AdvertReadDto> GetAllAdvertByDistance(double latitude, double longitude, int pageNumber, double diameter = 30, int pageSize = 10);
-        AdvertReadDto GetAdvertDetailById(int id);
+        List<AdvertReadDto> GetAllAdvertDetail(int pageNumber, double latitude, double longitude, int userId, double diameter = 30, int pageSize = 10);
+        List<AdvertReadDto> GetAllAdvertDetailsByFilter(Expression<Func<Advert, bool>> filter, int userId, int pageNumber, int pageSize = 10);
+        List<AdvertReadDto> GetAllAdvertByDistance(double latitude, double longitude, int userId, int pageNumber, double diameter = 30, int pageSize = 10);
+        AdvertReadDto GetAdvertDetailById(int id, int userId);
     }
 }

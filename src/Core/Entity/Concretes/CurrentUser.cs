@@ -8,7 +8,10 @@ namespace Core.Entity.Concretes
 {
     public static class CurrentUser
     {
-        public static int UserId { get; set; }
-        public static string UserEmail { get; set; }
+        public static User User { get; set; }
+
+        public static double Latitude { get; set; } = default;
+
+        public static double Longitude { get; set; } = default;
     }
 }

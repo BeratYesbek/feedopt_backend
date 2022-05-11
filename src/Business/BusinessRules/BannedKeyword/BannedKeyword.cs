@@ -11,7 +11,7 @@ namespace Business.BusinessRules.BannedKeyword
         internal static string[] SearchedKeyword = {
             "satılık", "satilik", "fiyat", "pazarlik", 
             "payi", "amk", "aq", "salak", "aptal", "oç", 
-            "pazarlık payı", "pazarlik payi","satıyorum","tl","lira","satış","satmak","fiyat"
+            "pazarlık payı", "pazarlik payi","satıyorum","lira","satış","satmak","fiyat"
             ,"satıyorum","ucuz","pahalı" };
 
 

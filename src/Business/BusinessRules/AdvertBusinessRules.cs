@@ -41,7 +41,7 @@ namespace Business.BusinessRules
             {
                 if (word is not null)
                 {
-                   // return new ErrorResult($"{AdvertBusinessRulesMessages.BannedKeywordMessage} {string.Join(", ", BannedKeyword.BannedKeyword.SearchedKeyword)}");
+                    return new ErrorResult($"{AdvertBusinessRulesMessages.BannedKeywordMessage} {string.Join(", ", BannedKeyword.BannedKeyword.SearchedKeyword)}");
                 }
             }
 

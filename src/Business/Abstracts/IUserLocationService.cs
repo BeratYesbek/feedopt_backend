@@ -18,6 +18,8 @@ namespace Business.Abstracts
 
         IDataResult<UserLocation> Get(int id);
 
+        IDataResult<UserLocation> GetById(int id);
+
         IDataResult<List<UserLocation>> GetAll();
 
         Task<IDataResult<UserLocation>> AddAsync(UserLocation userLocation);

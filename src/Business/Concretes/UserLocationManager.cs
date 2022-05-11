@@ -53,6 +53,17 @@ namespace Business.Concretes
             return new ErrorDataResult<UserLocation>(null);
         }
 
+        public IDataResult<UserLocation> GetById(int id)
+        {
+            var data = _locationDal.Get(t => t.UserId == id);
+            if (data != null)
+            {
+                return new SuccessDataResult<UserLocation>(data);
+            }
+
+            return new ErrorDataResult<UserLocation>(null);
+        }
+
         public IDataResult<List<UserLocation>> GetAll()
         {
             var data = _locationDal.GetAll();

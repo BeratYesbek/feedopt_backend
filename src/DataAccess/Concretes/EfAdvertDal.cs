@@ -18,7 +18,7 @@ namespace DataAccess.Concretes
 {
     public class EfAdvertDal : EfEntityRepositoryBase<Advert, AppDbContext>, IAdvertDal
     {
-        public List<AdvertReadDto> GetAllAdvertDetail(int pageNumber, double latitude, double longitude, double diameter, int pageSize = 20)
+        public List<AdvertReadDto> GetAllAdvertDetail(int pageNumber, double latitude,double longitude, int userId, double diameter, int pageSize = 20)
         {
             using (var context = new AppDbContext())
             {
@@ -46,7 +46,7 @@ namespace DataAccess.Concretes
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
                                  Age = age,
                                  Color = color,
-                                 FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && CurrentUser.UserId == favorite.UserId select favorite).FirstOrDefault(),
+                                 FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && userId == favorite.UserId select favorite).FirstOrDefault(),
                                  Description = advert.Description,
                                  UserId = advert.UserId,
                                  Gender = advert.Gender,
@@ -76,7 +76,7 @@ namespace DataAccess.Concretes
 
 
 
-        public List<AdvertReadDto> GetAllAdvertDetailsByFilter(Expression<Func<Advert, bool>> filter, int pageNumber, int pageSize = 10)
+        public List<AdvertReadDto> GetAllAdvertDetailsByFilter(Expression<Func<Advert, bool>> filter, int pageNumber,int userId, int pageSize = 10)
         {
             using (var context = new AppDbContext())
             {
@@ -100,7 +100,7 @@ namespace DataAccess.Concretes
                                      (from image in context.AdvertImages where advert.Id == image.AdvertId select image)
                                      .ToArray(),
                                  Id = advert.Id,
-                                 FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && CurrentUser.UserId == favorite.UserId select favorite).FirstOrDefault(),
+                                 FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && userId == favorite.UserId select favorite).FirstOrDefault(),
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
                                  Age = age,
@@ -130,7 +130,7 @@ namespace DataAccess.Concretes
             }
         }
 
-        public List<AdvertReadDto> GetAllAdvertByDistance(double latitude, double longitude, int pageNumber, double diameter = 30, int pageSize = 10)
+        public List<AdvertReadDto> GetAllAdvertByDistance(double latitude, double longitude, int userId, int pageNumber, double diameter = 30, int pageSize = 10)
         {
             using (var context = new AppDbContext())
             {
@@ -158,7 +158,7 @@ namespace DataAccess.Concretes
                                  Color = color,
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
-                                 FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && CurrentUser.UserId == favorite.UserId select favorite).FirstOrDefault(),
+                                 FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && userId == favorite.UserId select favorite).FirstOrDefault(),
                                  AnimalCategory = animalCategory,
                                  Age = age,
                                  Description = advert.Description,
@@ -185,7 +185,7 @@ namespace DataAccess.Concretes
             }
         }
 
-        public AdvertReadDto GetAdvertDetailById(int id)
+        public AdvertReadDto GetAdvertDetailById(int id,int userId)
         {
             using (var context = new AppDbContext())
             {
@@ -213,7 +213,7 @@ namespace DataAccess.Concretes
                                  Description = advert.Description,
                                  UserId = advert.UserId,
                                  Gender = advert.Gender,
-                                 FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && CurrentUser.UserId == favorite.UserId select favorite).FirstOrDefault(),
+                                 FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && userId == favorite.UserId select favorite).FirstOrDefault(),
                                  AnimalCategory = animalCategory,
                                  AnimalName = advert.AnimalName,
                                  AdvertCategoryName = advertCategory.Name,

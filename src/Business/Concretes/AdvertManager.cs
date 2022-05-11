@@ -27,6 +27,7 @@ using Business.Filters;
 using Business.Messages.MethodMessages;
 using Business.Services.Abstracts;
 using Core.Entity;
+using Core.Entity.Concretes;
 using Core.Utilities.IoC;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -176,15 +177,15 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="pageNumber">pageNumber</param>
         /// <returns>It will return data result that includes list of advert</returns>
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         [LogAspect(typeof(DatabaseLogger))]
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber)
         {
-            double latitude = 0;
-            double longitude = 0;
-            var data = _advertDal.GetAllAdvertDetail(pageNumber, latitude, longitude);
+            double latitude = CurrentUser.Latitude;
+            double longitude = CurrentUser.Longitude;
+            var data = _advertDal.GetAllAdvertDetail(pageNumber, latitude, longitude,CurrentUser.User.Id);
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<AdvertReadDto>>(data);
@@ -206,7 +207,7 @@ namespace Business.Concretes
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<AdvertReadDto> GetAdvertDetailById(int id)
         {
-            var data = _advertDal.GetAdvertDetailById(id);
+            var data = _advertDal.GetAdvertDetailById(id,CurrentUser.User.Id);
             if (data is not null)
             {
                 return new SuccessDataResult<AdvertReadDto>(data, AdvertMessages.AdvertGet);
@@ -224,9 +225,9 @@ namespace Business.Concretes
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertByDistance(int pageNumber)
         {
-            double latitude = 0;
-            double longitude = 0;
-            var data = _advertDal.GetAllAdvertByDistance(latitude, longitude, pageNumber);
+            double latitude = CurrentUser.Latitude;
+            double longitude = CurrentUser.Longitude;
+            var data = _advertDal.GetAllAdvertByDistance(latitude,longitude,CurrentUser.User.Id,pageNumber);
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
@@ -244,7 +245,7 @@ namespace Business.Concretes
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
         public IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId, int pageNumber)
         {
-            var data = _advertDal.GetAllAdvertDetailsByFilter(a => a.UserId == userId, pageNumber);
+            var data = _advertDal.GetAllAdvertDetailsByFilter(a => a.UserId == userId,CurrentUser.User.Id, pageNumber);
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
@@ -407,7 +408,7 @@ namespace Business.Concretes
                     }
                 }
             }
-            var data = _advertDal.GetAllAdvertDetailsByFilter(filters, pageNumber);
+            var data = _advertDal.GetAllAdvertDetailsByFilter(filters,CurrentUser.User.Id, pageNumber);
             if (data is not null && data.Count > 0)
             {
                 return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
