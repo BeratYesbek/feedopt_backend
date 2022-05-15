@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Security.Authentication;
@@ -8,8 +9,10 @@ using System.Threading.Tasks;
 using CloudinaryDotNet;
 using Core.CustomExceptions;
 using FluentValidation;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 
 namespace Core.Extensions
@@ -18,12 +21,14 @@ namespace Core.Extensions
     {
 
         private readonly RequestDelegate _requestDelegate;
+        private readonly IWebHostEnvironment _env;
         private  IConfiguration Configuration { get; }
 
-        public ExceptionMiddleware(RequestDelegate requestDelegate, IConfiguration configuration)
+        public ExceptionMiddleware(RequestDelegate requestDelegate, IConfiguration configuration,IWebHostEnvironment env)
         {
             _requestDelegate = requestDelegate;
             Configuration = configuration;
+            _env = env;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
@@ -49,7 +54,19 @@ namespace Core.Extensions
         private void ThrowValidationException(HttpContext httpContext, Exception exception)
         {
             var message = exception.Message;
-            Uri redirectURI = new Uri($"{Configuration.GetSection("ErrorsUrl")["ValidationError"]}?&message={message}");
+            Uri redirectURI = null;
+            if (_env.IsDevelopment())
+            {
+                Console.WriteLine("---> Development");
+                Debug.WriteLine("--> Development");
+                redirectURI = new Uri($"{Configuration.GetSection("ErrorsUrl")["ValidationError"]}?&message={message}");
+            }
+            else
+            {
+                Console.WriteLine("---> Production");
+                Debug.WriteLine("--> Production");
+                redirectURI = new Uri($"{Configuration.GetSection("ErrorsUrl")["ValidationError"]}?&message={message}");
+            }
             httpContext.Response.Redirect(redirectURI.AbsoluteUri);
 
         }
