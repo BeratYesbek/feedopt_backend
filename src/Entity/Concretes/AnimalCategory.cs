@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using Core.Entity.Abstracts;
+using Core.Entity.Concretes;
 using Newtonsoft.Json;
+
 
 namespace Entity.concretes
 {
@@ -16,5 +11,22 @@ namespace Entity.concretes
         public int Id { get; set; }
 
         public string AnimalCategoryName { get; set; }
+
+
+        [NotMapped]
+        [JsonIgnore]
+        public Translation Translation
+        {
+            get => null;
+
+            set
+            {
+                if (value != null)
+                {
+                    var property = GetType().GetProperty(value.PropertyName);
+                    property?.SetValue(this, value.Content);
+                }
+            }
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace Business.Concretes
             _animalCategoryDal = animalCategoryDal;
         }
 
-        [SecuredOperation($"{Role.AnimalCategoryAdd},{Role.Admin},{Role.SuperAdmin}")]
+        [SecuredOperation($"{Role.AnimalCategoryAdd},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [ValidationAspect(typeof(AnimalCategoryValidator))]
         [LogAspect(typeof(DatabaseLogger))]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
@@ -41,7 +41,7 @@ namespace Business.Concretes
             return new SuccessDataResult<AnimalCategory>(null);
         }
 
-        [SecuredOperation($"{Role.AnimalCategoryUpdate},{Role.Admin},{Role.SuperAdmin}")]
+        [SecuredOperation($"{Role.AnimalCategoryUpdate},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [ValidationAspect(typeof(AnimalCategoryValidator))]
         [PerformanceAspect(5)]
@@ -52,7 +52,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
-        [SecuredOperation($"{Role.AnimalCategoryDelete},{Role.Admin},{Role.SuperAdmin}")]
+        [SecuredOperation($"{Role.AnimalCategoryDelete},{Role.Admin},{Role.SuperAdmin}",Priority = 1)]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
@@ -62,8 +62,9 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+
+        [SecuredOperation($"{Role.AnimalSpeciesGet},{Role.User},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5)]
-        [SecuredOperation($"{Role.AnimalSpeciesGet},{Role.User},{Role.Admin},{Role.SuperAdmin}")]
         [CacheAspect]
         [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<AnimalCategory> Get(int id)
@@ -77,13 +78,14 @@ namespace Business.Concretes
             return new ErrorDataResult<AnimalCategory>(null);
         }
 
+
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.Admin},{Role.SuperAdmin}",Priority = 0)]
         [CacheAspect]
         [PerformanceAspect(5)]
-        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.Admin},{Role.SuperAdmin}")]
         [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<List<AnimalCategory>> GetAll()
         {
-            var data = _animalCategoryDal.GetAll();
+            var data = _animalCategoryDal.GetAll(null,true);
 
             if (data.Count > 0)
             {

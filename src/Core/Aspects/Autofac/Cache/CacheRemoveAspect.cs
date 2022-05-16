@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Autofac.Core;
 using Castle.DynamicProxy;
 using Core.CrossCuttingConcerns.Cache;
+using Core.Entity.Concretes;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +20,7 @@ namespace Core.Aspects.Autofac.Cache
 
         public CacheRemoveAspect(string pattern)
         {
-            _pattern = pattern;
+            _pattern = $"{pattern}{CurrentUser.User.PreferredLanguage}";
             _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
         }
 

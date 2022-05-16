@@ -20,6 +20,8 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<TranslationManager>().As<ITranslationService>().SingleInstance();
+            builder.RegisterType<EfTranslationDal>().As<ITranslationDal>().SingleInstance();
 
             builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().SingleInstance();
             builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().SingleInstance();

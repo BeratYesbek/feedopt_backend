@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Castle.DynamicProxy;
 using Core.CrossCuttingConcerns.Cache;
+using Core.Entity.Concretes;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +25,8 @@ namespace Core.Aspects.Autofac.Cache
 
         public override void Intercept(IInvocation invocation)
         {
-            var methodName = string.Format($"{invocation.Method.ReflectedType.FullName}.{invocation.Method.Name}");
+            var cultureName = CurrentUser.User.PreferredLanguage.ToString();
+            var methodName = string.Format($"{invocation.Method.ReflectedType?.FullName}.{invocation.Method.Name}{cultureName}");
             var arguments = invocation.Arguments.ToList();
             var key = $"{methodName}({string.Join(",", arguments.Select(x => x?.ToString() ?? "<Null>"))})";
 

@@ -12,6 +12,7 @@ using Business.Concretes;
 using Core.CustomExceptions;
 using Core.Entity.Concretes;
 using DataAccess.Concretes;
+using Microsoft.AspNetCore.Localization;
 
 
 namespace Business.BusinessAspect
@@ -37,11 +38,12 @@ namespace Business.BusinessAspect
             var roleClaims = _httpContextAccessor.HttpContext?.User.ClaimRoles();
             var exp = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(t => t.Type == "exp");
             var email = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            var cultureName = _httpContextAccessor.HttpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+            // c = tr | uic = tr
 
             if (nameIdentifier is not null)
-                SetCurrentUser(nameIdentifier);
-            else
-                //throw new AuthenticationFailedException("");
+                SetCurrentUser(nameIdentifier, cultureName?.Split("|")[0].Split("=")[1]);
+            //throw new AuthenticationFailedException("");
 
             //var name = _httpContextAccessor.HttpContext.User.Identity.Name;
             //var userid = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
@@ -66,7 +68,7 @@ namespace Business.BusinessAspect
             }
             //throw new AuthenticationFailedException("You have no authorization");
         }
-        private static void SetCurrentUser(string nameIdentifier)
+        private static void SetCurrentUser(string nameIdentifier, string cultureName)
         {
 
             var result = new UserManager(new EfUserDal()).Get(int.Parse(nameIdentifier));
@@ -78,6 +80,7 @@ namespace Business.BusinessAspect
                 {
                     CurrentUser.Longitude = Decimal.ToDouble(locationResult.Data.Longitude);
                     CurrentUser.Latitude = Decimal.ToDouble(locationResult.Data.Latitude);
+                    CurrentUser.CultureName = cultureName;
                 }
             }
 

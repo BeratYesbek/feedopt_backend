@@ -25,9 +25,8 @@ namespace Core.Extensions
             httpContext.Response.Cookies.Append(CookieKey.ExpireKey, cookieParams.AccessToken.Token,
                 new CookieOptions { Expires = cookieParams.AccessToken.Expiration, HttpOnly = true, Secure = true });
 
-            httpContext.Response.Cookies.Append(CookieKey.Email, "elmir@gmail.com",
+            httpContext.Response.Cookies.Append(CookieKey.Email, cookieParams.User.Email,
                 new CookieOptions { Expires = cookieParams.AccessToken.Expiration,HttpOnly = true,Secure = true});
-            httpContext.Response.Cookies.Append("Naber","iiy");
           
         }
 
