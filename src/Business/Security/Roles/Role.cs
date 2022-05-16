@@ -60,5 +60,12 @@
         public const string FavoriteAdvertGet = "FavoriteAdvert.Get";
         public const string FavoriteAdvertGetAll = "FavoriteAdvert.GetAll";
 
+        public const string AgeRangesAdd = "AgeRanges.Add";
+        public const string AgeRangesUpdate = "AgeRanges.Update";
+        public const string AgeRangesDelete = "AgeRanges.Delete";
+        public const string AgeRangesGet = "AgeRanges.Get";
+        public const string AgeRangesGetAll = "AgeRanges.GetAll";
+
+
     }
 }

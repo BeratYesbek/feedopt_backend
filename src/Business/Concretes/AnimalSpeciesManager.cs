@@ -28,43 +28,45 @@ namespace Business.Abstracts
             _animalSpeciesDal = animalSpeciesDal;
         }
 
-        [SecuredOperation($"{Role.AnimalCategoryAdd},{Role.Admin},{Role.SuperAdmin}")]
-        [ValidationAspect(typeof(AnimalSpeciesValidator))]
-        [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(DatabaseLogger))]
+        [SecuredOperation($"{Role.AnimalSpeciesAdd},{Role.Admin},{Role.SuperAdmin}",Priority = 1)]
+        [ValidationAspect(typeof(AnimalSpeciesValidator),Priority = 2)]
+        [PerformanceAspect(5,Priority = 3)]
+        [LogAspect(typeof(DatabaseLogger),Priority = 4)]
+        [CacheRemoveAspect("IAnimalSpeciesService.GetAll", Priority = 5)]
+        [CacheRemoveAspect("IAnimalSpeciesService.GetAllByAnimalCategoryId", Priority = 6)]
         public IResult Add(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Add(animalSpecies);
             return new SuccessResult();
         }
 
-        [SecuredOperation($"{Role.AnimalSpeciesUpdate},{Role.Admin},{Role.SuperAdmin}")]
-        [ValidationAspect(typeof(AnimalSpeciesValidator))]
-        [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(DatabaseLogger))]
+        [SecuredOperation($"{Role.AnimalSpeciesUpdate},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        [ValidationAspect(typeof(AnimalSpeciesValidator), Priority = 2)]
+        [PerformanceAspect(5,Priority = 3)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 4)]
+        [CacheRemoveAspect("IAnimalSpeciesService.GetAll", Priority = 5)]
+        [CacheRemoveAspect("IAnimalSpeciesService.GetAllByAnimalCategoryId", Priority = 6)]
         public IResult Update(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Update(animalSpecies);
             return new SuccessResult();
         }
 
-        [SecuredOperation($"{Role.AnimalSpeciesDelete},{Role.Admin},{Role.SuperAdmin}")]
-        [ValidationAspect(typeof(AnimalSpeciesValidator))]
-        [CacheRemoveAspect("IAnimalSpeciesService.GetAll")]
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(DatabaseLogger))]
+        [SecuredOperation($"{Role.AnimalSpeciesDelete},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheRemoveAspect("IAnimalSpeciesService.GetAll", Priority = 4)]
+        [CacheRemoveAspect("IAnimalSpeciesService.GetAllByAnimalCategoryId", Priority = 5)]
         public IResult Delete(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Delete(animalSpecies);
             return new SuccessResult();
         }
 
-        [CacheAspect]
-        [SecuredOperation($"{Role.AnimalSpeciesGet},{Role.Admin},{Role.User},{Role.SuperAdmin}")]
-        [LogAspect(typeof(DatabaseLogger))]
-        [PerformanceAspect(5)]
+        [SecuredOperation($"{Role.AnimalSpeciesGetAll},{Role.Admin},{Role.User},{Role.SuperAdmin}",Priority = 1)]
+        [PerformanceAspect(5,Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger),Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<List<AnimalSpecies>> GetAllByAnimalCategoryId(int animalCategoryId)
         {
             var data = _animalSpeciesDal.GetAll(a => a.AnimalCategoryId == animalCategoryId);
@@ -75,10 +77,11 @@ namespace Business.Abstracts
             return new ErrorDataResult<List<AnimalSpecies>>(null);
         }
 
-        [PerformanceAspect(5)]
-        [CacheAspect]
-        [SecuredOperation($"{Role.AnimalSpeciesGet},{Role.Admin},{Role.User},{Role.SuperAdmin}")]
-        [LogAspect(typeof(DatabaseLogger))]
+
+        [SecuredOperation($"{Role.AnimalSpeciesGet},{Role.Admin},{Role.User},{Role.SuperAdmin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<AnimalSpecies> Get(int id)
         {
             var data = _animalSpeciesDal.Get(a => a.Id == id);
@@ -90,10 +93,10 @@ namespace Business.Abstracts
             return new ErrorDataResult<AnimalSpecies>(null);
         }
 
-        [PerformanceAspect(5)]
-        [CacheAspect]
-        [SecuredOperation($"{Role.AnimalSpeciesGetAll},{Role.Admin},{Role.User},{Role.SuperAdmin}")]
-        [LogAspect(typeof(DatabaseLogger))]
+        [SecuredOperation($"{Role.AnimalSpeciesGetAll},{Role.Admin},{Role.User},{Role.SuperAdmin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<List<AnimalSpecies>> GetAll()
         {
             var data = _animalSpeciesDal.GetAll();

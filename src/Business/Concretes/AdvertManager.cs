@@ -74,14 +74,14 @@ namespace Business.Concretes
         /// <param name="files">files</param>
         /// <param name="location">location</param>
         /// <returns>It will return data result that includes added advert</returns>
-        [LogAspect(typeof(DatabaseLogger))]
-        [PerformanceAspect(5)]
-        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
-        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
-        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
-        [CacheRemoveAspect("IAdvertService.GetAll")]
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        [ValidationAspect(typeof(AdvertValidator))]
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [ValidationAspect(typeof(AdvertValidator), Priority = 2)]
+        [PerformanceAspect(5, Priority = 3)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 4)]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail", Priority = 5)]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById", Priority = 6)]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter", Priority = 7)]
+        [CacheRemoveAspect("IAdvertService.GetAll", Priority = 8)]
         public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var ruleResult = Core.Utilities.Business.BusinessRules.Run(
@@ -95,7 +95,6 @@ namespace Business.Concretes
 
             if (locationResult is null)
                 return new SuccessDataResult<Advert>(null, AdvertMessages.AdvertAdd);
-
 
             advert.LocationId = locationResult.Data.Id;
             var result = _advertDal.Add(advert);
@@ -138,13 +137,13 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="advert"></param>
         /// <returns>It will return result that includes message</returns>
-        [LogAspect(typeof(DatabaseLogger))]
-        [PerformanceAspect(5)]
-        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
-        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
-        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
-        [CacheRemoveAspect("IAdvertService.GetAll")]
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail", Priority = 4)]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById", Priority = 5)]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter", Priority = 6)]
+        [CacheRemoveAspect("IAdvertService.GetAll", Priority = 7)]
         public IResult Delete(Advert advert)
         {
             advert.IsDeleted = true;
@@ -158,9 +157,9 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="id">advertId</param>
         /// <returns>It will return data result that includes an advert</returns>
-        [LogAspect(typeof(DatabaseLogger))]
-        [PerformanceAspect(5)]
-        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         public IDataResult<Advert> Get(int id)
         {
             var data = _advertDal.Get(a => a.Id == id);
@@ -177,15 +176,15 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="pageNumber">pageNumber</param>
         /// <returns>It will return data result that includes list of advert</returns>
-        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        [LogAspect(typeof(DatabaseLogger))]
-        [CacheAspect]
-        [PerformanceAspect(5)]
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber)
         {
             double latitude = CurrentUser.Latitude;
             double longitude = CurrentUser.Longitude;
-            var data = _advertDal.GetAllAdvertDetail(pageNumber, latitude, longitude,CurrentUser.User.Id);
+            var data = _advertDal.GetAllAdvertDetail(pageNumber, latitude, longitude, CurrentUser.User.Id);
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<AdvertReadDto>>(data);
@@ -201,13 +200,13 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="id"></param>
         /// <returns>It will return a data result that includes an advert</returns>
-        [LogAspect(typeof(DatabaseLogger))]
-        [CacheAspect]
-        [PerformanceAspect(5)]
-        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<AdvertReadDto> GetAdvertDetailById(int id)
         {
-            var data = _advertDal.GetAdvertDetailById(id,CurrentUser.User.Id);
+            var data = _advertDal.GetAdvertDetailById(id, CurrentUser.User.Id);
             if (data is not null)
             {
                 return new SuccessDataResult<AdvertReadDto>(data, AdvertMessages.AdvertGet);
@@ -222,12 +221,14 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="pageNumber">pageNumber</param>
         /// <returns>It will return data result that includes adverts shorted by distance</returns>
-        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertByDistance(int pageNumber)
         {
             double latitude = CurrentUser.Latitude;
             double longitude = CurrentUser.Longitude;
-            var data = _advertDal.GetAllAdvertByDistance(latitude,longitude,CurrentUser.User.Id,pageNumber);
+            var data = _advertDal.GetAllAdvertByDistance(latitude, longitude, CurrentUser.User.Id, pageNumber);
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
@@ -242,10 +243,13 @@ namespace Business.Concretes
         /// <param name="userId">userId</param>
         /// <param name="pageNumber">pageNumber</param>
         /// <returns>It will return data result that includes list of advert</returns>
-        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId, int pageNumber)
         {
-            var data = _advertDal.GetAllAdvertDetailsByFilter(a => a.UserId == userId,CurrentUser.User.Id, pageNumber);
+            var data = _advertDal.GetAllAdvertDetailsByFilter(a => a.UserId == userId, CurrentUser.User.Id, pageNumber);
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
@@ -259,10 +263,10 @@ namespace Business.Concretes
         /// This method is going to run with O(4)
         /// </summary>
         /// <returns>It will return data result that includes list of adverts</returns>
-        [LogAspect(typeof(DatabaseLogger))]
-        [CacheAspect]
-        [PerformanceAspect(5)]
-        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<List<Advert>> GetAll()
         {
             var data = _advertDal.GetAll();
@@ -280,7 +284,13 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="advert">advert</param>
         /// <returns>It will return a result that includes message</returns>
-        [SecuredOperation($"{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail", Priority = 4)]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById", Priority = 5)]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter", Priority = 6)]
+        [CacheRemoveAspect("IAdvertService.GetAll", Priority = 7)]
         public IResult UpdateAdvertCase(Advert advert)
         {
             _advertDal.Update(advert);
@@ -294,7 +304,13 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="advert">advert</param>
         /// <returns>It will return a result that includes message</returns>
-        [SecuredOperation($"{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail", Priority = 4)]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById", Priority = 5)]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter", Priority = 6)]
+        [CacheRemoveAspect("IAdvertService.GetAll", Priority = 7)]
         public IResult UpdateStatus(Advert advert)
         {
             _advertDal.Update(advert);
@@ -310,14 +326,14 @@ namespace Business.Concretes
         /// <param name="files">files</param>
         /// <param name="location">location</param>
         /// <returns>It will return a result that includes message</returns>
-        [LogAspect(typeof(DatabaseLogger))]
-        [PerformanceAspect(5)]
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
-        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
-        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
-        [CacheRemoveAspect("IAdvertService.GetAll")]
-        [ValidationAspect(typeof(AdvertValidator))]
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [ValidationAspect(typeof(AdvertValidator), Priority = 2)]
+        [PerformanceAspect(5, Priority = 3)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 4)]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail", Priority = 5)]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailById", Priority = 6)]
+        [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter", Priority = 7)]
+        [CacheRemoveAspect("IAdvertService.GetAll", Priority = 8)]
         public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var image = _imageService.GetByAdvertId(advert.Id);
@@ -369,7 +385,10 @@ namespace Business.Concretes
         /// <param name="filter">filter</param>
         /// <param name="pageNumber">pageNumber</param>
         /// <returns>It will return a data result of list of adverts</returns>
-        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto filter, int pageNumber)
         {
             // create a linq expression for filters
@@ -408,7 +427,7 @@ namespace Business.Concretes
                     }
                 }
             }
-            var data = _advertDal.GetAllAdvertDetailsByFilter(filters,CurrentUser.User.Id, pageNumber);
+            var data = _advertDal.GetAllAdvertDetailsByFilter(filters, CurrentUser.User.Id, pageNumber);
             if (data is not null && data.Count > 0)
             {
                 return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);

@@ -35,13 +35,13 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="image">image</param>
         /// <returns>It will return result</returns>
-        [LogAspect(typeof(DatabaseLogger))]
-        [PerformanceAspect(5)]
-        [CacheRemoveAspect("IAdvertImageService.GetByAdvertId")]
-        [CacheRemoveAspect("IAdvertImageService.Get")]
-        [CacheRemoveAspect("IAdvertImageService.GetAll")]
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        [ValidationAspect(typeof(AdvertImageValidator))]
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [ValidationAspect(typeof(AdvertImageValidator), Priority = 2)]
+        [PerformanceAspect(5, Priority = 3)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 4)]
+        [CacheRemoveAspect("IAdvertImageService.GetByAdvertId", Priority = 5)]
+        [CacheRemoveAspect("IAdvertImageService.Get", Priority = 6)]
+        [CacheRemoveAspect("IAdvertImageService.GetAll", Priority = 7)]
         public IResult Add(AdvertImage image)
         {
             _advertImageDal.Add(image);
@@ -53,12 +53,12 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="image">image</param>
         /// <returns>It will return result</returns>
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(DatabaseLogger))]
-        [CacheRemoveAspect("IAdvertImageService.GetByAdvertId")]
-        [CacheRemoveAspect("IAdvertImageService.Get")]
-        [CacheRemoveAspect("IAdvertImageService.GetAll")]
-        [SecuredOperation($"{Role.AdvertImageUpdate},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.AdvertImageDelete},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheRemoveAspect("IAdvertImageService.GetByAdvertId", Priority = 4)]
+        [CacheRemoveAspect("IAdvertImageService.Get", Priority = 5)]
+        [CacheRemoveAspect("IAdvertImageService.GetAll", Priority = 6)]
         public IResult Delete(AdvertImage image)
         {
             _advertImageDal.Delete(image);
@@ -70,10 +70,10 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="id"></param>
         /// <returns>It will return data result that includes single data</returns>
-        [LogAspect(typeof(DatabaseLogger))]
-        [PerformanceAspect(5)]
-        [CacheAspect]
-        [SecuredOperation($"{Role.AdvertCategoryGet},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.AdvertImageGet},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<AdvertImage> Get(int id)
         {
             var data = _advertImageDal.Get(a => a.Id == id);
@@ -90,10 +90,10 @@ namespace Business.Concretes
         /// This method run to get all AdvertImages, It is going to work with O(4) without Linq expression
         /// </summary>
         /// <returns>It will return data result that includes Advert Images</returns>
-        [LogAspect(typeof(DatabaseLogger))]
-        [CacheAspect]
-        [PerformanceAspect(5)]
-        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.AdvertImageGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertImage>> GetAll()
         {
             var data = _advertImageDal.GetAll();
@@ -112,10 +112,10 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="id">advertId</param>
         /// <returns>It will return data result that includes list of Advert Images</returns>
-        [LogAspect(typeof(DatabaseLogger))]
-        [PerformanceAspect(5)]
-        [CacheAspect]
-        [SecuredOperation($"{Role.AdvertCategoryGet},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
+        [SecuredOperation($"{Role.AdvertImageGet},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertImage>> GetByAdvertId(int id)
         {
             var data = _advertImageDal.GetAll(a => a.AdvertId == id);
@@ -134,14 +134,13 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="image">image</param>
         /// <returns>It will return result</returns>
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(DatabaseLogger))]
-        [CacheRemoveAspect("IAdvertImageService.GetByAdvertId")]
-        [CacheRemoveAspect("IAdvertImageService.Get")]
-        [CacheRemoveAspect("IAdvertImageService.GetAll")]
-        [SecuredOperation($"{Role.AdvertUpdate},{Role.User},{Role.SuperAdmin},{Role.Admin}")]
-        [ValidationAspect(typeof(AdvertImageValidator))]
-
+        [SecuredOperation($"{Role.AdvertUpdate},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [ValidationAspect(typeof(AdvertImageValidator), Priority = 2)]
+        [PerformanceAspect(5, Priority = 3)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 4)]
+        [CacheRemoveAspect("IAdvertImageService.GetByAdvertId", Priority = 5)]
+        [CacheRemoveAspect("IAdvertImageService.Get", Priority = 6)]
+        [CacheRemoveAspect("IAdvertImageService.GetAll", Priority = 7)]
         public IResult Update(AdvertImage image)
         {
             _advertImageDal.Update(image);
