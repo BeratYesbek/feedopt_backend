@@ -15,17 +15,18 @@ namespace Core.Aspects.Autofac.Cache
 {
     public class CacheRemoveAspect : MethodInterception
     {
-        private readonly string _pattern;
+        private string _pattern;
         private readonly ICacheManager _cacheManager;
 
         public CacheRemoveAspect(string pattern)
         {
-            _pattern = $"{pattern}{CurrentUser.User.PreferredLanguage}";
+            _pattern = pattern;
             _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
         }
 
         protected override void OnSuccess(IInvocation invocation)
         {
+            _pattern = $"{_pattern}{CurrentUser.User.PreferredLanguage}";
             _cacheManager.RemoveByPattern(_pattern);
         }
     }

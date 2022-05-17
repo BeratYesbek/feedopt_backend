@@ -1,4 +1,5 @@
-﻿using Core.Entity;
+﻿using Core.CrossCuttingConcerns.Logging.Log4Net;
+using Core.Entity;
 using Core.Entity.Concretes;
 using Entity;
 using Entity.concretes;
@@ -26,6 +27,7 @@ namespace DataAccess
         public DbSet<Age> Ages { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Color> Colors { get; set; }
+        public DbSet<Log> Logs { get; set; }
         public DbSet<UserLocation> UserLocations { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }

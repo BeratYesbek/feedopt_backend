@@ -26,11 +26,13 @@ namespace Business.Concretes
             _animalCategoryDal = animalCategoryDal;
         }
 
-        [SecuredOperation($"{Role.AnimalCategoryAdd},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
-        [ValidationAspect(typeof(AnimalCategoryValidator))]
-        [LogAspect(typeof(DatabaseLogger))]
-        [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
-        [PerformanceAspect(5)]
+        [SecuredOperation($"{Role.AnimalCategoryUpdate},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        [ValidationAspect(typeof(AnimalCategoryValidator), Priority = 2)]
+        [PerformanceAspect(5, Priority = 3)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 4)]
+        [LogAspect(typeof(FileLogger), Priority = 5)]
+      //  [CacheRemoveAspect("IAnimalCategoryService.GetAll", Priority = 5)]
+        // [CacheRemoveAspect("IAnimalCategoryService.Get", Priority = 6)]
         public IDataResult<AnimalCategory> Add(AnimalCategory animalCategory)
         {
             var result = _animalCategoryDal.Add(animalCategory);
@@ -45,8 +47,8 @@ namespace Business.Concretes
         [ValidationAspect(typeof(AnimalCategoryValidator),Priority = 2)]
         [PerformanceAspect(5,Priority = 3)]
         [LogAspect(typeof(DatabaseLogger),Priority = 4)]
-        [CacheRemoveAspect("IAnimalCategoryService.GetAll")]
-        [CacheRemoveAspect("IAnimalCategoryService.Get", Priority = 5)]
+        [CacheRemoveAspect("IAnimalCategoryService.GetAll", Priority = 5)]
+        [CacheRemoveAspect("IAnimalCategoryService.Get", Priority = 6)]
         public IResult Update(AnimalCategory animalCategory)
         {
             _animalCategoryDal.Update(animalCategory);
@@ -83,7 +85,8 @@ namespace Business.Concretes
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
-        [CacheAspect(Priority = 4)]
+        [LogAspect(typeof(FileLogger), Priority = 4)]
+        [CacheAspect(Priority = 5)]
         public IDataResult<List<AnimalCategory>> GetAll()
         {
             var data = _animalCategoryDal.GetAll(null,true);

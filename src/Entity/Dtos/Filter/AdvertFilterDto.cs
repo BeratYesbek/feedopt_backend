@@ -1,4 +1,5 @@
 ﻿using Core.Entity.Abstracts;
+using Entity.Concretes;
 
 namespace Entity.Dtos.Filter
 {
@@ -12,11 +13,11 @@ namespace Entity.Dtos.Filter
 
         public int[] AnimalCategoryId { get; set; }
 
-        public string[] AnimalSpeciesName { get; set; }
+        public int[] ColorId { get; set; }
 
-        public string[] AdvertCategoryName { get; set; }
+        public int[] AgeId { get; set; }
 
-        public string[] AnimalCategoryName { get; set; }
+        public Gender[] Gender { get; set; }
 
     }
 }

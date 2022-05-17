@@ -8,6 +8,7 @@ using Core.Utilities.IoC;
 using Entity.Concretes;
 using Entity.Dtos;
 using Entity.Dtos.Filter;
+using Hangfire;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;

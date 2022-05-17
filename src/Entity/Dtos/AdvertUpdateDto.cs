@@ -48,5 +48,7 @@ namespace Entity.Dtos
         public string Country { get; set; }
 
         public string County { get; set; }
+
+        public int UserId { get; set; }
     }
 }

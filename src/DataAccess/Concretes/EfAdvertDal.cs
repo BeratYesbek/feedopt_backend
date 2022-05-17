@@ -76,57 +76,61 @@ namespace DataAccess.Concretes
 
 
 
-        public List<AdvertReadDto> GetAllAdvertDetailsByFilter(Expression<Func<Advert, bool>> filter, int pageNumber,int userId, int pageSize = 10)
+        public List<AdvertReadDto> GetAllAdvertDetailsByFilter(Expression<Func<Advert, bool>> filter, int userId, int pageNumber, int pageSize = 20)
         {
             using (var context = new AppDbContext())
             {
-                var result = from advert in context.Adverts.Where(filter).Where(x => x.IsDeleted != true)
-                             join location in context.Locations on advert.LocationId equals location.Id
-                             join animalSpecies in context.AnimalSpecies on advert.AnimalSpeciesId equals animalSpecies.Id
-                             join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
-                             join user in context.Users on advert.UserId equals user.Id
-                             join age in context.Ages on advert.AgeId equals age.Id
-                             join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals animalCategory.Id
-                             join color in context.Colors on advert.ColorId equals color.Id
+                var result = from advert in context.Adverts.OrderByDescending(x => x.Id).Where(filter).Where(x => x.IsDeleted != true)
+                    join location in context.Locations on advert.LocationId equals location.Id
+                    join animalSpecies in context.AnimalSpecies on advert.AnimalSpeciesId equals animalSpecies.Id
+                    join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
+                    join user in context.Users on advert.UserId equals user.Id
+                    join age in context.Ages on advert.AgeId equals age.Id
+                    join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals
+                        animalCategory.Id
+                    join color in context.Colors on advert.ColorId equals color.Id
 
-                             select new AdvertReadDto
-                             {
-                                 Location = location,
-                                 AnimalSpecies = animalSpecies,
-                                 AdvertCategory = advertCategory,
-                                 User = user,
-                                 Color = color,
-                                 AdvertImages =
-                                     (from image in context.AdvertImages where advert.Id == image.AdvertId select image)
-                                     .ToArray(),
-                                 Id = advert.Id,
-                                 FavoriteAdvert = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && userId == favorite.UserId select favorite).FirstOrDefault(),
-                                 AdvertCategoryId = advert.AdvertCategoryId,
-                                 AnimalSpeciesId = advert.AnimalSpeciesId,
-                                 Age = age,
-                                 Description = advert.Description,
-                                 UserId = advert.UserId,
-                                 Gender = advert.Gender,
-                                 AnimalName = advert.AnimalName,
-                                 AdvertCategoryName = advertCategory.Name,
-                                 AnimalCategoryName = animalCategory.AnimalCategoryName,
-                                 Kind = animalSpecies.Kind,
-                                 Latitude = location.Latitude,
-                                 AnimalCategory = animalCategory,
-                                 Longitude = location.Longitude,
-                                 City = location.City,
-                                 Country = location.Country,
-                                 County = location.County,
-                                 Images = (from image in context.AdvertImages
-                                           where advert.Id == image.AdvertId
-                                           select image.ImagePath).ToArray(),
-                                 CreatedAt = advert.CreatedAt,
-                                 UpdatedAt = advert.UpdatedAt,
+                    select new AdvertReadDto
+                    {
+                        Location = location,
+                        AnimalSpecies = animalSpecies,
+                        AdvertCategory = advertCategory,
+                        User = user,
+                        Color = color,
+                        AdvertImages =
+                            (from image in context.AdvertImages where advert.Id == image.AdvertId select image)
+                            .ToArray(),
+                        Id = advert.Id,
+                        FavoriteAdvert =
+                            (from favorite in context.FavoriteAdverts
+                                where advert.Id == favorite.AdvertId && userId == favorite.UserId
+                                select favorite).FirstOrDefault(),
+                        AdvertCategoryId = advert.AdvertCategoryId,
+                        AnimalSpeciesId = advert.AnimalSpeciesId,
+                        Age = age,
+                        Description = advert.Description,
+                        UserId = advert.UserId,
+                        Gender = advert.Gender,
+                        AnimalName = advert.AnimalName,
+                        AdvertCategoryName = advertCategory.Name,
+                        AnimalCategoryName = animalCategory.AnimalCategoryName,
+                        Kind = animalSpecies.Kind,
+                        Latitude = location.Latitude,
+                        AnimalCategory = animalCategory,
+                        Longitude = location.Longitude,
+                        City = location.City,
+                        Country = location.Country,
+                        County = location.County,
+                        Images = (from image in context.AdvertImages
+                            where advert.Id == image.AdvertId
+                            select image.ImagePath).ToArray(),
+                        CreatedAt = advert.CreatedAt,
+                        UpdatedAt = advert.UpdatedAt,
 
-                             };
+                    };
 
 
-                return result.OrderByDescending(a => a.Id).Skip(pageNumber * pageSize).Take(pageSize).ToList();
+                return result.Skip(pageNumber * pageSize).Take(pageSize).ToList();
             }
         }
 

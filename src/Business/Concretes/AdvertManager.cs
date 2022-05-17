@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Http;
 using IResult = Core.Utilities.Result.Abstracts.IResult;
 using Entity.Dtos.Filter;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Security.Claims;
 using Business.Filters;
 using Business.Messages.MethodMessages;
@@ -387,8 +388,8 @@ namespace Business.Concretes
         /// <returns>It will return a data result of list of adverts</returns>
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
-        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
-        [CacheAspect(Priority = 4)]
+       // [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+       // [CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto filter, int pageNumber)
         {
             // create a linq expression for filters
@@ -400,31 +401,24 @@ namespace Business.Concretes
             {
                 // get value of each property
                 var value = property.GetValue(filter, null);
-                if (value is not null)
+                // is it type of integer array
+                if (value?.GetType() == typeof(int[]))
                 {
-                    // is it type of integer array
-                    if (value.GetType() == typeof(int[]))
-                    {
-                        int[] arrayInteger = (int[])value;
-                        if (arrayInteger.Length > 0)
-                        {
-                            // object must include filters type of expression  and value, Value might be any type depend on situations
-                            object[] methodParams = { filters, value };
-                            // AdvertManager inherited Advert Filter class and AdvertFilter class inherited BaseFilterInvoke class 
-                            // Base filter class include GetInvokeMethod that is taking few properties, one of it is name of method that run
-                            // first parameter methodName it must includes property name of AdvertFilterDto and filter method's is going to work 
-                            filters = (Expression<Func<Advert, bool>>)GetInvokeMethod($"{property.Name}Condition", methodParams);
-                        }
-                    }
-                    else
-                    {
-                        if (value is int and not 0)
-                        {
-                            // this place will run it if value is not an array and zero
-                            object[] methodParams = { filters, value };
-                            filters = (Expression<Func<Advert, bool>>)GetInvokeMethod($"{property.Name}Condition", methodParams);
-                        }
-                    }
+                    int[] arrayInteger = (int[])value;
+                    if (arrayInteger.Length > 0)
+                        filters = (Expression<Func<Advert, bool>>) StartFilterInvokeMethod(filters, value, property);
+                        
+                }
+                else if (value?.GetType() == typeof(Gender[]))
+                {
+                    Gender[] arrayGender = (Gender[])value;
+                    if (arrayGender.Length > 0)
+                        filters = (Expression<Func<Advert, bool>>)StartFilterInvokeMethod(filters, value, property);
+                }
+                else
+                {
+                    if (value is int and not 0)
+                        filters = (Expression<Func<Advert, bool>>)StartFilterInvokeMethod(filters, value, property);
                 }
             }
             var data = _advertDal.GetAllAdvertDetailsByFilter(filters, CurrentUser.User.Id, pageNumber);
@@ -453,6 +447,18 @@ namespace Business.Concretes
                 AdvertId = advertId
             });
             return result;
+        }
+
+
+        private object StartFilterInvokeMethod(Expression<Func<Advert, bool>> filters, object value,PropertyInfo property)
+        {
+            // object must include filters type of expression  and value, Value might be any type depend on situations
+            object[] methodParams = { filters, value };
+
+            // AdvertManager inherited Advert Filter class and AdvertFilter class inherited BaseFilterInvoke class 
+            // Base filter class include GetInvokeMethod that is taking few properties, one of it is name of method that run
+            // first parameter methodName it must includes property name of AdvertFilterDto and filter method's is going to work 
+            return (Expression<Func<Advert, bool>>) GetInvokeMethod($"{property.Name}Condition", methodParams);
         }
     }
 }

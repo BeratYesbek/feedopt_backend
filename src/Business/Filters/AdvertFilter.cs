@@ -28,6 +28,23 @@ namespace Business.Filters
             return filter.And(c => c.UserId == value);
         }
 
+        protected Expression<Func<Advert, bool>> AgeIdCondition(Expression<Func<Advert, bool>> filter, int[] value)
+        {
+            return filter.And(c => value.Contains(c.AgeId));
+        }
+         
+        protected Expression<Func<Advert, bool>> ColorIdCondition(Expression<Func<Advert, bool>> filter, int[] value)
+        {
+            return filter.And(c => value.Contains(c.ColorId));
+        }
+
+        protected Expression<Func<Advert, bool>> GenderCondition(Expression<Func<Advert, bool>> filter, Gender[] value)
+        {
+            return filter.And(c => value.Contains(c.Gender));
+        }
+
+        
 
     }
 }
+
