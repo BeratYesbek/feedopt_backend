@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstracts;
+using Core.Entity.Abstracts;
+using Core.Extensions;
 using Core.Utilities.IoC;
 using Entity.Concretes;
 using Entity.Dtos;
@@ -57,14 +59,18 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpPut("update")]
-        public async Task<IActionResult> Update([FromForm] AdvertUpdateDto advertUpdateDto)
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> Update([FromForm] AdvertUpdateDto advertUpdateDto,int id)
         {
-            var advert = _mapper.Map<Advert>(advertUpdateDto);
             var advertImage = _mapper.Map<AdvertImage>(advertUpdateDto);
             var location = _mapper.Map<Location>(advertUpdateDto);
 
+             var dataResult = _advertService.Get(id);
+             var advert = dataResult.Data;
+             advert.Map(advertUpdateDto);
+       
             var result = await _advertService.Update(advert, advertImage, advertUpdateDto.Files, location);
+
             if (result.Success)
             {
                 return Ok(result);

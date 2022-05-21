@@ -337,6 +337,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAll", Priority = 8)]
         public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
+
             var image = _imageService.GetByAdvertId(advert.Id);
             if (files is not null)
             {
@@ -371,7 +372,8 @@ namespace Business.Concretes
                     }
                 }
             }
-            _locationService.Update(location);
+
+            _ = location.Id != 0 || location != null ? _locationService.Update(location) : null;
             _advertDal.Update(advert);
 
             return new SuccessResult(AdvertMessages.AdvertUpdate);
@@ -388,8 +390,8 @@ namespace Business.Concretes
         /// <returns>It will return a data result of list of adverts</returns>
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
-       // [LogAspect(typeof(DatabaseLogger), Priority = 3)]
-       // [CacheAspect(Priority = 4)]
+        // [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        // [CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto filter, int pageNumber)
         {
             // create a linq expression for filters
@@ -406,8 +408,8 @@ namespace Business.Concretes
                 {
                     int[] arrayInteger = (int[])value;
                     if (arrayInteger.Length > 0)
-                        filters = (Expression<Func<Advert, bool>>) StartFilterInvokeMethod(filters, value, property);
-                        
+                        filters = (Expression<Func<Advert, bool>>)StartFilterInvokeMethod(filters, value, property);
+
                 }
                 else if (value?.GetType() == typeof(Gender[]))
                 {
@@ -450,7 +452,7 @@ namespace Business.Concretes
         }
 
 
-        private object StartFilterInvokeMethod(Expression<Func<Advert, bool>> filters, object value,PropertyInfo property)
+        private object StartFilterInvokeMethod(Expression<Func<Advert, bool>> filters, object value, PropertyInfo property)
         {
             // object must include filters type of expression  and value, Value might be any type depend on situations
             object[] methodParams = { filters, value };
@@ -458,7 +460,7 @@ namespace Business.Concretes
             // AdvertManager inherited Advert Filter class and AdvertFilter class inherited BaseFilterInvoke class 
             // Base filter class include GetInvokeMethod that is taking few properties, one of it is name of method that run
             // first parameter methodName it must includes property name of AdvertFilterDto and filter method's is going to work 
-            return (Expression<Func<Advert, bool>>) GetInvokeMethod($"{property.Name}Condition", methodParams);
+            return (Expression<Func<Advert, bool>>)GetInvokeMethod($"{property.Name}Condition", methodParams);
         }
     }
 }

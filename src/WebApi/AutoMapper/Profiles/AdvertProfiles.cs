@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Entity.Concretes;
 using Entity.Dtos;
+using System;
+using System.Reflection;
 
 namespace WebApi.AutoMapper.Profiles
 {
@@ -12,12 +14,21 @@ namespace WebApi.AutoMapper.Profiles
             CreateMap<AdvertCreateDto, AdvertImage>();
             CreateMap<AdvertCreateDto, Location>();
 
-            CreateMap<AdvertUpdateDto, Advert>();
+
+
+
+
             CreateMap<AdvertUpdateDto, AdvertImage>();
             CreateMap<AdvertUpdateDto, Location>()
                 .ForMember(dest => dest.Id, opt
                     => opt.MapFrom(src => src.LocationId));
 
+            CreateMap<AdvertUpdateDto, Advert>()
+                .ForMember(dest => dest.Description, src => src.Condition((src,dest) => dest.Description != null))
+                .ForMember(dest => dest.AnimalName, src => src.Condition(t => t.AnimalName != null));
+
+
         }
+
     }
 }
