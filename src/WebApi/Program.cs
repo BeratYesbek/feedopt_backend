@@ -14,6 +14,9 @@ using Business.DependencyResolver.Autofac;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NLog.Web;
+using NLog;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace WebApi
 {
@@ -22,7 +25,13 @@ namespace WebApi
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+
+            var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+            logger.Debug("database");
+
             host.Run();
+
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -37,6 +46,10 @@ namespace WebApi
 
                     webBuilder.UseStartup<Startup>()
                         .UseUrls("http://*:" + port);
-                });
+                }).ConfigureLogging(opt =>
+                {
+                    opt.ClearProviders();
+                    opt.SetMinimumLevel(LogLevel.Trace);
+                }).UseNLog();
     }
 }

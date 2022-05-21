@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Newtonsoft.Json.Serialization;
 using WebApi.Config;
 using WebApi.SignalR;
+using WebAPI.Config;
 
 namespace WebApi
 {
@@ -38,6 +39,11 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddMvc(options =>
+            {
+                options.AddCommaSeparatedArrayModelBinderProvider();
+            });
 
             services.AddDbContext<AppDbContext>();
             services.AddScoped<IConfig, Config.Config>();

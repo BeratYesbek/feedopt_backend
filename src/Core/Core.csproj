@@ -20,6 +20,11 @@
     <EmbeddedResource Remove="Aspects\Autofac\Exception\**" />
     <None Remove="Aspects\Autofac\Exception\**" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\berat\.nuget\packages\nlog.config\4.7.15\contentFiles\any\any\NLog.config" />
+    <None Remove="C:\Users\berat\.nuget\packages\nlog.schema\5.0.0\contentFiles\any\any\NLog.xsd" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.3.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
@@ -38,9 +43,12 @@
     <PackageReference Include="Hangfire.PostgreSql" Version="1.9.7" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.7.28" />
     <PackageReference Include="log4net" Version="2.0.14" />
+    <PackageReference Include="MicroKnights.Log4NetAdoNetAppender" Version="2.2.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Log4NetAppender" Version="2.20.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.2" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="4.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.DynamicLinq" Version="6.2.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2">
@@ -48,7 +56,17 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="6.1.0" />
+    <PackageReference Include="NLog" Version="5.0.0" />
+    <PackageReference Include="NLog.Config" Version="4.7.15" />
+    <PackageReference Include="NLog.Database" Version="5.0.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="NLog.Schema" Version="5.0.0" />
+    <PackageReference Include="NLog.Web" Version="5.0.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Npgsql" Version="6.0.4" />
     <PackageReference Include="StackExchange.Redis" Version="2.5.43" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.17" />

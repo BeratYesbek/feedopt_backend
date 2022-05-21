@@ -24,6 +24,7 @@ namespace Core.DependencyResolvers
             serviceCollection.AddSingleton<Stopwatch>();
             serviceCollection.AddSingleton<INotificationService, NotificationService>();
 
+
         }
 
     }

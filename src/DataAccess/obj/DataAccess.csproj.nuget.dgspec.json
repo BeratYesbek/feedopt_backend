@@ -104,6 +104,14 @@
               "target": "Package",
               "version": "[1.7.28, )"
             },
+            "MicroKnights.Log4NetAdoNetAppender": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.ApplicationInsights.Log4NetAppender": {
+              "target": "Package",
+              "version": "[2.20.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[6.0.2, )"
@@ -115,6 +123,10 @@
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
               "version": "[6.0.2, )"
+            },
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.1.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -134,9 +146,49 @@
               "target": "Package",
               "version": "[2.2.0, )"
             },
+            "Microsoft.Extensions.Logging.Log4Net.AspNetCore": {
+              "target": "Package",
+              "version": "[6.1.0, )"
+            },
+            "NLog": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "NLog.Config": {
+              "target": "Package",
+              "version": "[4.7.15, )"
+            },
+            "NLog.Database": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "NLog.Extensions.Logging": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "NLog.Schema": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "NLog.Web": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "NLog.Web.AspNetCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[6.0.4, )"
+            },
             "StackExchange.Redis": {
               "target": "Package",
               "version": "[2.5.43, )"
+            },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.3, )"
             },
             "System.Drawing.Common": {
               "target": "Package",
@@ -298,6 +350,12 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.AspNet.WebApi.Core": {
+              "target": "Package",
+              "version": "[5.2.8, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

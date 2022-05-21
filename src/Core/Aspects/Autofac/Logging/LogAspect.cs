@@ -26,7 +26,8 @@ namespace Core.Aspects.Autofac.Logging
             }
 
             _loggerServiceBase = (LoggerServiceBase)Activator.CreateInstance(loggerService);
-            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>(); 
+            
 
         }
 
@@ -36,8 +37,8 @@ namespace Core.Aspects.Autofac.Logging
         }
 
         private LogDetail GetLogDetail(IInvocation invocation)
-        {
-  /*          var logParameters = new List<LogParameter>();
+        { 
+         /*   var logParameters = new List<LogParameter>();
             for (int i = 0; i < invocation.Arguments.Length; i++)
             {
                 logParameters.Add(new LogParameter
@@ -54,10 +55,9 @@ namespace Core.Aspects.Autofac.Logging
                 MethodName = invocation.Method.Name,
                 Parameters = logParameters,
                 FullName = invocation.Method.DeclaringType?.FullName,
-            };
+            };*/
 
-            return logDetail;*/
-  return null;
+            return null;
         }
     }
 }
