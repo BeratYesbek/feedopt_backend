@@ -20,6 +20,10 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+
+            builder.RegisterType<FilterManager>().As<IFilterService>().SingleInstance();
+            builder.RegisterType<EfFilterDal>().As<IFilterDal>().SingleInstance();
+
             builder.RegisterType<TranslationManager>().As<ITranslationService>().SingleInstance();
             builder.RegisterType<EfTranslationDal>().As<ITranslationDal>().SingleInstance();
 

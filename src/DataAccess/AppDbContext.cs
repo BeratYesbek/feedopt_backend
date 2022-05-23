@@ -34,5 +34,7 @@ namespace DataAccess
         public DbSet<Translation> Translations { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketFile> TicketFiles { get; set; }
+        public DbSet<Filter> Filters { get; set; }
+
     }
 }

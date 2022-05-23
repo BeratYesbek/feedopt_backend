@@ -70,12 +70,10 @@ namespace WebApi.Controllers
              advert.Map(advertUpdateDto);
        
             var result = await _advertService.Update(advert, advertImage, advertUpdateDto.Files, location);
-
             if (result.Success)
             {
                 return Ok(result);
             }
-
             return BadRequest(result);
         }
 
