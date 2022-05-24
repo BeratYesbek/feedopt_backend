@@ -92,7 +92,7 @@ namespace Business.Concretes
             return new SuccessDataResult<AccessToken>(access_token, "Token has been created");
         }
 
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", "IsLoggedIN", Priority = 1)]
         public IDataResult<User> IsLoggedIn()
         {
            return new SuccessDataResult<User>(CurrentUser.User);

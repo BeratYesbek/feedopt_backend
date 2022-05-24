@@ -92,7 +92,7 @@ namespace Core.Extensions
             {
                 StatusCode = httpContext.Response.StatusCode,
                 Message = message,
-                Description = exception.InnerException?.Message + " --> Details => " + exception.StackTrace
+                //Description = exception.InnerException?.Message + " --> Details => " + exception.StackTrace
             }.ToString());
         }
     }

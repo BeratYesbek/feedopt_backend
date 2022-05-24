@@ -20,11 +20,13 @@ namespace Business.BusinessAspect
     public class SecuredOperation : MethodInterception
     {
         private readonly string[] _roles;
+        private readonly string _temp;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SecuredOperation(string roles)
+        public SecuredOperation(string roles, string temp = "")
         {
             _roles = roles.Split(",");
+            _temp = temp;
             _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
 
         }
@@ -48,7 +50,10 @@ namespace Business.BusinessAspect
             //var name = _httpContextAccessor.HttpContext.User.Identity.Name;
             //var userid = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
 
-
+            if (_temp == "IsLoggedIN" && (nameIdentifier == null || nameIdentifier == ""))
+            {
+                throw new AuthenticationFailedException("Session expired");
+            }
             if (exp == null)
             {
                 // throw new AuthenticationFailedException("Your token expiration is up");
