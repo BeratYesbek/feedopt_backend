@@ -29,7 +29,7 @@ namespace Business.Concretes
         }
 
         [SecuredOperation($"{Role.AgeRangesAdd},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
-        [ValidationAspect(typeof(AgeRangesValidator),Priority = 2)]
+        [ValidationAspect(typeof(AgeRangesValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]
         [CacheRemoveAspect("IAgeRangeService.GetAll", Priority = 5)]
@@ -70,13 +70,7 @@ namespace Business.Concretes
         public IDataResult<Age> Get(int id)
         {
             var data = _ageRangeDal.Get(a => a.Id == id);
-            if (data is not null)
-            {
-                return new SuccessDataResult<Age>(data);
-
-            }
-
-            return new ErrorDataResult<Age>(null);
+            return new SuccessDataResult<Age>(data);
         }
 
         [SecuredOperation($"{Role.AgeRangesGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]

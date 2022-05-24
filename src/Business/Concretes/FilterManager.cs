@@ -20,6 +20,7 @@ namespace Business.Concretes
             _filterDal = filterDal;
         }
 
+        
         public IDataResult<Filter> Add(Filter filter)
         {
             var data = _filterDal.Add(filter);

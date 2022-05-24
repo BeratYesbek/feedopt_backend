@@ -51,8 +51,6 @@ namespace Business.Concretes
 
         private readonly IUserService _userService;
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
         public AdvertManager(IAdvertDal advertDal, IAdvertImageService imageService, ILocationService locationService,
             ITelegramService telegramService, IUserService userService)
         {
@@ -61,7 +59,6 @@ namespace Business.Concretes
             _locationService = locationService;
             _telegramService = telegramService;
             _userService = userService;
-            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
 
         }
 
@@ -88,6 +85,8 @@ namespace Business.Concretes
             var ruleResult = Core.Utilities.Business.BusinessRules.Run(
                 AdvertBusinessRules.CheckFilesSize(files),
                 AdvertBusinessRules.CheckDescriptionIllegalKeyword(advert.Description));
+
+            advert.UserId = CurrentUser.User.Id;
 
             if (!ruleResult.Success)
                 return new ErrorDataResult<Advert>(null, ruleResult.Message);
@@ -121,9 +120,8 @@ namespace Business.Concretes
                 }
 
                 //Job.Create<AdvertJob>().UpdateAdvertStatusJob(this, result);
-                var user = _userService.Get(advert.UserId);
                 // telegram service is going to send a message our telegram channel
-                //    await _telegramService.SendNewPostAsync(advert, user.Data);
+                await _telegramService.SendNewPostAsync(advert, CurrentUser.User);
 
                 return new SuccessDataResult<Advert>(result, AdvertMessages.AdvertAdd);
             }
@@ -164,12 +162,8 @@ namespace Business.Concretes
         public IDataResult<Advert> Get(int id)
         {
             var data = _advertDal.Get(a => a.Id == id);
-            if (data is not null)
-            {
-                return new SuccessDataResult<Advert>(data);
-            }
+            return new SuccessDataResult<Advert>(data);
 
-            return new ErrorDataResult<Advert>(null);
         }
 
         /// <summary>
@@ -186,12 +180,7 @@ namespace Business.Concretes
             double latitude = CurrentUser.Latitude;
             double longitude = CurrentUser.Longitude;
             var data = _advertDal.GetAllAdvertDetail(pageNumber, latitude, longitude, CurrentUser.User.Id);
-            if (data.Count > 0)
-            {
-                return new SuccessDataResult<List<AdvertReadDto>>(data);
-            }
-
-            return new ErrorDataResult<List<AdvertReadDto>>(null);
+            return new SuccessDataResult<List<AdvertReadDto>>(data);
         }
 
 
@@ -207,13 +196,10 @@ namespace Business.Concretes
         [CacheAspect(Priority = 4)]
         public IDataResult<AdvertReadDto> GetAdvertDetailById(int id)
         {
-            var data = _advertDal.GetAdvertDetailById(id, CurrentUser.User.Id);
-            if (data is not null)
-            {
-                return new SuccessDataResult<AdvertReadDto>(data, AdvertMessages.AdvertGet);
-            }
+            var data = _advertDal.GetAdvertDetailById(id, CurrentUser.User.Id, CurrentUser.Latitude, CurrentUser.Longitude);
+            return new SuccessDataResult<AdvertReadDto>(data, AdvertMessages.AdvertGet);
 
-            return new ErrorDataResult<AdvertReadDto>(null, AdvertMessages.AdvertNotFound);
+
         }
 
 
@@ -230,12 +216,8 @@ namespace Business.Concretes
             double latitude = CurrentUser.Latitude;
             double longitude = CurrentUser.Longitude;
             var data = _advertDal.GetAllAdvertByDistance(latitude, longitude, CurrentUser.User.Id, pageNumber);
-            if (data.Count > 0)
-            {
-                return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
-            }
+            return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
 
-            return new ErrorDataResult<List<AdvertReadDto>>(null, AdvertMessages.AdvertsNotFound);
         }
 
         /// <summary>
@@ -250,13 +232,8 @@ namespace Business.Concretes
         [CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId, int pageNumber)
         {
-            var data = _advertDal.GetAllAdvertDetailsByFilter(a => a.UserId == userId, CurrentUser.User.Id, pageNumber);
-            if (data.Count > 0)
-            {
-                return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
-            }
-
-            return new ErrorDataResult<List<AdvertReadDto>>(null, AdvertMessages.AdvertsNotFound);
+            var data = _advertDal.GetAllAdvertDetailsByFilter(a => a.UserId == userId, CurrentUser.User.Id, CurrentUser.Latitude, CurrentUser.Longitude, pageNumber);
+            return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
         }
 
         /// <summary>
@@ -271,12 +248,8 @@ namespace Business.Concretes
         public IDataResult<List<Advert>> GetAll()
         {
             var data = _advertDal.GetAll();
-            if (data.Count > 0)
-            {
-                return new SuccessDataResult<List<Advert>>(data, AdvertMessages.AdvertGetAll);
-            }
+            return new SuccessDataResult<List<Advert>>(data, AdvertMessages.AdvertGetAll);
 
-            return new ErrorDataResult<List<Advert>>(null, AdvertMessages.AdvertsNotFound);
         }
 
         /// <summary>
@@ -423,12 +396,10 @@ namespace Business.Concretes
                         filters = (Expression<Func<Advert, bool>>)StartFilterInvokeMethod(filters, value, property);
                 }
             }
-            var data = _advertDal.GetAllAdvertDetailsByFilter(filters, CurrentUser.User.Id, pageNumber);
-            if (data is not null && data.Count > 0)
-            {
-                return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
-            }
-            return new ErrorDataResult<List<AdvertReadDto>>(null, AdvertMessages.AdvertsNotFound);
+            var latitude = CurrentUser.Latitude;
+            var longitude = CurrentUser.Longitude;
+            var data = _advertDal.GetAllAdvertDetailsByFilter(filters, CurrentUser.User.Id, latitude, longitude, pageNumber);
+            return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
         }
 
         /// <summary>

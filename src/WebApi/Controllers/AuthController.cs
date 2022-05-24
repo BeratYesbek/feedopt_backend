@@ -98,5 +98,11 @@ namespace WebApi.Controllers
             return Ok("Doğrulandı");
         }
 
+        [HttpGet("isLoggedIn")]
+        public IActionResult IsLoggedIn()
+        {
+            return Ok(_authService.IsLoggedIn());
+        }
+
     }
 }

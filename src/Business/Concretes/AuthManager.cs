@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
 using Business.BusinessMailer;
+using Business.Security.Role;
 using Core.Aspects.Autofac;
 using Core.Entity;
+using Core.Entity.Concretes;
 using Core.Utilities.Mailer;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
@@ -88,6 +90,12 @@ namespace Business.Concretes
             var claims = _userService.GetClaims(user);
             var access_token = _tokenHelper.CreateToken(user, claims);
             return new SuccessDataResult<AccessToken>(access_token, "Token has been created");
+        }
+
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        public IDataResult<User> IsLoggedIn()
+        {
+           return new SuccessDataResult<User>(CurrentUser.User);
         }
     }
 }

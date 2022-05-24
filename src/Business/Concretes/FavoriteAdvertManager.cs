@@ -34,6 +34,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
         [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailByUserId")]
         [CacheRemoveAspect("IAdvertService.GetAll")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
@@ -55,6 +56,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
         [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailByUserId")]
         [CacheRemoveAspect("IAdvertService.GetAll")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
@@ -70,6 +72,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail")]
         [CacheRemoveAspect("IAdvertService.GetAdvertDetailById")]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter")]
+        [CacheRemoveAspect("IAdvertService.GetAdvertDetailByUserId")]
         [CacheRemoveAspect("IAdvertService.GetAll")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
@@ -80,7 +83,6 @@ namespace Business.Concretes
         }
         
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertGet}")]
-        [CacheAspect]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<FavoriteAdvert> Get(int id)
@@ -94,7 +96,7 @@ namespace Business.Concretes
         }
         
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertGetAll}")]
-        [CacheAspect]
+        //[CacheAspect]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<List<FavoriteAdvert>> GetAll()
@@ -108,7 +110,7 @@ namespace Business.Concretes
         }
         
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertGetAll}")]
-        [CacheAspect]
+        //[CacheAspect]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<List<FavoriteAdvertReadDto>> GetAllDetailByUserId(int userId)

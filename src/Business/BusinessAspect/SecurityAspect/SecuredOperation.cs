@@ -13,7 +13,7 @@ using Core.CustomExceptions;
 using Core.Entity.Concretes;
 using DataAccess.Concretes;
 using Microsoft.AspNetCore.Localization;
-
+using Core.Entity;
 
 namespace Business.BusinessAspect
 {
@@ -62,15 +62,13 @@ namespace Business.BusinessAspect
             foreach (var role in _roles)
             {
                 if (roleClaims.Contains(role))
-                {
-                    return;
-                }
+                    invocation.ReturnValue = CurrentUser.User;
+
             }
             //throw new AuthenticationFailedException("You have no authorization");
         }
-        private static void SetCurrentUser(string nameIdentifier, string cultureName)
+        private static User SetCurrentUser(string nameIdentifier, string cultureName)
         {
-
             var result = new UserManager(new EfUserDal()).Get(int.Parse(nameIdentifier));
             if (result.Success)
             {
@@ -83,7 +81,7 @@ namespace Business.BusinessAspect
                     CurrentUser.CultureName = cultureName;
                 }
             }
-
+            return result.Data;
         }
 
     }

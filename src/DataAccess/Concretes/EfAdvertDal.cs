@@ -59,6 +59,7 @@ namespace DataAccess.Concretes
                                  Longitude = location.Longitude,
                                  City = location.City,
                                  Country = location.Country,
+                                 ColorId = color.Id,
                                  County = location.County,
                                  Images = (from image in context.AdvertImages
                                            where advert.Id == image.AdvertId
@@ -76,7 +77,7 @@ namespace DataAccess.Concretes
 
 
 
-        public List<AdvertReadDto> GetAllAdvertDetailsByFilter(Expression<Func<Advert, bool>> filter, int userId, int pageNumber, int pageSize = 20)
+        public List<AdvertReadDto> GetAllAdvertDetailsByFilter(Expression<Func<Advert, bool>> filter, int userId, double latitude,double longitude,int pageNumber, int pageSize = 20)
         {
             using (var context = new AppDbContext())
             {
@@ -97,6 +98,8 @@ namespace DataAccess.Concretes
                         AdvertCategory = advertCategory,
                         User = user,
                         Color = color,
+                        ColorId = color.Id,
+                        Distance = (int)Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude), Decimal.ToDouble(location.Longitude)),
                         AdvertImages =
                             (from image in context.AdvertImages where advert.Id == image.AdvertId select image)
                             .ToArray(),
@@ -156,6 +159,8 @@ namespace DataAccess.Concretes
                                  AnimalSpecies = animalSpecies,
                                  AdvertCategory = advertCategory,
                                  User = user,
+                                 ColorId = color.Id,
+
                                  AdvertImages = (from image in context.AdvertImages where advert.Id == image.AdvertId select image).ToArray(),
                                  Distance = (int)Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude), Decimal.ToDouble(location.Longitude)),
                                  Id = advert.Id,
@@ -189,7 +194,7 @@ namespace DataAccess.Concretes
             }
         }
 
-        public AdvertReadDto GetAdvertDetailById(int id,int userId)
+        public AdvertReadDto GetAdvertDetailById(int id,int userId,double latitude,double longitude)
         {
             using (var context = new AppDbContext())
             {
@@ -208,7 +213,7 @@ namespace DataAccess.Concretes
                                  AdvertCategory = advertCategory,
                                  User = user,
                                  AdvertImages = (from image in context.AdvertImages where advert.Id == image.AdvertId select image).ToArray(),
-                                 //Distance = (int)Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude), Decimal.ToDouble(location.Longitude)),
+                                 Distance = (int)Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude), Decimal.ToDouble(location.Longitude)),
                                  Id = advert.Id,
                                  Color = color,
                                  AdvertCategoryId = advert.AdvertCategoryId,
