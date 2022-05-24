@@ -88,14 +88,23 @@ namespace Business.Concretes
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var claims = _userService.GetClaims(user);
-            var access_token = _tokenHelper.CreateToken(user, claims);
-            return new SuccessDataResult<AccessToken>(access_token, "Token has been created");
+            var accessToken = _tokenHelper.CreateToken(user, claims);
+            return new SuccessDataResult<AccessToken>(accessToken, "Token has been created");
         }
-
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", "IsLoggedIN", Priority = 1)]
+        
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         public IDataResult<User> IsLoggedIn()
         {
            return new SuccessDataResult<User>(CurrentUser.User);
+        }
+
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        public IDataResult<AccessToken> Logout()
+        {
+            var claims = _userService.GetClaims(CurrentUser.User);
+            var accessToken = _tokenHelper.CreateToken(CurrentUser.User, claims, true);
+            return new SuccessDataResult<AccessToken>(accessToken, "log out");
+
         }
     }
 }

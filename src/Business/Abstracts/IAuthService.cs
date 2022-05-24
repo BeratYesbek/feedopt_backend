@@ -17,5 +17,6 @@ namespace Business.Abstracts
         IResult UserExists(string email);
         IDataResult<AccessToken> CreateAccessToken(User user);
         IDataResult<User> IsLoggedIn();
+        IDataResult<AccessToken> Logout();
     }
 }

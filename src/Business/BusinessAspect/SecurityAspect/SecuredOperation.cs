@@ -20,13 +20,11 @@ namespace Business.BusinessAspect
     public class SecuredOperation : MethodInterception
     {
         private readonly string[] _roles;
-        private readonly string _temp;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SecuredOperation(string roles, string temp = "")
+        public SecuredOperation(string roles)
         {
             _roles = roles.Split(",");
-            _temp = temp;
             _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
 
         }
@@ -39,38 +37,22 @@ namespace Business.BusinessAspect
 
             var roleClaims = _httpContextAccessor.HttpContext?.User.ClaimRoles();
             var exp = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(t => t.Type == "exp");
-            var email = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
             var cultureName = _httpContextAccessor.HttpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
-            // c = tr | uic = tr
 
             if (nameIdentifier is not null)
                 SetCurrentUser(nameIdentifier, cultureName?.Split("|")[0].Split("=")[1]);
-            //throw new AuthenticationFailedException("");
 
-            //var name = _httpContextAccessor.HttpContext.User.Identity.Name;
-            //var userid = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
-
-            if (_temp == "IsLoggedIN" && (nameIdentifier == null || nameIdentifier == ""))
-            {
-                throw new AuthenticationFailedException("Session expired");
-            }
             if (exp == null)
-            {
-                // throw new AuthenticationFailedException("Your token expiration is up");
-            }
+                throw new AuthenticationFailedException("Your session has been expired.");
 
-            if (email != cookieEmail)
-            {
-                //throw new AuthenticationException("Your cookie email is not correct please sign in again");
-            }
 
             foreach (var role in _roles)
             {
                 if (roleClaims.Contains(role))
-                    invocation.ReturnValue = CurrentUser.User;
+                    return;
 
             }
-            //throw new AuthenticationFailedException("You have no authorization");
+           // throw new AuthenticationFailedException("You have no authorization.");
         }
         private static User SetCurrentUser(string nameIdentifier, string cultureName)
         {

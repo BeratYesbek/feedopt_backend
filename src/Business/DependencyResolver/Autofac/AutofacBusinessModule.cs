@@ -20,6 +20,8 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<OptionManager>().As<IOptionService>().SingleInstance();
+            builder.RegisterType<EfOptionDal>().As<IOptionDal>().SingleInstance();
 
             builder.RegisterType<FilterManager>().As<IFilterService>().SingleInstance();
             builder.RegisterType<EfFilterDal>().As<IFilterDal>().SingleInstance();

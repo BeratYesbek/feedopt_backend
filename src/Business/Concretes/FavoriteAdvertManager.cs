@@ -9,6 +9,7 @@ using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
+using Core.Entity.Concretes;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
@@ -26,7 +27,7 @@ namespace Business.Concretes
         {
             _favoriteAdvertDal = favoriteAdvertDal;
         }
-        
+
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatAdd}")]
         [ValidationAspect(typeof(FavoriteAdvertValidator))]
         [CacheRemoveAspect("IFavoriteAdvertService.GetAll")]
@@ -43,12 +44,12 @@ namespace Business.Concretes
             var data = _favoriteAdvertDal.Add(favorite);
             if (data != null)
             {
-                return new SuccessDataResult<FavoriteAdvert>(data,FavoriteAdvertMessages.FavoriteRecordSuccess);
+                return new SuccessDataResult<FavoriteAdvert>(data, FavoriteAdvertMessages.FavoriteRecordSuccess);
             }
 
             return new ErrorDataResult<FavoriteAdvert>(null, FavoriteAdvertMessages.FavoriteRecordFail);
         }
-        
+
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertUpdate}")]
         [ValidationAspect(typeof(FavoriteAdvertValidator))]
         [CacheRemoveAspect("IFavoriteAdvertService.GetAll")]
@@ -65,7 +66,7 @@ namespace Business.Concretes
             _favoriteAdvertDal.Update(favorite);
             return new SuccessResult(FavoriteAdvertMessages.FavoriteUpdateSuccess);
         }
-        
+
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertDelete}")]
         [CacheRemoveAspect("IFavoriteAdvertService.GetAll")]
         [CacheRemoveAspect("IFavoriteAdvertService.GetAllDetailByUserId")]
@@ -81,7 +82,7 @@ namespace Business.Concretes
             _favoriteAdvertDal.Delete(favorite);
             return new SuccessResult(FavoriteAdvertMessages.FavoriteRemoveSuccess);
         }
-        
+
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertGet}")]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
@@ -94,7 +95,7 @@ namespace Business.Concretes
             }
             return new ErrorDataResult<FavoriteAdvert>(null, FavoriteAdvertMessages.FavoriteGetFail);
         }
-        
+
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertGetAll}")]
         //[CacheAspect]
         [PerformanceAspect(5)]
@@ -108,14 +109,16 @@ namespace Business.Concretes
             }
             return new ErrorDataResult<List<FavoriteAdvert>>(null, FavoriteAdvertMessages.FavoriteGetAllFail);
         }
-        
+
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertGetAll}")]
         //[CacheAspect]
         [PerformanceAspect(5)]
         [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<List<FavoriteAdvertReadDto>> GetAllDetailByUserId(int userId)
         {
-            var data = _favoriteAdvertDal.GetAllDetailByFilter(f => f.UserId == userId);
+            var latitude = CurrentUser.Latitude;
+            var longitude = CurrentUser.Longitude;
+            var data = _favoriteAdvertDal.GetAllDetailByFilter(f => f.UserId == userId, latitude, longitude);
             if (data is not null)
             {
                 return new SuccessDataResult<List<FavoriteAdvertReadDto>>(data, FavoriteAdvertMessages.FavoriteGetAllSuccess);

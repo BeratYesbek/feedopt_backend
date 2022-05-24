@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Core.DataAccess;
+using Core.Utilities.Calculator;
 using DataAccess.Abstracts;
 using Entity.Concretes;
 using Entity.Dtos;
@@ -11,7 +12,7 @@ namespace DataAccess.Concretes
 {
     public class EfFavoriteAdvertDal : EfEntityRepositoryBase<FavoriteAdvert, AppDbContext>, IFavoriteAdvertDal
     {
-        public List<FavoriteAdvertReadDto> GetAllDetailByFilter(Expression<Func<FavoriteAdvert, bool>> filter)
+        public List<FavoriteAdvertReadDto> GetAllDetailByFilter(Expression<Func<FavoriteAdvert, bool>> filter, double latitude, double longitude)
         {
             using (var context = new AppDbContext())
             {
@@ -23,6 +24,7 @@ namespace DataAccess.Concretes
                              join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals animalCategory.Id
                              join location in context.Locations on advert.LocationId equals location.Id
                              join age in context.Ages on advert.AgeId equals age.Id
+                             join color in context.Colors on advert.ColorId equals color.Id
                              select new FavoriteAdvertReadDto
                              {
                                  Location = location,
@@ -32,10 +34,14 @@ namespace DataAccess.Concretes
                                  AdvertImages =
                             (from image in context.AdvertImages where advert.Id == image.AdvertId select image)
                             .ToArray(),
-                                 Id = advert.Id,
+                                 Id = favorite.Id,
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
                                  Age = age,
+                                 AdvertId = advert.Id,
+                                 ColorId = advert.ColorId,
+                                 Color = color,
+                                 Distance = (int)Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude), Decimal.ToDouble(location.Longitude)),
                                  Description = advert.Description,
                                  UserId = advert.UserId,
                                  Gender = advert.Gender,
@@ -54,7 +60,7 @@ namespace DataAccess.Concretes
                                  CreatedAt = advert.CreatedAt,
                                  UpdatedAt = advert.UpdatedAt,
                              };
-                return result.ToList();
+                return result.OrderByDescending(t => t.Id).ToList();
             }
         }
     }

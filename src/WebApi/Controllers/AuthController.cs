@@ -9,12 +9,13 @@ using Core.Entity;
 using Core.Entity.Concretes;
 using Core.Extensions;
 using Core.Utilities.Constants;
+using Core.Utilities.IoC;
 using Entity.Dtos;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApi.Controllers
 {
@@ -23,14 +24,16 @@ namespace WebApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly IUserService _userService;
-        private readonly IMapper _mapper;
 
-        public AuthController(IAuthService authService, IUserService userService,IMapper mapper)
+        public AuthController(IAuthService authService, IUserService userService)
         {
             _authService = authService;
             _userService = userService;
-            _mapper = mapper;
+            _contextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+
+
         }
 
         [HttpPost("login")]
@@ -47,7 +50,7 @@ namespace WebApi.Controllers
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
-              
+
                 result.Data.User = userToLogin.Data;
                 HttpContext.SetCookie(new CookieParams
                 {
@@ -55,7 +58,7 @@ namespace WebApi.Controllers
                     User = userToLogin.Data,
 
                 });
-                
+
 
                 Console.WriteLine("--> ");
                 return Ok(result);
@@ -78,14 +81,14 @@ namespace WebApi.Controllers
             if (result.Success)
             {
                 result.Data.User = registerResult.Data;
-                 HttpContext.SetCookie(new CookieParams
-                 {
-                     AccessToken = result.Data,
-                     User = registerResult.Data,
+                HttpContext.SetCookie(new CookieParams
+                {
+                    AccessToken = result.Data,
+                    User = registerResult.Data,
 
-                 });
+                });
 
-                 return Ok(result);
+                return Ok(result);
             }
 
             return BadRequest(result.Message);
@@ -98,10 +101,28 @@ namespace WebApi.Controllers
             return Ok("Doğrulandı");
         }
 
+
         [HttpGet("isLoggedIn")]
         public IActionResult IsLoggedIn()
         {
             return Ok(_authService.IsLoggedIn());
+        }
+
+
+        [HttpGet("logout")]
+        public IActionResult Logout()
+        {
+            var result = _authService.Logout();
+
+            HttpContext.SetCookie(new CookieParams
+            {
+                AccessToken = result.Data,
+                User = CurrentUser.User,
+            });
+
+            if (result.Success)
+                return Ok(result);
+            return BadRequest(result);
         }
 
     }

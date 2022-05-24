@@ -22,6 +22,8 @@ namespace Entity.Dtos
 
         public int ColorId { get; set; }
 
+        public int AgeId { get; set; }
+
         public string AdvertCategoryName { get; set; }
 
         public string Kind { get; set; }
@@ -30,7 +32,6 @@ namespace Entity.Dtos
 
         public string AnimalName { get; set; }
 
-        public Age Age { get; set; }
 
         public Gender Gender { get; set; }
 
@@ -65,6 +66,10 @@ namespace Entity.Dtos
         public AdvertCategory AdvertCategory { get; set; }
 
         public Location Location { get; set; }
+
+        public Color Color { get; set; }
+
+        public Age Age { get; set; }
 
         public AdvertImage[] AdvertImages { get; set; }
 
