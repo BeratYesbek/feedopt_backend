@@ -95,14 +95,6 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-
-        [HttpGet("verify")]
-        public IActionResult Verify(string param)
-        {
-            return Ok("Doğrulandı");
-        }
-
-
         [HttpGet("isLoggedIn")]
         public IActionResult IsLoggedIn()
         {

@@ -33,13 +33,12 @@ namespace Core.Utilities.Security.JWT
             _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
-        public AccessToken CreateToken(User user, List<OperationClaim> operationClaims,bool logoutOption = false)
+        public AccessToken CreateToken(User user, List<OperationClaim> operationClaims,DateTime dateTime = default)
         {
-            
-            _accessTokenExpiration = logoutOption == false ? DateTime.Now.AddDays(_tokenOptions.AccessTokenExpiration) : DateTime.Now;
+            _accessTokenExpiration = dateTime == default ? DateTime.Now.AddDays(_tokenOptions.AccessTokenExpiration) : dateTime;
             var securityKey = SecurityKeyHelper.CreateSecurityKey(_tokenOptions.SecurityKey);
             var signingCredentials = SigningCredentialsHelper.CreateSigningCredentials(securityKey);
-            var jwt = CreateJwtSecurityToken(_tokenOptions, user, signingCredentials, operationClaims,logoutOption);
+            var jwt = CreateJwtSecurityToken(_tokenOptions, user, signingCredentials, operationClaims);
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var token = jwtSecurityTokenHandler.WriteToken(jwt);
             return new AccessToken
@@ -49,15 +48,14 @@ namespace Core.Utilities.Security.JWT
             };
         }
 
-
         private JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, User user,
-            SigningCredentials signingCredentials, List<OperationClaim> operationClaims,bool logoutOption)
+            SigningCredentials signingCredentials, List<OperationClaim> operationClaims)
         {
             var jwt = new JwtSecurityToken(
                 issuer: tokenOptions.Issuer,
                 audience: tokenOptions.Audience,
                 expires: _accessTokenExpiration,
-                notBefore: logoutOption == false  ? DateTime.Now : null,
+                notBefore: DateTime.Now,
                 claims: SetClaims(user, operationClaims),
                 signingCredentials: signingCredentials
             );
@@ -65,6 +63,8 @@ namespace Core.Utilities.Security.JWT
 
             return jwt;
         }
+
+        
 
         private IEnumerable<Claim> SetClaims(User user, List<OperationClaim> operationClaims)
         {

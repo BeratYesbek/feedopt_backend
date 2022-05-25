@@ -38,7 +38,7 @@ namespace Core.Entity
 
         [NotMapped]
         [Newtonsoft.Json.JsonIgnore]
-        public IFormFile File { get; set; }
+        public IFormFile File { get; set; } 
 
         [Newtonsoft.Json.JsonIgnore]
         public byte[] PasswordHash { get; set; }

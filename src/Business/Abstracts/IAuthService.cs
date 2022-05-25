@@ -15,8 +15,8 @@ namespace Business.Abstracts
         IDataResult<User> Register(UserForRegisterDto userForRegisterDto,string password);
         IDataResult<User> Login(UserForLoginDto userForLoginDto);
         IResult UserExists(string email);
-        IDataResult<AccessToken> CreateAccessToken(User user);
+        IResult VerifyEmail(int userId);
+        IDataResult<AccessToken> CreateAccessToken(User user,DateTime dateTime = default);
         IDataResult<User> IsLoggedIn();
-        IDataResult<AccessToken> Logout();
     }
 }

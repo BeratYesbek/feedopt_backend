@@ -41,7 +41,7 @@ namespace Core.DataAccess
                 PropertyInfo[] properties = typeof(TEntity).GetProperties();
                 foreach (PropertyInfo property in properties)
                 {
-                    if (property.GetValue(entity, null) == null && property.GetType() != typeof(IFormFile) )
+                    if (property.GetValue(entity, null) == null && !Type.Equals(typeof(IFormFile).GetType(),property?.GetType()))
                     {
                         Debug.WriteLine("---> " + property.GetType().FullName);
                         entry.Property(property.Name).IsModified = false;

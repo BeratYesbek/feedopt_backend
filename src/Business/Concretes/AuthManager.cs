@@ -30,7 +30,7 @@ namespace Business.Concretes
             _tokenHelper = tokenHelper;
         }
 
-       //[MailerAspect(typeof(VerifyEmailMailer), EmailType.VerifyEmail)]
+        //[MailerAspect(typeof(VerifyEmailMailer), EmailType.VerifyEmail)]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -47,25 +47,21 @@ namespace Business.Concretes
                 PhoneNumberConfirmed = false
 
             };
-            _userService.Add(user);
+            var createdUser = _userService.Add(user);
+            var result = CreateAccessToken(createdUser.Data, DateTime.Now.AddMinutes(10));
+
             return new SuccessDataResult<User>(user);
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
-       
+
             if (!userToCheck.Success)
             {
                 Debug.Print("");
                 return new ErrorDataResult<User>(null, "Password or email is wrong");
             }
-          /*  if (userToCheck.Data.EmailConfirmed != true && userToCheck.Data.PhoneNumberConfirmed != true)
-            {
-                return new ErrorDataResult<User>(null, "You have to verify your email");
-            }*/
-
-
             if (!HashingHelper.verifPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash,
                 userToCheck.Data.PasswordSalt))
             {
@@ -85,25 +81,29 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
-        public IDataResult<AccessToken> CreateAccessToken(User user)
+        public IDataResult<AccessToken> CreateAccessToken(User user, DateTime dateTime = default)
         {
             var claims = _userService.GetClaims(user);
-            var accessToken = _tokenHelper.CreateToken(user, claims);
+            var accessToken = _tokenHelper.CreateToken(user, claims, dateTime);
             return new SuccessDataResult<AccessToken>(accessToken, "Token has been created");
-        }
-        
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
-        public IDataResult<User> IsLoggedIn()
-        {
-           return new SuccessDataResult<User>(CurrentUser.User);
         }
 
         [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
-        public IDataResult<AccessToken> Logout()
+        public IDataResult<User> IsLoggedIn()
         {
-            var claims = _userService.GetClaims(CurrentUser.User);
-            var accessToken = _tokenHelper.CreateToken(CurrentUser.User, claims, true);
-            return new SuccessDataResult<AccessToken>(accessToken, "log out");
+            return new SuccessDataResult<User>(CurrentUser.User);
+        }
+
+        public IResult VerifyEmail(int userId)
+        {
+            var userResult = _userService.Get(userId);
+            if (!userResult.Success)
+                return new SuccessResult("Email has not been confirmed");
+
+            var user = userResult.Data;
+            user.EmailConfirmed = false;
+            _userService.Update(user);
+            return new SuccessResult("Email has been confirmed successfully");
 
         }
     }
