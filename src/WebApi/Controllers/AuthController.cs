@@ -10,6 +10,7 @@ using Core.Entity.Concretes;
 using Core.Extensions;
 using Core.Utilities.Constants;
 using Core.Utilities.IoC;
+using Core.Utilities.Result.Concretes;
 using Entity.Dtos;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -112,17 +113,8 @@ namespace WebApi.Controllers
         [HttpGet("logout")]
         public IActionResult Logout()
         {
-            var result = _authService.Logout();
-
-            HttpContext.SetCookie(new CookieParams
-            {
-                AccessToken = result.Data,
-                User = CurrentUser.User,
-            });
-
-            if (result.Success)
-                return Ok(result);
-            return BadRequest(result);
+            HttpContext.DeleteCookies();
+            return Ok(new SuccessResult());
         }
 
     }

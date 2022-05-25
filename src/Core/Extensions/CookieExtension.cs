@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Net.Http.Headers;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace Core.Extensions
 {
@@ -29,6 +30,28 @@ namespace Core.Extensions
                 new CookieOptions { Expires = cookieParams.AccessToken.Expiration,HttpOnly = true,Secure = true});
           
         }
+
+        public static void DeleteCookies(this HttpContext httpContext)
+        {
+            CookieOptions option = new CookieOptions();
+            option.Expires = DateTimeOffset.Now;
+            option.Secure = true;
+            option.IsEssential = true;
+            httpContext.Response.Cookies.Append(CookieKey.AuthorizationKey, string.Empty, option);
+            httpContext.Response.Cookies.Append(CookieKey.ExpireKey, string.Empty, option);
+            httpContext.Response.Cookies.Append(CookieKey.Email, string.Empty, option);
+            httpContext.Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName, string.Empty, option);
+
+
+            httpContext.Response.Cookies.Delete(CookieKey.AuthorizationKey);
+            httpContext.Response.Cookies.Delete(CookieKey.ExpireKey);
+            httpContext.Response.Cookies.Delete(CookieKey.Email);
+            httpContext.Response.Cookies.Delete(CookieRequestCultureProvider.DefaultCookieName);
+
+            
+        }
+
+      
 
 
     }
