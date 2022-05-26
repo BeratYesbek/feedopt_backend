@@ -6,6 +6,7 @@ using IResult = Core.Utilities.Result.Abstracts.IResult;
 using Business.BusinessRules.BannedKeyword;
 using Core.Extensions;
 using Core.Utilities.Algorithms.SearchAlgorithm;
+using Core.Entity.Concretes;
 
 namespace Business.BusinessRules
 {
@@ -29,6 +30,14 @@ namespace Business.BusinessRules
             }
 
             return new SuccessResult();
+        }
+
+        internal static IResult EmailConfirmedForCreateAdvert()
+        {
+            if (CurrentUser.User.EmailConfirmed)
+                return new SuccessResult();
+
+            return new ErrorResult("Email is not confirmed");
         }
 
 

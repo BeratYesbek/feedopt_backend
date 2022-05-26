@@ -32,21 +32,8 @@ namespace Core.DataAccess
         {
             using (TContext context = new TContext())
             {
-
-                context.Attach(entity);
-                context.Entry(entity).State = EntityState.Modified;
-
-                var entry = context.Entry(entity);
-
-                PropertyInfo[] properties = typeof(TEntity).GetProperties();
-                foreach (PropertyInfo property in properties)
-                {
-                    if (property.GetValue(entity, null) == null && !Type.Equals(typeof(IFormFile).GetType(),property?.GetType()))
-                    {
-                        Debug.WriteLine("---> " + property.GetType().FullName);
-                        entry.Property(property.Name).IsModified = false;
-                    }
-                }
+                var updateEntity = context.Entry(entity);
+                updateEntity.State = EntityState.Modified;
                 context.SaveChanges();
             }
         }

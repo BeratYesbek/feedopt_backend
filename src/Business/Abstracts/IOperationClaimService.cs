@@ -18,6 +18,8 @@ namespace Business.Abstracts
 
         IDataResult<OperationClaim> Get(int id);
 
+        IDataResult<OperationClaim> GetByName(string name);
+
         IDataResult<List<OperationClaim>> GetAll();
     }
 }

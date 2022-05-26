@@ -62,5 +62,10 @@ namespace Business.Concretes
 
             return new ErrorDataResult<List<OperationClaim>>(null);
         }
+
+        public IDataResult<OperationClaim> GetByName(string name)
+        {
+            return new SuccessDataResult<OperationClaim>(_operationClaimDal.Get(t => t.Name == name));
+        }
     }
 }

@@ -22,6 +22,8 @@ using Newtonsoft.Json.Serialization;
 using WebApi.Config;
 using WebApi.SignalR;
 using WebAPI.Config;
+using Business.Concretes;
+using Business.Abstracts;
 
 namespace WebApi
 {
@@ -45,16 +47,17 @@ namespace WebApi
                 options.AddCommaSeparatedArrayModelBinderProvider();
             });
 
+            services.AddSignalR();
+            services.AddMvcCore();
+            services.AddHangfireServer();
+            services.AddControllersWithViews();
+            services.AddDistributedMemoryCache();
             services.AddDbContext<AppDbContext>();
             services.AddScoped<IConfig, Config.Config>();
-            services.AddSignalR();
-
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddHangfire(x => x.UsePostgreSqlStorage(Configuration.GetConnectionString("DB_CONNECTION_STRING")));
-            services.AddDistributedMemoryCache();
-            services.AddHangfireServer();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -98,9 +101,7 @@ namespace WebApi
                     new DefaultContractResolver();
             });
 
-            services.AddControllersWithViews();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddMvcCore();
+
 
 
             //Globalization and Localization
@@ -113,13 +114,6 @@ namespace WebApi
                 new CoreModule()
             });
 
-  /*          services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-            {
-                builder
-                    .WithOrigins("https://fierce-mesa-92839.herokuapp.com/")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            }));*/
 
         }
 

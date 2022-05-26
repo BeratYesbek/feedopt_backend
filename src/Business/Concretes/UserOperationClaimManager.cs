@@ -11,6 +11,7 @@ using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
+using Core.Entity;
 using Core.Entity.Concretes;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
@@ -21,10 +22,11 @@ namespace Business.Concretes
     public class UserOperationClaimManager : IUserOperationClaimService
     {
         private readonly IUserOperationClaimDal _userOperationClaimDal;
-
-        public UserOperationClaimManager(IUserOperationClaimDal userOperationClaimDal)
+        private readonly IOperationClaimService _operationClaimService;
+        public UserOperationClaimManager(IUserOperationClaimDal userOperationClaimDal, IOperationClaimService operationClaimService)
         {
             _userOperationClaimDal = userOperationClaimDal;
+            _operationClaimService = operationClaimService;
         }
 
         [SecuredOperation("UserOperationClaim.Add,SuperUser")]
@@ -82,6 +84,22 @@ namespace Business.Concretes
             }
 
             return new ErrorDataResult<List<UserOperationClaim>>(null);
+        }
+
+        public IDataResult<UserOperationClaim> AddDefaultRole(User user)
+        {
+            var operationClaim = _operationClaimService.GetByName("User").Data;
+            if (operationClaim is not null)
+            {
+                var data = _userOperationClaimDal.Add(new UserOperationClaim
+                {
+                    UserId = user.Id,
+                    OperationClaimId = operationClaim.Id
+                });
+                return new SuccessDataResult<UserOperationClaim>(data);
+            }
+            return new ErrorDataResult<UserOperationClaim>(null);
+
         }
     }
 }

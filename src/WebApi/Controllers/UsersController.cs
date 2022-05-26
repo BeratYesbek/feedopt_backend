@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         private readonly IMapper _mapper;
 
 
-        public UsersController(IUserService userService,IUserLocationService userLocationService, IMapper mapper)
+        public UsersController(IUserService userService, IUserLocationService userLocationService, IMapper mapper)
         {
             _userService = userService;
             _mapper = mapper;
@@ -51,5 +51,18 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
         }
+
+        [HttpDelete("delete")]
+        public IActionResult Delete(User user)
+        {
+            var result = _userService.Delete(user);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+
     }
 }

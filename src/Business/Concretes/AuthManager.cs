@@ -24,13 +24,15 @@ namespace Business.Concretes
     {
         private readonly ITokenHelper _tokenHelper;
         private readonly IUserService _userService;
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
+        private readonly IUserOperationClaimService _userOperationService;
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper,IUserOperationClaimService userOperationClaimService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
+            _userOperationService = userOperationClaimService;
         }
 
-        //[MailerAspect(typeof(VerifyEmailMailer), EmailType.VerifyEmail)]
+        [MailerAspect(typeof(VerifyEmailMailer), EmailType.VerifyEmail)]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -47,10 +49,14 @@ namespace Business.Concretes
                 PhoneNumberConfirmed = false
 
             };
-            var createdUser = _userService.Add(user);
-            var result = CreateAccessToken(createdUser.Data, DateTime.Now.AddMinutes(10));
 
-            return new SuccessDataResult<User>(user);
+            var createdUser = _userService.Add(user);
+            var result = _userOperationService.AddDefaultRole(createdUser.Data);
+            if (result.Success)
+                return new SuccessDataResult<User>(createdUser.Data);
+            
+            _userService.Delete(createdUser.Data);
+            return new ErrorDataResult<User>(null);
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
@@ -101,7 +107,7 @@ namespace Business.Concretes
                 return new SuccessResult("Email has not been confirmed");
 
             var user = userResult.Data;
-            user.EmailConfirmed = false;
+            user.EmailConfirmed = true;
             _userService.Update(user);
             return new SuccessResult("Email has been confirmed successfully");
 
