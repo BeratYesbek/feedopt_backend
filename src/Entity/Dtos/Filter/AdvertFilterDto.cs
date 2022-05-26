@@ -19,6 +19,8 @@ namespace Entity.Dtos.Filter
 
         public int[] AgeId { get; set; }
 
+        public int Distance { get; set; } = 1000000;
+
         public Gender[] Gender { get; set; }
 
     }

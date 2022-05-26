@@ -41,7 +41,7 @@ namespace DataAccess.Concretes
                                  AdvertId = advert.Id,
                                  ColorId = advert.ColorId,
                                  Color = color,
-                                 Distance = (int)Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude), Decimal.ToDouble(location.Longitude)),
+                                 Distance = (int) Calculator.CalculateDistance(latitude, longitude, location.Latitude,location.Longitude),
                                  Description = advert.Description,
                                  UserId = advert.UserId,
                                  Gender = advert.Gender,

@@ -378,14 +378,14 @@ namespace Business.Concretes
                 // get value of each property
                 var value = property.GetValue(filter, null);
                 // is it type of integer array
-                if (value?.GetType() == typeof(int[]))
+                if (value?.GetType() == typeof(int[]) && value != null)
                 {
                     int[] arrayInteger = (int[])value;
                     if (arrayInteger.Length > 0)
                         filters = (Expression<Func<Advert, bool>>)StartFilterInvokeMethod(filters, value, property);
 
                 }
-                else if (value?.GetType() == typeof(Gender[]))
+                else if (value?.GetType() == typeof(Gender[]) && value != null)
                 {
                     Gender[] arrayGender = (Gender[])value;
                     if (arrayGender.Length > 0)
@@ -393,13 +393,13 @@ namespace Business.Concretes
                 }
                 else
                 {
-                    if (value is int and not 0)
+                    if (value is not null and int and not 0 && property.Name != "Distance")
                         filters = (Expression<Func<Advert, bool>>)StartFilterInvokeMethod(filters, value, property);
                 }
             }
             var latitude = CurrentUser.Latitude;
             var longitude = CurrentUser.Longitude;
-            var data = _advertDal.GetAllAdvertDetailsByFilter(filters, CurrentUser.User.Id, latitude, longitude, pageNumber);
+            var data = _advertDal.GetAllAdvertDetailsByFilter(filters, CurrentUser.User.Id, latitude, longitude, pageNumber, filter.Distance);
             return new SuccessDataResult<List<AdvertReadDto>>(data, AdvertMessages.AdvertGetAll);
         }
 

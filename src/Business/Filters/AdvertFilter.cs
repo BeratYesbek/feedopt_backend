@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Core.Entity.Concretes;
+using Core.Utilities.Calculator;
 using Entity.Concretes;
 
 namespace Business.Filters
@@ -43,6 +45,7 @@ namespace Business.Filters
             return filter.And(c => value.Contains(c.Gender));
         }
 
+   
         
 
     }

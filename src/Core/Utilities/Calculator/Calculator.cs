@@ -15,5 +15,9 @@ namespace Core.Utilities.Calculator
                 UnitOfLength.Kilometers);
             return distance;
         }
+        public static bool IsLessOrEqualThan(double distance1, double distance2) 
+        {
+            return (distance1 <= distance2);
+        }
     }
 }
