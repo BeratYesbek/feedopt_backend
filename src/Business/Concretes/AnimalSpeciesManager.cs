@@ -99,7 +99,6 @@ namespace Business.Abstracts
         [CacheAspect(Priority = 4)]
         public IDataResult<List<AnimalSpecies>> GetAll()
         {
-            throw new Exception("AnimalSpecies has been throw an exception");
             var data = _animalSpeciesDal.GetAll();
             if (data.Count > 0)
             {
