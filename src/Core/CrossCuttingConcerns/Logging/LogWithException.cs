@@ -9,6 +9,7 @@ namespace Core.CrossCuttingConcerns.Logging
     public class LogWithException : LogDetail
     {
         public string ExceptionMessage { get; set; }
+        public Exception Exception { get; set; }
 
     }
 }

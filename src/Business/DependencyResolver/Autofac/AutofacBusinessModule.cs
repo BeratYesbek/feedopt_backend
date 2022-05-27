@@ -20,6 +20,9 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<LogManager>().As<ILogService>().SingleInstance();
+            builder.RegisterType<EfLogDal>().As<ILogDal>().SingleInstance();
+
             builder.RegisterType<OptionManager>().As<IOptionService>().SingleInstance();
             builder.RegisterType<EfOptionDal>().As<IOptionDal>().SingleInstance();
 

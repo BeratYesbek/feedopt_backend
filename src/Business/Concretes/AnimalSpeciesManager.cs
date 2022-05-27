@@ -28,10 +28,10 @@ namespace Business.Abstracts
             _animalSpeciesDal = animalSpeciesDal;
         }
 
-        [SecuredOperation($"{Role.AnimalSpeciesAdd},{Role.Admin},{Role.SuperAdmin}",Priority = 1)]
-        [ValidationAspect(typeof(AnimalSpeciesValidator),Priority = 2)]
-        [PerformanceAspect(5,Priority = 3)]
-        [LogAspect(typeof(DatabaseLogger),Priority = 4)]
+        [SecuredOperation($"{Role.AnimalSpeciesAdd},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        [ValidationAspect(typeof(AnimalSpeciesValidator), Priority = 2)]
+        [PerformanceAspect(5, Priority = 3)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 4)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll", Priority = 5)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAllByAnimalCategoryId", Priority = 6)]
         public IResult Add(AnimalSpecies animalSpecies)
@@ -42,7 +42,7 @@ namespace Business.Abstracts
 
         [SecuredOperation($"{Role.AnimalSpeciesUpdate},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [ValidationAspect(typeof(AnimalSpeciesValidator), Priority = 2)]
-        [PerformanceAspect(5,Priority = 3)]
+        [PerformanceAspect(5, Priority = 3)]
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll", Priority = 5)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAllByAnimalCategoryId", Priority = 6)]
@@ -63,9 +63,9 @@ namespace Business.Abstracts
             return new SuccessResult();
         }
 
-        [SecuredOperation($"{Role.AnimalSpeciesGetAll},{Role.Admin},{Role.User},{Role.SuperAdmin}",Priority = 1)]
-        [PerformanceAspect(5,Priority = 2)]
-        [LogAspect(typeof(DatabaseLogger),Priority = 3)]
+        [SecuredOperation($"{Role.AnimalSpeciesGetAll},{Role.Admin},{Role.User},{Role.SuperAdmin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         [CacheAspect(Priority = 4)]
         public IDataResult<List<AnimalSpecies>> GetAllByAnimalCategoryId(int animalCategoryId)
         {
@@ -99,6 +99,7 @@ namespace Business.Abstracts
         [CacheAspect(Priority = 4)]
         public IDataResult<List<AnimalSpecies>> GetAll()
         {
+            throw new Exception("AnimalSpecies has been throw an exception");
             var data = _animalSpeciesDal.GetAll();
             if (data.Count > 0)
             {

@@ -11,5 +11,9 @@ namespace Core.CrossCuttingConcerns.Logging
         public string FullName { get; set; }
         public string MethodName { get; set; }
         public List<LogParameter> Parameters { get; set; }
+        public string UserId { get; set; }
+        public string Claims { get; set; }
+        public string Email { get; set; }
+        public DateTime DateTime { get; set; } = DateTime.Now;
     }
 }
