@@ -9,6 +9,10 @@ namespace Core.Utilities.Language
 {
     public interface ITranslation
     {
-        bool Translate(bool translation);
+        string CultureName { get; set; }
+
+        string PropertyName { get; set; }
+
+        string Content { get; set; }
     }
 }

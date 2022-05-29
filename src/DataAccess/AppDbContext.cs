@@ -12,9 +12,15 @@ namespace DataAccess
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLazyLoadingProxies(false).UseNpgsql(ConnectionString.DataBaseConnectionString);
+            optionsBuilder.UseLazyLoadingProxies().UseNpgsql(ConnectionString.DataBaseConnectionString);
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ColorTranslation>().HasOne(c => c.Color).WithMany(t => t.ColorTranslations).HasForeignKey(c => c.ColorId);
+            modelBuilder.Entity<Color>().Navigation(t => t.ColorTranslations).HasField("_ColorTranslations").UsePropertyAccessMode(PropertyAccessMode.Property);
+
+        }
 
         public DbSet<AnimalCategory> AnimalCategories { get; set; }
         public DbSet<AnimalSpecies> AnimalSpecies { get; set; }
@@ -38,19 +44,7 @@ namespace DataAccess
 
         public DbSet<ColorTranslation> ColorTranslations { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder
-                .Entity<ColorTranslation>()
-                .HasOne(c => c.Color)
-                .WithMany(t => t.ColorTranslations)
-                .HasForeignKey(c => c.ColorId);
 
-            modelBuilder
-                .Entity<ColorTranslation>()
-                .Navigation(c => c.Color)
-                .UsePropertyAccessMode(PropertyAccessMode.Property);
-        }
 
     }
 }

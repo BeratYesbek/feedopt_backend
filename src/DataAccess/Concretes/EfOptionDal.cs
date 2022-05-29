@@ -18,8 +18,8 @@ namespace DataAccess.Concretes
             {
                 object[] genders = new object[]
                 {
-                    new {Gender=Gender.Male},
-                    new {Gender = Gender.Female},
+                    new {Gender=Gender.Male,Name="Erkek",Id=Gender.Male},
+                    new {Gender = Gender.Female,Name="Kadın",Id=Gender.Female},
                 };
                 var result = new OptionDto
                 {

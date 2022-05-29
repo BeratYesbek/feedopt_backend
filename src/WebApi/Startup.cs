@@ -97,8 +97,8 @@ namespace WebApi
 
             services.AddControllers().AddNewtonsoftJson(options =>
             {
-                options.SerializerSettings.ContractResolver =
-                    new DefaultContractResolver();
+                options.SerializerSettings.ContractResolver =new DefaultContractResolver();
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 
 

@@ -1,4 +1,5 @@
 ﻿using Core.Entity.Abstracts;
+using Core.Utilities.Language;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Entity.Concretes.Translations
 {
-    public class ColorTranslation : IEntity
+    public class ColorTranslation : IEntity,ITranslation
     {
         public int Id { get; set; }
 

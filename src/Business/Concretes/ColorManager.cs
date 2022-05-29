@@ -11,6 +11,7 @@ using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
+using DataAccess;
 using DataAccess.Abstracts;
 using Entity.Concretes;
 
@@ -61,16 +62,19 @@ namespace Business.Concretes
             }
             return new ErrorDataResult<Color>(null);
         }
-        
-       // [CacheAspect]
+
+        // [CacheAspect]
+        [SecuredOperation($"{Role.Admin},{Role.SuperAdmin}")]
         public IDataResult<List<Color>> GetAll()
         {
+            return new SuccessDataResult<List<Color>>(new AppDbContext().Colors.ToList());
+            /*
             var data = _colorDal.GetAllDetail();
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<Color>>(data);
             }
-            return new ErrorDataResult<List<Color>>(null);
+            return new ErrorDataResult<List<Color>>(null);*/
         }
     }
 }
