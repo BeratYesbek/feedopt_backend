@@ -1,20 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Core.Entity.Concretes;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
 using System.Text.Json.Serialization;
-using Core.Entity.Abstracts;
-using Core.Entity.Concretes;
+using System.Threading.Tasks;
 
-
-namespace Entity.concretes
+namespace Core.Entity.Abstracts
 {
-    public class AnimalCategory : IEntity
+    public abstract class Entity
     {
-        public int Id { get; set; }
 
-        [JsonPropertyName("Name")]
-        public string AnimalCategoryName { get; set; }
-
-
-     /*   [NotMapped]
+        [NotMapped]
         [JsonIgnore]
         public Translation Translation
         {
@@ -28,8 +26,6 @@ namespace Entity.concretes
                     property?.SetValue(this, value.Content);
                 }
             }
-        }*/
-
-      
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Core.DataAccess;
 using Core.Entity.Abstracts;
+using Core.Entity.Concretes;
 using DataAccess.Abstracts;
-using DataAccess.Extensions;
 using Entity;
 using Entity.Concretes;
 using Entity.Dtos;
@@ -21,10 +21,15 @@ namespace DataAccess.Concretes
     {
         public List<FilterDto> GetByFilterType(Expression<Func<Filter, bool>> filter)
         {
+
             using (var context = new AppDbContext())
             {
+                object genders = new object[]
+                {
+                    new {Gender=Gender.Male},
+                    new {Gender = Gender.Female},
+                };
                 var result = from filterData in context.Filters.Where(filter)
-
                              select new FilterDto
                              {
                                  Id = filterData.Id,
@@ -32,18 +37,18 @@ namespace DataAccess.Concretes
                                  InputType = filterData.InputType,
                                  Label = filterData.Label,
                                  Type = filterData.Type,
-                                 Data = (object) filterData.DataType == "Color"
-                                 ? context.Colors.ToList() : filterData.DataType == "Age" 
-                                 ? context.Ages.ToList() : filterData.DataType == "AnimalCategory"
-                                 ? context.AnimalCategories.ToList() : filterData.DataType == "AnimalSpecies"
-                                 ? context.AnimalSpecies.ToList()  : filterData.DataType == "AdvertCategory"
-                                 ? context.AdvertCategories.ToList() : Enum.GetValues(typeof(Gender)).Cast<Gender>().ToList()
+                                 Data = (object)filterData.DataType == "Color"
+                                 ? context.Colors.ToList() : filterData.DataType == "Age"
+                                 ? (from age in context.Ages select new AgeRangesReadDto { Id = age.Id, Name = age.AgeRange }).ToList() : filterData.DataType == "AnimalCategory"
+                                 ? (from animalCategory in context.AnimalCategories select new AnimalCategoryReadDto { Id = animalCategory.Id, Name = animalCategory.AnimalCategoryName }).ToList() : filterData.DataType == "AnimalSpecies"
+                                 ? (from animalSpecies in context.AnimalSpecies select new AnimalSpeciesReadDto { Id = animalSpecies.Id, AnimalCategoryId = animalSpecies.AnimalCategoryId, Name = animalSpecies.Kind }) : filterData.DataType == "AdvertCategory"
+                                 ? context.AdvertCategories.ToList() : genders
                              };
                 return result.ToList();
             }
         }
 
-  
+
     }
 
 }

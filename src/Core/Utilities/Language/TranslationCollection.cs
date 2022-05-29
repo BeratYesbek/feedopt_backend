@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Entity.Concretes;
+﻿using Core.Entity.Concretes;
 
 namespace Core.Utilities.Language
 {
@@ -17,6 +11,7 @@ namespace Core.Utilities.Language
             Entity = entity;
 
             var propertyInfo = entity.GetType().GetProperty(nameof(Translation));
+            
             propertyInfo?.SetValue(entity,translation);
         }
     }

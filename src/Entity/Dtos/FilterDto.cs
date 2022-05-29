@@ -20,5 +20,6 @@ namespace Entity.Dtos
         public string FilterType { get; set; }
 
         public object Data { get; set; }
+
     }
 }

@@ -34,10 +34,10 @@ namespace Business.BusinessRules
 
         internal static IResult EmailConfirmedForCreateAdvert()
         {
-            if (CurrentUser.User.EmailConfirmed)
+           // if (CurrentUser.User.EmailConfirmed)
                 return new SuccessResult();
 
-            return new ErrorResult("Email is not confirmed");
+            //return new ErrorResult("Email is not confirmed");
         }
 
 

@@ -1,4 +1,6 @@
 ﻿using Business.Abstracts;
+using Business.BusinessAspect;
+using Business.Security.Role;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
@@ -35,9 +37,10 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        [SecuredOperation($"{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         public IDataResult<List<Filter>> GetAll()
         {
-            return new SuccessDataResult<List<Filter>>(_filterDal.GetAll());
+            return new SuccessDataResult<List<Filter>>(_filterDal.GetAll(null,true));
         }
 
         public IDataResult<List<FilterDto>> GetByFilterType(string type)

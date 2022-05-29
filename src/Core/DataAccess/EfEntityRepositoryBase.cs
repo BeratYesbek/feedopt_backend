@@ -65,7 +65,7 @@ namespace Core.DataAccess
 
                 if (translation)
                 {
-                    var properties = typeof(TEntity).GetProperties();
+                   /* var properties = typeof(TEntity).GetProperties();
                     var names = properties.Select(p => p.Name).ToArray();
                     var translatedData = from entity in context.Set<TEntity>()
                         from translate in context.Set<Translation>()
@@ -75,8 +75,8 @@ namespace Core.DataAccess
                         select new TranslationCollection<TEntity>(entity, translate)
                         {
 
-                        }.Entity;
-                    return translatedData.ToList();
+                        }.Entity;*/
+                    //return translatedData.ToList();
                 }
 
                 var result = filter == null

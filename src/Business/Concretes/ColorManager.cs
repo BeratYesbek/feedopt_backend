@@ -62,10 +62,10 @@ namespace Business.Concretes
             return new ErrorDataResult<Color>(null);
         }
         
-        [CacheAspect]
+       // [CacheAspect]
         public IDataResult<List<Color>> GetAll()
         {
-            var data = _colorDal.GetAll();
+            var data = _colorDal.GetAllDetail();
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<Color>>(data);

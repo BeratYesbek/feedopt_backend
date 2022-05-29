@@ -1,9 +1,7 @@
-﻿using Core.Entity.Abstracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Core.Entity.Abstracts;
+using Core.Entity.Concretes;
+using Newtonsoft.Json;
 
 namespace Entity.Concretes
 {
@@ -21,5 +19,21 @@ namespace Entity.Concretes
 
         public string FilterType { get; set; }
 
+
+        [NotMapped]
+        [JsonIgnore]
+        public Translation Translation
+        {
+            get => null;
+
+            set
+            {
+                if (value != null)
+                {
+                    var property = GetType().GetProperty(value.PropertyName);
+                    property?.SetValue(this, value.Content);
+                }
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ using Autofac.Extras.DynamicProxy;
 using Business.Abstracts;
 using Business.BackgroundJob.Hangfire;
 using Business.Concretes;
+using Business.Concretes.Translations;
 using Business.Services.Abstracts;
 using Business.Services.Concretes;
 using Castle.DynamicProxy;
@@ -10,7 +11,9 @@ using Core.Utilities.Cloud.Cloudinary;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstracts;
+using DataAccess.Abstracts.Translations;
 using DataAccess.Concretes;
+using DataAccess.Concretes.EfColorTranslationDal;
 using Entity.Concretes;
 using Microsoft.AspNetCore.Session;
 
@@ -20,6 +23,9 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<ColorTranslationManager>().As<IColorTranslationService>().SingleInstance();
+            builder.RegisterType<EfColorTranslationDal>().As<IColorTranslationDal>().SingleInstance();
+
             builder.RegisterType<LogManager>().As<ILogService>().SingleInstance();
             builder.RegisterType<EfLogDal>().As<ILogDal>().SingleInstance();
 

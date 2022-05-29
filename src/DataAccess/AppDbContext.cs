@@ -3,6 +3,7 @@ using Core.Entity.Concretes;
 using Entity;
 using Entity.concretes;
 using Entity.Concretes;
+using Entity.Concretes.Translations;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess
@@ -11,7 +12,7 @@ namespace DataAccess
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(ConnectionString.DataBaseConnectionString);
+            optionsBuilder.UseLazyLoadingProxies(false).UseNpgsql(ConnectionString.DataBaseConnectionString);
         }
 
 
@@ -30,10 +31,26 @@ namespace DataAccess
         public DbSet<UserLocation> UserLocations { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
-        public DbSet<Translation> Translations { get; set; }
+        public DbSet<Translation> Translations { get; set; }    
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketFile> TicketFiles { get; set; }
         public DbSet<Filter> Filters { get; set; }
+
+        public DbSet<ColorTranslation> ColorTranslations { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<ColorTranslation>()
+                .HasOne(c => c.Color)
+                .WithMany(t => t.ColorTranslations)
+                .HasForeignKey(c => c.ColorId);
+
+            modelBuilder
+                .Entity<ColorTranslation>()
+                .Navigation(c => c.Color)
+                .UsePropertyAccessMode(PropertyAccessMode.Property);
+        }
 
     }
 }
