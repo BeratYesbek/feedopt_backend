@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -7,6 +8,7 @@ using Business.Abstracts;
 using Core.Entity.Abstracts;
 using Core.Extensions;
 using Core.Utilities.IoC;
+using Core.Utilities.Result.Concretes;
 using Entity.Concretes;
 using Entity.Dtos;
 using Entity.Dtos.Filter;
@@ -60,15 +62,15 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> Update([FromForm] AdvertUpdateDto advertUpdateDto,int id)
+        public async Task<IActionResult> Update([FromForm] AdvertUpdateDto advertUpdateDto, int id)
         {
             var advertImage = _mapper.Map<AdvertImage>(advertUpdateDto);
             var location = _mapper.Map<Location>(advertUpdateDto);
 
-             var dataResult = _advertService.Get(id);
-             var advert = dataResult.Data;
-             advert.Map(advertUpdateDto);
-       
+            var dataResult = _advertService.Get(id);
+            var advert = dataResult.Data;
+            advert.Map(advertUpdateDto);
+
             var result = await _advertService.Update(advert, advertImage, advertUpdateDto.Files, location);
             if (result.Success)
             {
@@ -80,7 +82,7 @@ namespace WebApi.Controllers
         [HttpDelete("delete")]
         public IActionResult Delete(Advert advert)
         {
-            var result =  _advertService.Delete(advert);
+            var result = _advertService.Delete(advert);
             if (result.Success)
             {
                 return Ok(result);
@@ -101,20 +103,20 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
         [HttpGet("getAllAdvertDetailByFilter/{pageNumber}")]
-        public IActionResult GetAllAdvertDetailByFilter([FromQuery] AdvertFilterDto filter,int pageNumber)
+        public IActionResult GetAllAdvertDetailByFilter([FromQuery] AdvertFilterDto filter, int pageNumber)
         {
-            var result = _advertService.GetAllAdvertDetailsByFilter(filter,pageNumber);
+             var result = _advertService.GetAllAdvertDetailsByFilter(filter, pageNumber);
             if (result.Success)
             {
-                return Ok(result);
+                return Ok(new { Data = result.Data, Success = true, Message = result.Message, SelectedFilters = filter });
             }
-            return BadRequest(result);
+            return BadRequest(new { Data = result.Data, Success = true, Message = result.Message, SelectedFilters = filter });     
         }
 
 
         [HttpGet("getAll")]
         public IActionResult GetAll()
-        {
+        {  
             var result = _advertService.GetAll();
             if (result.Success)
             {
