@@ -19,7 +19,6 @@ namespace DataAccess
         {
            /* modelBuilder.Entity<ColorTranslation>().HasOne(c => c.Color).WithMany(t => t.ColorTranslations).HasForeignKey(c => c.ColorId);
             modelBuilder.Entity<Color>().Navigation(t => t.ColorTranslations).HasField("_ColorTranslations").UsePropertyAccessMode(PropertyAccessMode.Property);*/
-
         }
 
         public DbSet<AnimalCategory> AnimalCategories { get; set; }

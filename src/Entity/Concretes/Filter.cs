@@ -19,21 +19,5 @@ namespace Entity.Concretes
 
         public string FilterType { get; set; }
 
-
-        [NotMapped]
-        [JsonIgnore]
-        public Translation Translation
-        {
-            get => null;
-
-            set
-            {
-                if (value != null)
-                {
-                    var property = GetType().GetProperty(value.PropertyName);
-                    property?.SetValue(this, value.Content);
-                }
-            }
-        }
     }
 }

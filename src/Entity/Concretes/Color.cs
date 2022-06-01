@@ -25,17 +25,9 @@ namespace Entity.Concretes
 
         private ICollection<ColorTranslation> _ColorTranslations;
         
-        public virtual ICollection<ColorTranslation> ColorTranslations
-        {   
-            get
-            {
-                new Translate<ColorTranslation>().TranslateProperties(_ColorTranslations, this);
-                return null;
-            }
-            set
-            {
-                _ColorTranslations = value;
-            }
-        }
+        public virtual ICollection<ColorTranslation> ColorTranslations { get; set; }
+
+
+
     }
 }
