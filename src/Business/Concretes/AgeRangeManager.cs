@@ -75,8 +75,8 @@ namespace Business.Concretes
 
         [SecuredOperation($"{Role.AgeRangesGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
-        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
-        [CacheAspect(Priority = 4)]
+        //[LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        //[CacheAspect(Priority = 4)]
         public IDataResult<List<Age>> GetAll()
         {
             var data = _ageRangeDal.GetAll();
