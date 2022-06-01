@@ -23,28 +23,28 @@ namespace Core.Aspects.Autofac.Logging
         private readonly IHttpContextAccessor _httpContextAccessor;
         public LogAspect(Type loggerService)
         {
-            if (loggerService.BaseType == typeof(LoggerServiceBase))
+            /*if (loggerService.BaseType == typeof(LoggerServiceBase))
                 _loggerServiceBase = (LoggerServiceBase)Activator.CreateInstance(loggerService);
 
             if (loggerService.BaseType == typeof(NLoggerServiceBase))
                 _nLoggerServiceBase = (NLoggerServiceBase)Activator.CreateInstance(loggerService);
 
             _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
-
+            */
 
         }
 
         protected override void OnBefore(IInvocation invocation)
         {
-            if (_loggerServiceBase != null)
+          /*  if (_loggerServiceBase != null)
                 _loggerServiceBase.Info(GetLogDetail(invocation));
             if (_nLoggerServiceBase != null)
-                _nLoggerServiceBase.Info((LogDetail)GetLogDetail(invocation));
+                _nLoggerServiceBase.Info((LogDetail)GetLogDetail(invocation));*/
         }
 
         protected override void OnException(IInvocation invocation, Exception exception)
         {
-            if (_loggerServiceBase != null)
+          /*  if (_loggerServiceBase != null)
             {
                 _loggerServiceBase.Error(new LogWithException
                 {
@@ -53,7 +53,7 @@ namespace Core.Aspects.Autofac.Logging
                 });
             }
             if (_nLoggerServiceBase != null)
-                _nLoggerServiceBase.Error((LogDetail)GetLogDetail(invocation), exception);
+                _nLoggerServiceBase.Error((LogDetail)GetLogDetail(invocation), exception);*/
         }
 
         private LogDetail GetLogDetail(IInvocation invocation)
