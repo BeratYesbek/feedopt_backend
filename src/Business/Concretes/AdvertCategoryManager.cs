@@ -110,8 +110,8 @@ namespace Business.Concretes
         /// <returns>It will return a data result includes list of advert category</returns>
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}",Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
-        [LogAspect(typeof(DatabaseLogger),Priority = 3)]
-        [CacheAspect(Priority = 4)]
+        //[LogAspect(typeof(DatabaseLogger),Priority = 3)]
+        //[CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertCategory>> GetAll()
         {
             var data = _advertCategory.GetAll();
