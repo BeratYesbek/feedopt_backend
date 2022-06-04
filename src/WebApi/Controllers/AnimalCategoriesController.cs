@@ -84,13 +84,13 @@ namespace WebApi.Controllers
         public IActionResult GetAll()
         {
             var result = _animalCategoryService.GetAll();
-
-            if (result.Success)
+            return Ok(result);
+            /*if (result.Success)
             {
-                return Ok(result);
+                
             }
 
-            return BadRequest();
+            return BadRequest();*/
         }
     }
 }
