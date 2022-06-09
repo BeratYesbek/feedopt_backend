@@ -26,13 +26,14 @@ namespace Business.Concretes
             _animalCategoryDal = animalCategoryDal;
         }
 
-        [SecuredOperation($"{Role.AnimalCategoryUpdate},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        [SecuredOperation($"{Role.AnimalCategoryAdd},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [ValidationAspect(typeof(AnimalCategoryValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]
         [LogAspect(typeof(FileLogger), Priority = 5)]
-      //  [CacheRemoveAspect("IAnimalCategoryService.GetAll", Priority = 5)]
-        // [CacheRemoveAspect("IAnimalCategoryService.Get", Priority = 6)]
+        [CacheRemoveAspect("IAnimalCategoryService.GetAll", Priority = 5)]
+        [CacheRemoveAspect("IAnimalCategoryService.Get", Priority = 6)]
+        [CacheRemoveAspect("IOptionService.GetOptions",Priority = 7)]
         public IDataResult<AnimalCategory> Add(AnimalCategory animalCategory)
         {
             var result = _animalCategoryDal.Add(animalCategory);
@@ -49,6 +50,7 @@ namespace Business.Concretes
         [LogAspect(typeof(DatabaseLogger),Priority = 4)]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll", Priority = 5)]
         [CacheRemoveAspect("IAnimalCategoryService.Get", Priority = 6)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 7)]
         public IResult Update(AnimalCategory animalCategory)
         {
             _animalCategoryDal.Update(animalCategory);
@@ -60,6 +62,7 @@ namespace Business.Concretes
         [LogAspect(typeof(DatabaseLogger),Priority = 3)]
         [CacheRemoveAspect("IAnimalCategoryService.GetAll", Priority = 4)]
         [CacheRemoveAspect("IAnimalCategoryService.Get", Priority = 5)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 6)]
         public IResult Delete(AnimalCategory animalCategory)
         {
             _animalCategoryDal.Delete(animalCategory);
@@ -67,7 +70,7 @@ namespace Business.Concretes
         }
 
 
-        [SecuredOperation($"{Role.AnimalSpeciesGet},{Role.User},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        [SecuredOperation($"{Role.AnimalCategoryGet},{Role.User},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5,Priority = 2)]
         [CacheAspect(Priority = 3)]
         [LogAspect(typeof(DatabaseLogger),Priority = 4)]

@@ -1,6 +1,12 @@
 ﻿using Business.Abstracts;
 using Business.BusinessAspect;
 using Business.Security.Role;
+using Business.Validation.FluentValidation;
+using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Logging;
+using Core.Aspects.Autofac.Performance;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
@@ -22,7 +28,13 @@ namespace Business.Concretes
             _filterDal = filterDal;
         }
 
-        
+        [SecuredOperation($"{Role.FilterAdd},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        [ValidationAspect(typeof(FilterValidator),Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger),Priority = 3)]
+        [PerformanceAspect(5,Priority = 4)]
+        [CacheRemoveAspect("IFilterService.GetAll",Priority = 5)]
+        [CacheRemoveAspect("IFilterService.GetByFilterType",Priority = 6)]
+        [CacheRemoveAspect("IFilterService.GetById", Priority = 7)]
         public IDataResult<Filter> Add(Filter filter)
         {
             var data = _filterDal.Add(filter);
@@ -31,28 +43,55 @@ namespace Business.Concretes
             return new ErrorDataResult<Filter>(null);
         }
 
+        [SecuredOperation($"{Role.FilterDelete},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 2)]
+        [PerformanceAspect(5, Priority = 3)]
+        [CacheRemoveAspect("IFilterService.GetAll", Priority = 4)]
+        [CacheRemoveAspect("IFilterService.GetByFilterType", Priority = 5)]
+        [CacheRemoveAspect("IFilterService.GetById", Priority = 6)]
         public IResult Delete(Filter filter)
         {
             _filterDal.Delete(filter);
             return new SuccessResult();
         }
 
-        [SecuredOperation($"{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.FilterGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [ValidationAspect(typeof(FilterValidator), Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [PerformanceAspect(5, Priority = 4)]
+        [CacheAspect(Priority =5)]
         public IDataResult<List<Filter>> GetAll()
         {
             return new SuccessDataResult<List<Filter>>(_filterDal.GetAll(null,true));
         }
 
+        [SecuredOperation($"{Role.FilterGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [ValidationAspect(typeof(FilterValidator), Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [PerformanceAspect(5, Priority = 4)]
+        [CacheAspect(Priority = 5)]
         public IDataResult<List<FilterDto>> GetByFilterType(string type)
         {
             return new SuccessDataResult<List<FilterDto>>(_filterDal.GetByFilterType(c => c.FilterType == type));
         }
 
+        [SecuredOperation($"{Role.FilterGet},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [ValidationAspect(typeof(FilterValidator), Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [PerformanceAspect(5, Priority = 4)]
+        [CacheAspect(Priority = 5)]
         public IDataResult<Filter> GetById(int id)
         {
             return new SuccessDataResult<Filter>(_filterDal.Get(t => t.Id == id));
         }
 
+        [SecuredOperation($"{Role.FilterUpdate},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        [ValidationAspect(typeof(FilterValidator), Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [PerformanceAspect(5, Priority = 4)]
+        [CacheRemoveAspect("IFilterService.GetAll", Priority = 5)]
+        [CacheRemoveAspect("IFilterService.GetByFilterType", Priority = 6)]
+        [CacheRemoveAspect("IFilterService.GetById", Priority = 7)]
         public IResult Update(Filter filter)
         {
             _filterDal.Update(filter);

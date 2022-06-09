@@ -44,7 +44,7 @@ namespace Business.Concretes
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 PhoneNumber = userForRegisterDto.PhoneNumber,
-                PreferredLanguage = userForRegisterDto.PreferredLanguage,
+                PreferredLanguage = Core.Utilities.Language.PreferredLanguage.tr,
                 EmailConfirmed = false,
                 PhoneNumberConfirmed = false
 
@@ -94,7 +94,7 @@ namespace Business.Concretes
             return new SuccessDataResult<AccessToken>(accessToken, "Token has been created");
         }
 
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.IsLoggedIn},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         public IDataResult<User> IsLoggedIn()
         {
             return new SuccessDataResult<User>(CurrentUser.User);

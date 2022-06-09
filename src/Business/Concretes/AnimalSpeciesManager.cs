@@ -34,6 +34,7 @@ namespace Business.Abstracts
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll", Priority = 5)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAllByAnimalCategoryId", Priority = 6)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 7)]
         public IResult Add(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Add(animalSpecies);
@@ -46,6 +47,7 @@ namespace Business.Abstracts
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll", Priority = 5)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAllByAnimalCategoryId", Priority = 6)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 7)]
         public IResult Update(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Update(animalSpecies);
@@ -57,6 +59,8 @@ namespace Business.Abstracts
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll", Priority = 4)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAllByAnimalCategoryId", Priority = 5)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 6)]
+
         public IResult Delete(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Delete(animalSpecies);

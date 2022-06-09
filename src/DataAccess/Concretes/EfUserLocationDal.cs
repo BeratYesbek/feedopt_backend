@@ -16,6 +16,7 @@ namespace DataAccess.Concretes
             using (var context = new AppDbContext())
             {
                 var addedEntity = await context.UserLocations.AddAsync(userLocation);
+            
                 return addedEntity.Entity;
             }
         }

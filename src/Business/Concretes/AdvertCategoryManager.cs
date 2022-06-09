@@ -40,6 +40,7 @@ namespace Business.Concretes
         [PerformanceAspect(5, Priority = 3)]
         [CacheRemoveAspect("IAdvertCategoryService.GetAll", Priority = 4)]
         [CacheRemoveAspect("IAdvertCategoryService.Get", Priority = 5)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 6)]
         public IDataResult<AdvertCategory> Add(AdvertCategory category)
         {
             var data = _advertCategory.Add(category);
@@ -62,6 +63,7 @@ namespace Business.Concretes
         [LogAspect(typeof(DatabaseLogger),Priority = 4)]
         [CacheRemoveAspect("IAdvertCategoryService.GetAll",Priority = 5)]
         [CacheRemoveAspect("IAdvertCategoryService.Get",Priority = 6)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 7)]
         public IResult Update(AdvertCategory category)
         {
             _advertCategory.Update(category);
@@ -78,6 +80,7 @@ namespace Business.Concretes
         [LogAspect(typeof(DatabaseLogger),Priority = 3)]
         [CacheRemoveAspect("IAdvertCategoryService.GetAll",Priority = 4)]
         [CacheRemoveAspect("IAdvertCategoryService.Get",Priority = 5)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 6)]
         public IResult Delete(AdvertCategory category)
         {
             _advertCategory.Delete(category);
@@ -110,8 +113,8 @@ namespace Business.Concretes
         /// <returns>It will return a data result includes list of advert category</returns>
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}",Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
-        //[LogAspect(typeof(DatabaseLogger),Priority = 3)]
-        //[CacheAspect(Priority = 4)]
+        [LogAspect(typeof(DatabaseLogger),Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertCategory>> GetAll()
         {
             var data = _advertCategory.GetAll();

@@ -30,41 +30,41 @@ namespace Business.Concretes
             _locationDal = locationDal;
         }
         
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationAdd}")]
-        [ValidationAspect(typeof(LocationValidator))]
-        [CacheRemoveAspect("ILocationService.GetAll")]
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(DatabaseLogger))]
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationAdd}",Priority = 1)]
+        [ValidationAspect(typeof(LocationValidator),Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger),Priority = 3)]
+        [PerformanceAspect(5,Priority = 4)]
+        [CacheRemoveAspect("ILocationService.GetAll",Priority = 5)]
         public IDataResult<Location> Add(Location location)
         {
             var data = _locationDal.Add(location);
             return new SuccessDataResult<Location>(data);
         }
 
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationUpdate}")]
-        [ValidationAspect(typeof(LocationValidator))]
-        [CacheRemoveAspect("ILocationService.GetAll")]
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(DatabaseLogger))]
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationUpdate}", Priority = 1)]
+        [ValidationAspect(typeof(LocationValidator), Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [PerformanceAspect(5, Priority = 4)]
+        [CacheRemoveAspect("ILocationService.GetAll", Priority = 5)]
         public IResult Update(Location location)
         {
             _locationDal.Update(location);
             return new SuccessResult();
         }
 
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationDelete}")]
-        [CacheRemoveAspect("ILocationService.GetAll")]
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(DatabaseLogger))]
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationDelete}", Priority = 1)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [PerformanceAspect(5, Priority = 4)]
+        [CacheRemoveAspect("ILocationService.GetAll", Priority = 5)]
         public IResult Delete(Location location)
         {
             _locationDal.Delete(location);
             return new SuccessResult();
         }
 
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationGet}")]
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(DatabaseLogger))]
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationGet}",Priority = 1)]
+        [LogAspect(typeof(DatabaseLogger),Priority = 2)]
+        [PerformanceAspect(5,Priority = 3)]
         public IDataResult<Location> Get(int id)
         {
             var data = _locationDal.Get(l => l.Id == id);
@@ -76,10 +76,10 @@ namespace Business.Concretes
             return new ErrorDataResult<Location>(null);
         }
 
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationGetAll}")]
-        [CacheAspect]
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(DatabaseLogger))]
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationGetAll}",Priority = 1)]
+        [LogAspect(typeof(DatabaseLogger),Priority = 2)]
+        [PerformanceAspect(5,Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<List<Location>> GetAll()
         {
             var data = _locationDal.GetAll();

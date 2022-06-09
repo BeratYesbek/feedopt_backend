@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
+using Business.Security.Role;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
@@ -29,38 +30,38 @@ namespace Business.Concretes
             _operationClaimService = operationClaimService;
         }
 
-        [SecuredOperation("UserOperationClaim.Add,SuperUser")]
-        [ValidationAspect(typeof(UserOperationClaimValidator))]
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(FileLogger))]
+        [SecuredOperation($"{Role.UserOperationClaimAdd},{Role.SuperAdmin}",Priority = 1)]
+        [ValidationAspect(typeof(UserOperationClaimValidator),Priority = 2)]
+        [PerformanceAspect(5,Priority = 3)]
+        [LogAspect(typeof(DatabaseLogger),Priority = 4)]
         public IDataResult<UserOperationClaim> Add(UserOperationClaim userOperationClaim)
         {
             _userOperationClaimDal.Add(userOperationClaim);
             return new SuccessDataResult<UserOperationClaim>(null, "");
         }
 
-        [SecuredOperation("UserOperationClaim.Update,SuperUser")]
-        [ValidationAspect(typeof(UserOperationClaimValidator))]
-        [PerformanceAspect(5)]
-        [LogAspect(typeof(FileLogger))]
+        [SecuredOperation($"{Role.UserOperationClaimUpdate},{Role.SuperAdmin}", Priority = 1)]
+        [ValidationAspect(typeof(UserOperationClaimValidator), Priority = 2)]
+        [PerformanceAspect(5, Priority = 3)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 4)]
         public IResult Update(UserOperationClaim userOperationClaim)
         {
             _userOperationClaimDal.Update(userOperationClaim);
             return new SuccessResult();
         }
 
-        [SecuredOperation("UserOperationClaim.Delete,SuperUser")]
-        [LogAspect(typeof(FileLogger))]
-        [PerformanceAspect(5)]
+        [SecuredOperation($"{Role.UserOperationClaimDelete},{Role.SuperAdmin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         public IResult Delete(UserOperationClaim userOperationClaim)
         {
             _userOperationClaimDal.Delete(userOperationClaim);
             return new SuccessResult();
         }
 
-        [SecuredOperation("UserOperationClaim.Get,SuperUser")]
-        [LogAspect(typeof(FileLogger))]
-        [PerformanceAspect(5)]
+        [SecuredOperation($"{Role.UserOperationClaimGet},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         public IDataResult<UserOperationClaim> Get(int id)
         {
             var data = _userOperationClaimDal.Get(u => u.Id == id);
@@ -72,9 +73,9 @@ namespace Business.Concretes
             return new ErrorDataResult<UserOperationClaim>(null);
         }
 
-        [SecuredOperation("UserOperationClaim.GetAll,SuperUser")]
-        [LogAspect(typeof(FileLogger))]
-        [PerformanceAspect(5)]
+        [SecuredOperation($"{Role.UserOperationClaimGetAll},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 2)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         public IDataResult<List<UserOperationClaim>> GetAll()
         {
             var data = _userOperationClaimDal.GetAll();

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
@@ -23,14 +22,11 @@ using IResult = Core.Utilities.Result.Abstracts.IResult;
 using Entity.Dtos.Filter;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Security.Claims;
 using Business.Filters;
 using Business.Messages.MethodMessages;
 using Business.Services.Abstracts;
-using Core.Entity;
 using Core.Entity.Concretes;
-using Core.Utilities.IoC;
-using Microsoft.Extensions.DependencyInjection;
+
 
 namespace Business.Concretes
 {
@@ -72,7 +68,7 @@ namespace Business.Concretes
         /// <param name="files">files</param>
         /// <param name="location">location</param>
         /// <returns>It will return data result that includes added advert</returns>
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [ValidationAspect(typeof(AdvertValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]
@@ -123,7 +119,6 @@ namespace Business.Concretes
                 //Job.Create<AdvertJob>().UpdateAdvertStatusJob(this, result);
                 // telegram service is going to send a message our telegram channel
                 await _telegramService.SendNewPostAsync(advert, CurrentUser.User);
-
                 return new SuccessDataResult<Advert>(result, AdvertMessages.AdvertAdd);
             }
 
@@ -137,7 +132,7 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="advert"></param>
         /// <returns>It will return result that includes message</returns>
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertDelete},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetail", Priority = 4)]
@@ -157,7 +152,7 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="id">advertId</param>
         /// <returns>It will return data result that includes an advert</returns>
-        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertGet},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         public IDataResult<Advert> Get(int id)
@@ -301,7 +296,7 @@ namespace Business.Concretes
         /// <param name="files">files</param>
         /// <param name="location">location</param>
         /// <returns>It will return a result that includes message</returns>
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertUpdate},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [ValidationAspect(typeof(AdvertValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]
@@ -362,10 +357,10 @@ namespace Business.Concretes
         /// <param name="filter">filter</param>
         /// <param name="pageNumber">pageNumber</param>
         /// <returns>It will return a data result of list of adverts</returns>
-        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
-        // [LogAspect(typeof(DatabaseLogger), Priority = 3)]
-        // [CacheAspect(Priority = 4)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto filter, int pageNumber)
         {
             // create a linq expression for filters

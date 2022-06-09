@@ -37,8 +37,6 @@ namespace DataAccess
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<Translation> Translations { get; set; }    
-        public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<TicketFile> TicketFiles { get; set; }
         public DbSet<Filter> Filters { get; set; }
 
         public DbSet<ColorTranslation> ColorTranslations { get; set; }

@@ -50,9 +50,8 @@ namespace Business.BusinessAspect
             {
                 if (roleClaims.Contains(role))
                     return;
-
             }
-           // throw new AuthenticationFailedException("You have no authorization.");
+           throw new AuthenticationFailedException("You have no authorization.");
         }
         private static User SetCurrentUser(string nameIdentifier, string cultureName)
         {

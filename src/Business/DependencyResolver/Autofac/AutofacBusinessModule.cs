@@ -35,8 +35,6 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<FilterManager>().As<IFilterService>().SingleInstance();
             builder.RegisterType<EfFilterDal>().As<IFilterDal>().SingleInstance();
 
-            builder.RegisterType<TranslationManager>().As<ITranslationService>().SingleInstance();
-            builder.RegisterType<EfTranslationDal>().As<ITranslationDal>().SingleInstance();
 
             builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().SingleInstance();
             builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().SingleInstance();
@@ -80,11 +78,6 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<ChatManager>().As<IChatService>().SingleInstance();
             builder.RegisterType<EfChatDal>().As<IChatDal>().SingleInstance();
 
-            builder.RegisterType<TicketManager>().As<ISupportService>().SingleInstance();
-            builder.RegisterType<EfTicketDal>().As<ITicketDal>().SingleInstance();
-
-            builder.RegisterType<TicketFileManager>().As<ISupportFileService>().SingleInstance();
-            builder.RegisterType<EfTicketFileDal>().As<ITicketFileDal>().SingleInstance();
 
             builder.RegisterType<CloudinaryService>().As<ICloudinaryService>().SingleInstance();
 

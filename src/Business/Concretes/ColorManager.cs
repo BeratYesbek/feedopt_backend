@@ -8,7 +8,10 @@ using Business.BusinessAspect;
 using Business.Security.Role;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
+using Core.Aspects.Autofac.Logging;
+using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess;
@@ -27,32 +30,45 @@ namespace Business.Concretes
             _colorDal = colorDal;
         }
 
-        [CacheRemoveAspect("IColorService.GetAll")]
-        [ValidationAspect(typeof(ColorValidator))]
-        [SecuredOperation($"{Role.Admin},{Role.SuperAdmin}")]
+        [SecuredOperation($"{Role.ColorAdd},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 2)]
+        [CacheRemoveAspect("IColorService.GetAll", Priority = 3)]
+        [CacheRemoveAspect("IColorService.Get", Priority = 4)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 5)]
+        [PerformanceAspect(5, Priority = 5)]
         public IDataResult<Color> Add(Color color)
         {
             return new SuccessDataResult<Color>(_colorDal.Add(color));
         }
 
-        [CacheRemoveAspect("IColorService.GetAll")]
-        [ValidationAspect(typeof(ColorValidator))]
-        [SecuredOperation($"{Role.Admin},{Role.SuperAdmin}")]
+        [SecuredOperation($"{Role.ColorUpdate},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 2)]
+        [CacheRemoveAspect("IColorService.GetAll", Priority = 3)]
+        [CacheRemoveAspect("IColorService.Get", Priority = 4)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 5)]
+        [PerformanceAspect(5, Priority = 5)]
         public IResult Update(Color color)
         {
             _colorDal.Update(color);
             return new SuccessResult();
         }
 
-        [CacheRemoveAspect("IColorService.GetAll")]
-        [SecuredOperation($"{Role.Admin},{Role.SuperAdmin}")]
+        [SecuredOperation($"{Role.ColorDelete},{Role.Admin},{Role.SuperAdmin}",Priority = 1)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 2)]
+        [CacheRemoveAspect("IColorService.GetAll",Priority =3)]
+        [CacheRemoveAspect("IColorService.Get",Priority =4)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 6)]
+        [PerformanceAspect(5, Priority = 5)]
         public IResult Delete(Color color)
         {
             _colorDal.Delete(color);
             return new SuccessResult();
         }
 
-        
+        [SecuredOperation($"{Role.ColorGet},{Role.User},{Role.Admin},{Role.SuperAdmin}")]
+        [LogAspect(typeof(DatabaseLogger), Priority = 2)]
+        [PerformanceAspect(5, Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<Color> Get(int id)
         {
             var data = _colorDal.Get(a => a.Id == id);
@@ -62,19 +78,15 @@ namespace Business.Concretes
             }
             return new ErrorDataResult<Color>(null);
         }
-
-        // [CacheAspect]
-        [SecuredOperation($"{Role.Admin},{Role.SuperAdmin}")]
+        [SecuredOperation($"{Role.ColorGetAll},{Role.User},{Role.Admin},{Role.SuperAdmin}")]
+        [LogAspect(typeof(DatabaseLogger), Priority = 2)]
+        [PerformanceAspect(5,Priority = 3)]
+        [CacheAspect(Priority = 4)]
         public IDataResult<List<Color>> GetAll()
         {
-            return new SuccessDataResult<List<Color>>(new AppDbContext().Colors.ToList());
-            /*
             var data = _colorDal.GetAllDetail();
-            if (data.Count > 0)
-            {
-                return new SuccessDataResult<List<Color>>(data);
-            }
-            return new ErrorDataResult<List<Color>>(null);*/
+            return new SuccessDataResult<List<Color>>(data);
+       
         }
     }
 }

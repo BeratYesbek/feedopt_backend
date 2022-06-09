@@ -34,6 +34,7 @@ namespace Business.Concretes
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]
         [CacheRemoveAspect("IAgeRangeService.GetAll", Priority = 5)]
         [CacheRemoveAspect("IAgeRangeService.Get", Priority = 6)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 7)]
         public IResult Add(Age age)
         {
             _ageRangeDal.Add(age);
@@ -46,6 +47,7 @@ namespace Business.Concretes
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]
         [CacheRemoveAspect("IAgeRangeService.GetAll", Priority = 5)]
         [CacheRemoveAspect("IAgeRangeService.Get", Priority = 6)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 7)]
         public IResult Update(Age age)
         {
             _ageRangeDal.Update(age);
@@ -57,6 +59,7 @@ namespace Business.Concretes
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         [CacheRemoveAspect("IAgeRangeService.GetAll", Priority = 4)]
         [CacheRemoveAspect("IAgeRangeService.Get", Priority = 5)]
+        [CacheRemoveAspect("IOptionService.GetOptions", Priority = 6)]
         public IResult Delete(Age age)
         {
             _ageRangeDal.Delete(age);
@@ -75,8 +78,8 @@ namespace Business.Concretes
 
         [SecuredOperation($"{Role.AgeRangesGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
-        //[LogAspect(typeof(DatabaseLogger), Priority = 3)]
-        //[CacheAspect(Priority = 4)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
+       [CacheAspect(Priority = 4)]
         public IDataResult<List<Age>> GetAll()
         {
             var data = _ageRangeDal.GetAll();

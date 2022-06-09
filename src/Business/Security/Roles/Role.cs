@@ -66,6 +66,32 @@
         public const string AgeRangesGet = "AgeRanges.Get";
         public const string AgeRangesGetAll = "AgeRanges.GetAll";
 
+        public const string ColorAdd = "Color.Add";
+        public const string ColorUpdate = "Color.Update";
+        public const string ColorDelete = "Color.Delete";
+        public const string ColorGet = "Color.Get";
+        public const string ColorGetAll = "Color.GetAll";
+
+        public const string FilterAdd = "Filter.Add";
+        public const string FilterUpdate = "Filter.Update";
+        public const string FilterDelete = "Filter.Delete";
+        public const string FilterGet = "Filter.Get";
+        public const string FilterGetAll = "Filter.GetAll";
+
+        public const string OperationClaimAdd = "OperationClaim.Add";
+        public const string OperationClaimUpdate = "OperationClaim.Update";
+        public const string OperationClaimDelete = "OperationClaim.Delete";
+        public const string OperationClaimGet = "OperationClaim.Get";
+        public const string OperationClaimGetAll = "OperationClaim.GetAll";
+
+        public const string UserOperationClaimAdd = "UserOperationClaim.Add";
+        public const string UserOperationClaimUpdate = "UserOperationClaim.Update";
+        public const string UserOperationClaimDelete = "UserOperationClaim.Delete";
+        public const string UserOperationClaimGet = "UserOperationClaim.Get";
+        public const string UserOperationClaimGetAll = "UserOperationClaim.GetAll";
+
+        public const string IsLoggedIn = "User.IsLoggedIn";
+
 
     }
 }
