@@ -760,3 +760,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/src/.idea/.idea.nervio_backend/.idea
+/src/.vs
+/src/.vscode
