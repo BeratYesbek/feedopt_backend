@@ -63,22 +63,6 @@ namespace Core.DataAccess
             using (TContext context = new TContext())
             {
 
-                if (translation)
-                {
-                   /* var properties = typeof(TEntity).GetProperties();
-                    var names = properties.Select(p => p.Name).ToArray();
-                    var translatedData = from entity in context.Set<TEntity>()
-                        from translate in context.Set<Translation>()
-                            .Where(t => names.Contains(t.PropertyName)
-                                        && t.CultureName.Equals(CurrentUser.User.PreferredLanguage.ToString()) 
-                                        && t.Type.Equals(typeof(TEntity).Name) && entity.Id == t.TypeId).DefaultIfEmpty()
-                        select new TranslationCollection<TEntity>(entity, translate)
-                        {
-
-                        }.Entity;*/
-                    //return translatedData.ToList();
-                }
-
                 var result = filter == null
                     ? context.Set<TEntity>().ToList()
                     : context.Set<TEntity>().Where(filter).ToList();

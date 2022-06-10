@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstracts;
 using Core.Entity;
+using Core.Extensions;
 using Core.Utilities.Result.Concretes;
 using Entity.Concretes;
 using Entity.Dtos;
@@ -30,7 +31,9 @@ namespace WebApi.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromForm] UserUpdateDto userUpdateDto)
         {
-            var user = _mapper.Map<User>(userUpdateDto);
+            var userResult = _userService.Get(userUpdateDto.Id);
+            var user = userResult.Data;
+            user.Map(userUpdateDto);
             var result = await _userService.Update(user);
             if (result.Success)
             {
@@ -51,18 +54,6 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
         }
-
-        [HttpDelete("delete")]
-        public IActionResult Delete(User user)
-        {
-            var result = _userService.Delete(user);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
 
     }
 }

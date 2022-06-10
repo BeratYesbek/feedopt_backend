@@ -131,6 +131,7 @@ namespace WebApi
             app.UseHangfireDashboard();
             app.UseRouting();
             app.UseAuthorization();
+            app.VerifyUserRequest();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
@@ -150,6 +151,8 @@ namespace WebApi
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chatHub", map => { });
             });
+
+
 
         }
     }
