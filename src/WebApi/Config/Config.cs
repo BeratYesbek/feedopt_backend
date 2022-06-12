@@ -30,7 +30,7 @@ namespace WebApi.Config
 
         public void Run()
         {
-            //DatabaseMigration();
+            DatabaseMigration();
             SetMailerOptions();
         }
 
@@ -42,32 +42,12 @@ namespace WebApi.Config
             Mailer.HostOption = section["Host"];
             Mailer.PortOption = Convert.ToInt32(section["Port"]);
 
-            //var smtp = new SmtpSender(() => new SmtpClient()
-            //{
-            //    Host = section["Host"],
-            //    Port = Convert.ToInt32(section["Port"]),
-            //    EnableSsl = true,
-            //    DeliveryMethod = SmtpDeliveryMethod.Network,
-            //    UseDefaultCredentials = false,
-            //    Credentials = new NetworkCredential()
-            //    {
-            //        UserName = section["Email"],
-            //        Password = section["Password"]
-            //    }
-            //});
-
-            //Email.DefaultSender = smtp;
-            //Email.DefaultRenderer = new RazorRenderer();
-
-            //var fluentEmail = Email.From("dontreply@feedopt.com")
-            //    .To("beratyesbek@gmail.com")
-            //    .Subject("Test").Send();
-            //Debug.WriteLine(fluentEmail.ErrorMessages.ToString());
         }
 
         private void DatabaseMigration()
         {
             ConnectionString.DataBaseConnectionString = Configuration.GetConnectionString("DB_CONNECTION_STRING");
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             using (var db = ServiceProvider.GetService<AppDbContext>())
             {
