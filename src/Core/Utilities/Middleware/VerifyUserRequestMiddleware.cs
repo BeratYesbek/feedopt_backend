@@ -20,10 +20,10 @@ namespace Core.Utilities.Middleware
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
-            ControlRequest(httpContext);
+           // ControlRequest(httpContext);
             await _next.Invoke(httpContext);
         }
-
+        /*
         public void ControlRequest(HttpContext httpContext)
         {
             var controllerName = httpContext.Request.RouteValues["controller"];
@@ -81,12 +81,12 @@ namespace Core.Utilities.Middleware
 
         public void AdvertValidateUser(HttpContext context)
         {
-           /* if (context.Request.Method == "GET")
+            if (context.Request.Method == "GET")
             {
                 var userID = context.Request.Query["userId"];
                 
                 CheckCurrentUserId(context, userID);
-            }*/
+            }
             if (context.Request.Method == "POST" || context.Request.Method == "PUT")
             {
                 var userID = context.Request.Form["userId"];
@@ -117,6 +117,6 @@ namespace Core.Utilities.Middleware
             }
 
             return true;
-        }
+        }*/
     }
 }
