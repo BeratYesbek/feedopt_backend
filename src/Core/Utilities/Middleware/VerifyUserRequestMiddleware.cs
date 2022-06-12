@@ -81,12 +81,13 @@ namespace Core.Utilities.Middleware
 
         public void AdvertValidateUser(HttpContext context)
         {
-            if (context.Request.Method == "GET")
+           /* if (context.Request.Method == "GET")
             {
                 var userID = context.Request.Query["userId"];
+                
                 CheckCurrentUserId(context, userID);
-            }
-            else if (context.Request.Method == "POST" || context.Request.Method == "PUT")
+            }*/
+            if (context.Request.Method == "POST" || context.Request.Method == "PUT")
             {
                 var userID = context.Request.Form["userId"];
                 CheckCurrentUserId(context, userID);
