@@ -18,6 +18,7 @@ namespace WebApi.Controllers
         [HttpPost("add")]
         public IActionResult Add(FavoriteAdvert favorite)
         {
+            favorite.CreatedAt = System.DateTime.Now;
             var result = _favoriteAdvertService.Add(favorite);
             if (result.Success)
             {
