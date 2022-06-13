@@ -26,7 +26,7 @@ using Business.Filters;
 using Business.Messages.MethodMessages;
 using Business.Services.Abstracts;
 using Core.Entity.Concretes;
-
+using Core.Utilities.Cloud.Aws.S3;
 
 namespace Business.Concretes
 {
@@ -47,14 +47,17 @@ namespace Business.Concretes
 
         private readonly IUserService _userService;
 
+        private readonly IS3AmazonService _S3AwsService;
+
         public AdvertManager(IAdvertDal advertDal, IAdvertImageService imageService, ILocationService locationService,
-            ITelegramService telegramService, IUserService userService)
+            ITelegramService telegramService, IUserService userService, IS3AmazonService s3AmazonService)
         {
             _imageService = imageService;
             _advertDal = advertDal;
             _locationService = locationService;
             _telegramService = telegramService;
             _userService = userService;
+            _S3AwsService = s3AmazonService;
 
         }
 
@@ -99,14 +102,12 @@ namespace Business.Concretes
             {
                 foreach (var file in files)
                 {
-                    var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
-                    var fileResult = await fileHelper.UploadAsync(file);
+                    var fileResult = await _S3AwsService.UploadAsync(file, FileExtension.ImageExtension);
                     if (fileResult.Success)
                     {
                         var resultImage = _imageService.Add(new AdvertImage
                         {
-                            ImagePath = fileResult.Message.Split("&&")[0],
-                            PublicId = fileResult.Message.Split("&&")[1],
+                            ImagePath = fileResult.Message,
                             AdvertId = result.Id
                         });
                         if (!resultImage.Success)
@@ -310,7 +311,7 @@ namespace Business.Concretes
             var image = _imageService.GetByAdvertId(advert.Id);
             if (files is not null)
             {
-                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
+               
 
                 for (var i = 0; i < files.Length; i++)
                 {
@@ -328,7 +329,7 @@ namespace Business.Concretes
                     }
                     else
                     {
-                        var fileResult = await fileHelper.UpdateAsync(files[i], image.Data[i].ImagePath, image.Data[i].PublicId);
+                        var fileResult = await UploadFile(files[i], advert.Id);
                         var result = _imageService.Update(new AdvertImage
                         {
                             ImagePath = fileResult.Message.Split("&&")[0],
@@ -407,12 +408,10 @@ namespace Business.Concretes
         /// <returns>It will return a result that includes message</returns>
         private async Task<IResult> UploadFile(IFormFile file, int advertId)
         {
-            var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
-            var fileResult = await fileHelper.UploadAsync(file);
+            var fileResult = await _S3AwsService.UploadAsync(file,FileExtension.ImageExtension);
             var result = _imageService.Add(new AdvertImage
             {
-                ImagePath = fileResult.Message.Split("&&")[0],
-                PublicId = fileResult.Message.Split("&&")[1],
+                ImagePath = fileResult.Message,
                 AdvertId = advertId
             });
             return result;

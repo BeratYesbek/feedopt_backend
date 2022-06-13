@@ -7,6 +7,7 @@ using Business.Concretes.Translations;
 using Business.Services.Abstracts;
 using Business.Services.Concretes;
 using Castle.DynamicProxy;
+using Core.Utilities.Cloud.Aws.S3;
 using Core.Utilities.Cloud.Cloudinary;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
@@ -78,15 +79,15 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<ChatManager>().As<IChatService>().SingleInstance();
             builder.RegisterType<EfChatDal>().As<IChatDal>().SingleInstance();
 
-
-            builder.RegisterType<CloudinaryService>().As<ICloudinaryService>().SingleInstance();
-
             builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
 
             builder.RegisterType<TelegramManager>().As<ITelegramService>().SingleInstance();
             builder.RegisterType<SmsManager>().As<ISmsService>().SingleInstance();
-            
+
+            builder.RegisterType<S3AmazonService>().As<IS3AmazonService>().SingleInstance();
+            builder.RegisterType<CloudinaryService>().As<ICloudinaryService>().SingleInstance();
+
             builder.RegisterType<DistributedSessionStore>().As<ISessionStore>();
 
 

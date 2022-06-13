@@ -24,6 +24,11 @@ using WebApi.SignalR;
 using WebAPI.Config;
 using Business.Concretes;
 using Business.Abstracts;
+using Amazon.Runtime;
+using Amazon.Extensions.NETCore.Setup;
+using Core.Utilities.Cloud.Aws;
+using Amazon;
+using Amazon.S3;
 
 namespace WebApi
 {
@@ -46,6 +51,20 @@ namespace WebApi
             {
                 options.AddCommaSeparatedArrayModelBinderProvider();
             });
+
+            var awsConfiguration = new AWSServiceConfiguration();
+            var awsSettingsSection = Configuration.GetSection("AWSS3Configuration");
+            awsSettingsSection.Bind(awsConfiguration);
+
+            var awsOptions = new AWSOptions
+            {
+                Credentials = new BasicAWSCredentials(awsConfiguration.AccessKey, awsConfiguration.SecretKey),
+                Region = RegionEndpoint.GetBySystemName(awsConfiguration.Region)
+            };
+
+            services.AddAWSService<IAmazonS3>(awsOptions);
+            services.Configure<AWSServiceConfiguration>(awsSettingsSection);
+
 
             services.AddSignalR();
             services.AddMvcCore();
