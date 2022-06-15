@@ -361,7 +361,7 @@ namespace Business.Concretes
         [SecuredOperation($"{Role.AdvertGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
-        [CacheAspect(Priority = 4)]
+        //[CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto filter, int pageNumber)
         {
             // create a linq expression for filters
