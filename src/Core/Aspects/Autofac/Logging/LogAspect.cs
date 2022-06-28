@@ -74,9 +74,9 @@ namespace Core.Aspects.Autofac.Logging
                 MethodName = invocation.Method.Name,
                 Parameters = logParameters,
                 FullName = invocation.Method.DeclaringType?.FullName,
-                Email = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value,
-                UserId = _httpContextAccessor.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value,
-                Claims = string.Join(",", _httpContextAccessor.HttpContext?.User.ClaimRoles())
+                Email = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value,
+                UserId = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value,
+                Claims = string.Join(",", _httpContextAccessor.HttpContext?.User.ClaimRoles() ?? throw new InvalidOperationException())
 
             };
             return logDetail;
