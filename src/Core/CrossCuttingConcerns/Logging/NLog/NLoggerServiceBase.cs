@@ -20,7 +20,7 @@ namespace Core.CrossCuttingConcerns.Logging.NLog
 
         public void Info(LogDetail logDetail)
         {
-            if (IsInfoEnabled)
+           // if (IsInfoEnabled)
                 try
                 {
                     _logger
@@ -38,8 +38,10 @@ namespace Core.CrossCuttingConcerns.Logging.NLog
                 catch (Exception exception)
                 {
                     Console.WriteLine($"--> ERROR => {exception.Message} \n Trace => {exception.StackTrace}");
+                    throw new Exception(exception.Message);
+
                 }
-     
+
         }
 
         public void Debug(object logMessage)
