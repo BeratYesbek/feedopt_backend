@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Concretes.EfColorTranslationDal
+namespace DataAccess.Concretes.Translations
 {
-    public class EfColorTranslationDal : EfEntityRepositoryBase<ColorTranslation,AppDbContext>,IColorTranslationDal
+    public class EfColorTranslationDal : EfEntityRepositoryBase<ColorTranslation, AppDbContext>, IColorTranslationDal
     {
     }
 }

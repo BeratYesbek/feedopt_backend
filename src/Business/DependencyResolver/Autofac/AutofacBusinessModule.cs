@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Business.Abstracts;
+using Business.Abstracts.Translations;
 using Business.BackgroundJob.Hangfire;
 using Business.Concretes;
 using Business.Concretes.Translations;
@@ -14,7 +15,7 @@ using Core.Utilities.Security.JWT;
 using DataAccess.Abstracts;
 using DataAccess.Abstracts.Translations;
 using DataAccess.Concretes;
-using DataAccess.Concretes.EfColorTranslationDal;
+using DataAccess.Concretes.Translations;
 using Entity.Concretes;
 using Microsoft.AspNetCore.Session;
 
@@ -24,6 +25,12 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<AdvertCategoryTranslationManager>().As<IAdvertCategoryTranslationService>().SingleInstance();
+            builder.RegisterType<EfAdvertCategoryTranslationDal>().As<IAdvertCategoryTranslationDal>();
+
+            builder.RegisterType<AnimalCategoryTranslationManager>().As<IAnimalCategoryTranslationService>().SingleInstance();
+            builder.RegisterType<EfAnimalCategoryTranslationDal>().As<IAnimalCategoryTranslationDal>();
+
             builder.RegisterType<ColorTranslationManager>().As<IColorTranslationService>().SingleInstance();
             builder.RegisterType<EfColorTranslationDal>().As<IColorTranslationDal>().SingleInstance();
 
