@@ -32,6 +32,12 @@ namespace Business.Concretes
             _userOperationService = userOperationClaimService;
         }
 
+        /// <summary>
+        /// User is created by this method. And It will send verify email to user
+        /// </summary>
+        /// <param name="userForRegisterDto"></param>
+        /// <param name="password"></param>
+        /// <returns>IDataResult</returns>
         [MailerAspect(typeof(VerifyEmailMailer), EmailType.VerifyEmail)]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
@@ -59,6 +65,11 @@ namespace Business.Concretes
             return new ErrorDataResult<User>(null);
         }
 
+        /// <summary>
+        /// Login method
+        /// </summary>
+        /// <param name="userForLoginDto"></param>
+        /// <returns>IDataResult</returns>
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
@@ -77,6 +88,11 @@ namespace Business.Concretes
             return new SuccessDataResult<User>(userToCheck.Data);
         }
 
+        /// <summary>
+        /// Whether this method controls the user exists or not.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns>IResult</returns>
         public IResult UserExists(string email)
         {
             if (_userService.GetByMail(email).Success)
@@ -86,7 +102,12 @@ namespace Business.Concretes
 
             return new SuccessResult();
         }
-
+        /// <summary>
+        /// Access Token is created by this method
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="dateTime"></param>
+        /// <returns>IDataResult</returns>
         public IDataResult<AccessToken> CreateAccessToken(User user, DateTime dateTime = default)
         {
             var claims = _userService.GetClaims(user);
@@ -94,23 +115,16 @@ namespace Business.Concretes
             return new SuccessDataResult<AccessToken>(accessToken, "Token has been created");
         }
 
+        /// <summary>
+        /// This method control user and session by checking the access token
+        /// </summary>
+        /// <returns>IDataResult</returns>
         [SecuredOperation($"{Role.IsLoggedIn},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         public IDataResult<User> IsLoggedIn()
         {
             return new SuccessDataResult<User>(CurrentUser.User);
         }
 
-        public IResult VerifyEmail(int userId)
-        {
-            var userResult = _userService.Get(userId);
-            if (!userResult.Success)
-                return new SuccessResult("Email has not been confirmed");
 
-            var user = userResult.Data;
-            user.EmailConfirmed = true;
-            _userService.Update(user);
-            return new SuccessResult("Email has been confirmed successfully");
-
-        }
     }
 }

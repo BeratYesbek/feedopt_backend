@@ -26,6 +26,11 @@ namespace Business.Concretes
             _animalCategoryDal = animalCategoryDal;
         }
 
+        /// <summary>
+        /// Animal Category is added by this method. It is going to work with O(3)
+        /// </summary>
+        /// <param name="animalCategory"></param>
+        /// <returns>IResult</returns>
         [SecuredOperation($"{Role.AnimalCategoryAdd},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [ValidationAspect(typeof(AnimalCategoryValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
@@ -44,6 +49,11 @@ namespace Business.Concretes
             return new SuccessDataResult<AnimalCategory>(null);
         }
 
+        /// <summary>
+        /// Animal Category is updated by this method. It is going to work with O(2)
+        /// </summary>
+        /// <param name="animalCategory"></param>
+        /// <returns>IResult</returns>
         [SecuredOperation($"{Role.AnimalCategoryUpdate},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [ValidationAspect(typeof(AnimalCategoryValidator),Priority = 2)]
         [PerformanceAspect(5,Priority = 3)]
@@ -57,6 +67,11 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        /// <summary>
+        /// Animal Category is deleted by this method. It is going to work with O(2)
+        /// </summary>
+        /// <param name="animalCategory"></param>
+        /// <returns>IDataResult</returns>
         [SecuredOperation($"{Role.AnimalCategoryDelete},{Role.Admin},{Role.SuperAdmin}",Priority = 1)]
         [PerformanceAspect(5,Priority = 2)]
         [LogAspect(typeof(DatabaseLogger),Priority = 3)]
@@ -69,7 +84,11 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
-
+        /// <summary>
+        /// This method get animal category by ID. It is going to work with (3)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>IDataResult</returns>
         [SecuredOperation($"{Role.AnimalCategoryGet},{Role.User},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5,Priority = 2)]
         [CacheAspect(Priority = 3)]
@@ -85,14 +104,18 @@ namespace Business.Concretes
             return new ErrorDataResult<AnimalCategory>(null);
         }
 
-        [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
+        /// <summary>
+        /// This method get all animal categories
+        /// </summary>
+        /// <returns>IDataResult</returns>
+        [SecuredOperation($"{Role.AnimalCategoryGetAll},{Role.User},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         [LogAspect(typeof(FileLogger), Priority = 4)]
         [CacheAspect(Priority = 5)]
         public IDataResult<List<AnimalCategory>> GetAll()
         {
-            var data = _animalCategoryDal.GetAll(null,true);
+            var data = _animalCategoryDal.GetAll(null,true,t => t.AnimalCategoryTranslations);
 
             if (data.Count > 0)
             {

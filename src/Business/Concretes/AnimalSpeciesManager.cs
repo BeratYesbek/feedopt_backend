@@ -28,6 +28,11 @@ namespace Business.Abstracts
             _animalSpeciesDal = animalSpeciesDal;
         }
 
+        /// <summary>
+        /// Animal Species is added by this method
+        /// </summary>
+        /// <param name="animalSpecies"></param>
+        /// <returns>IResult</returns>
         [SecuredOperation($"{Role.AnimalSpeciesAdd},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [ValidationAspect(typeof(AnimalSpeciesValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
@@ -41,6 +46,11 @@ namespace Business.Abstracts
             return new SuccessResult();
         }
 
+        /// <summary>
+        /// Animal Species is updated by this method
+        /// </summary>
+        /// <param name="animalSpecies"></param>
+        /// <returns>IResult</returns>
         [SecuredOperation($"{Role.AnimalSpeciesUpdate},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [ValidationAspect(typeof(AnimalSpeciesValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
@@ -54,6 +64,11 @@ namespace Business.Abstracts
             return new SuccessResult();
         }
 
+        /// <summary>
+        /// Animal Species is deleted by this method
+        /// </summary>
+        /// <param name="animalSpecies"></param>
+        /// <returns>IResult</returns>
         [SecuredOperation($"{Role.AnimalSpeciesDelete},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
@@ -67,6 +82,11 @@ namespace Business.Abstracts
             return new SuccessResult();
         }
 
+        /// <summary>
+        /// This method get all animal species by animal category ID
+        /// </summary>
+        /// <param name="animalCategoryId"></param>
+        /// <returns>IDataResult<list type="AnimalSpecies"></list></returns>
         [SecuredOperation($"{Role.AnimalSpeciesGetAll},{Role.Admin},{Role.User},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
@@ -81,7 +101,11 @@ namespace Business.Abstracts
             return new ErrorDataResult<List<AnimalSpecies>>(null);
         }
 
-
+        /// <summary>
+        /// This method get single animal species by  ID
+        /// </summary>
+        /// <param name="animalCategoryId"></param>
+        /// <returns>IDataResult</returns>
         [SecuredOperation($"{Role.AnimalSpeciesGet},{Role.Admin},{Role.User},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
@@ -96,7 +120,10 @@ namespace Business.Abstracts
 
             return new ErrorDataResult<AnimalSpecies>(null);
         }
-
+        /// <summary>
+        /// This method get all animal species
+        /// </summary>
+        /// <returns>IDataResult<list type="AnimalSpecies"></list></returns>
         [SecuredOperation($"{Role.AnimalSpeciesGetAll},{Role.Admin},{Role.User},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]

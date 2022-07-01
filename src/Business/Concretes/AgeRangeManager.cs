@@ -28,6 +28,11 @@ namespace Business.Concretes
             _ageRangeDal = ageRangeDal;
         }
 
+        /// <summary>
+        /// Age ranges is added by this method. It is going to work with O(2) 
+        /// </summary>
+        /// <param name="age"></param>
+        /// <returns>IResult</returns>
         [SecuredOperation($"{Role.AgeRangesAdd},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [ValidationAspect(typeof(AgeRangesValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
@@ -41,6 +46,11 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        /// <summary>
+        /// Age ranges is updated by this method. It is going to work with O(2)
+        /// </summary>
+        /// <param name="age"></param>
+        /// <returns>IResult</returns>
         [SecuredOperation($"{Role.AgeRangesUpdate},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [ValidationAspect(typeof(AgeRangesValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
@@ -54,6 +64,11 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+        /// <summary>
+        /// Age ranges is deleted by this method. It is going to work with O(2)
+        /// </summary>
+        /// <param name="age"></param>
+        /// <returns>IResult</returns>
         [SecuredOperation($"{Role.AgeRangesDelete},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
@@ -63,9 +78,14 @@ namespace Business.Concretes
         public IResult Delete(Age age)
         {
             _ageRangeDal.Delete(age);
-            return new ErrorResult();
+            return new SuccessResult();
         }
 
+        /// <summary>
+        /// This method get age range by ID. It is going to work O(2)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>IDataResult</returns>
         [SecuredOperation($"{Role.AgeRangesGet},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
@@ -76,6 +96,10 @@ namespace Business.Concretes
             return new SuccessDataResult<Age>(data);
         }
 
+        /// <summary>
+        /// This method get all age ranges. It is going to work O(2)
+        /// </summary>
+        /// <returns>IDataResult</returns>
         [SecuredOperation($"{Role.AgeRangesGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
