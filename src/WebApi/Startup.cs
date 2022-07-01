@@ -29,6 +29,7 @@ using Amazon.Extensions.NETCore.Setup;
 using Core.Utilities.Cloud.Aws;
 using Amazon;
 using Amazon.S3;
+using NLog;
 
 namespace WebApi
 {
@@ -151,8 +152,8 @@ namespace WebApi
             app.UseRouting();
             app.UseAuthorization();
             app.VerifyUserRequest();
-
             app.UseSwagger();
+            
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
 
 

@@ -12,6 +12,7 @@ using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
+using Core.Entity.Concretes;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess;
@@ -78,13 +79,14 @@ namespace Business.Concretes
             }
             return new ErrorDataResult<Color>(null);
         }
-        [SecuredOperation($"{Role.ColorGetAll},{Role.User},{Role.Admin},{Role.SuperAdmin}")]
+        [SecuredOperation($"{Role.ColorGetAll},{Role.User},{Role.Admin},{Role.SuperAdmin}",Priority = 1)]
         [LogAspect(typeof(DatabaseLogger), Priority = 2)]
         [PerformanceAspect(5,Priority = 3)]
         [CacheAspect(Priority = 4)]
         public IDataResult<List<Color>> GetAll()
         {
-            var data = _colorDal.GetAllDetail();
+            var data = _colorDal.GetAll(null,true,
+                t => t.ColorTranslations.Where(t => t.CultureName.Equals(CurrentUser.CultureName)));
             return new SuccessDataResult<List<Color>>(data);
        
         }

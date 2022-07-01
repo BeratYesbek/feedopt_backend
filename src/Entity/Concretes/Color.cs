@@ -23,9 +23,18 @@ namespace Entity.Concretes
 
         public string Hex { get; set; }
 
-        private ICollection<ColorTranslation> _ColorTranslations;
-        
-        public virtual ICollection<ColorTranslation> ColorTranslations { get; set; }
+        private ICollection<ColorTranslation> _colorTranslations;
+
+        public virtual ICollection<ColorTranslation> ColorTranslations
+        {
+            get
+            {
+                if (_colorTranslations != null)
+                    new Translate<ColorTranslation>().TranslateProperties(_colorTranslations, this);
+                return null;
+            }
+            set => _colorTranslations = value;
+        }
 
 
 

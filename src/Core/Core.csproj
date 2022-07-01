@@ -52,6 +52,7 @@
     <PackageReference Include="log4net" Version="2.0.14" />
     <PackageReference Include="MicroKnights.Log4NetAdoNetAppender" Version="2.2.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.Log4NetAppender" Version="2.20.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.NLogTarget" Version="2.20.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.2" />
@@ -65,11 +66,11 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="6.1.0" />
-    <PackageReference Include="NLog" Version="5.0.0" />
+    <PackageReference Include="NLog" Version="5.0.1" />
     <PackageReference Include="NLog.Config" Version="4.7.15" />
     <PackageReference Include="NLog.Database" Version="5.0.0" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="NLog.Schema" Version="5.0.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.0.1" />
+    <PackageReference Include="NLog.Schema" Version="5.0.1" />
     <PackageReference Include="NLog.Web" Version="5.0.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0" />
     <PackageReference Include="Npgsql" Version="6.0.4" />

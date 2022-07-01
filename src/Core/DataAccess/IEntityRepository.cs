@@ -18,6 +18,8 @@ namespace Core.DataAccess
 
         T Get(Expression<Func<T, bool>> filter);
 
-        List<T> GetAll(Expression<Func<T, bool>> filter = null,bool translation = false);
+        List<T> GetAll(Expression<Func<T, bool>> filter = null,bool translation = false, params Expression<Func<T, object>>[] including);
+
+
     }
 }

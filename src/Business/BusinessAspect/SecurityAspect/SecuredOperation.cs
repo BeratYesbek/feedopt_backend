@@ -51,7 +51,7 @@ namespace Business.BusinessAspect
                 if (roleClaims.Contains(role))
                     return;
             }
-           throw new AuthenticationFailedException("You have no authorization.");
+            throw new AuthenticationFailedException("You have no authorization.");
         }
         private static User SetCurrentUser(string nameIdentifier, string cultureName)
         {
@@ -60,11 +60,11 @@ namespace Business.BusinessAspect
             {
                 CurrentUser.User = result.Data;
                 var locationResult = new UserLocationManager(new EfUserLocationDal()).GetById(CurrentUser.User.Id);
+                CurrentUser.CultureName = cultureName;
                 if (locationResult.Success)
                 {
                     CurrentUser.Longitude = Decimal.ToDouble(locationResult.Data.Longitude);
                     CurrentUser.Latitude = Decimal.ToDouble(locationResult.Data.Latitude);
-                    CurrentUser.CultureName = cultureName;
                 }
             }
             return result.Data;

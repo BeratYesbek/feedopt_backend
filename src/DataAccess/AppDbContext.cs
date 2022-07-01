@@ -17,8 +17,12 @@ namespace DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           /* modelBuilder.Entity<ColorTranslation>().HasOne(c => c.Color).WithMany(t => t.ColorTranslations).HasForeignKey(c => c.ColorId);
-            modelBuilder.Entity<Color>().Navigation(t => t.ColorTranslations).HasField("_ColorTranslations").UsePropertyAccessMode(PropertyAccessMode.Property);*/
+            modelBuilder.Entity<ColorTranslation>().HasOne(c => c.Color).WithMany(t => t.ColorTranslations).HasForeignKey(c => c.ColorId);
+            modelBuilder.Entity<Color>().Navigation(t => t.ColorTranslations).HasField("_colorTranslations").UsePropertyAccessMode(PropertyAccessMode.Property);
+
+            modelBuilder.Entity<AnimalCategoryTranslation>().HasOne(c => c.AnimalCategory).WithMany(t => t.AnimalCategoryTranslations).HasForeignKey(t => t.AnimalCategoryId);
+            modelBuilder.Entity<AnimalCategory>().Navigation(t => t.AnimalCategoryTranslations).HasField("_AnimalCategoryTranslations").UsePropertyAccessMode(PropertyAccessMode.Property);
+
         }
 
         public DbSet<AnimalCategory> AnimalCategories { get; set; }
@@ -38,8 +42,8 @@ namespace DataAccess
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<Translation> Translations { get; set; }    
         public DbSet<Filter> Filters { get; set; }
-
         public DbSet<ColorTranslation> ColorTranslations { get; set; }
+        public DbSet<AnimalCategoryTranslation> AnimalCategoryTranslations { get; set; }
 
 
 

@@ -132,6 +132,10 @@
               "target": "Package",
               "version": "[2.20.0, )"
             },
+            "Microsoft.ApplicationInsights.NLogTarget": {
+              "target": "Package",
+              "version": "[2.20.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[6.0.2, )"
@@ -176,7 +180,7 @@
             },
             "NLog": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.0.1, )"
             },
             "NLog.Config": {
               "target": "Package",
@@ -188,11 +192,11 @@
             },
             "NLog.Extensions.Logging": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.0.1, )"
             },
             "NLog.Schema": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.0.1, )"
             },
             "NLog.Web": {
               "target": "Package",

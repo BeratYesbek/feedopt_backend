@@ -58,16 +58,29 @@ namespace Core.DataAccess
             }
         }
 
-        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null, bool translation = false)
+        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null, bool translation = false, params Expression<Func<TEntity, object>>[] including)
         {
             using (TContext context = new TContext())
             {
+                if (translation)
+                {
+                    var include = context.Set<TEntity>().AsQueryable();
+                    including.ToList().ForEach(item =>
+                    {
+                        include = include.Include(item);
+                    });
+                    return include.ToList();
+                }
+                else
+                {
+                    var result = filter == null
+                        ? context.Set<TEntity>().ToList()
+                        : context.Set<TEntity>().Where(filter).ToList();
+                    return result;
 
-                var result = filter == null
-                    ? context.Set<TEntity>().ToList()
-                    : context.Set<TEntity>().Where(filter).ToList();
-                return result;
+                }
             }
+
         }
     }
 }

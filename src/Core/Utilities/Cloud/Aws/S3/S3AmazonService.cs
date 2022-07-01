@@ -73,7 +73,7 @@ namespace Core.Utilities.Cloud.Aws.S3
             var folder = _configuration.GetSection("AwsFolders")["AnimalImage"];
             var extension = Path.GetExtension(file.FileName);
             var key = $"{folder}/{uuid}.{extension}";
-            var url = $"{_awsSettings.BucketName}.s3.{_awsSettings.Region}.{_awsSettings.AwsUrl}/{key}";
+            var url = $"https://{_awsSettings.BucketName}.s3.{_awsSettings.Region}.{_awsSettings.AwsUrl}/{key}";
             return new Dictionary<string, string>
             {
                 { "key",key},

@@ -27,6 +27,8 @@ namespace WebApi
             var host = CreateHostBuilder(args).Build();
 
             var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+            //LogFactory.Setup().SetupInternalLogger(b => b.SetupFromEnvironmentVariables());
+
             logger.Debug("database");
 
             host.Run();

@@ -74,9 +74,6 @@ namespace DataAccess.Concretes
             }
         }
 
-
-
-
         public List<AdvertReadDto> GetAllAdvertDetailsByFilter(Expression<Func<Advert, bool>> filter, int userId, double latitude, double longitude, int pageNumber, int distance = 100000, int pageSize = 20)
         {
             using (var context = new AppDbContext())

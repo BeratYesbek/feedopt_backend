@@ -12,7 +12,7 @@ namespace Core.Utilities.Language
     {
         public void TranslateProperties(ICollection<T> collection,IEntity entity)
         {
-            var translations = collection.Where(t => t.CultureName == CurrentUser.User.PreferredLanguage.ToString()).ToList();
+            var translations = collection.Where(t => t.CultureName == CurrentUser.CultureName).ToList();
 
             translations.ForEach(item =>
             {
