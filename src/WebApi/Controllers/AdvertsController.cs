@@ -91,6 +91,18 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("edit/{id}")]
+        public IActionResult Edit(int id)
+        {
+            var result = _advertService.Edit(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpGet("getAllAdvertDetail/{pageNumber}")]
         public IActionResult GetAllAdvertDetail(int pageNumber)
         {
@@ -169,5 +181,6 @@ namespace WebApi.Controllers
             }
             return BadRequest(result);
         }
+
     }
 }

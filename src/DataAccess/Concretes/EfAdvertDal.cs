@@ -6,6 +6,8 @@ using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
+using Amazon.Auth.AccessControlPolicy.ActionIdentifiers;
 using Core.DataAccess;
 using Core.Entity;
 using Core.Entity.Concretes;
@@ -235,6 +237,32 @@ namespace DataAccess.Concretes
                                  UpdatedAt = advert.UpdatedAt,
 
                              };
+                return result.FirstOrDefault();
+            }
+        }
+
+        public AdvertEditDto Edit(int id)
+        {
+            using (var context = new AppDbContext())
+            {
+                var result = from advert in context.Adverts.Where(t => t.Id == id)
+                    join location in context.Locations on advert.LocationId equals location.Id
+                    join animalSpecies in context.AnimalSpecies on advert.AnimalSpeciesId equals animalSpecies.Id
+                    join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
+                    join age in context.Ages on advert.AgeId equals age.Id
+                    join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals animalCategory.Id
+                    join color in context.Colors on advert.ColorId equals color.Id
+                             select new AdvertEditDto
+                    {
+                        Advert = advert,
+                        Color = color,
+                        Age = age,
+                        AnimalCategory = animalCategory,
+                        AdvertCategory = advertCategory,
+                        Location = location,
+                        AnimalSpecies = animalSpecies,
+                        AdvertImage = (from image in context.AdvertImages where image.AdvertId == advert.Id select image).ToArray()
+                    };
                 return result.FirstOrDefault();
             }
         }

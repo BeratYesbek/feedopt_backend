@@ -249,6 +249,12 @@ namespace Business.Concretes
 
         }
 
+        public IDataResult<AdvertEditDto> Edit(int id)
+        {
+            var data = _advertDal.Edit(id);
+            return new SuccessDataResult<AdvertEditDto>(data);
+        }
+
         /// <summary>
         /// This method run to update advert case. For instance, has it been adopted ? has it been found ?
         /// This method is going to run with O(2) 

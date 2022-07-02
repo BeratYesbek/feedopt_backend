@@ -59,6 +59,7 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
+
         [SecuredOperation($"{Role.UserOperationClaimGet},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]

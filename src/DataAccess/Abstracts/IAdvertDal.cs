@@ -16,5 +16,6 @@ namespace DataAccess.Abstracts
         List<AdvertReadDto> GetAllAdvertDetailsByFilter(Expression<Func<Advert, bool>> filter, int userId, double latitude, double longitude, int pageNumber, int distance = 1000000, int pageSize = 30);
         List<AdvertReadDto> GetAllAdvertByDistance(double latitude, double longitude, int userId, int pageNumber, double diameter = 30, int pageSize = 30);
         AdvertReadDto GetAdvertDetailById(int id, int userId, double longitude, double latitude);
+        AdvertEditDto Edit(int id);
     }
 }
