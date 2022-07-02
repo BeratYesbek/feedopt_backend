@@ -11,11 +11,11 @@
           "lib/net6.0/Amazon.Lambda.Core.dll": {}
         }
       },
-      "Amazon.Lambda.Serialization.Json/2.0.0": {
+      "Amazon.Lambda.Serialization.Json/2.1.0": {
         "type": "package",
         "dependencies": {
-          "Amazon.Lambda.Core": "2.0.0",
-          "Newtonsoft.Json": "9.0.1"
+          "Amazon.Lambda.Core": "2.1.0",
+          "Newtonsoft.Json": "13.0.1"
         },
         "compile": {
           "lib/netstandard2.0/Amazon.Lambda.Serialization.Json.dll": {}
@@ -36,22 +36,22 @@
           "lib/net6.0/Amazon.Lambda.Serialization.SystemTextJson.dll": {}
         }
       },
-      "Autofac/6.3.0": {
+      "Autofac/6.4.0": {
         "type": "package",
         "dependencies": {
           "System.Diagnostics.DiagnosticSource": "4.7.1"
         },
         "compile": {
-          "lib/net5.0/Autofac.dll": {}
+          "lib/net6.0/Autofac.dll": {}
         },
         "runtime": {
-          "lib/net5.0/Autofac.dll": {}
+          "lib/net6.0/Autofac.dll": {}
         }
       },
-      "Autofac.Extensions.DependencyInjection/7.2.0": {
+      "Autofac.Extensions.DependencyInjection/8.0.0": {
         "type": "package",
         "dependencies": {
-          "Autofac": "6.0.0",
+          "Autofac": "6.4.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0"
         },
         "compile": {
@@ -252,10 +252,10 @@
           "lib/netstandard2.0/FirebaseAdmin.dll": {}
         }
       },
-      "FluentEmail.Core/3.0.0": {
+      "FluentEmail.Core/3.0.2": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.11"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "5.0.0"
         },
         "compile": {
           "lib/netstandard2.0/FluentEmail.Core.dll": {}
@@ -264,10 +264,10 @@
           "lib/netstandard2.0/FluentEmail.Core.dll": {}
         }
       },
-      "FluentEmail.Razor/3.0.0": {
+      "FluentEmail.Razor/3.0.2": {
         "type": "package",
         "dependencies": {
-          "FluentEmail.Core": "3.0.0",
+          "FluentEmail.Core": "3.0.2",
           "RazorLight": "2.0.0-rc.3"
         },
         "compile": {
@@ -1579,20 +1579,6 @@
           "lib/netstandard2.0/NLog.dll": {}
         }
       },
-      "NLog.Config/4.7.15": {
-        "type": "package",
-        "dependencies": {
-          "NLog": "4.7.15",
-          "NLog.Schema": "4.7.15"
-        },
-        "contentFiles": {
-          "contentFiles/any/any/_._": {
-            "buildAction": "None",
-            "codeLanguage": "any",
-            "copyToOutput": false
-          }
-        }
-      },
       "NLog.Database/5.0.0": {
         "type": "package",
         "dependencies": {
@@ -2604,7 +2590,7 @@
           "lib/netstandard1.6/System.Linq.dll": {}
         }
       },
-      "System.Linq.Dynamic.Core/1.2.17": {
+      "System.Linq.Dynamic.Core/1.2.19": {
         "type": "package",
         "compile": {
           "lib/net6.0/System.Linq.Dynamic.Core.dll": {}
@@ -3614,18 +3600,18 @@
           "AWSSDK.Core": "3.7.11.15",
           "AWSSDK.Extensions.NETCore.Setup": "3.7.2",
           "AWSSDK.S3": "3.7.9.15",
-          "Amazon.Lambda.Serialization.Json": "2.0.0",
+          "Amazon.Lambda.Serialization.Json": "2.1.0",
           "Amazon.Lambda.Serialization.SystemTextJson": "2.3.0",
           "AutoMapper": "11.0.1",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "11.0.0",
-          "Autofac": "6.3.0",
-          "Autofac.Extensions.DependencyInjection": "7.2.0",
+          "Autofac": "6.4.0",
+          "Autofac.Extensions.DependencyInjection": "8.0.0",
           "Autofac.Extras.DynamicProxy": "6.0.1",
           "CloudinaryDotNet": "1.17.0",
           "EntityFramework": "6.4.4",
           "FirebaseAdmin": "2.2.0",
-          "FluentEmail.Core": "3.0.0",
-          "FluentEmail.Razor": "3.0.0",
+          "FluentEmail.Core": "3.0.2",
+          "FluentEmail.Razor": "3.0.2",
           "FluentEmail.Smtp": "3.0.0",
           "FluentValidation": "10.3.6",
           "Hangfire": "1.7.28",
@@ -3645,7 +3631,6 @@
           "Microsoft.Extensions.Caching.Redis": "2.2.0",
           "Microsoft.Extensions.Logging.Log4Net.AspNetCore": "6.1.0",
           "NLog": "5.0.1",
-          "NLog.Config": "4.7.15",
           "NLog.Database": "5.0.0",
           "NLog.Extensions.Logging": "5.0.1",
           "NLog.Schema": "5.0.1",
@@ -3659,7 +3644,7 @@
           "System.Data.SqlClient": "4.8.3",
           "System.Drawing.Common": "6.0.0",
           "System.IdentityModel.Tokens.Jwt": "6.16.0",
-          "System.Linq.Dynamic.Core": "1.2.17",
+          "System.Linq.Dynamic.Core": "1.2.19",
           "log4net": "2.0.14"
         },
         "compile": {
@@ -3702,14 +3687,14 @@
         "lib/netstandard2.0/Amazon.Lambda.Core.xml"
       ]
     },
-    "Amazon.Lambda.Serialization.Json/2.0.0": {
-      "sha512": "+V9hxN31I/B0zAEMt/Ld5cU2CWnCS+Mw6rKq7CNQon6ngh9wsSgOStTOeRaI13pKxSBm4OsKPMsxfMqmcUNhEQ==",
+    "Amazon.Lambda.Serialization.Json/2.1.0": {
+      "sha512": "gK99PErStMsQsfgCPvpyqBt4lVaFGnXONM+fNQq35goNVDlb+u5lm8TaHJdd2inKCQcdSwLDA247eh2GpasqAg==",
       "type": "package",
-      "path": "amazon.lambda.serialization.json/2.0.0",
+      "path": "amazon.lambda.serialization.json/2.1.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "amazon.lambda.serialization.json.2.0.0.nupkg.sha512",
+        "amazon.lambda.serialization.json.2.1.0.nupkg.sha512",
         "amazon.lambda.serialization.json.nuspec",
         "lib/netstandard2.0/Amazon.Lambda.Serialization.Json.dll",
         "lib/netstandard2.0/Amazon.Lambda.Serialization.Json.xml"
@@ -3731,48 +3716,44 @@
         "lib/netcoreapp3.1/Amazon.Lambda.Serialization.SystemTextJson.xml"
       ]
     },
-    "Autofac/6.3.0": {
-      "sha512": "gO4bli0N8tDnBHzbYktcnbXlmN6T+IT5W+FUGgCUaM6pwwHXIxOPoUGvfGum7sZpJJgfQNgjFFv80ZPuARgRdA==",
+    "Autofac/6.4.0": {
+      "sha512": "tkFxl6wAPuwVhrlN8wuNADnd+k2tv4ReP7ZZSL0vjfcN0RcfC9v25ogxK6b03HC7D4NwWjSLf1G/zTG8Bw43wQ==",
       "type": "package",
-      "path": "autofac/6.3.0",
+      "path": "autofac/6.4.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "autofac.6.3.0.nupkg.sha512",
+        "README.md",
+        "autofac.6.4.0.nupkg.sha512",
         "autofac.nuspec",
         "icon.png",
         "lib/net5.0/Autofac.dll",
-        "lib/net5.0/Autofac.pdb",
         "lib/net5.0/Autofac.xml",
+        "lib/net6.0/Autofac.dll",
+        "lib/net6.0/Autofac.xml",
         "lib/netstandard2.0/Autofac.dll",
-        "lib/netstandard2.0/Autofac.pdb",
         "lib/netstandard2.0/Autofac.xml",
         "lib/netstandard2.1/Autofac.dll",
-        "lib/netstandard2.1/Autofac.pdb",
         "lib/netstandard2.1/Autofac.xml"
       ]
     },
-    "Autofac.Extensions.DependencyInjection/7.2.0": {
-      "sha512": "S2Jor8pTV+8QSs96ENq/FhGdnrWsntGs93z0OXYlIivUWGPNXQHNCjFPfSBeBlHClvJFEXMvlkY32bAKy2YkPg==",
+    "Autofac.Extensions.DependencyInjection/8.0.0": {
+      "sha512": "nGrXNpQX2FiZpIBydK9cxZnnoqP/cUd3k/53uRERYEqLtWzKtE15R6L+j5q5ax5Rv/+3wAIkOaPePkahfqrwjg==",
       "type": "package",
-      "path": "autofac.extensions.dependencyinjection/7.2.0",
+      "path": "autofac.extensions.dependencyinjection/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "autofac.extensions.dependencyinjection.7.2.0.nupkg.sha512",
+        "autofac.extensions.dependencyinjection.8.0.0.nupkg.sha512",
         "autofac.extensions.dependencyinjection.nuspec",
         "icon.png",
         "lib/net5.0/Autofac.Extensions.DependencyInjection.dll",
-        "lib/net5.0/Autofac.Extensions.DependencyInjection.pdb",
         "lib/net5.0/Autofac.Extensions.DependencyInjection.xml",
         "lib/net6.0/Autofac.Extensions.DependencyInjection.dll",
-        "lib/net6.0/Autofac.Extensions.DependencyInjection.pdb",
         "lib/net6.0/Autofac.Extensions.DependencyInjection.xml",
         "lib/netstandard2.0/Autofac.Extensions.DependencyInjection.dll",
-        "lib/netstandard2.0/Autofac.Extensions.DependencyInjection.pdb",
         "lib/netstandard2.0/Autofac.Extensions.DependencyInjection.xml",
         "lib/netstandard2.1/Autofac.Extensions.DependencyInjection.dll",
-        "lib/netstandard2.1/Autofac.Extensions.DependencyInjection.pdb",
         "lib/netstandard2.1/Autofac.Extensions.DependencyInjection.xml"
       ]
     },
@@ -4054,27 +4035,27 @@
         "lib/netstandard2.0/FirebaseAdmin.xml"
       ]
     },
-    "FluentEmail.Core/3.0.0": {
-      "sha512": "aR81GYqWS5qATQh1300BmnRnUukgB89THcYXOHs7YGuSHc827qZtWqrGJlV8k9Jk60hlcmm/O/9Vmoaw2ytD3g==",
+    "FluentEmail.Core/3.0.2": {
+      "sha512": "uQFFbJgMhhCFUti7pfMi429fMNi7fLGMj+7uDtD7POlQzLxlhXJ6tmt4Y1SI51sZsA36GO5b7+o29eY/dKiICQ==",
       "type": "package",
-      "path": "fluentemail.core/3.0.0",
+      "path": "fluentemail.core/3.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "fluentemail.core.3.0.0.nupkg.sha512",
+        "fluentemail.core.3.0.2.nupkg.sha512",
         "fluentemail.core.nuspec",
         "fluentemail_logo_64x64.png",
         "lib/netstandard2.0/FluentEmail.Core.dll"
       ]
     },
-    "FluentEmail.Razor/3.0.0": {
-      "sha512": "TEnUN2g+dYWoirDyBZhpqGpEoxw4lIh/prTzS+pR+SINvlSl49Xpw+6rlm5lLQOc7qtTWY9x7oiVIU9P5+W4fg==",
+    "FluentEmail.Razor/3.0.2": {
+      "sha512": "XdZS2n9jjrx2qzyBGvgstYFIm2laYo1j7YMUZI0rylZhpZHIic3taWqe78xF5dcsXpJvucmxRCshhF6hl02Dmw==",
       "type": "package",
-      "path": "fluentemail.razor/3.0.0",
+      "path": "fluentemail.razor/3.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "fluentemail.razor.3.0.0.nupkg.sha512",
+        "fluentemail.razor.3.0.2.nupkg.sha512",
         "fluentemail.razor.nuspec",
         "fluentemail_logo_64x64.png",
         "lib/netstandard2.0/FluentEmail.Razor.dll"
@@ -6115,21 +6096,6 @@
         "lib/netstandard2.0/NLog.xml",
         "nlog.5.0.1.nupkg.sha512",
         "nlog.nuspec"
-      ]
-    },
-    "NLog.Config/4.7.15": {
-      "sha512": "njc2NvwgAzEuH609TGO4yqpokcxXFdypHwG3I8hyLYIE4pr+j4KJB4ZhsyODVwkP/n2F2V4uJ24VW4icNyJMcA==",
-      "type": "package",
-      "path": "nlog.config/4.7.15",
-      "hasTools": true,
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "content/NLog.config",
-        "contentFiles/any/any/NLog.config",
-        "nlog.config.4.7.15.nupkg.sha512",
-        "nlog.config.nuspec",
-        "tools/Install.ps1"
       ]
     },
     "NLog.Database/5.0.0": {
@@ -8469,10 +8435,10 @@
         "system.linq.nuspec"
       ]
     },
-    "System.Linq.Dynamic.Core/1.2.17": {
-      "sha512": "VSPXm8yUaFqLdOTmLe+6xx0lzasLttySAyfnQw8F6naAPo3iDDGn1231HR0meOZs4xaueXUEFfMek+koKdBS1w==",
+    "System.Linq.Dynamic.Core/1.2.19": {
+      "sha512": "R9Iv6uDZQLDecHhBANawccBzm5H6lHTKL65zPfulHBBpeT7NktzLcxA0MfffWsTjCzSo106Vy5QtkwXnlfekJQ==",
       "type": "package",
-      "path": "system.linq.dynamic.core/1.2.17",
+      "path": "system.linq.dynamic.core/1.2.19",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -8485,6 +8451,9 @@
         "lib/net45/System.Linq.Dynamic.Core.dll",
         "lib/net45/System.Linq.Dynamic.Core.pdb",
         "lib/net45/System.Linq.Dynamic.Core.xml",
+        "lib/net452/System.Linq.Dynamic.Core.dll",
+        "lib/net452/System.Linq.Dynamic.Core.pdb",
+        "lib/net452/System.Linq.Dynamic.Core.xml",
         "lib/net46/System.Linq.Dynamic.Core.dll",
         "lib/net46/System.Linq.Dynamic.Core.pdb",
         "lib/net46/System.Linq.Dynamic.Core.xml",
@@ -8510,7 +8479,7 @@
         "lib/uap10.0.10240/System.Linq.Dynamic.Core.pdb",
         "lib/uap10.0.10240/System.Linq.Dynamic.Core.pri",
         "lib/uap10.0.10240/System.Linq.Dynamic.Core.xml",
-        "system.linq.dynamic.core.1.2.17.nupkg.sha512",
+        "system.linq.dynamic.core.1.2.19.nupkg.sha512",
         "system.linq.dynamic.core.nuspec"
       ]
     },

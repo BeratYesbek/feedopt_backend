@@ -10,8 +10,6 @@ namespace Business.Abstracts
         IDataResult<FavoriteAdvert> Add(FavoriteAdvert favorite);
         IResult Update(FavoriteAdvert favorite);
         IResult Delete(FavoriteAdvert favorite);
-        IDataResult<FavoriteAdvert> Get(int id);
-        IDataResult<List<FavoriteAdvert>> GetAll( );
         IDataResult<List<FavoriteAdvertReadDto>> GetAllDetailByUserId(int userId);
     }
 }

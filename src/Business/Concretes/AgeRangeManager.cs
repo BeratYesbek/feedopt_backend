@@ -19,6 +19,9 @@ using Entity.Concretes;
 
 namespace Business.Concretes
 {
+    /// <summary>
+    /// This class manage Age Ranges. Whenever need to manage something on that, everything should do in this class because of SOLID - Single Responsibility Principle
+    /// </summary>
     public class AgeRangeManager : IAgeRangeService
     {
         private readonly IAgeRangeDal _ageRangeDal;

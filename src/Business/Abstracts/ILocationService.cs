@@ -15,9 +15,5 @@ namespace Business.Abstracts
         IResult Update(Location location);
 
         IResult Delete(Location location);
-
-        IDataResult<Location> Get(int id);
-
-        IDataResult<List<Location>> GetAll();
     }
 }

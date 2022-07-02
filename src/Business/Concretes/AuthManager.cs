@@ -20,6 +20,9 @@ using Entity.Dtos;
 
 namespace Business.Concretes
 {
+    /// <summary>
+    /// This class manage completely all auth process. Whenever need to manage something about auth, everything should do in this class because of SOLID - Single Responsibility Principle
+    /// </summary>
     public class AuthManager : IAuthService
     {
         private readonly ITokenHelper _tokenHelper;
@@ -125,6 +128,22 @@ namespace Business.Concretes
             return new SuccessDataResult<User>(CurrentUser.User);
         }
 
+        /// <summary>
+        /// User is verified by this method
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>IResult</returns>
+        public IResult VerifyEmail(int userId)
+        {
+            var userResult = _userService.Get(userId);
+            if (!userResult.Success)
+                return new SuccessResult("Email has not been confirmed");
 
+            var user = userResult.Data;
+            user.EmailConfirmed = true;
+            _userService.Update(user);
+            return new SuccessResult("Email has been confirmed successfully");
+
+        }
     }
 }

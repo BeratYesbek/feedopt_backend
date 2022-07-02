@@ -60,30 +60,5 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("getById/{id}")]
-        public IActionResult Get(int id)
-        {
-            var result = _locationService.Get(id);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest();
-        }
-
-        [HttpGet("getAll")]
-        public IActionResult GetAll()
-        {
-            var result = _locationService.GetAll();
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest();
-        }
     }
 }

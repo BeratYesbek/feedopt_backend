@@ -17,6 +17,9 @@ using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 namespace Business.Concretes
 {
+    /// <summary>
+    /// This class manage Animal Category. Whenever need to manage something on that, everything should do in this class because of SOLID - Single Responsibility Principle
+    /// </summary>
     public class AnimalCategoryManager : IAnimalCategoryService
     {
         private readonly IAnimalCategoryDal _animalCategoryDal;

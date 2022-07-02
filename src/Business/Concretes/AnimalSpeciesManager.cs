@@ -19,9 +19,12 @@ using Entity.concretes;
 
 namespace Business.Abstracts
 {
+    /// <summary>
+    /// This class manage Animal Species. Whenever need to manage something on that, everything should do in this class because of SOLID - Single Responsibility Principle
+    /// </summary>
     public class AnimalSpeciesManager : IAnimalSpeciesService
     {
-        private IAnimalSpeciesDal _animalSpeciesDal;
+        private readonly IAnimalSpeciesDal _animalSpeciesDal;
 
         public AnimalSpeciesManager(IAnimalSpeciesDal animalSpeciesDal)
         {
