@@ -51,11 +51,7 @@ namespace WebApi.Config
 
             using (var db = ServiceProvider.GetService<AppDbContext>())
             {
-                if (db != null)
-                {
-                    db.Database.Migrate();
-
-                }
+                db?.Database.Migrate();
             }
         }
     }

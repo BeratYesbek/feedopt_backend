@@ -57,14 +57,10 @@ namespace Core.Extensions
             Uri redirectURI = null;
             if (_env.IsDevelopment())
             {
-                Console.WriteLine("---> Development");
-                Debug.WriteLine("--> Development");
                 redirectURI = new Uri($"{Configuration.GetSection("ErrorsUrl")["ValidationError"]}?&message={message}");
             }
             else
             {
-                Console.WriteLine("---> Production");
-                Debug.WriteLine("--> Production");
                 redirectURI = new Uri($"{Configuration.GetSection("ErrorsUrl")["ValidationError"]}?&message={message}");
             }
             httpContext.Response.Redirect(redirectURI.AbsoluteUri);

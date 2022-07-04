@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessMailer;
 using Business.Concretes;
-using Business.Utilities;
 using Castle.DynamicProxy;
 using Core.Entity;
 using Core.Utilities.Interceptors;

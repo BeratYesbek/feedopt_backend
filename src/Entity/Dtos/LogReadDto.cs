@@ -31,28 +31,28 @@ namespace Entity.Dtos
 
         public string methodname { get; set; }
 
-        private string LogDetail { get; set; }
+        public dynamic LogDetail { get; set; }
 
-        private string Parameters { get; set; }
+        public dynamic Parameters { get; set; }
 
 
-        public string logdetail
+    /*    public string logdetail
         {
             get => LogDetail;
             set
             {
-                LogDetail = JsonSerializer.Serialize(value);
+                LogDetail = JsonSerializer.Deserialize(value);
             }
-        }
+        }*/
 
-        public string logparameters
+       /* public string logparameters
         {
             get => Parameters;
             set
             {
                 Parameters = JsonSerializer.Serialize(value);
             }
-        }
+        }*/
         public string stacktrace { get; set; }
 
         public User User { get; set; }

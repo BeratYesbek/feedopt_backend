@@ -1,5 +1,8 @@
 ﻿namespace Business.Security.Role
 {
+    /// <summary>
+    /// This class contains static role of the system
+    /// </summary>
     public static class Role
     {
         public const string SuperAdmin = "SuperAdmin";

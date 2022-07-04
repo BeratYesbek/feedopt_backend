@@ -8,6 +8,9 @@ using Telegram.Bot.Types;
 
 namespace Business.Services.Concretes
 {
+    /// <summary>
+    /// Telegram service
+    /// </summary>
     public class TelegramManager : ITelegramService
     {
         private readonly TelegramBotClient _botClient;
@@ -19,6 +22,12 @@ namespace Business.Services.Concretes
             _botClient = new TelegramBotClient(_configuration.GetSection("TelegramOptions").GetSection("TelegramToken").Value);
         }
 
+        /// <summary>
+        /// Whenever someone share new post,this method notify thought TELEGRAM BOT. 
+        /// </summary>
+        /// <param name="advert"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task SendNewPostAsync(Advert advert, Core.Entity.User user)
         {
             await _botClient.SendTextMessageAsync(

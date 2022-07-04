@@ -10,6 +10,5 @@ namespace DataAccess.Abstracts
 {
     public interface IColorDal : IEntityRepository<Color>
     {
-        List<Color> GetAllDetail();
     }
 }

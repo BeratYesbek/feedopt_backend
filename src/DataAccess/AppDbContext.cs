@@ -40,7 +40,6 @@ namespace DataAccess
         public DbSet<UserLocation> UserLocations { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
-        public DbSet<Translation> Translations { get; set; }    
         public DbSet<Filter> Filters { get; set; }
         public DbSet<ColorTranslation> ColorTranslations { get; set; }
         public DbSet<AnimalCategoryTranslation> AnimalCategoryTranslations { get; set; }

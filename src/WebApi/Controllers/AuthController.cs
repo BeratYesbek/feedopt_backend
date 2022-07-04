@@ -25,14 +25,12 @@ namespace WebApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        private readonly IHttpContextAccessor _contextAccessor;
-        private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService, IUserService userService)
+
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
-            _userService = userService;
-            _contextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+
 
 
         }
@@ -70,12 +68,12 @@ namespace WebApi.Controllers
         [HttpPost("register")]
         public IActionResult Register(UserForRegisterDto userForRegisterDto)
         {
-          /*  var existsUser = _authService.UserExists(userForRegisterDto.Email);
+            var existsUser = _authService.UserExists(userForRegisterDto.Email);
 
             if (!existsUser.Success)
             {
                 return BadRequest(existsUser.Message);
-            }*/
+            }
 
             var registerResult = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
             var result = _authService.CreateAccessToken(registerResult.Data);
