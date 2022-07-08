@@ -71,7 +71,8 @@ namespace WebApi.Controllers
             var advert = dataResult.Data;
             advert.Map(advertUpdateDto);
 
-            var result = await _advertService.Update(advert, advertImage, advertUpdateDto.Files, location);
+
+            var result = await _advertService.Update(advert, advertImage, advertUpdateDto.Files, advertUpdateDto.DeletedImages, location);
             if (result.Success)
             {
                 return Ok(result);

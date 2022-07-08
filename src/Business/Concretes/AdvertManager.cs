@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
@@ -27,6 +28,7 @@ using Business.Messages.MethodMessages;
 using Business.Services.Abstracts;
 using Core.Entity.Concretes;
 using Core.Utilities.Cloud.Aws.S3;
+using FluentEmail.Core;
 
 namespace Business.Concretes
 {
@@ -71,7 +73,7 @@ namespace Business.Concretes
         /// <param name="files">files</param>
         /// <param name="location">location</param>
         /// <returns>It will return data result that includes added advert</returns>
-        [SecuredOperation($"{Role.AdvertAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        //[SecuredOperation($"{Role.AdvertAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [ValidationAspect(typeof(AdvertValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]
@@ -85,14 +87,10 @@ namespace Business.Concretes
                 AdvertBusinessRules.EmailConfirmedForCreateAdvert(),
                 AdvertBusinessRules.CheckFilesSize(files),
                 AdvertBusinessRules.CheckDescriptionIllegalKeyword(advert.Description));
-
             advert.UserId = CurrentUser.User.Id;
-
             if (!ruleResult.Success)
                 return new ErrorDataResult<Advert>(null, ruleResult.Message);
-
             var locationResult = _locationService.Add(location);
-
             if (locationResult is null)
                 return new SuccessDataResult<Advert>(null, AdvertMessages.AdvertAdd);
 
@@ -102,19 +100,9 @@ namespace Business.Concretes
             {
                 foreach (var file in files)
                 {
-                    var fileResult = await _S3AwsService.UploadAsync(file, FileExtension.ImageExtension);
-                    if (fileResult.Success)
-                    {
-                        var resultImage = _imageService.Add(new AdvertImage
-                        {
-                            ImagePath = fileResult.Message,
-                            AdvertId = result.Id
-                        });
-                        if (!resultImage.Success)
-                        {
-                            return new ErrorDataResult<Advert>(null, AdvertMessages.AdvertAdvertFailed);
-                        }
-                    }
+                    var fileResult = await UploadFile(file, result.Id); 
+                    if (!fileResult.Success) 
+                        return new ErrorDataResult<Advert>(null, AdvertMessages.AdvertAdvertFailed);
                 }
 
                 //Job.Create<AdvertJob>().UpdateAdvertStatusJob(this, result);
@@ -153,7 +141,7 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="id">advertId</param>
         /// <returns>It will return data result that includes an advert</returns>
-        [SecuredOperation($"{Role.AdvertGet},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        //[SecuredOperation($"{Role.AdvertGet},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         public IDataResult<Advert> Get(int id)
@@ -301,9 +289,10 @@ namespace Business.Concretes
         /// <param name="advert">advert</param>
         /// <param name="advertImage">advert</param>
         /// <param name="files">files</param>
+        /// <param name="deletedImages"></param>
         /// <param name="location">location</param>
         /// <returns>It will return a result that includes message</returns>
-        [SecuredOperation($"{Role.AdvertUpdate},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        // [SecuredOperation($"{Role.AdvertUpdate},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [ValidationAspect(typeof(AdvertValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]
@@ -311,44 +300,27 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAdvertDetailById", Priority = 6)]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter", Priority = 7)]
         [CacheRemoveAspect("IAdvertService.GetAll", Priority = 8)]
-        public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
+        public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, int[] deletedImages, Location location)
         {
 
-            var image = _imageService.GetByAdvertId(advert.Id);
-            if (files is not null)
+            var images = _imageService.GetByAdvertId(advert.Id);
+            var ruleResult = Core.Utilities.Business.BusinessRules.Run(
+                AdvertBusinessRules.ImageCountForUpdate(images?.Data?.Count, deletedImages?.Length, files?.Length));
+            if (!ruleResult.Success)
+                return ruleResult;
+
+            for (var i = 0; i < files?.Length; i++)
             {
-               
-
-                for (var i = 0; i < files.Length; i++)
-                {
-                    if (image.Data is null)
-                    {
-                        var result = await UploadFile(files[i], advert.Id);
-                        if (!result.Success)
-                            return new ErrorDataResult<Advert>(null, AdvertMessages.AdvertAdvertFailed);
-                    }
-                    else if (i > image.Data.Count)
-                    {
-                        var result = await UploadFile(files[i], advert.Id);
-                        if (!result.Success)
-                            return new ErrorDataResult<Advert>(null, AdvertMessages.AdvertAdvertFailed);
-                    }
-                    else
-                    {
-                        var fileResult = await UploadFile(files[i], advert.Id);
-                        var result = _imageService.Update(new AdvertImage
-                        {
-                            ImagePath = fileResult.Message.Split("&&")[0],
-                            PublicId = fileResult.Message.Split("&&")[1],
-                            AdvertId = advert.Id,
-                            Id = image.Data[i].Id
-                        });
-                        if (!result.Success)
-                            return new ErrorResult(AdvertMessages.AdvertUpdateFailed);
-                    }
-                }
+                var result = await UploadFile(files[i], advert.Id);
+                if (!result.Success)
+                    return new ErrorResult(AdvertMessages.AdvertUpdateFailed);
             }
-
+            deletedImages?.ForEach(item =>
+            {
+                var image = images.Data.FirstOrDefault(t => t.Id == item);
+                image.IsDeleted = true;
+                _imageService.Update(image);
+            });
             _ = location.Id != 0 || location != null ? _locationService.Update(location) : null;
             _advertDal.Update(advert);
 
@@ -414,7 +386,7 @@ namespace Business.Concretes
         /// <returns>It will return a result that includes message</returns>
         private async Task<IResult> UploadFile(IFormFile file, int advertId)
         {
-            var fileResult = await _S3AwsService.UploadAsync(file,FileExtension.ImageExtension);
+            var fileResult = await _S3AwsService.UploadAsync(file, FileExtension.ImageExtension);
             var result = _imageService.Add(new AdvertImage
             {
                 ImagePath = fileResult.Message,

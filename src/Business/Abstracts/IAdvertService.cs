@@ -17,7 +17,7 @@ namespace Business.Abstracts
     {
         Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location);
 
-        Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location);
+        Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, int[] deletedImages, Location location);
 
         IResult Delete(Advert advert);
 

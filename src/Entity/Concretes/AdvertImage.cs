@@ -10,10 +10,13 @@ using Core.Utilities.Cloud.Cloudinary;
 using Microsoft.AspNetCore.Http;
 namespace Entity.Concretes
 {
-    public class AdvertImage : Cloudinary, IEntity
+    public class AdvertImage : IEntity
     {
         public int Id { get; set; }
 
         public int AdvertId { get; set; }
+        public string ImagePath { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

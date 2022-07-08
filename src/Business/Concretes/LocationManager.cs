@@ -54,7 +54,7 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="location"></param>
         /// <returns>IResult</returns>
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationUpdate}", Priority = 1)]
+        // [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.LocationUpdate}", Priority = 1)]
         [ValidationAspect(typeof(LocationValidator), Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         [PerformanceAspect(5, Priority = 4)]

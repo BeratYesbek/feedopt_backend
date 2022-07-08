@@ -32,6 +32,23 @@ namespace Business.BusinessRules
             return new SuccessResult();
         }
 
+        internal static IResult ImageCountForUpdate(int? currentImageCount = 0, int? deletedImages = 0, int? newImagesCount = 0)
+        {
+            currentImageCount = currentImageCount ?? 0;
+            deletedImages = deletedImages ?? 0;
+            newImagesCount = newImagesCount ?? 0;
+            var imageCount = currentImageCount - deletedImages;
+            if (imageCount <= 0 && newImagesCount <= 0)
+            {
+                return new ErrorResult(AdvertBusinessRulesMessages.DeletedImagesMessage);
+            }
+            else if ((imageCount + newImagesCount) > 5)
+            {
+                return new ErrorResult(AdvertBusinessRulesMessages.MaxImageSizeMessage);
+            }
+
+            return new SuccessResult();
+        }
         internal static IResult EmailConfirmedForCreateAdvert()
         {
            // if (CurrentUser.User.EmailConfirmed)

@@ -20,8 +20,8 @@ namespace Core.Utilities.Middleware
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
-            ControlRequest(httpContext);
-            await _next.Invoke(httpContext);
+            //ControlRequest(httpContext);
+           await _next.Invoke(httpContext);
         }
         
         public void ControlRequest(HttpContext httpContext)
