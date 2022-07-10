@@ -15,28 +15,23 @@ namespace Business.BusinessMailer.Concretes.FluentMailer
 {
     internal class AuthMailer : IAuthMailer
     {
-        public static string CurrentDirectory { get; } = $"{Environment.CurrentDirectory}\\wwwroot\\static\\mailer\\authMailer\\";
-        public static string SendResetPasswordCodeHtmlPage { get; } = "SendResetPasswordCode.cshtml";
-        public static string VerifyEmailHtmlPage { get; } = "VerifyEmail.cshtml";
-
-
+        private static readonly string CurrentDirectory = $"{Environment.CurrentDirectory}\\wwwroot\\static\\mailer\\authMailer\\";
+        private const string SendResetPasswordCodeHtmlPage  = "SendResetPasswordCode.cshtml";
+        private const string VerifyEmailHtmlPage = "VerifyEmail.cshtml";
         private readonly IFluentMailer _fluentMailer;
-
         public AuthMailer(IFluentMailer fluentMailer)
         {
             _fluentMailer = fluentMailer;
         }
-
         public async Task<IResult> SendResetPasswordCode(User user, string code,string subject,string body = default)
         {
             var mailer = _fluentMailer.StartMailer("Reset Your Password", user.Email);
-            //var response = await mailer.UsingTemplateFromFile($"{CurrentDirectory}{SendResetPasswordCodeHtmlPage}", new { User = user, Code = code }).SendAsync();
-             var response = await mailer.Body($"{code}").SendAsync();
+           // var response2 = await mailer.UsingTemplateFromFile($"{CurrentDirectory}{SendResetPasswordCodeHtmlPage}", new { User = user, Code = code }).SendAsync();
+            var response = await mailer.Body($"{code}").SendAsync();
             if (response.Successful)
                  return new SuccessResult("");
             return new ErrorResult(string.Join(", ", response.ErrorMessages));
         }
-
         public async Task<IResult> SendVerifyEmail(User user, string accessToken,string subject,string body = default)
         {
             var mailer = _fluentMailer.StartMailer(subject, user.Email);

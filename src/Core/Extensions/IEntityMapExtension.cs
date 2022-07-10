@@ -19,7 +19,7 @@ namespace Core.Extensions
 
             foreach (var property in properties)
             {
-                if (property.GetValue(dto) is not null and not (object)"" and not (object)0)
+                if (property.GetValue(dto) is not null and not "" and not 0)
                      entity.GetType().GetProperty(property.Name)?.SetValue(entity, property.GetValue(dto), null);
              
                 

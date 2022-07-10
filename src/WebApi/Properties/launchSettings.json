@@ -13,12 +13,6 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "environmentVariables": {
-        "JWT_SECRET": "Berat Elmir Emrah Harika bir secret",
-        "JWT_ISSUER": "nervio",
-        "CLIENT_ID": "3a8962eb-3e66-459b-9a63-00374b3e5d3b",
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
       "ancmHostingModel": "OutOfProcess"
     },
     "WebApi": {

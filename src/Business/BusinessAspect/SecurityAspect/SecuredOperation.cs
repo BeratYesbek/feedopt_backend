@@ -33,8 +33,8 @@ namespace Business.BusinessAspect
         {
             // a sample jwt encoded token string which is supposed to be extracted from 'Authorization' HTTP header in your Web Api controller
             var nameIdentifier = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            var cookieEmail = _httpContextAccessor.HttpContext?.Request.Cookies["Email"];
-
+            
+            
             var roleClaims = _httpContextAccessor.HttpContext?.User.ClaimRoles();
             var exp = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(t => t.Type == "exp");
             var cultureName = _httpContextAccessor.HttpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];

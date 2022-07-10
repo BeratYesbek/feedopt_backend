@@ -36,7 +36,10 @@ namespace Business.Concretes
         private readonly IUserOperationClaimService _userOperationService;
         private readonly IAuthMailer _authMailer;
         private readonly IVerificationCodeService _verificationCodeService;
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IUserOperationClaimService userOperationClaimService, IAuthMailer authMailer, IVerificationCodeService verificationCodeService)
+
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper,
+            IUserOperationClaimService userOperationClaimService, IAuthMailer authMailer,
+            IVerificationCodeService verificationCodeService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
@@ -66,7 +69,6 @@ namespace Business.Concretes
                 PreferredLanguage = Core.Utilities.Language.PreferredLanguage.tr,
                 EmailConfirmed = false,
                 PhoneNumberConfirmed = false
-
             };
 
             var createdUser = _userService.Add(user);
@@ -77,7 +79,6 @@ namespace Business.Concretes
                 var accessToken = _tokenHelper.CreateToken(user, claims, DateTime.Now.AddMinutes(10));
                 _authMailer.SendVerifyEmail(createdUser.Data, accessToken.Token, "Verify Your Account");
                 return new SuccessDataResult<User>(createdUser.Data);
-
             }
 
             _userService.Delete(createdUser.Data);
@@ -97,8 +98,9 @@ namespace Business.Concretes
             {
                 return new ErrorDataResult<User>(null, "Password or email is wrong");
             }
+
             if (!HashingHelper.verifPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash,
-                userToCheck.Data.PasswordSalt))
+                    userToCheck.Data.PasswordSalt))
             {
                 return new ErrorDataResult<User>(null, "Password or email is wrong");
             }
@@ -120,6 +122,7 @@ namespace Business.Concretes
 
             return new SuccessResult();
         }
+
         /// <summary>
         /// Access Token is created by this method
         /// </summary>
@@ -133,8 +136,22 @@ namespace Business.Concretes
             return new SuccessDataResult<AccessToken>(accessToken, "Token has been created");
         }
 
+        [SecuredOperation($"{Role.User},{Role.Admin},{Role.SuperAdmin}")]
+        public IResult ResetPassword(string password, string passwordConfirmation)
+        {
+            if (!password.Equals(passwordConfirmation)) return new ErrorResult();
+            
+            HashingHelper.CreateHashPassword(password, out var passwordHash, out var passwordSalt);
+            var user = CurrentUser.User;
+            user.PasswordSalt = passwordSalt;
+            user.PasswordHash = passwordHash;
+            _userService.Update(user);
+            return new SuccessResult();
+
+        }
+
         [LogAspect(typeof(DatabaseLogger))]
-        public IResult SendResetPasswordCode(string email)
+        public async Task<IResult> SendResetPasswordCode(string email)
         {
             var userResult = _userService.GetByMail(email);
 
@@ -147,8 +164,7 @@ namespace Business.Concretes
                 Expiry = DateTime.Now.AddMinutes(3),
                 Type = CodeType.ResetPassword
             });
-            _authMailer.SendResetPasswordCode(userResult.Data, verifyCode, "Reset Your Password");
-
+            await _authMailer.SendResetPasswordCode(userResult.Data, verifyCode, "Reset Your Password");
             return new SuccessResult();
         }
 
@@ -158,10 +174,12 @@ namespace Business.Concretes
         /// <param name="code"></param>
         /// <param name="email"></param>
         /// <returns>IResult</returns>
-        public IResult VerifyCode(string code,string email)
+        public IDataResult<User> VerifyCode(string code, string email)
         {
             var result = _verificationCodeService.Get(code, email);
-            return result;
+            if (!result.Success) return new ErrorDataResult<User>(null, result.Message);
+            var user = _userService.GetByMail(email);
+            return new SuccessDataResult<User>(user.Data, result.Message);
         }
 
         /// <summary>
@@ -189,7 +207,6 @@ namespace Business.Concretes
             user.EmailConfirmed = true;
             _userService.Update(user);
             return new SuccessResult("Email has been confirmed successfully");
-
         }
     }
 }

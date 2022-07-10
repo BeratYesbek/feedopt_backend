@@ -102,7 +102,6 @@ namespace WebApi
                         OnMessageReceived = context =>
                         {
                             context.Token = context.Request.Cookies["Authorization"];
-                            context.Response.Cookies.Append("Email", "beratyesbek@gmail.com");
                             return Task.CompletedTask;
                         }
                     };

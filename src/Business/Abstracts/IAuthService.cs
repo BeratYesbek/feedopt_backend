@@ -17,8 +17,9 @@ namespace Business.Abstracts
         IResult UserExists(string email);
         IResult VerifyEmail(int userId);
         IDataResult<AccessToken> CreateAccessToken(User user,DateTime dateTime = default);
-        IResult SendResetPasswordCode(string email);
-        IResult VerifyCode(string code,string email);
+        IResult ResetPassword(string password,string passwordConfirmation);
+        Task<IResult> SendResetPasswordCode(string email);
+        IDataResult<User> VerifyCode(string code,string email);
         IDataResult<User> IsLoggedIn();
     }
 }

@@ -7,6 +7,11 @@ using Core.Entity;
 
 namespace Core.Utilities.Security.JWT
 {
+    public enum TokenType
+    {
+        Standard,
+        ResetPassword
+    }
     public class AccessToken
     {
         public string Token { get; set; }

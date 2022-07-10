@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Utilities.Security.JWT;
 using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Core.Extensions
@@ -20,7 +21,10 @@ namespace Core.Extensions
             claims.Add(new Claim(ClaimTypes.Name, name));
         }
 
-     
+        public static void AddTokenType(this ICollection<Claim> claims, TokenType tokenType)
+        {
+            claims.Add(new Claim("TokenType",tokenType.ToString()));
+        }
 
         public static void AddNameIdentifier(this ICollection<Claim> claims, string nameIdentifier)
         {

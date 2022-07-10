@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstracts;
 using Core.Entity;
@@ -11,6 +12,7 @@ using Core.Extensions;
 using Core.Utilities.Constants;
 using Core.Utilities.IoC;
 using Core.Utilities.Result.Concretes;
+using Core.Utilities.Security.JWT;
 using Entity.Dtos;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -101,9 +103,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("sendResetPasswordCode")]
-        public IActionResult SendResetPasswordCode(string email)
+        public async Task<IActionResult> SendResetPasswordCode(string email)
         {
-            var result = _authService.SendResetPasswordCode(email);
+            var result = await _authService.SendResetPasswordCode(email);
             if (result.Success)
             {
                 return Ok();
@@ -111,15 +113,32 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpPost("/verifyCode")]
+        [HttpPost("verifyCode")]
         public IActionResult VerifyCode(string code, string email)
         {
             var result = _authService.VerifyCode(code, email);
             if (result.Success)
             {
+                var token = _authService.CreateAccessToken(result.Data, DateTime.Now.AddMinutes(5));
+                HttpContext.SetCookie(new CookieParams
+                {
+                    AccessToken = token.Data,
+                    User = result.Data
+                });
+                return Ok(result.Message);
+            }
+            return BadRequest(result.Message);
+        }
+        
+        [HttpPost("resetPassword")]
+        public IActionResult ResetPassword(string password,string passwordConfirmation)
+        {
+            var result = _authService.ResetPassword(password, passwordConfirmation);
+            if (result.Success)
+            {
+                HttpContext.DeleteCookies();
                 return Ok(result);
             }
-
             return BadRequest(result);
         }
 
