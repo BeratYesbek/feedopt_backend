@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.BusinessMailer
 {
-    public class VerifyEmailMailer : IMailer
+    public class VerifyEmailMailer //: IMailer
     {
         private static readonly string _currentDirectory = $"{Environment.CurrentDirectory}\\wwwroot\\static\\mailer\\";
         private const string _verifyHtmlPage = "VerifyEmail.cshtml";

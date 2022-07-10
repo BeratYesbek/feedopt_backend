@@ -2,20 +2,26 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
 using Business.BusinessMailer;
+using Business.BusinessMailer.Abstracts;
 using Business.Security.Role;
 using Core.Aspects.Autofac;
+using Core.Aspects.Autofac.Logging;
+using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Entity;
 using Core.Entity.Concretes;
+using Core.Utilities.Generator;
 using Core.Utilities.Mailer;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
+using Entity.Concretes;
 using Entity.Dtos;
 
 namespace Business.Concretes
@@ -28,11 +34,15 @@ namespace Business.Concretes
         private readonly ITokenHelper _tokenHelper;
         private readonly IUserService _userService;
         private readonly IUserOperationClaimService _userOperationService;
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper,IUserOperationClaimService userOperationClaimService)
+        private readonly IAuthMailer _authMailer;
+        private readonly IVerificationCodeService _verificationCodeService;
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IUserOperationClaimService userOperationClaimService, IAuthMailer authMailer, IVerificationCodeService verificationCodeService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
             _userOperationService = userOperationClaimService;
+            _authMailer = authMailer;
+            _verificationCodeService = verificationCodeService;
         }
 
         /// <summary>
@@ -41,7 +51,7 @@ namespace Business.Concretes
         /// <param name="userForRegisterDto"></param>
         /// <param name="password"></param>
         /// <returns>IDataResult</returns>
-        [MailerAspect(typeof(VerifyEmailMailer), EmailType.VerifyEmail)]
+        //[MailerAspect(typeof(VerifyEmailMailer), EmailType.VerifyEmail)]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -62,8 +72,14 @@ namespace Business.Concretes
             var createdUser = _userService.Add(user);
             var result = _userOperationService.AddDefaultRole(createdUser.Data);
             if (result.Success)
+            {
+                var claims = _userService.GetClaims(user);
+                var accessToken = _tokenHelper.CreateToken(user, claims, DateTime.Now.AddMinutes(10));
+                _authMailer.SendVerifyEmail(createdUser.Data, accessToken.Token, "Verify Your Account");
                 return new SuccessDataResult<User>(createdUser.Data);
-            
+
+            }
+
             _userService.Delete(createdUser.Data);
             return new ErrorDataResult<User>(null);
         }
@@ -79,7 +95,6 @@ namespace Business.Concretes
 
             if (!userToCheck.Success)
             {
-                Debug.Print("");
                 return new ErrorDataResult<User>(null, "Password or email is wrong");
             }
             if (!HashingHelper.verifPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash,
@@ -116,6 +131,37 @@ namespace Business.Concretes
             var claims = _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims, dateTime);
             return new SuccessDataResult<AccessToken>(accessToken, "Token has been created");
+        }
+
+        [LogAspect(typeof(DatabaseLogger))]
+        public IResult SendResetPasswordCode(string email)
+        {
+            var userResult = _userService.GetByMail(email);
+
+            if (!userResult.Success) return new ErrorResult("User has not been found");
+            var verifyCode = RandomGenerator.Get6Digits();
+            _verificationCodeService.Add(new VerificationCode
+            {
+                CodeHash = verifyCode,
+                Email = userResult.Data.Email,
+                Expiry = DateTime.Now.AddMinutes(3),
+                Type = CodeType.ResetPassword
+            });
+            _authMailer.SendResetPasswordCode(userResult.Data, verifyCode, "Reset Your Password");
+
+            return new SuccessResult();
+        }
+
+        /// <summary>
+        /// This method verified everything about auth for instance reset password etc. 
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="email"></param>
+        /// <returns>IResult</returns>
+        public IResult VerifyCode(string code,string email)
+        {
+            var result = _verificationCodeService.Get(code, email);
+            return result;
         }
 
         /// <summary>

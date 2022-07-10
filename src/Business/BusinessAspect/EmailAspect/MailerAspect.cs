@@ -31,10 +31,10 @@ namespace Business.BusinessAspect
 
         public MailerAspect(Type mailerType, EmailType emailType)
         {
-            if (!typeof(IMailer).IsAssignableFrom(mailerType))
+           /* if (!typeof(IMailer).IsAssignableFrom(mailerType))
             {
                 throw new ArgumentException($"{mailerType.Name} is not a IMailer type");
-            }
+            }*/
 
             _emailtype = emailType;
             _mailerType = mailerType;
@@ -46,7 +46,7 @@ namespace Business.BusinessAspect
 
         protected override void OnAfter(IInvocation invocation)
         {
-            var email = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+           /* var email = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
 
             var mailer = (IMailer)Activator.CreateInstance(_mailerType);
             if (typeof(VerifyEmailMailer).IsAssignableFrom(_mailerType))
@@ -58,11 +58,11 @@ namespace Business.BusinessAspect
             else
             {
                 SendEmail(mailer, email);
-            }
+            }*/
 
 
         }
-
+        /*
         private void SendEmail(IMailer mailer,string email)
         {
             var result = _userService.GetByMail(email);
@@ -71,6 +71,6 @@ namespace Business.BusinessAspect
                 throw new ArgumentException("User email has not been found");
             }
             mailer.SendEmail(_emailtype, result.Data);
-        }
+        }*/
     }
 }

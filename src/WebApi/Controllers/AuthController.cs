@@ -26,13 +26,12 @@ namespace WebApi.Controllers
     {
         private readonly IAuthService _authService;
 
+        private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService,IUserService userService)
         {
             _authService = authService;
-
-
-
+            _userService = userService;
         }
 
         [HttpPost("login")]
@@ -64,6 +63,8 @@ namespace WebApi.Controllers
             }
             return BadRequest(userToLogin);
         }
+
+
 
         [HttpPost("register")]
         public IActionResult Register(UserForRegisterDto userForRegisterDto)
@@ -99,6 +100,28 @@ namespace WebApi.Controllers
             return Ok(_authService.IsLoggedIn());
         }
 
+        [HttpPost("sendResetPasswordCode")]
+        public IActionResult SendResetPasswordCode(string email)
+        {
+            var result = _authService.SendResetPasswordCode(email);
+            if (result.Success)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("/verifyCode")]
+        public IActionResult VerifyCode(string code, string email)
+        {
+            var result = _authService.VerifyCode(code, email);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
 
         [HttpGet("logout")]
         public IActionResult Logout()

@@ -3,6 +3,8 @@ using Autofac.Extras.DynamicProxy;
 using Business.Abstracts;
 using Business.Abstracts.Translations;
 using Business.BackgroundJob.Hangfire;
+using Business.BusinessMailer.Abstracts;
+using Business.BusinessMailer.Concretes.FluentMailer;
 using Business.Concretes;
 using Business.Concretes.Translations;
 using Business.Services.Abstracts;
@@ -11,6 +13,7 @@ using Castle.DynamicProxy;
 using Core.Utilities.Cloud.Aws.S3;
 using Core.Utilities.Cloud.Cloudinary;
 using Core.Utilities.Interceptors;
+using Core.Utilities.Mailer.FluentMailer;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstracts;
 using DataAccess.Abstracts.Translations;
@@ -25,11 +28,14 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<VerificationCodeManager>().As<IVerificationCodeService>().SingleInstance();
+            builder.RegisterType<EfVerificationCodeDal>().As<IVerificationCodeDal>().SingleInstance();
+
             builder.RegisterType<AdvertCategoryTranslationManager>().As<IAdvertCategoryTranslationService>().SingleInstance();
-            builder.RegisterType<EfAdvertCategoryTranslationDal>().As<IAdvertCategoryTranslationDal>();
+            builder.RegisterType<EfAdvertCategoryTranslationDal>().As<IAdvertCategoryTranslationDal>().SingleInstance();
 
             builder.RegisterType<AnimalCategoryTranslationManager>().As<IAnimalCategoryTranslationService>().SingleInstance();
-            builder.RegisterType<EfAnimalCategoryTranslationDal>().As<IAnimalCategoryTranslationDal>();
+            builder.RegisterType<EfAnimalCategoryTranslationDal>().As<IAnimalCategoryTranslationDal>().SingleInstance();
 
             builder.RegisterType<ColorTranslationManager>().As<IColorTranslationService>().SingleInstance();
             builder.RegisterType<EfColorTranslationDal>().As<IColorTranslationDal>().SingleInstance();
@@ -96,6 +102,9 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<CloudinaryService>().As<ICloudinaryService>().SingleInstance();
 
             builder.RegisterType<DistributedSessionStore>().As<ISessionStore>();
+
+            builder.RegisterType<FluentMailer>().As<IFluentMailer>().SingleInstance();
+            builder.RegisterType<AuthMailer>().As<IAuthMailer>().SingleInstance();
 
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

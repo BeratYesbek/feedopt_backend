@@ -7,8 +7,10 @@ using Core.Entity;
 
 namespace Core.Utilities.Mailer
 {
-    public interface IMailer
+    public interface IMailer<out T>
     {
         public void SendEmail(EmailType emailType, User user);
+
+        public T StartMailer(string subject,string email);
     }
 }

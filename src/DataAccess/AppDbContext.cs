@@ -41,6 +41,7 @@ namespace DataAccess
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<Filter> Filters { get; set; }
+        public DbSet<VerificationCode> VerificationCodes { get; set; }
         public DbSet<ColorTranslation> ColorTranslations { get; set; }
         public DbSet<AnimalCategoryTranslation> AnimalCategoryTranslations { get; set; }
 

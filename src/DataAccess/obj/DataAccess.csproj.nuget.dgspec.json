@@ -80,6 +80,10 @@
               "target": "Package",
               "version": "[6.0.1, )"
             },
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
             "CloudinaryDotNet": {
               "target": "Package",
               "version": "[1.19.0, )"
