@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Dynamic.Core.Tokenizer;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -129,20 +130,26 @@ namespace Business.Concretes
         /// <param name="user"></param>
         /// <param name="dateTime"></param>
         /// <returns>IDataResult</returns>
-        public IDataResult<AccessToken> CreateAccessToken(User user, DateTime dateTime = default)
+        public IDataResult<AccessToken> CreateAccessToken(User user, DateTime dateTime = default,TokenType tokenType = TokenType.Standard)
         {
             var claims = _userService.GetClaims(user);
-            var accessToken = _tokenHelper.CreateToken(user, claims, dateTime);
+            var accessToken = _tokenHelper.CreateToken(user, claims, dateTime,tokenType);
             return new SuccessDataResult<AccessToken>(accessToken, "Token has been created");
         }
 
-        [SecuredOperation($"{Role.User},{Role.Admin},{Role.SuperAdmin}")]
         public IResult ResetPassword(string password, string passwordConfirmation)
         {
-            if (!password.Equals(passwordConfirmation)) return new ErrorResult();
+            if (!password.Equals(passwordConfirmation)) return new ErrorResult("Passwords are not matching");
+
+            var result = _tokenHelper.GetIdentifier(TokenType.ResetPassword.ToString());
+            if (!result.Success) return new ErrorResult("User couldn't be verified");
+
+            var identifier = (string) result.Data;
+            var userResult = _userService.Get(int.Parse(identifier));
+            if (!userResult.Success) return new ErrorResult("User couldn't be found");
+            var user = userResult.Data;
             
             HashingHelper.CreateHashPassword(password, out var passwordHash, out var passwordSalt);
-            var user = CurrentUser.User;
             user.PasswordSalt = passwordSalt;
             user.PasswordHash = passwordHash;
             _userService.Update(user);
@@ -180,6 +187,37 @@ namespace Business.Concretes
             if (!result.Success) return new ErrorDataResult<User>(null, result.Message);
             var user = _userService.GetByMail(email);
             return new SuccessDataResult<User>(user.Data, result.Message);
+        }
+
+        /// <summary>
+        /// This method is able to change password of users
+        /// </summary>
+        /// <param name="oldPassword"></param>
+        /// <param name="password"></param>
+        /// <param name="passwordConfirmation"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [SecuredOperation($"{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        public async Task<IResult> ChangePassword(string oldPassword, string password, string passwordConfirmation)
+        {
+            if (!password.Equals(passwordConfirmation)) return new ErrorResult("Passwords are not matching");
+            var result = HashingHelper.verifPasswordHash(oldPassword, CurrentUser.User.PasswordHash, CurrentUser.User.PasswordSalt);
+            if (result)
+            {
+                byte[] passwordSalt, passwordHash;
+                HashingHelper.CreateHashPassword(password,out passwordHash,out passwordSalt);
+                var user = CurrentUser.User;
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+                var updatedResult = await _userService.Update(user);
+                if (updatedResult.Success) return new SuccessResult("Password has been updated");
+            }
+            else
+            {
+                return new ErrorResult("Old password is not correct");
+
+            }
+            return new ErrorResult("Passwords couldn't be updated");
         }
 
         /// <summary>

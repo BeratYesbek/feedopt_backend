@@ -102,10 +102,12 @@ namespace WebApi.Controllers
             return Ok(_authService.IsLoggedIn());
         }
 
-        [HttpPost("sendResetPasswordCode")]
-        public async Task<IActionResult> SendResetPasswordCode(string email)
+        [HttpPost("forgetPassword")]
+        public async Task<IActionResult> ForgetPassword([FromBody] dynamic json)
         {
-            var result = await _authService.SendResetPasswordCode(email);
+            var email = json.email ?? (string)json.email;
+            if (email == null) return BadRequest("Email is null");
+            var result = await _authService.SendResetPasswordCode((string) email);
             if (result.Success)
             {
                 return Ok();
@@ -114,12 +116,16 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("verifyCode")]
-        public IActionResult VerifyCode(string code, string email)
+        public IActionResult VerifyCode([FromBody] dynamic json)
         {
+            string code = json.code ?? (string)json.code;
+            string email = json.email ?? (string)json.email;
+            if (code == null || email == null) return BadRequest("Email and code are null");
+
             var result = _authService.VerifyCode(code, email);
             if (result.Success)
             {
-                var token = _authService.CreateAccessToken(result.Data, DateTime.Now.AddMinutes(5));
+                var token = _authService.CreateAccessToken(result.Data, DateTime.Now.AddMinutes(5),TokenType.ResetPassword);
                 HttpContext.SetCookie(new CookieParams
                 {
                     AccessToken = token.Data,
@@ -131,14 +137,36 @@ namespace WebApi.Controllers
         }
         
         [HttpPost("resetPassword")]
-        public IActionResult ResetPassword(string password,string passwordConfirmation)
+        public IActionResult ResetPassword([FromBody] dynamic json)
         {
+            string password = json.password ?? (string)json.password;
+            string passwordConfirmation = json.passwordConfirmation ?? (string)json.passwordConfirmation;
+            if (passwordConfirmation == null || password == null) return BadRequest("Passwords are nullable");
+     
             var result = _authService.ResetPassword(password, passwordConfirmation);
             if (result.Success)
             {
                 HttpContext.DeleteCookies();
                 return Ok(result);
             }
+            return BadRequest(result);
+        }
+
+        [HttpPost("changePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] dynamic json)
+        {
+
+            string oldPassword = json.oldPassword ?? (string)json.oldPassword;
+            string password = json.password ?? (string)json.password;
+            string passwordConfirmation = json.passwordConfirmation ?? (string)json.passwordConfirmation;
+            if (passwordConfirmation == null || password == null || oldPassword == null) return BadRequest("Passwords are nullable");
+
+            var result = await _authService.ChangePassword(oldPassword, password, passwordConfirmation);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
             return BadRequest(result);
         }
 

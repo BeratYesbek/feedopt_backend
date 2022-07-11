@@ -73,7 +73,7 @@ namespace Business.Concretes
         /// <param name="files">files</param>
         /// <param name="location">location</param>
         /// <returns>It will return data result that includes added advert</returns>
-        //[SecuredOperation($"{Role.AdvertAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [ValidationAspect(typeof(AdvertValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]
@@ -141,7 +141,7 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="id">advertId</param>
         /// <returns>It will return data result that includes an advert</returns>
-        //[SecuredOperation($"{Role.AdvertGet},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertGet},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         public IDataResult<Advert> Get(int id)
@@ -292,7 +292,7 @@ namespace Business.Concretes
         /// <param name="deletedImages"></param>
         /// <param name="location">location</param>
         /// <returns>It will return a result that includes message</returns>
-        // [SecuredOperation($"{Role.AdvertUpdate},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertUpdate},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [ValidationAspect(typeof(AdvertValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]

@@ -14,6 +14,8 @@ using Core.Entity.Concretes;
 using DataAccess.Concretes;
 using Microsoft.AspNetCore.Localization;
 using Core.Entity;
+using Core.Utilities.Security.JWT;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Business.BusinessAspect
 {
@@ -38,7 +40,10 @@ namespace Business.BusinessAspect
             var roleClaims = _httpContextAccessor.HttpContext?.User.ClaimRoles();
             var exp = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(t => t.Type == "exp");
             var cultureName = _httpContextAccessor.HttpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
-
+            var tokenType = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(t => t.Type == "TokenType")?.Value;
+            if (tokenType != null && !tokenType.Equals(TokenType.Standard.ToString()))
+                throw new SecurityTokenException("Invalid Token");
+            
             if (nameIdentifier is not null)
                 SetCurrentUser(nameIdentifier, cultureName?.Split("|")[0].Split("=")[1]);
 
