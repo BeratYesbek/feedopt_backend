@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Abstracts;
-using Business.BusinessAspect;
-using Business.Validation.FluentValidation;
-using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
-using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Entity;
 using Core.Entity.Concretes;
@@ -36,6 +28,7 @@ namespace Business.Concretes
         {
             _userDal = userDal;
         }
+        
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
         public IDataResult<User> Add(User user)

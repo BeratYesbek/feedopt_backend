@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Business.Services.Abstracts
 {
+    /// <summary>
+    /// Disabled Service
+    /// </summary>
     public interface ISmsService
     {
         Task SendSms(string title,string phoneNumber, string text);

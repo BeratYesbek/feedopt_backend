@@ -11,38 +11,26 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 
-namespace Core.Entity
+namespace Core.Entity.Concretes
 {
 
     public class User : IEntity
     {
         public int Id { get; set; }
-
         public string FullName { get; set; }
-
         public string Email { get; set; }
-
         public string PhoneNumber { get; set; }
-
-        public bool PhoneNumberConfirmed { get; set; } = false;
-
-        public bool TwoFactorEnabled { get; set; } = false;
-
         public bool EmailConfirmed { get; set; } = false;
-
+        
         public bool Status { get; set; } = false;
-
-        public PreferredLanguage PreferredLanguage { get; set; }
-
+        public PreferredLanguage PreferredLanguage { get; set; } = PreferredLanguage.tr;
         public string ImagePath { get; set; }
 
         [NotMapped]
         [Newtonsoft.Json.JsonIgnore]
-        public IFormFile File { get; set; } 
-
+        public IFormFile File { get; set; }
         [Newtonsoft.Json.JsonIgnore]
         public byte[] PasswordHash { get; set; }
-
         [Newtonsoft.Json.JsonIgnore]
         public byte[] PasswordSalt { get; set; }
     }

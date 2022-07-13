@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Linq.Dynamic.Core.Tokenizer;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
-using Business.BusinessMailer;
 using Business.BusinessMailer.Abstracts;
+using Business.BusinessRules;
 using Business.Security.Role;
-using Core.Aspects.Autofac;
 using Core.Aspects.Autofac.Logging;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
-using Core.Entity;
 using Core.Entity.Concretes;
 using Core.Utilities.Generator;
-using Core.Utilities.Mailer;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using Core.Utilities.Security.Hashing;
@@ -55,7 +46,7 @@ namespace Business.Concretes
         /// <param name="userForRegisterDto"></param>
         /// <param name="password"></param>
         /// <returns>IDataResult</returns>
-        //[MailerAspect(typeof(VerifyEmailMailer), EmailType.VerifyEmail)]
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
@@ -69,7 +60,6 @@ namespace Business.Concretes
                 PhoneNumber = userForRegisterDto.PhoneNumber,
                 PreferredLanguage = Core.Utilities.Language.PreferredLanguage.tr,
                 EmailConfirmed = false,
-                PhoneNumberConfirmed = false
             };
 
             var createdUser = _userService.Add(user);
@@ -91,6 +81,7 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="userForLoginDto"></param>
         /// <returns>IDataResult</returns>
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
@@ -114,6 +105,7 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="email"></param>
         /// <returns>IResult</returns>
+        [LogAspect(typeof(DatabaseLogger))]
         public IResult UserExists(string email)
         {
             if (_userService.GetByMail(email).Success)
@@ -130,13 +122,15 @@ namespace Business.Concretes
         /// <param name="user"></param>
         /// <param name="dateTime"></param>
         /// <returns>IDataResult</returns>
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<AccessToken> CreateAccessToken(User user, DateTime dateTime = default,TokenType tokenType = TokenType.Standard)
         {
             var claims = _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims, dateTime,tokenType);
             return new SuccessDataResult<AccessToken>(accessToken, "Token has been created");
         }
-
+        
+        [LogAspect(typeof(DatabaseLogger))]
         public IResult ResetPassword(string password, string passwordConfirmation)
         {
             if (!password.Equals(passwordConfirmation)) return new ErrorResult("Passwords are not matching");
@@ -181,6 +175,7 @@ namespace Business.Concretes
         /// <param name="code"></param>
         /// <param name="email"></param>
         /// <returns>IResult</returns>
+        [LogAspect(typeof(DatabaseLogger))]
         public IDataResult<User> VerifyCode(string code, string email)
         {
             var result = _verificationCodeService.Get(code, email);
@@ -195,15 +190,24 @@ namespace Business.Concretes
         /// <param name="oldPassword"></param>
         /// <param name="password"></param>
         /// <param name="passwordConfirmation"></param>
+        /// <param name="code"></param>
+        /// <param name="email"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         [SecuredOperation($"{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
-        public async Task<IResult> ChangePassword(string oldPassword, string password, string passwordConfirmation)
+        [LogAspect(typeof(DatabaseLogger),Priority = 2)]
+        public async Task<IResult> ChangePassword(string oldPassword, string password, string passwordConfirmation,string code,string email)
         {
-            if (!password.Equals(passwordConfirmation)) return new ErrorResult("Passwords are not matching");
-            var result = HashingHelper.verifPasswordHash(oldPassword, CurrentUser.User.PasswordHash, CurrentUser.User.PasswordSalt);
-            if (result)
+            var result = Core.Utilities.Business.BusinessRules.Run(
+                AuthBusinessRules.EmailConfirmation(CurrentUser.User.Email,email),
+                AuthBusinessRules.PasswordValidation(password,passwordConfirmation),
+                AuthBusinessRules.VerifyOldPassword(oldPassword,CurrentUser.User.PasswordHash,CurrentUser.User.PasswordSalt)
+                );
+            if (result.Success)
             {
+                var verificationCode = _verificationCodeService.Get(code, email);
+                if (!verificationCode.Success) return new ErrorDataResult<User>(null, result.Message);
+
                 byte[] passwordSalt, passwordHash;
                 HashingHelper.CreateHashPassword(password,out passwordHash,out passwordSalt);
                 var user = CurrentUser.User;
@@ -212,12 +216,8 @@ namespace Business.Concretes
                 var updatedResult = await _userService.Update(user);
                 if (updatedResult.Success) return new SuccessResult("Password has been updated");
             }
-            else
-            {
-                return new ErrorResult("Old password is not correct");
 
-            }
-            return new ErrorResult("Passwords couldn't be updated");
+            return result;
         }
 
         /// <summary>
@@ -225,6 +225,7 @@ namespace Business.Concretes
         /// </summary>
         /// <returns>IDataResult</returns>
         [SecuredOperation($"{Role.IsLoggedIn},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [LogAspect(typeof(DatabaseLogger),Priority = 2)]
         public IDataResult<User> IsLoggedIn()
         {
             return new SuccessDataResult<User>(CurrentUser.User);
@@ -235,6 +236,7 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>IResult</returns>
+        [LogAspect(typeof(DatabaseLogger),Priority = 2)]
         public IResult VerifyEmail(int userId)
         {
             var userResult = _userService.Get(userId);

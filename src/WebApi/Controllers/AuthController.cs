@@ -159,9 +159,11 @@ namespace WebApi.Controllers
             string oldPassword = json.oldPassword ?? (string)json.oldPassword;
             string password = json.password ?? (string)json.password;
             string passwordConfirmation = json.passwordConfirmation ?? (string)json.passwordConfirmation;
+            string code = json.verificationCode ?? (string)json.verificationCode;
+            string email = json.email ?? (string)json.email;
             if (passwordConfirmation == null || password == null || oldPassword == null) return BadRequest("Passwords are nullable");
 
-            var result = await _authService.ChangePassword(oldPassword, password, passwordConfirmation);
+            var result = await _authService.ChangePassword(oldPassword, password, passwordConfirmation,code,email);
             if (result.Success)
             {
                 return Ok(result);

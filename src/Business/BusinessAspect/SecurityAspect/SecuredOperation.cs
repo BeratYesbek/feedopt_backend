@@ -64,7 +64,7 @@ namespace Business.BusinessAspect
             if (result.Success)
             {
                 CurrentUser.User = result.Data;
-                var locationResult = new UserLocationManager(new EfUserLocationDal()).GetById(CurrentUser.User.Id);
+                var locationResult = new UserLocationManager(new EfUserLocationDal()).GetByUserId(CurrentUser.User.Id);
                 CurrentUser.CultureName = cultureName;
                 if (locationResult.Success)
                 {

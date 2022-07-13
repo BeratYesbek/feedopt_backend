@@ -10,7 +10,7 @@ using Core.Entity.Concretes;
 
 namespace Business.BusinessRules
 {
-    internal class AdvertBusinessRules
+    internal static class AdvertBusinessRules
     {
 
         internal static IResult CheckFilesSize(IFormFile[] files)

@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
-using Amazon.Auth.AccessControlPolicy.ActionIdentifiers;
 using Core.DataAccess;
-using Core.Entity;
 using Core.Entity.Concretes;
 using Core.Utilities.Calculator;
 using DataAccess.Abstracts;

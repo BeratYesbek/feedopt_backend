@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Utilities.Result.Abstracts;
-using Entity.concretes;
 using Entity.Concretes;
 using Entity.Dtos;
 using Entity.Dtos.Filter;

@@ -6,6 +6,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Entity;
+using Core.Entity.Concretes;
 using FluentEmail.Core;
 using FluentEmail.Razor;
 using FluentEmail.Smtp;

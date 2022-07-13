@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.BusinessMailer.Abstracts;
 using Core.Entity;
+using Core.Entity.Concretes;
 using Core.Utilities.Mailer;
 using Core.Utilities.Mailer.FluentMailer;
 using Core.Utilities.Result.Abstracts;

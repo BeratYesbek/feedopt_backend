@@ -15,7 +15,6 @@ using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
 using Entity.Concretes;
 using Entity.Dtos;
-using Hangfire;
 
 namespace Business.Concretes
 {
@@ -115,7 +114,7 @@ namespace Business.Concretes
         {
             var latitude = CurrentUser.Latitude;
             var longitude = CurrentUser.Longitude;
-            var data = _favoriteAdvertDal.GetAllDetailByFilter(f => f.UserId == userId, latitude, longitude);
+            var data = _favoriteAdvertDal.GetAllDetailByFilter(f => f.UserId == CurrentUser.User.Id, CurrentUser.User.Id,latitude, longitude);
             if (data is not null)
             {
                 return new SuccessDataResult<List<FavoriteAdvertReadDto>>(data, FavoriteAdvertMessages.FavoriteGetAllSuccess);

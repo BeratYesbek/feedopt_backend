@@ -1,5 +1,4 @@
-﻿
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Business.Services.Abstracts;
 using Entity.Concretes;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +27,7 @@ namespace Business.Services.Concretes
         /// <param name="advert"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        public async Task SendNewPostAsync(Advert advert, Core.Entity.User user)
+        public async Task SendNewPostAsync(Advert advert, Core.Entity.Concretes.User user)
         {
             await _botClient.SendTextMessageAsync(
                 new ChatId(_configuration.GetSection("TelegramOptions")["TelegramChatId"]),

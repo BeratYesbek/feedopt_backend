@@ -31,7 +31,7 @@ namespace WebApi.Controllers
         [HttpGet("/getById")]
         public IActionResult GetByUserId(int userId)
         {
-            var result = _userLocationService.GetById(userId);
+            var result = _userLocationService.GetByUserId(userId);
             if (result.Success)
             {
                 return Ok(result);

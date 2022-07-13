@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Business.Abstracts;
 using Business.BusinessAspect;
 using Business.Security.Role;
 using Business.Validation.FluentValidation;
@@ -14,10 +11,9 @@ using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
-using DataAccess.Concretes;
 using Entity.concretes;
 
-namespace Business.Abstracts
+namespace Business.Concretes
 {
     /// <summary>
     /// This class manage Animal Species. Whenever need to manage something on that, everything should do in this class because of SOLID - Single Responsibility Principle

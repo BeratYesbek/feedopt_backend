@@ -35,7 +35,7 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="image">image</param>
         /// <returns>It will return result</returns>
-       // [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertImageAdd},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [ValidationAspect(typeof(AdvertImageValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]
@@ -53,7 +53,7 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="image">image</param>
         /// <returns>It will return result</returns>
-       // [SecuredOperation($"{Role.AdvertImageDelete},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertImageDelete},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         [CacheRemoveAspect("IAdvertImageService.GetByAdvertId", Priority = 4)]
@@ -70,7 +70,7 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="id"></param>
         /// <returns>It will return data result that includes single data</returns>
-       // [SecuredOperation($"{Role.AdvertImageGet},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertImageGet},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         [CacheAspect(Priority = 4)]
@@ -90,7 +90,7 @@ namespace Business.Concretes
         /// This method run to get all AdvertImages, It is going to work with O(4) without Linq expression
         /// </summary>
         /// <returns>It will return data result that includes Advert Images</returns>
-       // [SecuredOperation($"{Role.AdvertImageGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertImageGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         [CacheAspect(Priority = 4)]
@@ -112,7 +112,7 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="id">advertId</param>
         /// <returns>It will return data result that includes list of Advert Images</returns>
-      //  [SecuredOperation($"{Role.AdvertImageGet},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertImageGet},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         [CacheAspect(Priority = 4)]
@@ -134,7 +134,7 @@ namespace Business.Concretes
         /// </summary>
         /// <param name="image">image</param>
         /// <returns>It will return result</returns>
-      //  [SecuredOperation($"{Role.AdvertUpdate},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        [SecuredOperation($"{Role.AdvertUpdate},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [ValidationAspect(typeof(AdvertImageValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Core.Entity.Concretes;
 
 namespace Entity.Dtos
 {
@@ -34,25 +35,6 @@ namespace Entity.Dtos
         public dynamic LogDetail { get; set; }
 
         public dynamic Parameters { get; set; }
-
-
-    /*    public string logdetail
-        {
-            get => LogDetail;
-            set
-            {
-                LogDetail = JsonSerializer.Deserialize(value);
-            }
-        }*/
-
-       /* public string logparameters
-        {
-            get => Parameters;
-            set
-            {
-                Parameters = JsonSerializer.Serialize(value);
-            }
-        }*/
         public string stacktrace { get; set; }
 
         public User User { get; set; }

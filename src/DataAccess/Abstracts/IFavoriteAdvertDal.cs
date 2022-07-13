@@ -9,6 +9,6 @@ namespace DataAccess.Abstracts
 {
     public interface IFavoriteAdvertDal : IEntityRepository<FavoriteAdvert>
     {
-        public List<FavoriteAdvertReadDto> GetAllDetailByFilter(Expression<Func<FavoriteAdvert,bool>> filter, double latitude, double longitude);
+        public List<FavoriteAdvertReadDto> GetAllDetailByFilter(Expression<Func<FavoriteAdvert,bool>> filter,int userId ,double latitude, double longitude);
     }
 }

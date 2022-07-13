@@ -23,14 +23,14 @@ namespace Core.Aspects.Autofac.Logging
         private readonly IHttpContextAccessor _httpContextAccessor;
         public LogAspect(Type loggerService)
         {
-          /*  if (loggerService.BaseType == typeof(LoggerServiceBase))
+       /*     if (loggerService.BaseType == typeof(LoggerServiceBase))
                 _loggerServiceBase = (LoggerServiceBase)Activator.CreateInstance(loggerService);
 
             if (loggerService.BaseType == typeof(NLoggerServiceBase))
                 _nLoggerServiceBase = (NLoggerServiceBase)Activator.CreateInstance(loggerService);
 
-            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();*/
-
+            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+*/
 
         }
 
@@ -38,13 +38,14 @@ namespace Core.Aspects.Autofac.Logging
         {
            /* if (_loggerServiceBase != null)
                 _loggerServiceBase.Info(GetLogDetail(invocation));
+            
             if (_nLoggerServiceBase != null)
                 _nLoggerServiceBase.Info((LogDetail)GetLogDetail(invocation));*/
         }
 
         protected override void OnException(IInvocation invocation, Exception exception)
         {
-            /*  if (_loggerServiceBase != null)
+              if (_loggerServiceBase != null)
               {
                   _loggerServiceBase.Error(new LogWithException
                   {
@@ -53,12 +54,12 @@ namespace Core.Aspects.Autofac.Logging
                   });
               }
               if (_nLoggerServiceBase != null)
-                  _nLoggerServiceBase.Error((LogDetail)GetLogDetail(invocation), exception);*/
+                  _nLoggerServiceBase.Error((LogDetail)GetLogDetail(invocation), exception);
         }
 
         private LogDetail GetLogDetail(IInvocation invocation)
         {
-            /*var logParameters = new List<LogParameter>();
+            var logParameters = new List<LogParameter>();
             for (int i = 0; i < invocation.Arguments.Length; i++)
             {
                 logParameters.Add(new LogParameter
@@ -78,7 +79,7 @@ namespace Core.Aspects.Autofac.Logging
                 UserId = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value,
                 Claims = string.Join(",", _httpContextAccessor.HttpContext?.User.ClaimRoles() ?? throw new InvalidOperationException())
 
-            };*/
+            };
             return null;
         }
 
