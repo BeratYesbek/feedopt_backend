@@ -76,6 +76,7 @@ namespace WebApi
             services.AddScoped<IConfig, Config.Config>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddHangfire(x => x.UsePostgreSqlStorage(Configuration.GetConnectionString("DB_CONNECTION_STRING")));
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

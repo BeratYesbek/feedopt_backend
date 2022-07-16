@@ -318,8 +318,11 @@ namespace Business.Concretes
             deletedImages?.ForEach(item =>
             {
                 var image = images.Data.FirstOrDefault(t => t.Id == item);
-                image.IsDeleted = true;
-                _imageService.Update(image);
+                if (image == null)
+                {
+                    image.IsDeleted = true;
+                    _imageService.Update(image);
+                }
             });
            //* _ = location.Id != 0 || location != null ?  : null;
            if (location.Id != 0  && location.Id != null)
