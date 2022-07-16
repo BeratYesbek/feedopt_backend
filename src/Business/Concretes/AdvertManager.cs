@@ -318,7 +318,7 @@ namespace Business.Concretes
             deletedImages?.ForEach(item =>
             {
                 var image = images.Data.FirstOrDefault(t => t.Id == item);
-                if (image == null)
+                if (image != null)
                 {
                     image.IsDeleted = true;
                     _imageService.Update(image);
