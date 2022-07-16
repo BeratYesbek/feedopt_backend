@@ -321,7 +321,10 @@ namespace Business.Concretes
                 image.IsDeleted = true;
                 _imageService.Update(image);
             });
-            _ = location.Id != 0 || location != null ? _locationService.Update(location) : null;
+           //* _ = location.Id != 0 || location != null ?  : null;
+           if (location.Id != 0  && location.Id != null)
+               _locationService.Update(location);
+           
             _advertDal.Update(advert);
 
             return new SuccessResult(AdvertMessages.AdvertUpdate);
