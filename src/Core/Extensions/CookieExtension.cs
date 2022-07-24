@@ -27,8 +27,7 @@ namespace Core.Extensions
                 new CookieOptions { Expires = cookieParams.AccessToken.Expiration, HttpOnly = true, Secure = true });
 
             httpContext.Response.Cookies.Append(CookieKey.Email, cookieParams.User.Email,
-                new CookieOptions { Expires = cookieParams.AccessToken.Expiration,HttpOnly = true,Secure = true});
-          
+                new CookieOptions { Expires = cookieParams.AccessToken.Expiration,HttpOnly = true,Secure = true});          
         }
 
         public static void DeleteCookies(this HttpContext httpContext)
