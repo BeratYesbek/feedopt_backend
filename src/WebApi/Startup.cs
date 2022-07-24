@@ -83,8 +83,9 @@ namespace WebApi
                 .AddCookie(options =>
                 {
                     options.Cookie.SameSite = SameSiteMode.None;
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
                     options.Cookie.IsEssential = true;
+                    
                 })
                 .AddJwtBearer(options =>
                 {
@@ -158,7 +159,7 @@ namespace WebApi
 
 
             //app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            app.UseCors(builder => builder.WithOrigins("http://localhost:3001/", "http://localhost:3000/", "http://127.0.0.1:3000/").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
 
             var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(Language.SupportedLanguage[0])
                 .AddSupportedCultures(Language.SupportedLanguage)
