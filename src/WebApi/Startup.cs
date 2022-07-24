@@ -83,7 +83,7 @@ namespace WebApi
                 .AddCookie(options =>
                 {
                     options.Cookie.SameSite = SameSiteMode.None;
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.IsEssential = true;
                     
                 })
@@ -115,7 +115,6 @@ namespace WebApi
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
                 options.Cookie.IsEssential = true;
-                options.Cookie.SameSite = SameSiteMode.None;
             });
 
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -124,11 +123,7 @@ namespace WebApi
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 
-            services.AddCookiePolicy(opt =>
-            {
-                opt.Secure = CookieSecurePolicy.None;
-                opt.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+
 
             services.AddCors(options =>
             {
@@ -138,7 +133,10 @@ namespace WebApi
                         policy.WithOrigins("http://localhost:3000",
                             "https://fierce-mesa-92839.herokuapp.com",
                             "https://ced8-5-47-157-180.ngrok.io",
-                            "http://ced8-5-47-157-180.ngrok.io").AllowAnyHeader().AllowCredentials().AllowAnyMethod();
+                            "http://ced8-5-47-157-180.ngrok.io")
+                            .AllowAnyHeader()
+                            .AllowCredentials()
+                            .AllowAnyMethod();
                     });
             });
 
@@ -171,8 +169,7 @@ namespace WebApi
             app.UseAuthorization();
             app.VerifyUserRequest();
             app.UseSwagger();
-            app.UseCookiePolicy();
-            
+
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
 
 
