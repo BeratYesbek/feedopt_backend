@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Core.CrossCuttingConcerns.Cache;
+using Core.Extensions;
 using Core.Utilities.Cloud.FCM;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
@@ -31,10 +34,14 @@ namespace WebApi.SignalR
         {
 
             Console.WriteLine("--> Connection Opened: " + Context.ConnectionId);
+            var dummyCookie = _context.HttpContext.Request.Cookies["dummyCookie"];
 
-            var groupName = GetGroupName();
-            
-            Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+            var groupName = "";// GetGroupName();
+            var s = _context.HttpContext.Request.Headers["Foo"];
+            var roleClaims = _context.HttpContext?.User.ClaimRoles();
+            var exp = _context.HttpContext?.User.Claims.FirstOrDefault(t => t.Type == "exp");
+            var cultureName = _context.HttpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+            var tokenType = _context.HttpContext?.User.Claims.FirstOrDefault(t => t.Type == "TokenType")?.Value; Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             if (CheckGroupIsExists(groupName))
             {
                 int members = GetGroupMember(groupName);

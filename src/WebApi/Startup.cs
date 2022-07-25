@@ -85,7 +85,7 @@ namespace WebApi
                     options.Cookie.SameSite = SameSiteMode.None;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.IsEssential = true;
-                    
+
                 })
                 .AddJwtBearer(options =>
                 {
@@ -94,7 +94,7 @@ namespace WebApi
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
-                       
+
                         ValidIssuer = tokenOptions.Issuer,
                         ValidAudience = tokenOptions.Audience,
                         ValidateIssuerSigningKey = true,
@@ -111,6 +111,7 @@ namespace WebApi
                 });
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" }); });
+
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
@@ -119,24 +120,28 @@ namespace WebApi
 
             services.AddControllers().AddNewtonsoftJson(options =>
             {
-                options.SerializerSettings.ContractResolver =new DefaultContractResolver();
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 
-
-
             services.AddCors(options =>
             {
-                options.AddPolicy(name: "MyPolicy",
+                options.AddPolicy(name: "FeedoptCorsPolicy",
                     policy =>
                     {
-                        policy.WithOrigins("http://localhost:3000",
-                            "https://fierce-mesa-92839.herokuapp.com",
-                            "https://ced8-5-47-157-180.ngrok.io",
-                            "http://ced8-5-47-157-180.ngrok.io")
-                            .AllowAnyHeader()
+                        policy.WithOrigins(
+                                "http://localhost:3000",
+                                "http://localhost:3000/",
+                                "https://localhost:3000",
+                                "https://localhost:3000/",
+                                "http://127.0.0.1:5500",
+                                "https://127.0.0.1:5500",
+                                "https://fierce-mesa-92839.herokuapp.com",
+                                "https://ced8-5-47-157-180.ngrok.io",
+                                "http://ced8-5-47-157-180.ngrok.io")
                             .AllowCredentials()
-                            .AllowAnyMethod();
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
                     });
             });
 
@@ -169,13 +174,9 @@ namespace WebApi
             app.UseAuthorization();
             app.VerifyUserRequest();
             app.UseSwagger();
-
+            app.UseCors("FeedoptCorsPolicy");
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
 
-
-            //app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            // app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-            app.UseCors("MyPolicy");
 
             var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(Language.SupportedLanguage[0])
                 .AddSupportedCultures(Language.SupportedLanguage)
