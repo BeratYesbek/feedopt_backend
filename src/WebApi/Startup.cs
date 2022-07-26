@@ -82,8 +82,8 @@ namespace WebApi
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.Cookie.SameSite = SameSiteMode.None;
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                   // options.Cookie.SameSite = SameSiteMode.None;
+                   // options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.IsEssential = true;
 
                 })
@@ -94,7 +94,6 @@ namespace WebApi
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
-
                         ValidIssuer = tokenOptions.Issuer,
                         ValidAudience = tokenOptions.Audience,
                         ValidateIssuerSigningKey = true,
@@ -129,19 +128,11 @@ namespace WebApi
                 options.AddPolicy(name: "FeedoptCorsPolicy",
                     policy =>
                     {
-                        policy.WithOrigins(
-                                "http://localhost:3000",
-                                "http://localhost:3000/",
-                                "https://localhost:3000",
-                                "https://localhost:3000/",
-                                "http://127.0.0.1:5500",
-                                "https://127.0.0.1:5500",
-                                "https://fierce-mesa-92839.herokuapp.com",
-                                "https://ced8-5-47-157-180.ngrok.io",
-                                "http://ced8-5-47-157-180.ngrok.io")
-                            .AllowCredentials()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader();
+                        policy.WithOrigins("https://localhost:3000", "http://localhost:3000", "https://localhost:3000/", "http://localhost:3000/")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();          
+
                     });
             });
 
@@ -165,6 +156,7 @@ namespace WebApi
             config.Run();
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
             app.UseSession();
             app.ConfigureCustomExceptionMiddleware();
             app.UseHttpsRedirection();
@@ -175,6 +167,7 @@ namespace WebApi
             app.VerifyUserRequest();
             app.UseSwagger();
             app.UseCors("FeedoptCorsPolicy");
+
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
 
 
