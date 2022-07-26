@@ -15,21 +15,21 @@ namespace Core.Extensions
 
         public static void SetCookie(this HttpContext httpContext, CookieParams cookieParams)
         {
-            
 
+            var options = new CookieOptions { Expires = cookieParams.AccessToken.Expiration, HttpOnly = true, Secure = true, SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None, IsEssential= true };
             httpContext.Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(cookieParams.User.PreferredLanguage.ToString())),
-                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+                options
             );
             httpContext.Response.Cookies.Append(CookieKey.AuthorizationKey, cookieParams.AccessToken.Token,
-                new CookieOptions { Expires = cookieParams.AccessToken.Expiration, HttpOnly = true, Secure = true});
+                options);
 
             httpContext.Response.Cookies.Append(CookieKey.ExpireKey, cookieParams.AccessToken.Token,
-                new CookieOptions { Expires = cookieParams.AccessToken.Expiration, HttpOnly = true, Secure = true });
-
+                options
+               );
             httpContext.Response.Cookies.Append(CookieKey.Email, cookieParams.User.Email,
-                new CookieOptions { Expires = cookieParams.AccessToken.Expiration,HttpOnly = true,Secure = true});          
+                options);          
         }
 
         public static void DeleteCookies(this HttpContext httpContext)
@@ -38,6 +38,7 @@ namespace Core.Extensions
             option.Expires = DateTimeOffset.Now;
             option.Secure = true;
             option.IsEssential = true;
+           
             httpContext.Response.Cookies.Append(CookieKey.AuthorizationKey, string.Empty, option);
             httpContext.Response.Cookies.Append(CookieKey.ExpireKey, string.Empty, option);
             httpContext.Response.Cookies.Append(CookieKey.Email, string.Empty, option);

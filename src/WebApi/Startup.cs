@@ -82,8 +82,8 @@ namespace WebApi
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                   // options.Cookie.SameSite = SameSiteMode.None;
-                   // options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.IsEssential = true;
 
                 })
@@ -108,6 +108,11 @@ namespace WebApi
                         }
                     };
                 });
+           /* services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });*/
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" }); });
 
@@ -164,6 +169,7 @@ namespace WebApi
             app.UseHangfireDashboard();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseHttpsRedirection();
             app.VerifyUserRequest();
             app.UseSwagger();
             app.UseCors("FeedoptCorsPolicy");
