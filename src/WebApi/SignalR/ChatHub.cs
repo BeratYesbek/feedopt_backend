@@ -5,6 +5,7 @@ using Business.Abstracts;
 using Core.CrossCuttingConcerns.Cache;
 using Core.Extensions;
 using Core.Utilities.Cloud.FCM;
+using Core.Utilities.Constants;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
@@ -34,14 +35,9 @@ namespace WebApi.SignalR
         {
 
             Console.WriteLine("--> Connection Opened: " + Context.ConnectionId);
-            var dummyCookie = _context.HttpContext.Request.Cookies["dummyCookie"];
 
-            var groupName = "";// GetGroupName();
-            var s = _context.HttpContext.Request.Headers["Foo"];
-            var roleClaims = _context.HttpContext?.User.ClaimRoles();
-            var exp = _context.HttpContext?.User.Claims.FirstOrDefault(t => t.Type == "exp");
-            var cultureName = _context.HttpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
-            var tokenType = _context.HttpContext?.User.Claims.FirstOrDefault(t => t.Type == "TokenType")?.Value; Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+            var groupName = GetGroupName();
+   
             if (CheckGroupIsExists(groupName))
             {
                 int members = GetGroupMember(groupName);
@@ -52,8 +48,8 @@ namespace WebApi.SignalR
             {
                 AddGroup(groupName,1);
             }
+            Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             Clients.Client(Context.ConnectionId).SendAsync("ReceiveConnId", Context.ConnectionId);
-
             return base.OnConnectedAsync();
 
         }
@@ -94,13 +90,15 @@ namespace WebApi.SignalR
 
             await Clients.Group(groupName).SendAsync("ReceiveMessage", message);
 
-        }
+        }   
 
         private string GetGroupName()
-        {
-            if (_context.HttpContext!.Request.Query.TryGetValue("email", out StringValues _email))
+        {   
+            var email = _context.HttpContext.Request.Cookies[CookieKey.Email];
+
+            if (email is not null && email != "")
             {
-                return _email;
+                return email;
             }
             throw new ArgumentNullException("--> User email is null");
         }
