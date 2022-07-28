@@ -27,9 +27,6 @@ namespace Entity.Dtos
         public int AgeId { get; set; }
         public double Distance { get; set; }
         public Gender Gender { get; set; }
-        
-        public AdvertCase AdvertCase { get; set; } = AdvertCase.Nothing;
-        
         public Status Status { get; set; } = Status.Pending;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;

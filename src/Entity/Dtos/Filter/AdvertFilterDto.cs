@@ -23,5 +23,7 @@ namespace Entity.Dtos.Filter
 
         public Gender[] Gender { get; set; }
 
+        public Status[] Status { get; set; } =  { Concretes.Status.Active };
+
     }
 }

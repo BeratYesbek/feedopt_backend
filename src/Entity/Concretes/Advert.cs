@@ -12,13 +12,6 @@ namespace Entity.Concretes
 
     }
 
-    public enum AdvertCase
-    {
-        Nothing,
-        Adopted,
-        Found
-    }
-
     public class Advert : Animal, IEntity
     {
         public int Id { get; set; }
@@ -36,8 +29,6 @@ namespace Entity.Concretes
         public int LocationId { get; set; }
 
         public bool IsDeleted { get; set; }
-
-        public AdvertCase AdvertCase { get; set; } = AdvertCase.Nothing;
 
         public Status Status { get; set; } = Status.Pending;
 

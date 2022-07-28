@@ -18,7 +18,8 @@ namespace Entity.Dtos
         public Age Age { get; set; }
         public Location  Location { get; set; }
         public AnimalSpecies AnimalSpecies { get; set; }
-
+        public Status Status  { get; set; }
+        public Gender Gender { get; set; }
         public AdvertImage[] AdvertImage { get; set; }
     }
 }

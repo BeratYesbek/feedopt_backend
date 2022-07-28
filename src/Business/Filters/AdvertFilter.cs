@@ -89,6 +89,11 @@ namespace Business.Filters
             return filter.And(c => value.Contains(c.Gender));
         }
 
+        protected Expression<Func<Advert, bool>> StatusCondition(Expression<Func<Advert, bool>> filter, Status[] value)
+        {
+            return filter.And(c => value.Contains(c.Status));
+        }
+
    
         
 

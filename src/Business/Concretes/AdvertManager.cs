@@ -371,6 +371,12 @@ namespace Business.Concretes
                     if (arrayGender.Length > 0)
                         filters = (Expression<Func<Advert, bool>>)StartFilterInvokeMethod(filters, value, property);
                 }
+                else if (value?.GetType() == typeof(Status[]) && value != null)
+                {
+                    Status[] arrayGender = (Status[])value;
+                    if (arrayGender.Length > 0)
+                        filters = (Expression<Func<Advert, bool>>)StartFilterInvokeMethod(filters, value, property);
+                }
                 else
                 {
                     if (value is not null and int and not 0 && property.Name != "Distance")
