@@ -32,6 +32,13 @@ namespace Core.Extensions
                 options);          
         }
 
+        public static void SetNewToken(this HttpContext httpContext, string newToken)
+        {
+            var options = new CookieOptions { Expires = DateTime.Now.AddYears(1), HttpOnly = true, Secure = true, SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None, IsEssential = true };
+            httpContext.Response.Cookies.Append(CookieKey.NotifyToken,newToken);
+
+        }
+
         public static void DeleteCookies(this HttpContext httpContext)
         {
             CookieOptions option = new CookieOptions();

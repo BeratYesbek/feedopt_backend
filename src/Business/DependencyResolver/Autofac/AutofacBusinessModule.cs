@@ -28,6 +28,9 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<TokenManager>().As<ITokenService>().SingleInstance();
+            builder.RegisterType<EfTokenDal>().As<ITokenDal>().SingleInstance();
+
             builder.RegisterType<VerificationCodeManager>().As<IVerificationCodeService>().SingleInstance();
             builder.RegisterType<EfVerificationCodeDal>().As<IVerificationCodeDal>().SingleInstance();
 
@@ -105,6 +108,9 @@ namespace Business.DependencyResolver.Autofac
 
             builder.RegisterType<FluentMailer>().As<IFluentMailer>().SingleInstance();
             builder.RegisterType<AuthMailer>().As<IAuthMailer>().SingleInstance();
+
+            builder.RegisterType<DashboardManager>().As<IDashboardService>().SingleInstance();
+
 
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

@@ -35,15 +35,13 @@ namespace DataAccess
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Color> Colors { get; set; }
         public DbSet<Log> logs { get; set; }
+        public DbSet<Token> Tokens { get; set; }
         public DbSet<UserLocation> UserLocations { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<Filter> Filters { get; set; }
-        
         public DbSet<VerificationCode> VerificationCodes { get; set; }
-        
         public DbSet<ColorTranslation> ColorTranslations { get; set; }
-        
         public DbSet<AnimalCategoryTranslation> AnimalCategoryTranslations { get; set; }
 
 

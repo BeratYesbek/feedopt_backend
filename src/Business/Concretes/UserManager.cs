@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
@@ -31,6 +32,7 @@ namespace Business.Concretes
         
         [LogAspect(typeof(DatabaseLogger))]
         [PerformanceAspect(5)]
+        [CacheRemoveAspect("IDashboardService.GetDashboard")]
         public IDataResult<User> Add(User user)
         {
             var result = _userDal.Add(user);

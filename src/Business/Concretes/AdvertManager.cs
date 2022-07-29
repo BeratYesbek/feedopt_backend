@@ -81,6 +81,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAdvertDetailById", Priority = 6)]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter", Priority = 7)]
         [CacheRemoveAspect("IAdvertService.GetAll", Priority = 8)]
+        [CacheRemoveAspect("IDashboardService.GetDashboard", Priority = 9)]
         public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var ruleResult = Core.Utilities.Business.BusinessRules.Run(
@@ -230,9 +231,9 @@ namespace Business.Concretes
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         [CacheAspect(Priority = 4)]
-        public IDataResult<List<Advert>> GetAll()
+        public IDataResult<List<Advert>> GetAll(Expression<Func<Advert, bool>> filter = null)
         {
-            var data = _advertDal.GetAll();
+            var data = _advertDal.GetAll(filter);
             return new SuccessDataResult<List<Advert>>(data, AdvertMessages.AdvertGetAll);
 
         }
@@ -276,6 +277,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAdvertDetailById", Priority = 5)]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter", Priority = 6)]
         [CacheRemoveAspect("IAdvertService.GetAll", Priority = 7)]
+        [CacheRemoveAspect("IDashboardService.GetDashboard", Priority = 8)]
         public IResult UpdateStatus(Advert advert)
         {
             _advertDal.Update(advert);

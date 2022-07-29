@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Core.Utilities.Result.Abstracts;
 using Entity.Concretes;
@@ -29,7 +31,7 @@ namespace Business.Abstracts
 
         IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId, int pageNumber);
 
-        IDataResult<List<Advert>> GetAll();
+        IDataResult<List<Advert>> GetAll(Expression<Func<Advert,bool>> filter=null);
 
         IDataResult<AdvertEditDto> Edit(int id);
 

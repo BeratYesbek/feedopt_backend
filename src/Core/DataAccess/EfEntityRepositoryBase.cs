@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using Core.Entity.Abstracts;
 using Core.Entity.Concretes;
 using Core.Utilities.Language;
@@ -81,6 +82,48 @@ namespace Core.DataAccess
                 }
             }
 
+        }
+
+        public async Task<TEntity> AddAsync(TEntity entity)
+        {
+            using (var context = new TContext())
+            {
+                var addedEntity = context.Entry(entity);
+                addedEntity.State = EntityState.Added;
+                var result = await context.SaveChangesAsync();
+                return addedEntity.Entity;
+            }
+        }
+
+        public async Task UpdateAsync(TEntity entity)
+        {
+            using (var context = new TContext())
+            {
+                var updatedEntity = context.Entry(entity);
+                updatedEntity.State = EntityState.Modified;
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter)
+        {
+            using (var context = new TContext())
+            {
+                var data = await context.Set<TEntity>().SingleOrDefaultAsync(filter);
+                return data;
+            }
+        }
+
+        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null, bool translation = false, params Expression<Func<TEntity, object>>[] including)
+        {
+            using (var context = new TContext())
+            {
+                var data = filter != null
+                    ? await context.Set<TEntity>().Where(filter).ToListAsync()
+                    : await context.Set<TEntity>().ToListAsync();
+
+                return data;
+            }
         }
     }
 }
