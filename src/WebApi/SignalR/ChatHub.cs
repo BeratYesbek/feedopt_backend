@@ -1,12 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Business.BusinessAspect;
+using Business.Security.Role;
 using Core.CrossCuttingConcerns.Cache;
+using Core.Entity.Concretes;
 using Core.Extensions;
 using Core.Utilities.Cloud.FCM;
 using Core.Utilities.Constants;
 using Core.Utilities.IoC;
+using Core.Utilities.Result.Abstracts;
+using Entity.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.SignalR;
@@ -22,15 +29,18 @@ namespace WebApi.SignalR
         private readonly IUserService _userService;
         private readonly INotificationService _notificationService;
         private readonly ICacheManager _cacheManager;
+        private readonly IChatService _chatService;
 
-        public ChatHub(IUserService userService,ICacheManager cacheManager,INotificationService notificationService)
+        public ChatHub(IUserService userService,ICacheManager cacheManager,INotificationService notificationService,IChatService chatService)
         {
             _userService = userService;
             _cacheManager = cacheManager;
             _notificationService = notificationService;
+            _chatService = chatService;
             _context = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
+        [SecuredOperation($"{Role.User},{Role.Admin},{Role.SuperAdmin}")]
         public override Task OnConnectedAsync()
         {
 
@@ -70,6 +80,26 @@ namespace WebApi.SignalR
             return base.OnDisconnectedAsync(exception);
         }
 
+        public async Task GetPreviousMessageAsync(string jsonPayload)
+        {
+            var routeOb = JsonConvert.DeserializeObject<dynamic>(jsonPayload);
+            if (routeOb?.UserId == null)
+            {
+                Console.WriteLine("--> UserId could not detected");
+                return;
+            }
+            var nameIdentifier = _context.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (nameIdentifier != null)
+            {
+                var groupName = GetGroupName();
+                var id = int.Parse(nameIdentifier);
+                var userId = (int) int.Parse(routeOb.UserId.ToString());
+                IDataResult<List<ChatDto>> data = _chatService.GetAllByReceiverIdAndSenderId(id,userId);
+                await Clients.Group(groupName).SendAsync("GetPreviousMessage", data);
+            }
+
+        }
+
         public async Task SendMessageAsync(string message)
         {
             var routeOb = JsonConvert.DeserializeObject<dynamic>(message);
@@ -94,7 +124,7 @@ namespace WebApi.SignalR
 
         private string GetGroupName()
         {   
-            var email = _context.HttpContext.Request.Cookies[CookieKey.Email];
+            var email = _context.HttpContext?.Request.Cookies[CookieKey.Email];
 
             if (email is not null && email != "")
             {
@@ -102,6 +132,7 @@ namespace WebApi.SignalR
             }
             throw new ArgumentNullException("--> User email is null");
         }
+
 
         private void AddGroup(string groupName,int numberOfMember)
         {
