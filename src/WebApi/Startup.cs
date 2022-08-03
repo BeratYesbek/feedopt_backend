@@ -20,7 +20,7 @@ using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Newtonsoft.Json.Serialization;
 using WebApi.Config;
-using WebApi.SignalR;
+using WebApi.Hub;
 using WebAPI.Config;
 using Business.Concretes;
 using Business.Abstracts;
@@ -29,7 +29,10 @@ using Amazon.Extensions.NETCore.Setup;
 using Core.Utilities.Cloud.Aws;
 using Amazon;
 using Amazon.S3;
+using Microsoft.AspNetCore.SignalR;
 using NLog;
+using WebApi.Extensions;
+using WebApi.Hub.HubFilter;
 
 namespace WebApi
 {
@@ -67,7 +70,7 @@ namespace WebApi
             services.Configure<AWSServiceConfiguration>(awsSettingsSection);
 
 
-            services.AddSignalR();
+            services.AddSignalR(opt => opt.AddFilter(typeof(HubAuthorizationFilter)));
             services.AddMvcCore();
             services.AddHangfireServer();
             services.AddControllersWithViews();
@@ -166,11 +169,13 @@ namespace WebApi
             app.ConfigureCustomExceptionMiddleware();
             app.UseHttpsRedirection();
             app.UseAuthentication();
+            app.UserCurrentUserMiddleware();
             app.UseHangfireDashboard();
             app.UseRouting();
             app.UseAuthorization();
             app.UseHttpsRedirection();
             app.VerifyUserRequest();
+
             app.UseSwagger();
             app.UseCors("FeedoptCorsPolicy");
 
@@ -186,7 +191,7 @@ namespace WebApi
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chatHub", map => { });
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
 
 

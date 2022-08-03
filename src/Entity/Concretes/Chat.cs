@@ -19,7 +19,7 @@ namespace Entity.Concretes
 
         public bool IsSeen { get; set; } = false;
 
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.UtcNow;
     }
 }
 
