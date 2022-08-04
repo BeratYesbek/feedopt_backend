@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using Core.Entity.Concretes;
-using Core.Utilities.Calculator;
 using Entity.Concretes;
 
 namespace Business.Filters

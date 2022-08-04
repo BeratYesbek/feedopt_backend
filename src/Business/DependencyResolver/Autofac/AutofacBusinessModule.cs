@@ -2,7 +2,6 @@
 using Autofac.Extras.DynamicProxy;
 using Business.Abstracts;
 using Business.Abstracts.Translations;
-using Business.BackgroundJob.Hangfire;
 using Business.BusinessMailer.Abstracts;
 using Business.BusinessMailer.Concretes.FluentMailer;
 using Business.Concretes;
@@ -19,7 +18,6 @@ using DataAccess.Abstracts;
 using DataAccess.Abstracts.Translations;
 using DataAccess.Concretes;
 using DataAccess.Concretes.Translations;
-using Entity.Concretes;
 using Microsoft.AspNetCore.Session;
 
 namespace Business.DependencyResolver.Autofac

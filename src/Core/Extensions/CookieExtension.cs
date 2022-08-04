@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Net;
 using Core.Entity.Concretes;
 using Core.Utilities.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.Net.Http.Headers;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace Core.Extensions
 {

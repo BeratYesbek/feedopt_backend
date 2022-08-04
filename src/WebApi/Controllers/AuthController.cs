@@ -1,24 +1,12 @@
 ﻿using System;
-using System.Linq;
-using System.Net;
-using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using AutoMapper;
 using Business.Abstracts;
-using Core.Entity;
 using Core.Entity.Concretes;
 using Core.Extensions;
-using Core.Utilities.Constants;
-using Core.Utilities.IoC;
 using Core.Utilities.Result.Concretes;
 using Core.Utilities.Security.JWT;
 using Entity.Dtos;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApi.Controllers
 {
@@ -28,12 +16,10 @@ namespace WebApi.Controllers
     {
         private readonly IAuthService _authService;
 
-        private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService,IUserService userService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
-            _userService = userService;
         }
 
         [HttpPost("login")]

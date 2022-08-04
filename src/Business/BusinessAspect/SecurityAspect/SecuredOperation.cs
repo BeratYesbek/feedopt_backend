@@ -1,20 +1,11 @@
-﻿using System;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
-using System.Security.Claims;
 using Core.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using System.Security.Authentication;
-using Business.Concretes;
 using Core.CustomExceptions;
-using Core.Entity.Concretes;
-using DataAccess.Concretes;
-using Microsoft.AspNetCore.Localization;
-using Core.Entity;
-using Core.Utilities.Constants;
 using Core.Utilities.Security.JWT;
 using Microsoft.IdentityModel.Tokens;
 

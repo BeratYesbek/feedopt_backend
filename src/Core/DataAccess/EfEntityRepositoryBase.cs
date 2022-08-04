@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading.Tasks;
 using Core.Entity.Abstracts;
-using Core.Entity.Concretes;
-using Core.Utilities.Language;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 

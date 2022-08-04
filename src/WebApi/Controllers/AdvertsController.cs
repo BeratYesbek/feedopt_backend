@@ -1,21 +1,12 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstracts;
-using Core.Entity.Abstracts;
 using Core.Extensions;
-using Core.Utilities.IoC;
-using Core.Utilities.Result.Concretes;
 using Entity.Concretes;
 using Entity.Dtos;
 using Entity.Dtos.Filter;
-using Hangfire;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApi.Controllers
 {

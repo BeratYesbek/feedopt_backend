@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Core.Entity.Abstracts;
-using Core.Entity.Concretes;
-using Newtonsoft.Json;
+﻿using Core.Entity.Abstracts;
 
 namespace Entity.Concretes
 {

@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +7,6 @@ using Microsoft.OpenApi.Models;
 using Core.DependencyResolvers;
 using Core.Extensions;
 using Core.Utilities.IoC;
-using Core.Utilities.Security.Encyrption;
 using Core.Utilities.Security.JWT;
 using DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,15 +20,13 @@ using Newtonsoft.Json.Serialization;
 using WebApi.Config;
 using WebApi.Hub;
 using WebAPI.Config;
-using Business.Concretes;
-using Business.Abstracts;
 using Amazon.Runtime;
 using Amazon.Extensions.NETCore.Setup;
 using Core.Utilities.Cloud.Aws;
 using Amazon;
 using Amazon.S3;
+using Core.Utilities.Security.Encryption;
 using Microsoft.AspNetCore.SignalR;
-using NLog;
 using WebApi.Extensions;
 using WebApi.Hub.HubFilter;
 
@@ -45,31 +41,20 @@ namespace WebApi
             Configuration = configuration;
 
         }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
-            services.AddMvc(options =>
-            {
-                options.AddCommaSeparatedArrayModelBinderProvider();
-            });
-
+            services.AddMvc(options => { options.AddCommaSeparatedArrayModelBinderProvider(); });
             var awsConfiguration = new AWSServiceConfiguration();
             var awsSettingsSection = Configuration.GetSection("AWSS3Configuration");
             awsSettingsSection.Bind(awsConfiguration);
-
             var awsOptions = new AWSOptions
             {
                 Credentials = new BasicAWSCredentials(awsConfiguration.AccessKey, awsConfiguration.SecretKey),
                 Region = RegionEndpoint.GetBySystemName(awsConfiguration.Region)
             };
-
             services.AddAWSService<IAmazonS3>(awsOptions);
             services.Configure<AWSServiceConfiguration>(awsSettingsSection);
-
-
             services.AddSignalR(opt => opt.AddFilter(typeof(HubAuthorizationFilter)));
             services.AddMvcCore();
             services.AddHangfireServer();
@@ -80,7 +65,6 @@ namespace WebApi
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddHangfire(x => x.UsePostgreSqlStorage(Configuration.GetConnectionString("DB_CONNECTION_STRING")));
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -111,26 +95,18 @@ namespace WebApi
                         }
                     };
                 });
-           /* services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });*/
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" }); });
-
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
                 options.Cookie.IsEssential = true;
             });
-
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
-
             services.AddCors(options =>
             {
                 options.AddPolicy(name: "FeedoptCorsPolicy",
@@ -156,9 +132,6 @@ namespace WebApi
 
 
         }
-
-
-
         public void Configure(IApplicationBuilder app, IConfig config)
         {
             config.Run();
@@ -175,13 +148,9 @@ namespace WebApi
             app.UseAuthorization();
             app.UseHttpsRedirection();
             app.VerifyUserRequest();
-
             app.UseSwagger();
             app.UseCors("FeedoptCorsPolicy");
-
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
-
-
             var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(Language.SupportedLanguage[0])
                 .AddSupportedCultures(Language.SupportedLanguage)
                 .AddSupportedUICultures(Language.SupportedLanguage);
@@ -193,9 +162,6 @@ namespace WebApi
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chatHub");
             });
-
-
-
         }
     }
 }

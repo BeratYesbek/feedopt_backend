@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Core.Entity.Abstracts;
-using Core.Entity.Concretes;
 using Core.Utilities.Language;
 using Entity.Concretes.Translations;
-using Newtonsoft.Json;
-
 using System.ComponentModel.DataAnnotations;
 
 namespace Entity.Concretes

@@ -1,8 +1,5 @@
 ﻿using Core.Entity.Abstracts;
 using Entity.Concretes;
-using Microsoft.AspNetCore.Mvc;
-using System.Web.Http;
-
 namespace Entity.Dtos.Filter
 {
     public class AdvertFilterDto : IDto

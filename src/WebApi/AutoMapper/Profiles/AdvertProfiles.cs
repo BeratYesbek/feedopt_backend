@@ -1,13 +1,6 @@
 ﻿using AutoMapper;
 using Entity.Concretes;
 using Entity.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Castle.Core.Internal;
-using FluentEmail.Core;
-
 namespace WebApi.AutoMapper.Profiles
 {
     public class AdvertProfiles : Profile

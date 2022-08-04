@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Threading.Tasks;
-using Core.Utilities.Cloud.Cloudinary;
 using Core.Utilities.Mailer;
 using DataAccess;
-using FluentEmail.Core;
-using FluentEmail.Razor;
-using FluentEmail.Smtp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

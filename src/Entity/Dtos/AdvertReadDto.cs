@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Entity;
 using Core.Entity.Abstracts;
 using Core.Entity.Concretes;
 using Entity.concretes;
 using Entity.Concretes;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Razor;
+
 
 namespace Entity.Dtos
 {

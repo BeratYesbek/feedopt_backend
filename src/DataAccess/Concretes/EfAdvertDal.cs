@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Core.DataAccess;
-using Core.Entity.Concretes;
 using Core.Utilities.Calculator;
 using DataAccess.Abstracts;
 using Entity.Concretes;
@@ -55,8 +54,6 @@ namespace DataAccess.Concretes
                                  UpdatedAt = advert.UpdatedAt,
 
                              };
-
-                //return result.OrderByDescending(t => t.Id).Where(t => t.Distance <= diameter).Skip(pageNumber * pageSize).Take(pageSize).ToList();
                 return result.OrderByDescending(t => t.Id).Skip(pageNumber * pageSize).Take(pageSize).ToList();
             }
         }
@@ -120,10 +117,6 @@ namespace DataAccess.Concretes
                              join age in context.Ages on advert.AgeId equals age.Id
                              join animalCategory in context.AnimalCategories on animalSpecies.AnimalCategoryId equals animalCategory.Id
                              join color in context.Colors on advert.ColorId equals color.Id
-
-                             //  where Calculator.CalculateDistance(latitude, longitude, Decimal.ToDouble(location.Latitude),
-                             //   Decimal.ToDouble(location.Longitude)) <= 30
-
                              select new AdvertReadDto
                              {
                                  Location = location,

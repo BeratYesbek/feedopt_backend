@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Business.Abstracts;
-using Core.Entity.Concretes;
 using Core.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;

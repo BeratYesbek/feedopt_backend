@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Linq.Dynamic.Core.Tokenizer;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Entity;
 using Microsoft.Extensions.Configuration;
 using Core.Entity.Concretes;
 using Core.Extensions;
@@ -14,12 +10,9 @@ using Core.Utilities.IoC;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using Core.Utilities.Security.Encryption;
-using Core.Utilities.Security.Encyrption;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Net.Http.Headers;
-using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 namespace Core.Utilities.Security.JWT
 {

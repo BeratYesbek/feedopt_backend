@@ -1,44 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Business.Abstracts;
-using Business.BusinessAspect;
-using Business.Security.Role;
 using Core.CrossCuttingConcerns.Cache;
 using Core.Entity.Concretes;
 using Core.Utilities.Cloud.FCM;
-using Core.Utilities.Constants;
-using Core.Utilities.IoC;
 using Core.Utilities.Result.Abstracts;
 using Entity.Concretes;
 using Entity.Dtos;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
 namespace WebApi.Hub
 {
     public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
     {
-        private readonly IHttpContextAccessor _context;
-        private readonly IUserService _userService;
         private readonly INotificationService _notificationService;
         private readonly ICacheManager _cacheManager;
         private readonly IChatService _chatService;
 
-        public ChatHub(IUserService userService, ICacheManager cacheManager, INotificationService notificationService, IChatService chatService)
+        public ChatHub(ICacheManager cacheManager, INotificationService notificationService, IChatService chatService)
         {
-            _userService = userService;
             _cacheManager = cacheManager;
             _notificationService = notificationService;
             _chatService = chatService;
-            _context = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
-        [SecuredOperation($"{Role.User},{Role.Admin},{Role.SuperAdmin}")]
         public override Task OnConnectedAsync()
         {
             Console.WriteLine("--> Connection Opened: " + Context.ConnectionId);
@@ -125,6 +112,7 @@ namespace WebApi.Hub
             }
             throw new ArgumentNullException("--> User email is null");
         }
+
         private void AddGroup(string groupName, int numberOfMember)
         {
             _cacheManager.Add(groupName, numberOfMember, 150);
@@ -150,7 +138,5 @@ namespace WebApi.Hub
         {
             return _cacheManager.IsAdd(groupName);
         }
-
-
     }
 }

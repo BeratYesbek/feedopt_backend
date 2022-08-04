@@ -91,7 +91,7 @@ namespace Business.Concretes
                 return new ErrorDataResult<User>(null, "Password or email is wrong");
             }
 
-            if (!HashingHelper.verifPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash,
+            if (!HashingHelper.VerifPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash,
                     userToCheck.Data.PasswordSalt))
             {
                 return new ErrorDataResult<User>(null, "Password or email is wrong");

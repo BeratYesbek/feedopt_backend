@@ -1,12 +1,8 @@
-﻿using System.Linq;
-using Business.Messages.BusinessRulesMessages;
+﻿using Business.Messages.BusinessRulesMessages;
 using Core.Utilities.Result.Concretes;
 using Microsoft.AspNetCore.Http;
 using IResult = Core.Utilities.Result.Abstracts.IResult;
-using Business.BusinessRules.BannedKeyword;
 using Core.Extensions;
-using Core.Utilities.Algorithms.SearchAlgorithm;
-using Core.Entity.Concretes;
 
 namespace Business.BusinessRules
 {

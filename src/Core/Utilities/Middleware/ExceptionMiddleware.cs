@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Security.Authentication;
-using System.Text;
 using System.Threading.Tasks;
-using CloudinaryDotNet;
 using Core.CustomExceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Localization;
 
 namespace Core.Extensions
 {

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Entity;
 using Core.Entity.Concretes;
 using FluentEmail.Core;
 using FluentEmail.Razor;
@@ -29,11 +24,6 @@ namespace Core.Utilities.Mailer.FluentMailer
             HostOption = section["Host"];
             PortOption = Convert.ToInt32(section["Port"]);
         }
-        public void SendEmail(EmailType emailType, User user)
-        {
-            throw new NotImplementedException();
-        }
-
         public IFluentEmail StartMailer(string subject, string email)
         {
             var smtp = new SmtpSender(() => new SmtpClient()

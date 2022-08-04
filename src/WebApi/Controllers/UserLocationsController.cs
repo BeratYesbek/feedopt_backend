@@ -1,12 +1,11 @@
 ﻿using Business.Abstracts;
-using Core.Entity;
 using Entity.Concretes;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace WebApi.Controllers
 {
-    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserLocationsController : ControllerBase
     {

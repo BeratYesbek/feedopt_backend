@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Business.BusinessMailer.Abstracts;
-using Core.Entity;
 using Core.Entity.Concretes;
-using Core.Utilities.Mailer;
 using Core.Utilities.Mailer.FluentMailer;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Business.BusinessMailer.Concretes.FluentMailer
 {

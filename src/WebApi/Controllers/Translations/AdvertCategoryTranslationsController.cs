@@ -1,6 +1,5 @@
 ﻿using Business.Abstracts.Translations;
 using Entity.Concretes.Translations;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.Translations

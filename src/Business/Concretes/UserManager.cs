@@ -5,7 +5,6 @@ using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
-using Core.Entity;
 using Core.Entity.Concretes;
 using Core.Utilities.Cloud.Aws.S3;
 using Core.Utilities.FileHelper;

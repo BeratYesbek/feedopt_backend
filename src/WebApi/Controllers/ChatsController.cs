@@ -1,13 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using Business.Abstracts;
-using Business.BusinessMailer;
-using Core.Entity;
-using Core.Utilities.Mailer;
 using Entity.Concretes;
 
 namespace WebApi.Controllers

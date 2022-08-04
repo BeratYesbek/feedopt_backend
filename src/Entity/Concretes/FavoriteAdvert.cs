@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using Core.Entity.Abstracts;
 
 namespace Entity.Concretes

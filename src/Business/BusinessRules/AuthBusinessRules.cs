@@ -18,7 +18,7 @@ internal static class AuthBusinessRules
 
     internal static IResult VerifyOldPassword(string oldPassword, byte[] passwordHash, byte[] passwordSalt)
     {
-        var result = HashingHelper.verifPasswordHash(oldPassword, CurrentUser.User.PasswordHash, CurrentUser.User.PasswordSalt);
+        var result = HashingHelper.VerifPasswordHash(oldPassword, CurrentUser.User.PasswordHash, CurrentUser.User.PasswordSalt);
         if (result)
         {
             return new SuccessResult();

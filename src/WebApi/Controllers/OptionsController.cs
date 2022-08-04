@@ -1,26 +1,6 @@
-﻿using Amazon.S3;
-using Amazon.S3.Model;
-using Amazon.S3.Transfer;
-using Business.Abstracts;
-using Business.Concretes;
-using Core.Utilities.Cloud.Aws;
-using DataAccess;
-using DataAccess.Concretes;
-using Entity.Dtos;
-using FluentEmail.Core;
-using FluentEmail.Razor;
-using FluentEmail.Smtp;
-using Microsoft.AspNetCore.Http;
+﻿using Business.Abstracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Threading.Tasks;
+
 
 namespace WebApi.Controllers
 {

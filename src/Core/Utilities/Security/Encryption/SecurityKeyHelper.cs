@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Core.Utilities.Security.Encyrption
+namespace Core.Utilities.Security.Encryption
 {
     public class SecurityKeyHelper
     {
