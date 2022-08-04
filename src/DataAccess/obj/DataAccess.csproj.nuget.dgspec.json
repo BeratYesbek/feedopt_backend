@@ -40,6 +40,26 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "AWSSDK.Core": {
+              "target": "Package",
+              "version": "[3.7.12.17, )"
+            },
+            "AWSSDK.Extensions.NETCore.Setup": {
+              "target": "Package",
+              "version": "[3.7.2, )"
+            },
+            "AWSSDK.S3": {
+              "target": "Package",
+              "version": "[3.7.9.15, )"
+            },
+            "Amazon.Lambda.Serialization.Json": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "Amazon.Lambda.Serialization.SystemTextJson": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
             "AutoMapper": {
               "target": "Package",
               "version": "[11.0.1, )"
@@ -50,19 +70,23 @@
             },
             "Autofac": {
               "target": "Package",
-              "version": "[6.3.0, )"
+              "version": "[6.4.0, )"
             },
             "Autofac.Extensions.DependencyInjection": {
               "target": "Package",
-              "version": "[7.2.0, )"
+              "version": "[8.0.0, )"
             },
             "Autofac.Extras.DynamicProxy": {
               "target": "Package",
               "version": "[6.0.1, )"
             },
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
             "CloudinaryDotNet": {
               "target": "Package",
-              "version": "[1.17.0, )"
+              "version": "[1.19.0, )"
             },
             "EntityFramework": {
               "target": "Package",
@@ -70,39 +94,35 @@
             },
             "FirebaseAdmin": {
               "target": "Package",
-              "version": "[2.2.0, )"
+              "version": "[2.3.0, )"
             },
             "FluentEmail.Core": {
               "target": "Package",
-              "version": "[3.0.0, )"
+              "version": "[3.0.2, )"
             },
             "FluentEmail.Razor": {
               "target": "Package",
-              "version": "[3.0.0, )"
+              "version": "[3.0.2, )"
             },
             "FluentEmail.Smtp": {
               "target": "Package",
-              "version": "[3.0.0, )"
+              "version": "[3.0.2, )"
             },
             "FluentValidation": {
               "target": "Package",
-              "version": "[10.3.6, )"
+              "version": "[11.1.0, )"
             },
             "Hangfire": {
               "target": "Package",
-              "version": "[1.7.28, )"
+              "version": "[1.7.30, )"
             },
             "Hangfire.Core": {
               "target": "Package",
-              "version": "[1.7.28, )"
+              "version": "[1.7.30, )"
             },
             "Hangfire.PostgreSql": {
               "target": "Package",
-              "version": "[1.9.7, )"
-            },
-            "Hangfire.SqlServer": {
-              "target": "Package",
-              "version": "[1.7.28, )"
+              "version": "[1.9.8, )"
             },
             "MicroKnights.Log4NetAdoNetAppender": {
               "target": "Package",
@@ -110,11 +130,15 @@
             },
             "Microsoft.ApplicationInsights.Log4NetAppender": {
               "target": "Package",
-              "version": "[2.20.0, )"
+              "version": "[2.21.0, )"
+            },
+            "Microsoft.ApplicationInsights.NLogTarget": {
+              "target": "Package",
+              "version": "[2.21.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[6.0.2, )"
+              "version": "[6.0.7, )"
             },
             "Microsoft.AspNetCore.Http.Abstractions": {
               "target": "Package",
@@ -122,7 +146,7 @@
             },
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
-              "version": "[6.0.2, )"
+              "version": "[6.0.7, )"
             },
             "Microsoft.AspNetCore.Razor": {
               "target": "Package",
@@ -134,17 +158,17 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[6.0.2, )"
+              "version": "[6.0.7, )"
             },
             "Microsoft.EntityFrameworkCore.DynamicLinq": {
               "target": "Package",
-              "version": "[6.2.17, )"
+              "version": "[6.2.19, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[6.0.2, )"
+              "version": "[6.0.7, )"
             },
             "Microsoft.Extensions.Caching.Redis": {
               "target": "Package",
@@ -156,43 +180,31 @@
             },
             "NLog": {
               "target": "Package",
-              "version": "[5.0.0, )"
-            },
-            "NLog.Config": {
-              "target": "Package",
-              "version": "[4.7.15, )"
+              "version": "[5.0.1, )"
             },
             "NLog.Database": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.0.1, )"
             },
             "NLog.Extensions.Logging": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.0.1, )"
             },
             "NLog.Schema": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.0.1, )"
             },
             "NLog.Web": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.1.0, )"
             },
             "NLog.Web.AspNetCore": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.1.0, )"
             },
             "Npgsql": {
               "target": "Package",
-              "version": "[6.0.4, )"
-            },
-            "RazorLight": {
-              "target": "Package",
-              "version": "[2.0.0, )"
-            },
-            "StackExchange.Redis": {
-              "target": "Package",
-              "version": "[2.5.43, )"
+              "version": "[6.0.6, )"
             },
             "System.Data.SqlClient": {
               "target": "Package",
@@ -204,11 +216,11 @@
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[6.16.0, )"
+              "version": "[6.22.0, )"
             },
             "System.Linq.Dynamic.Core": {
               "target": "Package",
-              "version": "[1.2.17, )"
+              "version": "[1.2.19, )"
             },
             "log4net": {
               "target": "Package",
@@ -279,25 +291,21 @@
           "dependencies": {
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[6.0.2, )"
+              "version": "[6.0.7, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[6.0.2, )"
+              "version": "[6.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.Proxies": {
               "target": "Package",
-              "version": "[6.0.2, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[6.0.2, )"
+              "version": "[6.0.7, )"
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
-              "version": "[6.0.3, )"
+              "version": "[6.0.6, )"
             }
           },
           "imports": [
@@ -358,12 +366,6 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "dependencies": {
-            "Microsoft.AspNet.WebApi.Core": {
-              "target": "Package",
-              "version": "[5.2.8, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",

@@ -10,7 +10,6 @@ namespace Business.Validation.FluentValidation
         {
             RuleFor(a => a.ImagePath).NotEmpty().NotNull();
             RuleFor(a => a.AdvertId).NotEmpty().NotNull();
-            RuleFor(a => a.PublicId).NotEmpty().NotNull();
         }
     }
 }

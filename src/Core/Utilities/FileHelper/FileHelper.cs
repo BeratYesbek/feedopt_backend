@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Utilities.Cloud.Cloudinary;
-using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using Microsoft.AspNetCore.Http;
 using IResult = Core.Utilities.Result.Abstracts.IResult;
@@ -15,44 +8,54 @@ namespace Core.Utilities.FileHelper
 {
     public enum FileExtension
     {
-        ImageExtension = 0,
-        DocumentExtension = 1
+        DocumentExtension = 0,
+        ImageExtension = 1,
     }
 
-    public enum RecordType
+    public abstract class FileHelper
     {
-        Cloud = 0,
-        Storage = 1
-    }
+        private readonly string _currentDirectory = Environment.CurrentDirectory + "\\wwwroot";
+        private string _folderName = "Files";
 
-    public enum FolderName
-    {
-        Files = 0,
-        Images = 1,
-        Documents = 2
-    }
 
-    public class FileHelper
-    {
-        private readonly IFileHelper _fileHelper;
-        private string[] FileType { get; }
 
-        public FileHelper(RecordType recordType, FileExtension fileExtension, FolderName folderName = default)
+
+        protected virtual IResult Update(IFormFile file, string filePath,string folderName)
         {
-            FileType = GetExtensions(fileExtension);
+            _folderName = folderName;
+            if (file == null && file.Length <= 0)
+            {
+                return new ErrorResult("File doesn't exist");
+            }
+            var type = Path.GetExtension(file.FileName);
+            var randomName = Guid.NewGuid().ToString();
 
-            if (recordType == RecordType.Cloud)
-            {
-                _fileHelper = new CloudinaryService();
-            }
-            else
-            {
-                _fileHelper = new StorageHelper(folderName.ToString());
-            }
+            DeleteOldFile((_currentDirectory + filePath).Replace("/", "\\"));
+            CheckDirectoryExists(_currentDirectory + _folderName);
+            CreateFile(_currentDirectory + _folderName + randomName + type, file);
+            return new SuccessResult((_folderName + randomName + type).Replace("\\", "/"));
         }
 
+        protected virtual IResult Delete(string filePath)
+        {
+            DeleteOldFile((_currentDirectory + filePath).Replace("/", "\\"));
+            return new SuccessResult();
+        }
 
-        private static string[] GetExtensions(FileExtension fileExtension)
+        protected virtual IResult CheckFileTypeValid(string type,FileExtension fileExtension)
+        {
+            var extensions = GetExtensions(fileExtension);
+            foreach (var extension in extensions)
+            {
+                if (extension == type)
+                {
+                    return new SuccessResult();
+                }
+            }
+            return new ErrorResult("File type is not suitable");
+        }
+
+        protected virtual string[] GetExtensions(FileExtension fileExtension)
         {
             return fileExtension switch
             {
@@ -62,85 +65,46 @@ namespace Core.Utilities.FileHelper
             };
         }
 
-        public IResult CheckFileTypeValid(string type)
+        protected virtual IResult Upload(IFormFile file, string folderName)
         {
-            foreach (var extension in FileType)
+            _folderName = folderName;
+            if (file == null && file.Length <= 0)
             {
-                if (extension == type)
-                {
-                    return new SuccessResult();
-                }
+                return new ErrorResult("File doesn't exist");
             }
 
-            return new ErrorResult("File type is not suitable");
+            var randomName = Guid.NewGuid().ToString();
+            var type = Path.GetExtension(file.FileName);
+            CheckDirectoryExists(_currentDirectory + _folderName);
+            CreateFile(_currentDirectory + _folderName + randomName + type, file);
+
+            return new SuccessResult((_folderName + randomName + type).Replace("\\", "/"));
         }
 
 
-
-        /// <summary>
-        ///    if this method success, message will return which contains file path
-        /// </summary>
-        /// <param name="formFile"></param>
-        /// <returns> error message or file path   </returns>
-        public IResult Update(IFormFile file, string filePath, string publicId = null)
+        private static void DeleteOldFile(string directory)
         {
-            var result = CheckFileTypeValid(Path.GetExtension(file.FileName));
-            if (result.Success)
+            if (File.Exists(directory.Replace("/", "\\")))
             {
-                return _fileHelper.Update(file, filePath, publicId);
+                File.Delete(directory.Replace("/", "\\"));
             }
-
-            return result;
         }
 
-        public IResult Delete(string filePath, string publicId = null)
+        private static void CreateFile(string directory, IFormFile file)
         {
-            return _fileHelper.Delete(filePath, publicId);
+            using FileStream fileStream = File.Create(directory);
+            file.CopyTo(fileStream);
+            fileStream.Flush();
         }
 
-        /// <summary>
-        /// 
-        ///     if this method success, message will return which contains file path
-        /// 
-        /// </summary>
-        /// <param name="formFile"></param>
-        /// <returns> error message or file path </returns>
-        public IResult Upload(IFormFile file)
+        private static void CheckDirectoryExists(string directory)
         {
-            var result = CheckFileTypeValid(Path.GetExtension(file.FileName));
-            if (result.Success)
+            if (!Directory.Exists((directory)))
             {
-                return _fileHelper.Upload(file);
+                Directory.CreateDirectory(directory);
             }
-
-            return result;
         }
 
 
-        public async Task<IResult> DeleteAsync(string filePath, string publicId = null)
-        {
-            return await _fileHelper.DeleteAsync(filePath, publicId);
-        }
-
-        public async Task<IResult> UpdateAsync(IFormFile file, string filePath, string publicId = null)
-        {
-            var result = CheckFileTypeValid(Path.GetExtension(file.FileName));
-            if (result.Success)
-            {
-                return await _fileHelper.UpdateAsync(file, filePath, publicId);
-            }
-
-            return result;
-        }
-
-        public async Task<IResult> UploadAsync(IFormFile file)
-        {
-            var result = CheckFileTypeValid(Path.GetExtension(file.FileName));
-            if (result.Success)
-            {
-                return await _fileHelper.UploadAsync(file);
-            }
-            return result;
-        }
     }
 }

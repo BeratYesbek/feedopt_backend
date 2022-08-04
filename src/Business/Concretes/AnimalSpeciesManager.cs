@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Business.Abstracts;
 using Business.BusinessAspect;
 using Business.Security.Role;
 using Business.Validation.FluentValidation;
@@ -14,20 +11,27 @@ using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
-using DataAccess.Concretes;
 using Entity.concretes;
 
-namespace Business.Abstracts
+namespace Business.Concretes
 {
+    /// <summary>
+    /// This class manage Animal Species. Whenever need to manage something on that, everything should do in this class because of SOLID - Single Responsibility Principle
+    /// </summary>
     public class AnimalSpeciesManager : IAnimalSpeciesService
     {
-        private IAnimalSpeciesDal _animalSpeciesDal;
+        private readonly IAnimalSpeciesDal _animalSpeciesDal;
 
         public AnimalSpeciesManager(IAnimalSpeciesDal animalSpeciesDal)
         {
             _animalSpeciesDal = animalSpeciesDal;
         }
 
+        /// <summary>
+        /// Animal Species is added by this method
+        /// </summary>
+        /// <param name="animalSpecies"></param>
+        /// <returns>IResult</returns>
         [SecuredOperation($"{Role.AnimalSpeciesAdd},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [ValidationAspect(typeof(AnimalSpeciesValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
@@ -41,6 +45,11 @@ namespace Business.Abstracts
             return new SuccessResult();
         }
 
+        /// <summary>
+        /// Animal Species is updated by this method
+        /// </summary>
+        /// <param name="animalSpecies"></param>
+        /// <returns>IResult</returns>
         [SecuredOperation($"{Role.AnimalSpeciesUpdate},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [ValidationAspect(typeof(AnimalSpeciesValidator), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
@@ -54,6 +63,11 @@ namespace Business.Abstracts
             return new SuccessResult();
         }
 
+        /// <summary>
+        /// Animal Species is deleted by this method
+        /// </summary>
+        /// <param name="animalSpecies"></param>
+        /// <returns>IResult</returns>
         [SecuredOperation($"{Role.AnimalSpeciesDelete},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
@@ -67,6 +81,11 @@ namespace Business.Abstracts
             return new SuccessResult();
         }
 
+        /// <summary>
+        /// This method get all animal species by animal category ID
+        /// </summary>
+        /// <param name="animalCategoryId"></param>
+        /// <returns>IDataResult<list type="AnimalSpecies"></list></returns>
         [SecuredOperation($"{Role.AnimalSpeciesGetAll},{Role.Admin},{Role.User},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
@@ -81,7 +100,11 @@ namespace Business.Abstracts
             return new ErrorDataResult<List<AnimalSpecies>>(null);
         }
 
-
+        /// <summary>
+        /// This method get single animal species by  ID
+        /// </summary>
+        /// <param name="animalCategoryId"></param>
+        /// <returns>IDataResult</returns>
         [SecuredOperation($"{Role.AnimalSpeciesGet},{Role.Admin},{Role.User},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
@@ -96,7 +119,10 @@ namespace Business.Abstracts
 
             return new ErrorDataResult<AnimalSpecies>(null);
         }
-
+        /// <summary>
+        /// This method get all animal species
+        /// </summary>
+        /// <returns>IDataResult<list type="AnimalSpecies"></list></returns>
         [SecuredOperation($"{Role.AnimalSpeciesGetAll},{Role.Admin},{Role.User},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]

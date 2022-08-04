@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +7,6 @@ using Microsoft.OpenApi.Models;
 using Core.DependencyResolvers;
 using Core.Extensions;
 using Core.Utilities.IoC;
-using Core.Utilities.Security.Encyrption;
 using Core.Utilities.Security.JWT;
 using DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -20,10 +18,17 @@ using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Newtonsoft.Json.Serialization;
 using WebApi.Config;
-using WebApi.SignalR;
+using WebApi.Hub;
 using WebAPI.Config;
-using Business.Concretes;
-using Business.Abstracts;
+using Amazon.Runtime;
+using Amazon.Extensions.NETCore.Setup;
+using Core.Utilities.Cloud.Aws;
+using Amazon;
+using Amazon.S3;
+using Core.Utilities.Security.Encryption;
+using Microsoft.AspNetCore.SignalR;
+using WebApi.Extensions;
+using WebApi.Hub.HubFilter;
 
 namespace WebApi
 {
@@ -36,18 +41,21 @@ namespace WebApi
             Configuration = configuration;
 
         }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
-            services.AddMvc(options =>
+            services.AddMvc(options => { options.AddCommaSeparatedArrayModelBinderProvider(); });
+            var awsConfiguration = new AWSServiceConfiguration();
+            var awsSettingsSection = Configuration.GetSection("AWSS3Configuration");
+            awsSettingsSection.Bind(awsConfiguration);
+            var awsOptions = new AWSOptions
             {
-                options.AddCommaSeparatedArrayModelBinderProvider();
-            });
-
-            services.AddSignalR();
+                Credentials = new BasicAWSCredentials(awsConfiguration.AccessKey, awsConfiguration.SecretKey),
+                Region = RegionEndpoint.GetBySystemName(awsConfiguration.Region)
+            };
+            services.AddAWSService<IAmazonS3>(awsOptions);
+            services.Configure<AWSServiceConfiguration>(awsSettingsSection);
+            services.AddSignalR(opt => opt.AddFilter(typeof(HubAuthorizationFilter)));
             services.AddMvcCore();
             services.AddHangfireServer();
             services.AddControllersWithViews();
@@ -56,14 +64,15 @@ namespace WebApi
             services.AddScoped<IConfig, Config.Config>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddHangfire(x => x.UsePostgreSqlStorage(Configuration.GetConnectionString("DB_CONNECTION_STRING")));
-
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.Cookie.SameSite = SameSiteMode.None;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.IsEssential = true;
+
                 })
                 .AddJwtBearer(options =>
                 {
@@ -82,7 +91,6 @@ namespace WebApi
                         OnMessageReceived = context =>
                         {
                             context.Token = context.Request.Cookies["Authorization"];
-                            context.Response.Cookies.Append("Email", "beratyesbek@gmail.com");
                             return Task.CompletedTask;
                         }
                     };
@@ -94,15 +102,23 @@ namespace WebApi
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
                 options.Cookie.IsEssential = true;
             });
-
             services.AddControllers().AddNewtonsoftJson(options =>
             {
-                options.SerializerSettings.ContractResolver =new DefaultContractResolver();
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "FeedoptCorsPolicy",
+                    policy =>
+                    {
+                        policy.WithOrigins("https://localhost:3000", "http://localhost:3000", "http://127.0.0.1:5500")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();          
 
-
-
+                    });
+            });
 
             //Globalization and Localization
             services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
@@ -116,30 +132,25 @@ namespace WebApi
 
 
         }
-
-
-
         public void Configure(IApplicationBuilder app, IConfig config)
         {
             config.Run();
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
             app.UseSession();
             app.ConfigureCustomExceptionMiddleware();
             app.UseHttpsRedirection();
             app.UseAuthentication();
+            app.UserCurrentUserMiddleware();
             app.UseHangfireDashboard();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseHttpsRedirection();
             app.VerifyUserRequest();
-
             app.UseSwagger();
+            app.UseCors("FeedoptCorsPolicy");
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
-
-
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
-
             var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(Language.SupportedLanguage[0])
                 .AddSupportedCultures(Language.SupportedLanguage)
                 .AddSupportedUICultures(Language.SupportedLanguage);
@@ -149,11 +160,8 @@ namespace WebApi
             {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chatHub", map => { });
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
-
-
-
         }
     }
 }

@@ -1,11 +1,6 @@
-﻿using Core.Entity;
-using Core.Entity.Abstracts;
+﻿using Core.Entity.Abstracts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+using Core.Entity.Concretes;
 
 namespace Entity.Dtos
 {
@@ -31,28 +26,9 @@ namespace Entity.Dtos
 
         public string methodname { get; set; }
 
-        private string LogDetail { get; set; }
+        public dynamic LogDetail { get; set; }
 
-        private string Parameters { get; set; }
-
-
-        public string logdetail
-        {
-            get => LogDetail;
-            set
-            {
-                LogDetail = JsonSerializer.Serialize(value);
-            }
-        }
-
-        public string logparameters
-        {
-            get => Parameters;
-            set
-            {
-                Parameters = JsonSerializer.Serialize(value);
-            }
-        }
+        public dynamic Parameters { get; set; }
         public string stacktrace { get; set; }
 
         public User User { get; set; }

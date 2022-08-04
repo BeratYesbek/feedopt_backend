@@ -1,5 +1,4 @@
 ﻿using Core.Entity.Abstracts;
-using Entity.concretes;
 using Entity.Concretes;
 using System.Collections.Generic;
 

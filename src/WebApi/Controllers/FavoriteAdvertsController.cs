@@ -18,6 +18,7 @@ namespace WebApi.Controllers
         [HttpPost("add")]
         public IActionResult Add(FavoriteAdvert favorite)
         {
+            favorite.CreatedAt = System.DateTime.Now;
             var result = _favoriteAdvertService.Add(favorite);
             if (result.Success)
             {
@@ -41,28 +42,6 @@ namespace WebApi.Controllers
         public IActionResult Delete(FavoriteAdvert favorite)
         {
             var result = _favoriteAdvertService.Delete(favorite);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-        
-        [HttpGet("getById/{id}")]
-        public IActionResult GetById(int id)
-        {
-            var result = _favoriteAdvertService.Get(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpGet("getAll")]
-        public IActionResult GetAll()
-        {
-            var result = _favoriteAdvertService.GetAll();
             if (result.Success)
             {
                 return Ok(result);

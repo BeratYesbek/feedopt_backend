@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Core.Entity.Abstracts;
 
 namespace Entity.Concretes
@@ -19,7 +15,7 @@ namespace Entity.Concretes
 
         public bool IsSeen { get; set; } = false;
 
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.UtcNow;
     }
 }
 

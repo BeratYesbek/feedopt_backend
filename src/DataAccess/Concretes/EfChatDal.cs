@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Core.DataAccess;
-using Core.Utilities.Result.Abstracts;
 using DataAccess.Abstracts;
 using Entity.Concretes;
 using Entity.Dtos;

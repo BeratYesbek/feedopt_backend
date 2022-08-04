@@ -1,8 +1,5 @@
 ﻿using Core.Entity.Abstracts;
 using Entity.Concretes;
-using Microsoft.AspNetCore.Mvc;
-using System.Web.Http;
-
 namespace Entity.Dtos.Filter
 {
     public class AdvertFilterDto : IDto
@@ -22,6 +19,8 @@ namespace Entity.Dtos.Filter
         public int Distance { get; set; } = 1000000;
 
         public Gender[] Gender { get; set; }
+
+        public Status[] Status { get; set; } =  { Concretes.Status.Active };
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Business.BusinessAspect;
@@ -26,7 +27,8 @@ using Business.Filters;
 using Business.Messages.MethodMessages;
 using Business.Services.Abstracts;
 using Core.Entity.Concretes;
-
+using Core.Utilities.Cloud.Aws.S3;
+using FluentEmail.Core;
 
 namespace Business.Concretes
 {
@@ -47,14 +49,17 @@ namespace Business.Concretes
 
         private readonly IUserService _userService;
 
+        private readonly IS3AmazonService _S3AwsService;
+
         public AdvertManager(IAdvertDal advertDal, IAdvertImageService imageService, ILocationService locationService,
-            ITelegramService telegramService, IUserService userService)
+            ITelegramService telegramService, IUserService userService, IS3AmazonService s3AmazonService)
         {
             _imageService = imageService;
             _advertDal = advertDal;
             _locationService = locationService;
             _telegramService = telegramService;
             _userService = userService;
+            _S3AwsService = s3AmazonService;
 
         }
 
@@ -76,20 +81,17 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAdvertDetailById", Priority = 6)]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter", Priority = 7)]
         [CacheRemoveAspect("IAdvertService.GetAll", Priority = 8)]
+        [CacheRemoveAspect("IDashboardService.GetDashboard", Priority = 9)]
         public async Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
         {
             var ruleResult = Core.Utilities.Business.BusinessRules.Run(
                 AdvertBusinessRules.EmailConfirmedForCreateAdvert(),
                 AdvertBusinessRules.CheckFilesSize(files),
                 AdvertBusinessRules.CheckDescriptionIllegalKeyword(advert.Description));
-
             advert.UserId = CurrentUser.User.Id;
-
             if (!ruleResult.Success)
                 return new ErrorDataResult<Advert>(null, ruleResult.Message);
-
             var locationResult = _locationService.Add(location);
-
             if (locationResult is null)
                 return new SuccessDataResult<Advert>(null, AdvertMessages.AdvertAdd);
 
@@ -99,21 +101,9 @@ namespace Business.Concretes
             {
                 foreach (var file in files)
                 {
-                    var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
-                    var fileResult = await fileHelper.UploadAsync(file);
-                    if (fileResult.Success)
-                    {
-                        var resultImage = _imageService.Add(new AdvertImage
-                        {
-                            ImagePath = fileResult.Message.Split("&&")[0],
-                            PublicId = fileResult.Message.Split("&&")[1],
-                            AdvertId = result.Id
-                        });
-                        if (!resultImage.Success)
-                        {
-                            return new ErrorDataResult<Advert>(null, AdvertMessages.AdvertAdvertFailed);
-                        }
-                    }
+                    var fileResult = await UploadFile(file, result.Id); 
+                    if (!fileResult.Success) 
+                        return new ErrorDataResult<Advert>(null, AdvertMessages.AdvertAdvertFailed);
                 }
 
                 //Job.Create<AdvertJob>().UpdateAdvertStatusJob(this, result);
@@ -241,11 +231,17 @@ namespace Business.Concretes
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
         [CacheAspect(Priority = 4)]
-        public IDataResult<List<Advert>> GetAll()
+        public IDataResult<List<Advert>> GetAll(Expression<Func<Advert, bool>> filter = null)
         {
-            var data = _advertDal.GetAll();
+            var data = _advertDal.GetAll(filter);
             return new SuccessDataResult<List<Advert>>(data, AdvertMessages.AdvertGetAll);
 
+        }
+
+        public IDataResult<AdvertEditDto> Edit(int id)
+        {
+            var data = _advertDal.Edit(id);
+            return new SuccessDataResult<AdvertEditDto>(data);
         }
 
         /// <summary>
@@ -281,6 +277,7 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAdvertDetailById", Priority = 5)]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter", Priority = 6)]
         [CacheRemoveAspect("IAdvertService.GetAll", Priority = 7)]
+        [CacheRemoveAspect("IDashboardService.GetDashboard", Priority = 8)]
         public IResult UpdateStatus(Advert advert)
         {
             _advertDal.Update(advert);
@@ -294,6 +291,7 @@ namespace Business.Concretes
         /// <param name="advert">advert</param>
         /// <param name="advertImage">advert</param>
         /// <param name="files">files</param>
+        /// <param name="deletedImages"></param>
         /// <param name="location">location</param>
         /// <returns>It will return a result that includes message</returns>
         [SecuredOperation($"{Role.AdvertUpdate},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
@@ -304,45 +302,34 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAdvertService.GetAdvertDetailById", Priority = 6)]
         [CacheRemoveAspect("IAdvertService.GetAllAdvertDetailsByFilter", Priority = 7)]
         [CacheRemoveAspect("IAdvertService.GetAll", Priority = 8)]
-        public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location)
+        public async Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, int[] deletedImages, Location location)
         {
 
-            var image = _imageService.GetByAdvertId(advert.Id);
-            if (files is not null)
+            var images = _imageService.GetByAdvertId(advert.Id);
+            var ruleResult = Core.Utilities.Business.BusinessRules.Run(
+                AdvertBusinessRules.ImageCountForUpdate(images?.Data?.Count, deletedImages?.Length, files?.Length));
+            if (!ruleResult.Success)
+                return ruleResult;
+
+            for (var i = 0; i < files?.Length; i++)
             {
-                var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
-
-                for (var i = 0; i < files.Length; i++)
-                {
-                    if (image.Data is null)
-                    {
-                        var result = await UploadFile(files[i], advert.Id);
-                        if (!result.Success)
-                            return new ErrorDataResult<Advert>(null, AdvertMessages.AdvertAdvertFailed);
-                    }
-                    else if (i > image.Data.Count)
-                    {
-                        var result = await UploadFile(files[i], advert.Id);
-                        if (!result.Success)
-                            return new ErrorDataResult<Advert>(null, AdvertMessages.AdvertAdvertFailed);
-                    }
-                    else
-                    {
-                        var fileResult = await fileHelper.UpdateAsync(files[i], image.Data[i].ImagePath, image.Data[i].PublicId);
-                        var result = _imageService.Update(new AdvertImage
-                        {
-                            ImagePath = fileResult.Message.Split("&&")[0],
-                            PublicId = fileResult.Message.Split("&&")[1],
-                            AdvertId = advert.Id,
-                            Id = image.Data[i].Id
-                        });
-                        if (!result.Success)
-                            return new ErrorResult(AdvertMessages.AdvertUpdateFailed);
-                    }
-                }
+                var result = await UploadFile(files[i], advert.Id);
+                if (!result.Success)
+                    return new ErrorResult(AdvertMessages.AdvertUpdateFailed);
             }
-
-            _ = location.Id != 0 || location != null ? _locationService.Update(location) : null;
+            deletedImages?.ForEach(item =>
+            {
+                var image = images.Data.FirstOrDefault(t => t.Id == item);
+                if (image != null)
+                {
+                    image.IsDeleted = true;
+                    _imageService.Update(image);
+                }
+            });
+           //* _ = location.Id != 0 || location != null ?  : null;
+           if (location.Id != 0  && location.Id != null)
+               _locationService.Update(location);
+           
             _advertDal.Update(advert);
 
             return new SuccessResult(AdvertMessages.AdvertUpdate);
@@ -360,7 +347,7 @@ namespace Business.Concretes
         [SecuredOperation($"{Role.AdvertGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
-        [CacheAspect(Priority = 4)]
+        //[CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetailsByFilter(AdvertFilterDto filter, int pageNumber)
         {
             // create a linq expression for filters
@@ -386,6 +373,12 @@ namespace Business.Concretes
                     if (arrayGender.Length > 0)
                         filters = (Expression<Func<Advert, bool>>)StartFilterInvokeMethod(filters, value, property);
                 }
+                else if (value?.GetType() == typeof(Status[]) && value != null)
+                {
+                    Status[] arrayGender = (Status[])value;
+                    if (arrayGender.Length > 0)
+                        filters = (Expression<Func<Advert, bool>>)StartFilterInvokeMethod(filters, value, property);
+                }
                 else
                 {
                     if (value is not null and int and not 0 && property.Name != "Distance")
@@ -407,12 +400,10 @@ namespace Business.Concretes
         /// <returns>It will return a result that includes message</returns>
         private async Task<IResult> UploadFile(IFormFile file, int advertId)
         {
-            var fileHelper = new FileHelper(RecordType.Cloud, FileExtension.ImageExtension);
-            var fileResult = await fileHelper.UploadAsync(file);
+            var fileResult = await _S3AwsService.UploadAsync(file, FileExtension.ImageExtension);
             var result = _imageService.Add(new AdvertImage
             {
-                ImagePath = fileResult.Message.Split("&&")[0],
-                PublicId = fileResult.Message.Split("&&")[1],
+                ImagePath = fileResult.Message,
                 AdvertId = advertId
             });
             return result;

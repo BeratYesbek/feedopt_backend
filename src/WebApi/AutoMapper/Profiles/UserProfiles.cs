@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using Core.Entity;
-using Core.Entity.Abstracts;
-using Core.Utilities.Language;
+using Core.Entity.Concretes;
 using Entity.Dtos;
 
 namespace WebApi.AutoMapper.Profiles

@@ -6,9 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace DataAccess.Concretes
 {
@@ -19,7 +17,7 @@ namespace DataAccess.Concretes
             using (var context = new AppDbContext())
             {
                 var result = from log in context.logs
-                             join user in context.Users on int.Parse(log.userid) equals user.Id
+                             join user in context.Users on log.userid equals user.Id.ToString()
                              select new LogReadDto
                              {
                                  Id = log.Id,
@@ -33,8 +31,8 @@ namespace DataAccess.Concretes
                                  methodname = log.methodname,
                                  fullname = log.fullname,
                                  User = user,
-                                 logdetail = log.logdetail,
-                                 logparameters = log.logparameters,
+                                 LogDetail = JsonConvert.DeserializeObject(log.logdetail),
+                                 Parameters = JsonConvert.DeserializeObject(log.logparameters),
                                  stacktrace = log.stacktrace,
                              };
                 return result.ToList();

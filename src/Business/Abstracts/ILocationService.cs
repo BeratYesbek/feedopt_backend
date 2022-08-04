@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Utilities.Result.Abstracts;
+﻿using Core.Utilities.Result.Abstracts;
 using Entity.Concretes;
 
 namespace Business.Abstracts
@@ -15,9 +10,5 @@ namespace Business.Abstracts
         IResult Update(Location location);
 
         IResult Delete(Location location);
-
-        IDataResult<Location> Get(int id);
-
-        IDataResult<List<Location>> GetAll();
     }
 }

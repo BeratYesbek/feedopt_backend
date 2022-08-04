@@ -1,20 +1,11 @@
 ﻿using Core.DataAccess;
-using Core.Entity.Abstracts;
-using Core.Entity.Concretes;
 using DataAccess.Abstracts;
-using Entity;
 using Entity.Concretes;
 using Entity.Dtos;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-
 namespace DataAccess.Concretes
 {
     public class EfFilterDal : EfEntityRepositoryBase<Filter, AppDbContext>, IFilterDal

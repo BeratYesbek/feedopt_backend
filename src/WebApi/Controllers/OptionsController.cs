@@ -1,16 +1,6 @@
 ﻿using Business.Abstracts;
-using Business.Concretes;
-using DataAccess;
-using DataAccess.Concretes;
-using FluentEmail.Core;
-using FluentEmail.Razor;
-using FluentEmail.Smtp;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
+
 
 namespace WebApi.Controllers
 {
@@ -19,6 +9,8 @@ namespace WebApi.Controllers
     public class OptionsController : ControllerBase
     {
         private readonly IOptionService _optionService;
+
+
         public OptionsController(IOptionService optionService)
         {
             _optionService = optionService;
@@ -32,14 +24,6 @@ namespace WebApi.Controllers
                 return Ok(result);
 
             return BadRequest(result);
-        }
-
-
-        [HttpGet]
-        public  IActionResult StartMailer()
-        {
-            var colors = new AppDbContext().Colors.Include(t => t.ColorTranslations).ToList();
-            return Ok(colors);
         }
     }
 }

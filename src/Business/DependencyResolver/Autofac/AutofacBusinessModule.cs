@@ -1,20 +1,23 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Business.Abstracts;
-using Business.BackgroundJob.Hangfire;
+using Business.Abstracts.Translations;
+using Business.BusinessMailer.Abstracts;
+using Business.BusinessMailer.Concretes.FluentMailer;
 using Business.Concretes;
 using Business.Concretes.Translations;
 using Business.Services.Abstracts;
 using Business.Services.Concretes;
 using Castle.DynamicProxy;
+using Core.Utilities.Cloud.Aws.S3;
 using Core.Utilities.Cloud.Cloudinary;
 using Core.Utilities.Interceptors;
+using Core.Utilities.Mailer.FluentMailer;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstracts;
 using DataAccess.Abstracts.Translations;
 using DataAccess.Concretes;
-using DataAccess.Concretes.EfColorTranslationDal;
-using Entity.Concretes;
+using DataAccess.Concretes.Translations;
 using Microsoft.AspNetCore.Session;
 
 namespace Business.DependencyResolver.Autofac
@@ -23,6 +26,18 @@ namespace Business.DependencyResolver.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<TokenManager>().As<ITokenService>().SingleInstance();
+            builder.RegisterType<EfTokenDal>().As<ITokenDal>().SingleInstance();
+
+            builder.RegisterType<VerificationCodeManager>().As<IVerificationCodeService>().SingleInstance();
+            builder.RegisterType<EfVerificationCodeDal>().As<IVerificationCodeDal>().SingleInstance();
+
+            builder.RegisterType<AdvertCategoryTranslationManager>().As<IAdvertCategoryTranslationService>().SingleInstance();
+            builder.RegisterType<EfAdvertCategoryTranslationDal>().As<IAdvertCategoryTranslationDal>().SingleInstance();
+
+            builder.RegisterType<AnimalCategoryTranslationManager>().As<IAnimalCategoryTranslationService>().SingleInstance();
+            builder.RegisterType<EfAnimalCategoryTranslationDal>().As<IAnimalCategoryTranslationDal>().SingleInstance();
+
             builder.RegisterType<ColorTranslationManager>().As<IColorTranslationService>().SingleInstance();
             builder.RegisterType<EfColorTranslationDal>().As<IColorTranslationDal>().SingleInstance();
 
@@ -78,16 +93,22 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<ChatManager>().As<IChatService>().SingleInstance();
             builder.RegisterType<EfChatDal>().As<IChatDal>().SingleInstance();
 
-
-            builder.RegisterType<CloudinaryService>().As<ICloudinaryService>().SingleInstance();
-
             builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
 
             builder.RegisterType<TelegramManager>().As<ITelegramService>().SingleInstance();
             builder.RegisterType<SmsManager>().As<ISmsService>().SingleInstance();
-            
+
+            builder.RegisterType<S3AmazonService>().As<IS3AmazonService>().SingleInstance();
+            builder.RegisterType<CloudinaryService>().As<ICloudinaryService>().SingleInstance();
+
             builder.RegisterType<DistributedSessionStore>().As<ISessionStore>();
+
+            builder.RegisterType<FluentMailer>().As<IFluentMailer>().SingleInstance();
+            builder.RegisterType<AuthMailer>().As<IAuthMailer>().SingleInstance();
+
+            builder.RegisterType<DashboardManager>().As<IDashboardService>().SingleInstance();
+
 
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

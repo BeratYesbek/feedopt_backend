@@ -7,6 +7,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace Business.Services.Concretes
 {
+    /// <summary>
+    /// Disabled Service
+    /// </summary>
     public class SmsManager : ISmsService
     {
         private readonly HttpClient _httpClient;
@@ -17,6 +20,12 @@ namespace Business.Services.Concretes
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Disabled Service
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="text"></param>
         public async Task SendSms(string title, string phoneNumber, string text)
         {
            var result = await _httpClient.PostAsync(_configuration["SmsApiURL"], new StringContent(JsonConvert.SerializeObject(new

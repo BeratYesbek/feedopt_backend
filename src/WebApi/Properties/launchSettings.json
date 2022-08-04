@@ -1,4 +1,5 @@
 {
+  "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -7,18 +8,11 @@
       "sslPort": 44324
     }
   },
-  "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "environmentVariables": {
-        "JWT_SECRET": "Berat Elmir Emrah Harika bir secret",
-        "JWT_ISSUER": "nervio",
-        "CLIENT_ID": "3a8962eb-3e66-459b-9a63-00374b3e5d3b",
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
       "ancmHostingModel": "OutOfProcess"
     },
     "WebApi": {
@@ -28,8 +22,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "dotnetRunMessages": "true",
-      "applicationUrl": "https://localhost:5500;http://localhost:5000"
+      "applicationUrl": "https://localhost:5500;http://localhost:5000",
+      "dotnetRunMessages": "true"
     },
     "Docker": {
       "commandName": "Docker",

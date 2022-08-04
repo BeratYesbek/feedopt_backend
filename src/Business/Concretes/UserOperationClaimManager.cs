@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Business.Abstracts;
 using Business.BusinessAspect;
 using Business.Security.Role;
 using Business.Validation.FluentValidation;
-using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
-using Core.Entity;
 using Core.Entity.Concretes;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
@@ -58,6 +52,7 @@ namespace Business.Concretes
             _userOperationClaimDal.Delete(userOperationClaim);
             return new SuccessResult();
         }
+
 
         [SecuredOperation($"{Role.UserOperationClaimGet},{Role.Admin},{Role.SuperAdmin}", Priority = 1)]
         [PerformanceAspect(5, Priority = 2)]

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Core.Utilities.Result.Abstracts;
-using Entity.concretes;
 using Entity.Concretes;
 using Entity.Dtos;
 using Entity.Dtos.Filter;
@@ -17,7 +15,7 @@ namespace Business.Abstracts
     {
         Task<IDataResult<Advert>> Add(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location);
 
-        Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, Location location);
+        Task<IResult> Update(Advert advert, AdvertImage advertImage, IFormFile[] files, int[] deletedImages, Location location);
 
         IResult Delete(Advert advert);
 
@@ -33,7 +31,9 @@ namespace Business.Abstracts
 
         IDataResult<List<AdvertReadDto>> GetAdvertDetailByUserId(int userId, int pageNumber);
 
-        IDataResult<List<Advert>> GetAll();
+        IDataResult<List<Advert>> GetAll(Expression<Func<Advert,bool>> filter=null);
+
+        IDataResult<AdvertEditDto> Edit(int id);
 
         IResult UpdateStatus(Advert advert);
     }

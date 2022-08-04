@@ -1,10 +1,7 @@
 ﻿using Core.Entity.Abstracts;
 using Core.Entity.Concretes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.Utilities.Language
 {
@@ -12,7 +9,7 @@ namespace Core.Utilities.Language
     {
         public void TranslateProperties(ICollection<T> collection,IEntity entity)
         {
-            var translations = collection.Where(t => t.CultureName == CurrentUser.User.PreferredLanguage.ToString()).ToList();
+            var translations = collection.Where(t => t.CultureName == CurrentUser.CultureName).ToList();
 
             translations.ForEach(item =>
             {

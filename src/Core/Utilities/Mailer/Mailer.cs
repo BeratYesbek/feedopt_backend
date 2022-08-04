@@ -1,23 +1,11 @@
 ﻿using FluentEmail.Razor;
 using FluentEmail.Smtp;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using Core.Entity;
 using FluentEmail.Core;
-using RazorLight.Extensions;
 
 namespace Core.Utilities.Mailer
 {
-    public enum EmailType
-    {
-        TicketEmail,
-        TicketAnswer,
-        VerifyEmail,
-    }
-
     public class Mailer
     {
 

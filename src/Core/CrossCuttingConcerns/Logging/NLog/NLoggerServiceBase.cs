@@ -20,16 +20,28 @@ namespace Core.CrossCuttingConcerns.Logging.NLog
 
         public void Info(LogDetail logDetail)
         {
-            if (IsInfoEnabled)
-                _logger
-                    .WithProperty("UserId", logDetail.UserId)
-                    .WithProperty("Email", logDetail.Email)
-                    .WithProperty("Claims", logDetail.Claims)
-                    .WithProperty("FullName", logDetail.FullName)
-                    .WithProperty("MethodName", logDetail.MethodName)
-                    .WithProperty("Parameters", JsonSerializer.Serialize(logDetail.Parameters).ToString())
-                    .WithProperty("LogDetail", JsonSerializer.Serialize(logDetail).ToString())
-                    .Info($"This process has been initialized by {DateTime.Now} and by this user {logDetail.UserId}");
+           // if (IsInfoEnabled)
+                try
+                {
+                    _logger
+                        .WithProperty("UserId", logDetail.UserId)
+                        .WithProperty("Email", logDetail.Email)
+                        .WithProperty("Claims", logDetail.Claims)
+                        .WithProperty("FullName", logDetail.FullName)
+                        .WithProperty("MethodName", logDetail.MethodName)
+                        .WithProperty("Parameters", JsonSerializer.Serialize(logDetail.Parameters).ToString())
+                        .WithProperty("LogDetail", JsonSerializer.Serialize(logDetail).ToString())
+                        .Info($"This process has been initialized by {DateTime.Now} and by this user {logDetail.UserId}");
+                    Console.WriteLine($"Info Logged");
+
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine($"--> ERROR => {exception.Message} \n Trace => {exception.StackTrace}");
+                    throw new Exception(exception.Message);
+
+                }
+
         }
 
         public void Debug(object logMessage)

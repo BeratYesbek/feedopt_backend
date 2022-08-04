@@ -17,7 +17,7 @@ namespace DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -90,7 +90,7 @@ namespace DataAccess.Migrations
                     b.ToTable("OperationClaims");
                 });
 
-            modelBuilder.Entity("Core.Entity.Concretes.Translation", b =>
+            modelBuilder.Entity("Core.Entity.Concretes.Token", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,46 +98,21 @@ namespace DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Content")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CultureName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PropertyName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("text");
-
-                    b.Property<int>("TypeId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Translations");
-                });
-
-            modelBuilder.Entity("Core.Entity.Concretes.UserOperationClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("OperationClaimId")
+                    b.Property<int>("ClientType")
                         .HasColumnType("integer");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("UserToken")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
-                    b.ToTable("UserOperationClaims");
+                    b.ToTable("Tokens");
                 });
 
-            modelBuilder.Entity("Core.Entity.User", b =>
+            modelBuilder.Entity("Core.Entity.Concretes.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -166,21 +141,34 @@ namespace DataAccess.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
-
                     b.Property<int>("PreferredLanguage")
                         .HasColumnType("integer");
 
                     b.Property<bool>("Status")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
-
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Core.Entity.Concretes.UserOperationClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OperationClaimId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserOperationClaims");
                 });
 
             modelBuilder.Entity("Entity.Concretes.Advert", b =>
@@ -190,9 +178,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AdvertCase")
-                        .HasColumnType("integer");
 
                     b.Property<int>("AdvertCategoryId")
                         .HasColumnType("integer");
@@ -271,8 +256,8 @@ namespace DataAccess.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("text");
 
-                    b.Property<string>("PublicId")
-                        .HasColumnType("text");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -455,6 +440,60 @@ namespace DataAccess.Migrations
                     b.ToTable("Locations");
                 });
 
+            modelBuilder.Entity("Entity.Concretes.Translations.AdvertCategoryTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AdvertCategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CultureName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PropertyName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertCategoryId");
+
+                    b.ToTable("AdvertCategoryTranslation");
+                });
+
+            modelBuilder.Entity("Entity.Concretes.Translations.AnimalCategoryTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AnimalCategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CultureName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PropertyName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnimalCategoryId");
+
+                    b.ToTable("AnimalCategoryTranslations");
+                });
+
             modelBuilder.Entity("Entity.Concretes.Translations.ColorTranslation", b =>
                 {
                     b.Property<int>("Id")
@@ -507,6 +546,53 @@ namespace DataAccess.Migrations
                     b.ToTable("UserLocations");
                 });
 
+            modelBuilder.Entity("Entity.Concretes.VerificationCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CodeHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Expiry")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VerificationCodes");
+                });
+
+            modelBuilder.Entity("Entity.Concretes.Translations.AdvertCategoryTranslation", b =>
+                {
+                    b.HasOne("Entity.Concretes.AdvertCategory", "AdvertCategory")
+                        .WithMany("AdvertCategoryTranslations")
+                        .HasForeignKey("AdvertCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AdvertCategory");
+                });
+
+            modelBuilder.Entity("Entity.Concretes.Translations.AnimalCategoryTranslation", b =>
+                {
+                    b.HasOne("Entity.concretes.AnimalCategory", "AnimalCategory")
+                        .WithMany("AnimalCategoryTranslations")
+                        .HasForeignKey("AnimalCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AnimalCategory");
+                });
+
             modelBuilder.Entity("Entity.Concretes.Translations.ColorTranslation", b =>
                 {
                     b.HasOne("Entity.Concretes.Color", "Color")
@@ -516,6 +602,16 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Color");
+                });
+
+            modelBuilder.Entity("Entity.Concretes.AdvertCategory", b =>
+                {
+                    b.Navigation("AdvertCategoryTranslations");
+                });
+
+            modelBuilder.Entity("Entity.concretes.AnimalCategory", b =>
+                {
+                    b.Navigation("AnimalCategoryTranslations");
                 });
 
             modelBuilder.Entity("Entity.Concretes.Color", b =>

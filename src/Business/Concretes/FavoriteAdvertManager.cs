@@ -15,10 +15,12 @@ using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
 using Entity.Concretes;
 using Entity.Dtos;
-using Hangfire;
 
 namespace Business.Concretes
 {
+    /// <summary>
+    /// This method manage favorite adverts. Whenever need to manage favorites should do in this class because of SOLID - S => single responsibility principle
+    /// </summary>
     public class FavoriteAdvertManager : IFavoriteAdvertService
     {
         private readonly IFavoriteAdvertDal _favoriteAdvertDal;
@@ -28,6 +30,11 @@ namespace Business.Concretes
             _favoriteAdvertDal = favoriteAdvertDal;
         }
 
+        /// <summary>
+        ///  Whenever user wants to add new favorite advert use this method.
+        /// </summary>
+        /// <param name="favorite"></param>
+        /// <returns>IDataResult</returns>
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertAdd}",Priority = 1)]
         [LogAspect(typeof(DatabaseLogger), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
@@ -50,6 +57,11 @@ namespace Business.Concretes
             return new ErrorDataResult<FavoriteAdvert>(null, FavoriteAdvertMessages.FavoriteRecordFail);
         }
 
+        /// <summary>
+        /// Whenever wants to update already added favorite item use this method
+        /// </summary>
+        /// <param name="favorite"></param>
+        /// <returns>IResult</returns>
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertUpdate}", Priority = 1)]
         [LogAspect(typeof(DatabaseLogger), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
@@ -67,6 +79,11 @@ namespace Business.Concretes
             return new SuccessResult(FavoriteAdvertMessages.FavoriteUpdateSuccess);
         }
 
+        /// <summary>
+        /// Whenever wants to delete already added favorite item use this method
+        /// </summary>
+        /// <param name="favorite"></param>
+        /// <returns>IResult</returns>
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertDelete}", Priority = 1)]
         [LogAspect(typeof(DatabaseLogger), Priority = 2)]
         [PerformanceAspect(5, Priority = 3)]
@@ -84,33 +101,11 @@ namespace Business.Concretes
             return new SuccessResult(FavoriteAdvertMessages.FavoriteRemoveSuccess);
         }
 
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertGet}",Priority =1)]
-        [PerformanceAspect(5,Priority =2)]
-        [LogAspect(typeof(DatabaseLogger), Priority = 3)]
-        public IDataResult<FavoriteAdvert> Get(int id)
-        {
-            var data = _favoriteAdvertDal.Get(f => f.Id == id);
-            if (data is not null)
-            {
-                return new SuccessDataResult<FavoriteAdvert>(data, FavoriteAdvertMessages.FavoriteGetSuccess);
-            }
-            return new ErrorDataResult<FavoriteAdvert>(null, FavoriteAdvertMessages.FavoriteGetFail);
-        }
-
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertGetAll}",Priority = 1)]
-        [CacheAspect(Priority = 2)]
-        [PerformanceAspect(5,Priority = 3)]
-        [LogAspect(typeof(DatabaseLogger),Priority = 4)]
-        public IDataResult<List<FavoriteAdvert>> GetAll()
-        {
-            var data = _favoriteAdvertDal.GetAll();
-            if (data is not null)
-            {
-                return new SuccessDataResult<List<FavoriteAdvert>>(data, FavoriteAdvertMessages.FavoriteGetAllSuccess);
-            }
-            return new ErrorDataResult<List<FavoriteAdvert>>(null, FavoriteAdvertMessages.FavoriteGetAllFail);
-        }
-
+        /// <summary>
+        /// This method get all favorite item by user ID
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>IDataResult</returns>
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.FavoriteAdvertGetAll}",Priority = 1)]
         [CacheAspect(Priority = 2)]
         [PerformanceAspect(5,Priority = 3)]
@@ -119,7 +114,7 @@ namespace Business.Concretes
         {
             var latitude = CurrentUser.Latitude;
             var longitude = CurrentUser.Longitude;
-            var data = _favoriteAdvertDal.GetAllDetailByFilter(f => f.UserId == userId, latitude, longitude);
+            var data = _favoriteAdvertDal.GetAllDetailByFilter(f => f.UserId == CurrentUser.User.Id, CurrentUser.User.Id,latitude, longitude);
             if (data is not null)
             {
                 return new SuccessDataResult<List<FavoriteAdvertReadDto>>(data, FavoriteAdvertMessages.FavoriteGetAllSuccess);

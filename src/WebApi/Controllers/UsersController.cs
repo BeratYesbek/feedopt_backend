@@ -1,13 +1,8 @@
-﻿using System.Globalization;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstracts;
-using Core.Entity;
 using Core.Extensions;
-using Core.Utilities.Result.Concretes;
-using Entity.Concretes;
 using Entity.Dtos;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -55,5 +50,16 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("getAll")]
+        public IActionResult GetAll()
+        {
+            var result = _userService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
     }
 }

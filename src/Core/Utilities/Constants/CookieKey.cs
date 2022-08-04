@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace Core.Utilities.Constants
 {
@@ -11,5 +7,6 @@ namespace Core.Utilities.Constants
         public const string AuthorizationKey = "Authorization";
         public const string ExpireKey = "Expire";
         public const string Email = "Email";
+        public const string NotifyToken = "NotifyToken";
     }
 }

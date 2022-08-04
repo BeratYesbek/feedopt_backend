@@ -118,7 +118,7 @@ namespace Business.Concretes
         [CacheAspect(Priority = 4)]
         public IDataResult<List<AdvertImage>> GetByAdvertId(int id)
         {
-            var data = _advertImageDal.GetAll(a => a.AdvertId == id);
+            var data = _advertImageDal.GetAll(a => a.AdvertId == id && a.IsDeleted==false);
 
             if (data.Count > 0)
             {

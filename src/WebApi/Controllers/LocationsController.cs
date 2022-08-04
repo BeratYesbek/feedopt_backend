@@ -1,11 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using Business.Abstracts;
-using Business.Concretes;
 using Entity.Concretes;
 
 namespace WebApi.Controllers
@@ -60,30 +54,5 @@ namespace WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet("getById/{id}")]
-        public IActionResult Get(int id)
-        {
-            var result = _locationService.Get(id);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest();
-        }
-
-        [HttpGet("getAll")]
-        public IActionResult GetAll()
-        {
-            var result = _locationService.GetAll();
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest();
-        }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using Business.Abstracts;
-using DataAccess;
 using Entity.Concretes;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace WebApi.Controllers
 {

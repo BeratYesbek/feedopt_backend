@@ -1,21 +1,12 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Business.Abstracts;
-using Core.Entity.Abstracts;
 using Core.Extensions;
-using Core.Utilities.IoC;
-using Core.Utilities.Result.Concretes;
 using Entity.Concretes;
 using Entity.Dtos;
 using Entity.Dtos.Filter;
-using Hangfire;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApi.Controllers
 {
@@ -71,7 +62,8 @@ namespace WebApi.Controllers
             var advert = dataResult.Data;
             advert.Map(advertUpdateDto);
 
-            var result = await _advertService.Update(advert, advertImage, advertUpdateDto.Files, location);
+
+            var result = await _advertService.Update(advert, advertImage, advertUpdateDto.Files, advertUpdateDto.DeletedImages, location);
             if (result.Success)
             {
                 return Ok(result);
@@ -83,6 +75,18 @@ namespace WebApi.Controllers
         public IActionResult Delete(Advert advert)
         {
             var result = _advertService.Delete(advert);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("edit/{id}")]
+        public IActionResult Edit(int id)
+        {
+            var result = _advertService.Edit(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -169,5 +173,6 @@ namespace WebApi.Controllers
             }
             return BadRequest(result);
         }
+
     }
 }

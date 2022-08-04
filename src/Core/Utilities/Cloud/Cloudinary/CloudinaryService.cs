@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Threading.Tasks;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
-using Core.Extensions;
 using Core.Utilities.FileHelper;
 using Core.Utilities.IoC;
-using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +12,7 @@ using IResult = Core.Utilities.Result.Abstracts.IResult;
 
 namespace Core.Utilities.Cloud.Cloudinary
 {
-    public class CloudinaryService : ICloudinaryService
+    public class CloudinaryService :FileHelper.FileHelper, ICloudinaryService
     {
         private readonly CloudinaryDotNet.Cloudinary _cloudinary;
         private IConfiguration Configuration { get; set; }
@@ -34,79 +26,44 @@ namespace Core.Utilities.Cloud.Cloudinary
             _cloudinary.Api.Secure = true;
         }
 
-        public IResult Upload(IFormFile file)
-        {
-            var uploadParams = new ImageUploadParams()
-            {
-                File = new FileDescription(file.FileName, file.OpenReadStream())
-            };
-
-            var imageUploadResult = _cloudinary.Upload(uploadParams);
-
-
-            return new SuccessResult($"{imageUploadResult.SecureUrl}&&{imageUploadResult.PublicId}");
-        }
-
-        public IResult Delete(string filePath, string publicId)
-        {
-            var deletionParams = new DeletionParams(publicId);
-            _cloudinary.Destroy(deletionParams);
-            return new SuccessResult();
-        }
-
-        public async Task<IResult> UploadAsync(IFormFile file)
-        {
-            var uploadParams = new ImageUploadParams()
-            {
-                File = new FileDescription(file.FileName, file.OpenReadStream())
-            };
-
-            var imageUploadResult = await _cloudinary.UploadAsync(uploadParams);
-
-
-            return new SuccessResult($"{imageUploadResult.SecureUrl}&&{imageUploadResult.PublicId}");
-        }
-
-        public async Task<IResult> UpdateAsync(IFormFile file, string filePath, string publicId = default)
-        {
-            var result = Delete(null, publicId);
-            if (result.Success)
-            {
-                var addedDelete = await UploadAsync(file);
-                if (addedDelete.Success)
-                {
-                    return new SuccessResult(addedDelete.Message);
-                }
-
-                return new ErrorResult(addedDelete.Message);
-            }
-            return new ErrorResult(result.Message);
-        }
-
-        public async Task<IResult> DeleteAsync(string filePath, string publicId = default)
+        public async Task<IResult> DeleteAsync(string filePath, string publicId = null)
         {
             var deletionParams = new DeletionParams(publicId);
             await _cloudinary.DestroyAsync(deletionParams);
             return new SuccessResult();
         }
 
-        public IResult Update(IFormFile file, string filePath, string publicId)
+        public async Task<IResult> UploadAsync(IFormFile file, FileExtension fileExtension)
         {
-            var result = Delete(null, publicId);
-            if (result.Success)
+            var result = CheckFileTypeValid(Path.GetExtension(file.FileName), fileExtension);
+            if (!result.Success)
+                return result;
+
+            var uploadParams = new ImageUploadParams()
             {
-                var addedDelete = Upload(file);
+                File = new FileDescription(file.FileName, file.OpenReadStream())
+            };
+
+            var imageUploadResult = await _cloudinary.UploadAsync(uploadParams);
+            return new SuccessResult($"{imageUploadResult.SecureUrl}&&{imageUploadResult.PublicId}");
+        }
+
+        public async Task<IResult> UpdateAsync(IFormFile file, string filePath, FileExtension fileExtension, string publicId = null)
+        {
+                await DeleteAsync(null, publicId);
+                var addedDelete = await UploadAsync(file, fileExtension);
                 if (addedDelete.Success)
                 {
                     return new SuccessResult(addedDelete.Message);
                 }
 
                 return new ErrorResult(addedDelete.Message);
-            }
-
-            return new ErrorResult(result.Message);
         }
 
+        protected override IResult CheckFileTypeValid(string type, FileExtension fileExtension)
+        {
+            return base.CheckFileTypeValid(type, fileExtension);
+        }
 
 
 

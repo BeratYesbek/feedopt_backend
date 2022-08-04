@@ -20,28 +20,28 @@ namespace Core.Utilities.Middleware
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
-            ControlRequest(httpContext);
-            await _next.Invoke(httpContext);
+            //ControlRequest(httpContext);
+           await _next.Invoke(httpContext);
         }
-
+        
         public void ControlRequest(HttpContext httpContext)
         {
             var controllerName = httpContext.Request.RouteValues["controller"];
             if (controllerName != null)
             {
-                if (controllerName.ToString().ToLower() == "adverts")
+                if (controllerName.ToString()?.ToLower() == "adverts")
                 {
                     AdvertValidateUser(httpContext);
                 }
-                else if (controllerName.ToString().ToLower() == "favoriteadverts")
+                else if (controllerName.ToString()?.ToLower() == "favoriteadverts")
                 {
                     FavoriteAdvertValidateUser(httpContext);
                 }
-                else if (controllerName.ToString().ToLower() == "users")
+                else if (controllerName.ToString()?.ToLower() == "users")
                 {
                     UserValidateUser(httpContext);
                 }
-                else if (controllerName.ToString().ToLower() == "filters")
+                else if (controllerName.ToString()?.ToLower() == "filters")
                 {
 
                 }
@@ -53,12 +53,12 @@ namespace Core.Utilities.Middleware
             if (context.Request.Method == "GET")
             {
                 var userID = context.Request.Query["userId"].FirstOrDefault();
-                return userID != null ? CheckCurrentUserId(context, userID) : false;
+                return userID != null && CheckCurrentUserId(context, userID);
             }
             else if (context.Request.Method == "PUT")
             {
                 var userID = context.Request.Form["id"].FirstOrDefault();
-                return userID != null ? CheckCurrentUserId(context, userID) : false;
+                return userID != null && CheckCurrentUserId(context, userID);
 
             }
             return false;
@@ -69,12 +69,12 @@ namespace Core.Utilities.Middleware
             if (context.Request.Method == "GET")
             {
                 var userID = context.Request.Query["userId"].FirstOrDefault();
-                return userID != null ? CheckCurrentUserId(context, userID) : false;
+                return userID != null && CheckCurrentUserId(context, userID);
             }
             else if (context.Request.Method == "POST")
             {
                 var userID = GetUserIdFromBody(context);
-                return userID != null ? CheckCurrentUserId(context, userID.ToString()) : false;
+                return userID != null && CheckCurrentUserId(context, userID.ToString());
             }
             return true;
         }
@@ -84,9 +84,10 @@ namespace Core.Utilities.Middleware
             if (context.Request.Method == "GET")
             {
                 var userID = context.Request.Query["userId"];
+                
                 CheckCurrentUserId(context, userID);
             }
-            else if (context.Request.Method == "POST" || context.Request.Method == "PUT")
+            if (context.Request.Method == "POST" || context.Request.Method == "PUT")
             {
                 var userID = context.Request.Form["userId"];
                 CheckCurrentUserId(context, userID);
@@ -116,6 +117,6 @@ namespace Core.Utilities.Middleware
             }
 
             return true;
-        }
+        }  
     }
 }

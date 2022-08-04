@@ -12,7 +12,7 @@ namespace DataAccess.Concretes
 {
     public class EfFavoriteAdvertDal : EfEntityRepositoryBase<FavoriteAdvert, AppDbContext>, IFavoriteAdvertDal
     {
-        public List<FavoriteAdvertReadDto> GetAllDetailByFilter(Expression<Func<FavoriteAdvert, bool>> filter, double latitude, double longitude)
+        public List<FavoriteAdvertReadDto> GetAllDetailByFilter(Expression<Func<FavoriteAdvert, bool>> filter,int userId, double latitude, double longitude)
         {
             using (var context = new AppDbContext())
             {
@@ -31,32 +31,25 @@ namespace DataAccess.Concretes
                                  AnimalSpecies = animalSpecies,
                                  AdvertCategory = advertCategory,
                                  User = user,
-                                 AdvertImages =
-                            (from image in context.AdvertImages where advert.Id == image.AdvertId select image)
-                            .ToArray(),
+                                 AgeId =advert.AgeId,
+                                 AnimalCategory = animalCategory,
+                                 AdvertImages = (from image in context.AdvertImages where advert.Id == image.AdvertId select image).ToArray(),
                                  Id = favorite.Id,
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
                                  Age = age,
                                  AdvertId = advert.Id,
+                                 LocationId = advert.LocationId,
                                  ColorId = advert.ColorId,
                                  Color = color,
                                  Distance = (int) Calculator.CalculateDistance(latitude, longitude, location.Latitude,location.Longitude),
                                  Description = advert.Description,
                                  UserId = advert.UserId,
+                                 AnimalCategoryId = advert.AnimalCategoryId,
+                                 FavoriteStatus = (from favorite in context.FavoriteAdverts where advert.Id == favorite.AdvertId && userId == favorite.UserId select favorite).Any(),
                                  Gender = advert.Gender,
                                  AnimalName = advert.AnimalName,
-                                 AdvertCategoryName = advertCategory.Name,
-                                 AnimalCategoryName = animalCategory.AnimalCategoryName,
-                                 Kind = animalSpecies.Kind,
-                                 Latitude = location.Latitude,
-                                 Longitude = location.Longitude,
-                                 City = location.City,
-                                 Country = location.Country,
-                                 County = location.County,
-                                 Images = (from image in context.AdvertImages
-                                           where advert.Id == image.AdvertId
-                                           select image.ImagePath).ToArray(),
+                                 Images = (from image in context.AdvertImages where advert.Id == image.AdvertId select image.ImagePath).ToArray(),
                                  CreatedAt = advert.CreatedAt,
                                  UpdatedAt = advert.UpdatedAt,
                              };
