@@ -1530,6 +1530,9 @@
       },
       "NLog.Web/5.0.0": {
         "type": "package",
+        "dependencies": {
+          "NLog": "5.0.0"
+        },
         "compile": {
           "lib/net46/NLog.Web.dll": {}
         },
@@ -10938,11 +10941,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\berat\\source\\repos\\nervio_backend\\src\\DataAccess\\DataAccess.csproj",
+      "projectUniqueName": "C:\\Users\\berat\\source\\repos\\feedopt_backend\\src\\DataAccess\\DataAccess.csproj",
       "projectName": "DataAccess",
-      "projectPath": "C:\\Users\\berat\\source\\repos\\nervio_backend\\src\\DataAccess\\DataAccess.csproj",
+      "projectPath": "C:\\Users\\berat\\source\\repos\\feedopt_backend\\src\\DataAccess\\DataAccess.csproj",
       "packagesPath": "C:\\Users\\berat\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\berat\\source\\repos\\nervio_backend\\src\\DataAccess\\obj\\",
+      "outputPath": "C:\\Users\\berat\\source\\repos\\feedopt_backend\\src\\DataAccess\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\berat\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -10959,11 +10962,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\berat\\source\\repos\\nervio_backend\\src\\Core\\Core.csproj": {
-              "projectPath": "C:\\Users\\berat\\source\\repos\\nervio_backend\\src\\Core\\Core.csproj"
+            "C:\\Users\\berat\\source\\repos\\feedopt_backend\\src\\Core\\Core.csproj": {
+              "projectPath": "C:\\Users\\berat\\source\\repos\\feedopt_backend\\src\\Core\\Core.csproj"
             },
-            "C:\\Users\\berat\\source\\repos\\nervio_backend\\src\\Entity\\Entity.csproj": {
-              "projectPath": "C:\\Users\\berat\\source\\repos\\nervio_backend\\src\\Entity\\Entity.csproj"
+            "C:\\Users\\berat\\source\\repos\\feedopt_backend\\src\\Entity\\Entity.csproj": {
+              "projectPath": "C:\\Users\\berat\\source\\repos\\feedopt_backend\\src\\Entity\\Entity.csproj"
             }
           }
         }
@@ -11016,7 +11019,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
       }
     }
   },
