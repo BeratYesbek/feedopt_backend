@@ -55,7 +55,8 @@ namespace WebApi
             };
             services.AddAWSService<IAmazonS3>(awsOptions);
             services.Configure<AWSServiceConfiguration>(awsSettingsSection);
-            services.AddSignalR(opt => opt.AddFilter(typeof(HubAuthorizationFilter)));
+          //  services.AddSignalR(opt => opt.AddFilter(typeof(HubAuthorizationFilter)));
+           services.AddSignalR();
             services.AddMvcCore();
             services.AddHangfireServer();
             services.AddControllersWithViews();
@@ -135,6 +136,7 @@ namespace WebApi
         public void Configure(IApplicationBuilder app, IConfig config)
         {
             config.Run();
+            app.UserCurrentUserMiddleware();
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -142,7 +144,6 @@ namespace WebApi
             app.ConfigureCustomExceptionMiddleware();
             app.UseHttpsRedirection();
             app.UseAuthentication();
-            app.UserCurrentUserMiddleware();
             app.UseHangfireDashboard();
             app.UseRouting();
             app.UseAuthorization();

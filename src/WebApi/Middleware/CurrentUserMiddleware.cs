@@ -3,8 +3,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Core.Extensions;
+using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApi.Middleware
 {
@@ -13,12 +15,16 @@ namespace WebApi.Middleware
         private readonly IUserService _userService;
         private readonly IUserLocationService _locationService;
         private readonly RequestDelegate _request;
+        private readonly IHttpContextAccessor _context;
 
         public CurrentUserMiddleware(IUserLocationService locationService, IUserService userService, RequestDelegate request)
         {
+
             _userService = userService;
             _locationService = locationService;
             _request = request;
+            _context = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+
         }
 
         public async Task Invoke(HttpContext httpContext)
@@ -29,8 +35,9 @@ namespace WebApi.Middleware
 
         private void SetCurrentUser(HttpContext httpContext)
         {
-            var nameIdentifier = httpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            var cultureName = httpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+     /*       var nameIdentifier = _context.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            var roleClaims = _context.HttpContext?.User.ClaimRoles();
+            var cultureName = _context.HttpContext?.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
             if (nameIdentifier == null)
                 return;
             var userId = int.Parse(nameIdentifier);
@@ -39,7 +46,7 @@ namespace WebApi.Middleware
 
             var latitude = locationResult?.Data?.Latitude != null ? double.Parse(locationResult.Data.Latitude.ToString()) : 0d;
             var longitude = locationResult?.Data?.Longitude != null ? double.Parse(locationResult.Data.Longitude.ToString()) : 0d;
-            httpContext.SetCurrentUser(userResult.Data,cultureName,latitude,longitude);
+            httpContext.SetCurrentUser(userResult.Data,cultureName,latitude,longitude);*/
         }
     }
 }

@@ -23,7 +23,11 @@
 
     <PackageReference Include="Microsoft.AspNet.WebApi" Version="5.2.9" />
 
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="6.0.7" />
+
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
 
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.Json" Version="6.0.7" />
 

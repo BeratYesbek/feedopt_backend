@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Business.Abstracts;
 using Core.CrossCuttingConcerns.Cache;
 using Core.Entity.Concretes;
 using Core.Utilities.Cloud.FCM;
+using Core.Utilities.IoC;
 using Core.Utilities.Result.Abstracts;
 using Entity.Concretes;
 using Entity.Dtos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
 namespace WebApi.Hub
@@ -18,12 +23,16 @@ namespace WebApi.Hub
         private readonly INotificationService _notificationService;
         private readonly ICacheManager _cacheManager;
         private readonly IChatService _chatService;
+        private readonly IHttpContextAccessor _context;
+
 
         public ChatHub(ICacheManager cacheManager, INotificationService notificationService, IChatService chatService)
         {
             _cacheManager = cacheManager;
             _notificationService = notificationService;
             _chatService = chatService;
+            _context = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+
         }
 
         public override Task OnConnectedAsync()
@@ -73,7 +82,8 @@ namespace WebApi.Hub
             }
             var groupName = GetGroupName();
             var userId = (int)int.Parse(routeOb.UserId.ToString());
-            IDataResult<List<ChatDto>> data = _chatService.GetAllByReceiverIdAndSenderId(CurrentUser.User.Id, userId);
+            var current = GetCurrentUserId();
+            IDataResult<List<ChatDto>> data = _chatService.GetAllByReceiverIdAndSenderId(GetCurrentUserId(), userId);
             await Clients.Group(groupName).SendAsync("GetPreviousMessage", data);
         }
 
@@ -94,7 +104,7 @@ namespace WebApi.Hub
             }
             var data = _chatService.Add(new Chat
             {
-                SenderId = CurrentUser.User.Id,
+                SenderId = GetCurrentUserId(),
                 ReceiverId = userId,
                 Message = routeOb?.Message,
             });
@@ -102,9 +112,20 @@ namespace WebApi.Hub
 
         }
 
-        private static string GetGroupName()
+        private int GetCurrentUserId()
         {
-            var email = CurrentUser.User.Email;
+            var nameIdentifier = _context.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (nameIdentifier != null)
+            {
+                return int.Parse(nameIdentifier);
+            }
+
+            throw new ArgumentNullException();
+
+        }
+        private  string GetGroupName()
+        {
+            var email = _context.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
 
             if (email is not null && email != "")
             {
