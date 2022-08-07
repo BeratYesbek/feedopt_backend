@@ -21,8 +21,8 @@ namespace Core.Utilities.Interceptors
             catch (Exception e)
             {
                 isSuccess = false;
-                OnException(invocation, e);
-                throw;
+                //OnException(invocation, e);
+               // throw;
             }
             finally
             {

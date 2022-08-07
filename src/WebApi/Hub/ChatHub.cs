@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Business.BusinessAspect;
+using Business.Security.Role;
 using Core.CrossCuttingConcerns.Cache;
 using Core.Entity.Concretes;
 using Core.Utilities.Cloud.FCM;
@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 
 namespace WebApi.Hub
 {
+    [SecuredOperation($"{Role.Admin},{Role.SuperAdmin},{Role.User}")]
     public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
     {
         private readonly INotificationService _notificationService;
@@ -82,8 +83,7 @@ namespace WebApi.Hub
             }
             var groupName = GetGroupName();
             var userId = (int)int.Parse(routeOb.UserId.ToString());
-            var current = GetCurrentUserId();
-            IDataResult<List<ChatDto>> data = _chatService.GetAllByReceiverIdAndSenderId(GetCurrentUserId(), userId);
+            IDataResult<List<ChatDto>> data = _chatService.GetAllByReceiverIdAndSenderId(CurrentUser.User.Id, userId);
             await Clients.Group(groupName).SendAsync("GetPreviousMessage", data);
         }
 
@@ -100,32 +100,35 @@ namespace WebApi.Hub
             var userId = (int)int.Parse(routeOb?.UserId.ToString());
             if (!CheckGroupIsExists(groupName))
             {
-                await _notificationService.PushNotification("", "", "", "");
+               // await _notificationService.PushNotification("", "", "", "");
             }
             var data = _chatService.Add(new Chat
             {
-                SenderId = GetCurrentUserId(),
+                SenderId = CurrentUser.User.Id,
                 ReceiverId = userId,
                 Message = routeOb?.Message,
             });
-            await Clients.Group(groupName).SendAsync("ReceiveMessage", data);
 
-        }
-
-        private int GetCurrentUserId()
-        {
-            var nameIdentifier = _context.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (nameIdentifier != null)
+            var list = new List<dynamic>();
+            list.Add(new 
             {
-                return int.Parse(nameIdentifier);
-            }
+                chat = data.Data
+            });
+            var messageObject = new 
+            {
+                data = list,
+                message = data.Message,
+                success = data.Success,
 
-            throw new ArgumentNullException();
+            };
+            await Clients.Group(groupName).SendAsync("ReceiveMessage", messageObject);
+            list.Clear();
 
         }
+
         private  string GetGroupName()
         {
-            var email = _context.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            var email = CurrentUser.User.Email;
 
             if (email is not null && email != "")
             {

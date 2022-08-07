@@ -1,5 +1,6 @@
 ﻿using System;
 using Castle.DynamicProxy;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Core.Utilities.Interceptors
 {

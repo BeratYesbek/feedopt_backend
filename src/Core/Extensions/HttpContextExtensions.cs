@@ -21,5 +21,10 @@ namespace Core.Extensions
             CurrentUser.Latitude = latitude;
             CurrentUser.Longitude = longitude;
         }
+
+        public static User GetCurrentUser(this HttpContext httpContext)
+        {
+            return CurrentUser.User;
+        }
     }
 }

@@ -110,7 +110,6 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<DashboardManager>().As<IDashboardService>().SingleInstance();
 
 
-
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()

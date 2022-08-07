@@ -27,8 +27,6 @@ namespace Business.Concretes
 
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatAdd}",Priority = 1)]
         [ValidationAspect(typeof(ChatValidator),Priority = 2)]
-        [CacheRemoveAspect("IChatService.GetAllByReceiverIdAndSenderId",Priority = 3)]
-        [CacheRemoveAspect("IChatService.GetAllLastMessages",Priority = 4)]
         [PerformanceAspect(5,Priority = 5)]
         [LogAspect(typeof(DatabaseLogger),Priority = 6)]
         public IDataResult<Chat> Add(Chat chat)
@@ -38,8 +36,6 @@ namespace Business.Concretes
 
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatUpdate}",Priority = 1)]
         [ValidationAspect(typeof(ChatValidator),Priority = 2)]
-        [CacheRemoveAspect("IChatService.GetAllByReceiverIdAndSenderId",Priority = 3)]
-        [CacheRemoveAspect("IChatService.GetAllLastMessages",Priority = 4)]
         [PerformanceAspect(5,Priority = 5)]
         [LogAspect(typeof(DatabaseLogger),Priority = 6)]
         public IResult Update(Chat chat)
@@ -50,8 +46,6 @@ namespace Business.Concretes
 
         [SecuredOperation($"{Role.Admin},{Role.SuperAdmin},{Role.ChatDelete}",Priority = 1)]
         [ValidationAspect(typeof(ChatValidator),Priority = 2)]
-        [CacheRemoveAspect("IChatService.GetAllByReceiverIdAndSenderId",Priority = 3)]
-        [CacheRemoveAspect("IChatService.GetAllLastMessages",Priority = 4)]
         [PerformanceAspect(5,Priority = 5)]
         [LogAspect(typeof(DatabaseLogger),Priority = 6)]
         public IResult Delete(Chat chat)
@@ -63,7 +57,6 @@ namespace Business.Concretes
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGet}",Priority = 1)]
         [LogAspect(typeof(DatabaseLogger),Priority = 2)]
         [PerformanceAspect(5,Priority = 3)]
-        [CacheAspect(Priority = 4)]
         public IDataResult<Chat> Get(int id)
         {
             var data = _chatDal.Get(c => c.Id == id);
@@ -78,7 +71,6 @@ namespace Business.Concretes
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}",Priority = 1)]
         [LogAspect(typeof(DatabaseLogger),Priority = 2)]
         [PerformanceAspect(5,Priority = 3)]
-        [CacheAspect(Priority = 4)]
         public IDataResult<List<Chat>> GetAll()
         {
             var data = _chatDal.GetAll();
@@ -96,7 +88,6 @@ namespace Business.Concretes
         }
 
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}",Priority = 1)] 
-        [CacheAspect(Priority = 2)]
         [PerformanceAspect(5,Priority = 3)]
         [LogAspect(typeof(DatabaseLogger),Priority = 4)]
         public IDataResult<List<ChatDto>> GetAllByReceiverIdAndSenderId(int senderId, int receiverId)
@@ -116,7 +107,6 @@ namespace Business.Concretes
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}",Priority = 1)]
         [LogAspect(typeof(DatabaseLogger),Priority = 2)]
         [PerformanceAspect(5,Priority = 3)]
-        [CacheAspect(Priority = 4)]
         public IDataResult<List<ChatDto>> GetAllLastMessages(int id)
         {
             var data = _chatDal.GetAllLastMessages(c => c.ReceiverId == id || c.SenderId == id, id);
