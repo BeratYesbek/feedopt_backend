@@ -2,38 +2,26 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business.Abstracts;
-using Business.BusinessAspect;
-using Business.Security.Role;
 using Core.CrossCuttingConcerns.Cache;
 using Core.Entity.Concretes;
 using Core.Utilities.Cloud.FCM;
-using Core.Utilities.IoC;
-using Core.Utilities.Result.Abstracts;
 using Entity.Concretes;
-using Entity.Dtos;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
 namespace WebApi.Hub
 {
-    [SecuredOperation($"{Role.Admin},{Role.SuperAdmin},{Role.User}")]
     public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
     {
         private readonly INotificationService _notificationService;
         private readonly ICacheManager _cacheManager;
         private readonly IChatService _chatService;
-        private readonly IHttpContextAccessor _context;
-
 
         public ChatHub(ICacheManager cacheManager, INotificationService notificationService, IChatService chatService)
         {
             _cacheManager = cacheManager;
             _notificationService = notificationService;
             _chatService = chatService;
-            _context = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
-
         }
 
         public override Task OnConnectedAsync()
@@ -83,10 +71,16 @@ namespace WebApi.Hub
             }
             var groupName = GetGroupName();
             var userId = (int)int.Parse(routeOb.UserId.ToString());
-            IDataResult<List<ChatDto>> data = _chatService.GetAllByReceiverIdAndSenderId(CurrentUser.User.Id, userId);
+            var data = await _chatService.GetAllByReceiverIdAndSenderId(CurrentUser.User.Id, userId);
             await Clients.Group(groupName).SendAsync("GetPreviousMessage", data);
         }
 
+        public async Task GetLatestMessageBetweenUsers()
+        {
+            var groupName = GetGroupName();
+            var data = await _chatService.GetAllLastMessages(CurrentUser.User.Id);
+            await Clients.Group(GetGroupName()).SendAsync("ReceiveLatestMessageBetweenUsers",data);
+        }
         public async Task SendMessageAsync(string message)
         {
             var routeOb = JsonConvert.DeserializeObject<dynamic>(message);
@@ -100,15 +94,15 @@ namespace WebApi.Hub
             var userId = (int)int.Parse(routeOb?.UserId.ToString());
             if (!CheckGroupIsExists(groupName))
             {
-               // await _notificationService.PushNotification("", "", "", "");
+                Console.WriteLine("Notification was sent");
+                //await _notificationService.PushNotification("", "", "", "");
             }
-            var data = _chatService.Add(new Chat
+            var data = await _chatService.Add(new Chat
             {
                 SenderId = CurrentUser.User.Id,
                 ReceiverId = userId,
                 Message = routeOb?.Message,
             });
-
             var list = new List<dynamic>();
             list.Add(new 
             {
@@ -119,11 +113,9 @@ namespace WebApi.Hub
                 data = list,
                 message = data.Message,
                 success = data.Success,
-
             };
-            await Clients.Group(groupName).SendAsync("ReceiveMessage", messageObject);
+            await Clients.Groups(groupName,CurrentUser.User.Email).SendAsync("ReceiveMessage", messageObject);
             list.Clear();
-
         }
 
         private  string GetGroupName()
@@ -139,8 +131,7 @@ namespace WebApi.Hub
 
         private void AddGroup(string groupName, int numberOfMember)
         {
-            _cacheManager.Add(groupName, numberOfMember, 150);
-
+            _cacheManager.Add(groupName, numberOfMember, 240);
         }
 
         private void UpdateGroupMember(string groupName, int numberOfMember)
