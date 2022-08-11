@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Business.Abstracts;
-using Business.BusinessAspect;
-using Business.BusinessMailer.Abstracts;
+using Business.BusinessAspect.SecurityAspect;
 using Business.BusinessRules;
+using Business.BusinessRules.BusinessMailer.Abstracts;
 using Business.Security.Role;
 using Core.Aspects.Autofac.Logging;
 using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;

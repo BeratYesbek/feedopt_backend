@@ -11,6 +11,7 @@ namespace WebApi.AutoMapper.Profiles
             CreateMap<AdvertCreateDto, AdvertImage>();
             CreateMap<AdvertCreateDto, Location>();
             CreateMap<AdvertUpdateDto, AdvertImage>();
+            CreateMap<ChatUpdateDto, Chat>();
 
             CreateMap<AdvertUpdateDto, Location>()
                 .ForMember(dest => dest.Id, opt

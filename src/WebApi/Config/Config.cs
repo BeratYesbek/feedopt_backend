@@ -36,7 +36,6 @@ namespace WebApi.Config
 
         private void DatabaseMigration()
         {
-            ConnectionString.DataBaseConnectionString = Configuration.GetConnectionString("DB_CONNECTION_STRING");
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             using (var db = ServiceProvider.GetService<AppDbContext>())

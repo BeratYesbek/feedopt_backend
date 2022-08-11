@@ -1,5 +1,5 @@
 ﻿using Business.Abstracts;
-using Business.BusinessAspect;
+using Business.BusinessAspect.SecurityAspect;
 using Business.Security.Role;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;

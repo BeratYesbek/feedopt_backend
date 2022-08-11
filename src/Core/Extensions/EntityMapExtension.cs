@@ -3,7 +3,7 @@ using System;
 
 namespace Core.Extensions
 {
-    public static class IEntityMapExtension
+    public static class EntityMapExtension
     {
         public static IEntity Map(this IEntity entity, IDto dto)
         {

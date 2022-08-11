@@ -12,7 +12,6 @@ namespace Core.Utilities.Interceptors
         public override void Intercept(IInvocation invocation)
         {
             var isSuccess = true;
-
             OnBefore(invocation);
             try
             {
@@ -21,8 +20,8 @@ namespace Core.Utilities.Interceptors
             catch (Exception e)
             {
                 isSuccess = false;
-                //OnException(invocation, e);
-               // throw;
+                OnException(invocation, e);
+                throw;
             }
             finally
             {

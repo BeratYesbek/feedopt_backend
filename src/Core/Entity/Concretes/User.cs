@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Core.Entity.Abstracts;
 using Core.Utilities.Language;
 using Microsoft.AspNetCore.Http;
@@ -25,5 +26,7 @@ namespace Core.Entity.Concretes
         public byte[] PasswordHash { get; set; }
         [Newtonsoft.Json.JsonIgnore]
         public byte[] PasswordSalt { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

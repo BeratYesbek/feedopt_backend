@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Business.Abstracts;
-using Business.BusinessAspect;
+using Business.BusinessAspect.SecurityAspect;
 using Business.Security.Role;
 using Business.Validation.FluentValidation;
-using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
@@ -20,10 +20,12 @@ namespace Business.Concretes
     public class ChatManager : IChatService
     {
         private readonly IChatDal _chatDal;
+        private readonly IMapper _mapper;
 
-        public ChatManager(IChatDal chatDal)
+        public ChatManager(IChatDal chatDal, IMapper mapper)
         {
             _chatDal = chatDal;
+            _mapper = mapper;
         }
 
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatAdd}", Priority = 1)]
@@ -34,6 +36,27 @@ namespace Business.Concretes
         {
             var data = await _chatDal.AddAsync(chat);
             return new SuccessDataResult<Chat>(data);
+        }
+
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 3)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 4)]
+        public async Task<IDataResult<List<ChatDto>>> UpdateChatList(List<ChatDto> list)
+        {
+            foreach (var item in list)
+            {
+                item.Chat.IsSeen = true;
+                var chat = item.Chat;
+                await _chatDal.UpdateAsync(chat);
+            }
+            return new SuccessDataResult<List<ChatDto>>(list);
+        }
+
+        public async Task<IDataResult<Chat>> UpdateChat(Chat chat)
+        {
+            chat.IsSeen = true;
+            await _chatDal.UpdateAsync(chat);
+            return new SuccessDataResult<Chat>(chat);
         }
 
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}", Priority = 1)]

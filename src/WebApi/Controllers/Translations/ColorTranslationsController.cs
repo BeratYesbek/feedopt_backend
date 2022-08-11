@@ -1,4 +1,5 @@
 ﻿using Business.Abstracts;
+using Business.Abstracts.Translations;
 using Entity.Concretes.Translations;
 using Microsoft.AspNetCore.Mvc;
 

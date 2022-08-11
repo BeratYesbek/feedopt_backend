@@ -2,7 +2,7 @@
 using Core.Entity.Concretes;
 using Core.Utilities.Result.Abstracts;
 
-namespace Business.BusinessMailer.Abstracts
+namespace Business.BusinessRules.BusinessMailer.Abstracts
 {
     public interface IAuthMailer
     {

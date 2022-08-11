@@ -1,16 +1,26 @@
-﻿using Core.Entity.Concretes;
+﻿using System.Configuration;
+using Core.Entity.Concretes;
+using Core.Utilities.IoC;
 using Entity.concretes;
 using Entity.Concretes;
 using Entity.Concretes.Translations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DataAccess
 {
     public class AppDbContext : DbContext
     {
+        private readonly IConfiguration _configuration;
+        public AppDbContext()
+        {
+            _configuration = ServiceTool.ServiceProvider.GetService<IConfiguration>();
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLazyLoadingProxies(false).UseNpgsql(ConnectionString.DataBaseConnectionString);
+            optionsBuilder.UseLazyLoadingProxies(false)
+                .UseNpgsql(_configuration["ConnectionStrings:DB_CONNECTION_STRING"]);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,7 +32,6 @@ namespace DataAccess
             modelBuilder.Entity<AnimalCategory>().Navigation(t => t.AnimalCategoryTranslations).HasField("_AnimalCategoryTranslations").UsePropertyAccessMode(PropertyAccessMode.Property);*/
 
         }
-
         public DbSet<AnimalCategory> AnimalCategories { get; set; }
         public DbSet<AnimalSpecies> AnimalSpecies { get; set; }
         public DbSet<Location> Locations { get; set; }

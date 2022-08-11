@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Business.Abstracts;
 using Core.CrossCuttingConcerns.Cache;
 using Core.Entity.Concretes;
 using Core.Utilities.Cloud.FCM;
 using Entity.Concretes;
+using Entity.Dtos;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 
@@ -16,12 +19,14 @@ namespace WebApi.Hub
         private readonly INotificationService _notificationService;
         private readonly ICacheManager _cacheManager;
         private readonly IChatService _chatService;
+        private readonly IMapper _mapper;
 
-        public ChatHub(ICacheManager cacheManager, INotificationService notificationService, IChatService chatService)
+        public ChatHub(ICacheManager cacheManager, INotificationService notificationService, IChatService chatService,IMapper mapper)
         {
             _cacheManager = cacheManager;
             _notificationService = notificationService;
             _chatService = chatService;
+            _mapper = mapper;
         }
 
         public override Task OnConnectedAsync()
@@ -71,13 +76,34 @@ namespace WebApi.Hub
             }
             var groupName = GetGroupName();
             var userId = (int)int.Parse(routeOb.UserId.ToString());
+            var email = (string)routeOb?.Email;
             var data = await _chatService.GetAllByReceiverIdAndSenderId(CurrentUser.User.Id, userId);
+            if (data != null)
+            {
+                var list = data.Data.Where(t => t.ReceiverUser.Id == CurrentUser.User.Id && t.Chat.IsSeen != true).ToList();
+                var value = await _chatService.UpdateChatList(list);
+                if (CheckGroupIsExists(email))
+                {
+                    await Clients.Group(email).SendAsync("ReceiveUpdatedListMessages", value);
+                }
+            }
             await Clients.Group(groupName).SendAsync("GetPreviousMessage", data);
+        }
+
+        public async Task HandleUpdateIsSeen(ChatUpdateDto chatUpdateDto)
+        {
+            var chat = chatUpdateDto.Chat;
+            if (chat.SenderId  != CurrentUser.User.Id)
+            {
+                Console.WriteLine("Message updated command received on: " + CurrentUser.User.Email);
+                chat.IsSeen = true;
+                var result = await _chatService.UpdateChat(chat);
+                await Clients.Group(chatUpdateDto.SenderEmail).SendAsync("ReceiveUpdatedMessage", result.Data);
+            } 
         }
 
         public async Task GetLatestMessageBetweenUsers()
         {
-            var groupName = GetGroupName();
             var data = await _chatService.GetAllLastMessages(CurrentUser.User.Id);
             await Clients.Group(GetGroupName()).SendAsync("ReceiveLatestMessageBetweenUsers",data);
         }
@@ -103,11 +129,7 @@ namespace WebApi.Hub
                 ReceiverId = userId,
                 Message = routeOb?.Message,
             });
-            var list = new List<dynamic>();
-            list.Add(new 
-            {
-                chat = data.Data
-            });
+            var list = new List<dynamic> { new { chat = data.Data } };
             var messageObject = new 
             {
                 data = list,

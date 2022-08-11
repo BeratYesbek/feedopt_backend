@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Business.BusinessMailer.Abstracts;
+using Business.BusinessRules.BusinessMailer.Abstracts;
 using Core.Entity.Concretes;
 using Core.Utilities.Mailer.FluentMailer;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 
-namespace Business.BusinessMailer.Concretes.FluentMailer
+namespace Business.BusinessRules.BusinessMailer.Concretes.FluentMailer
 {
     internal class AuthMailer : IAuthMailer
     {

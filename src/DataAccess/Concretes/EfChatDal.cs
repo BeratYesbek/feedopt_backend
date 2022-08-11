@@ -28,8 +28,22 @@ namespace DataAccess.Concretes
                     select new ChatDto
                     {
                         Chat = chat,
-                        SenderUser = senderUser,
-                        ReceiverUser = receiverUser
+                        SenderUser = new UserDto
+                        {
+                            Id = senderUser.Id,
+                            FullName = senderUser.FullName,
+                            Email = senderUser.Email,
+                            PreferredLanguage = senderUser.PreferredLanguage,
+                            ImagePath = senderUser.ImagePath
+                        },
+                        ReceiverUser = new UserDto
+                        {
+                            Id = receiverUser.Id,
+                            FullName = receiverUser.FullName,
+                            Email = receiverUser.Email,
+                            PreferredLanguage = receiverUser.PreferredLanguage,
+                            ImagePath = receiverUser.ImagePath
+                        }
                     };
 
                 return await result.ToListAsync();
@@ -75,8 +89,22 @@ namespace DataAccess.Concretes
                     join receiverUser in context.Users on chat.SenderId equals receiverUser.Id
                     select new ChatDto
                     {
-                        SenderUser = senderUser,
-                        ReceiverUser = receiverUser,
+                        SenderUser = new UserDto
+                        {
+                            Id = senderUser.Id,
+                            FullName = senderUser.FullName,
+                            Email = senderUser.Email,
+                            PreferredLanguage = senderUser.PreferredLanguage,
+                            ImagePath = senderUser.ImagePath
+                        },
+                        ReceiverUser = new UserDto
+                        {
+                            Id = receiverUser.Id,
+                            FullName = receiverUser.FullName,
+                            Email = receiverUser.Email,
+                            PreferredLanguage = receiverUser.PreferredLanguage,
+                            ImagePath = receiverUser.ImagePath
+                        },
                         Chat = chat
                     };
 
