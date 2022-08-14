@@ -22,7 +22,7 @@ namespace Core.Aspects.Autofac.Cache
         public override void Intercept(IInvocation invocation)
         {
 
-           /* var cultureName = CurrentUser.User != null ? CurrentUser.User?.PreferredLanguage.ToString() : Utilities.Language.Language.SupportedLanguage[0];
+            var cultureName = CurrentUser.User != null ? CurrentUser.User?.PreferredLanguage.ToString() : Utilities.Language.Language.SupportedLanguage[0];
             var methodName = string.Format($"{invocation.Method.ReflectedType?.FullName}.{invocation.Method.Name}{cultureName}");
             var arguments = invocation.Arguments.ToList();
             var key = $"{methodName}({string.Join(",", arguments.Select(x => x?.ToString() ?? "<Null>"))})";
@@ -34,7 +34,7 @@ namespace Core.Aspects.Autofac.Cache
             }
 
             invocation.Proceed();
-            _cacheManager.Add(key, invocation.ReturnValue, _duration);*/
+            _cacheManager.Add(key, invocation.ReturnValue, _duration);
         }
     }
 }

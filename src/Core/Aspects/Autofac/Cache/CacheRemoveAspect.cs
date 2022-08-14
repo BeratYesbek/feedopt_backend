@@ -26,8 +26,8 @@ namespace Core.Aspects.Autofac.Cache
 
         protected override void OnSuccess(IInvocation invocation)
         {
-           /* _pattern = $"{_pattern}{CurrentUser.User.PreferredLanguage.ToString()}";
-            _cacheManager.RemoveByPattern(_pattern);*/
+            _pattern = $"{_pattern}{CurrentUser.User.PreferredLanguage.ToString()}";
+            _cacheManager.RemoveByPattern(_pattern);
         }
     }
 }
