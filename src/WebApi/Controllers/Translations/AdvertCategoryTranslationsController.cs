@@ -9,6 +9,7 @@ namespace WebApi.Controllers.Translations
     public class AdvertCategoryTranslationsController : ControllerBase
     {
         private readonly IAdvertCategoryTranslationService _advertCategoryTranslationService;
+
         public AdvertCategoryTranslationsController(IAdvertCategoryTranslationService advertCategoryTranslationService)
         {
             _advertCategoryTranslationService = advertCategoryTranslationService;
@@ -22,7 +23,8 @@ namespace WebApi.Controllers.Translations
             {
                 return Ok(result);
             }
-            return BadRequest();   
+
+            return BadRequest();
         }
 
         [HttpGet("getAll")]

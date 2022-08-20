@@ -16,7 +16,6 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("add")]
-        
         public IActionResult Add(AnimalSpecies animalSpecies)
         {
             var result = _animalSpeciesService.Add(animalSpecies);

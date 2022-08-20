@@ -9,8 +9,8 @@ namespace WebApi.Controllers.Translations
     [ApiController]
     public class ColorTranslationsController : ControllerBase
     {
-
         private readonly IColorTranslationService _colorTranslationService;
+
         public ColorTranslationsController(IColorTranslationService colorTranslationService)
         {
             _colorTranslationService = colorTranslationService;
@@ -24,6 +24,7 @@ namespace WebApi.Controllers.Translations
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -35,9 +36,8 @@ namespace WebApi.Controllers.Translations
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
-
-
     }
 }

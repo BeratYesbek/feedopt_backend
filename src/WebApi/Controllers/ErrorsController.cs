@@ -10,6 +10,7 @@ namespace WebApi.Controllers
     public class ErrorsController : ControllerBase
     {
         private readonly IStringLocalizer<ErrorsController> _localizer;
+
         public ErrorsController(IStringLocalizer<ErrorsController> localizer)
         {
             _localizer = localizer;
@@ -24,6 +25,7 @@ namespace WebApi.Controllers
             {
                 errorList.Add(_localizer[splittedMessage].Value);
             }
+
             errorList.RemoveAt(0);
             return BadRequest(new ErrorDetails
             {

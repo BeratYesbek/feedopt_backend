@@ -14,10 +14,11 @@ namespace WebAPI.Config
     {
         private static Task CompletedTask => Task.CompletedTask;
 
-        private static readonly Type[] supportedElementTypes = {
-        typeof(int), typeof(long), typeof(short), typeof(byte),
-        typeof(uint), typeof(ulong), typeof(ushort), typeof(Guid)
-    };
+        private static readonly Type[] supportedElementTypes =
+        {
+            typeof(int), typeof(long), typeof(short), typeof(byte),
+            typeof(uint), typeof(ulong), typeof(ushort), typeof(Guid)
+        };
 
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
@@ -28,7 +29,8 @@ namespace WebAPI.Config
             if (providerValue == ValueProviderResult.None) return CompletedTask;
 
             // Each value self may contains a series of actual values, split it with comma
-            var strs = providerValue.Values.SelectMany(s => s.Split(',', StringSplitOptions.RemoveEmptyEntries)).ToList();
+            var strs = providerValue.Values.SelectMany(s => s.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                .ToList();
 
             if (!strs.Any() || strs.Any(s => String.IsNullOrWhiteSpace(s)))
                 return CompletedTask;
@@ -46,8 +48,8 @@ namespace WebAPI.Config
         internal static bool IsSupportedModelType(Type modelType)
         {
             return modelType.IsArray && modelType.GetArrayRank() == 1
-                    && modelType.HasElementType
-                    && supportedElementTypes.Contains(modelType.GetElementType());
+                                     && modelType.HasElementType
+                                     && supportedElementTypes.Contains(modelType.GetElementType());
         }
 
         private static Array CopyAndConvertArray(IList<string> sourceArray, Type elementType)
@@ -59,6 +61,7 @@ namespace WebAPI.Config
                 for (var i = 0; i < sourceArray.Count; i++)
                     targetArray.SetValue(converter.ConvertFromString(sourceArray[i]), i);
             }
+
             return targetArray;
         }
     }
@@ -86,7 +89,8 @@ namespace WebAPI.Config
             return index < 0 ? index : index + 1;
         }
 
-        public static void InsertCommaSeparatedArrayModelBinderProvider(this IList<IModelBinderProvider> modelBinderProviders)
+        public static void InsertCommaSeparatedArrayModelBinderProvider(
+            this IList<IModelBinderProvider> modelBinderProviders)
         {
             // Argument Check
             if (modelBinderProviders == null)

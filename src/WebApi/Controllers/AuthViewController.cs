@@ -11,9 +11,10 @@ namespace WebApi.Controllers
     public class AuthViewController : Controller
     {
         private readonly IAuthService _authService;
+
         public AuthViewController(IAuthService authService)
         {
-            _authService = authService; 
+            _authService = authService;
         }
 
         [HttpGet("VerifyUser")]

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using Core.DataAccess;
 using Core.Entity.Concretes;
 using DataAccess.Abstracts;
@@ -17,7 +18,7 @@ namespace DataAccess.Concretes
                     join UserOperationClaim in context.UserOperationClaims
                         on operationClaim.Id equals UserOperationClaim.OperationClaimId
                     where UserOperationClaim.UserId == user.Id
-                    select new OperationClaim {Id = operationClaim.Id, Name = operationClaim.Name};
+                    select new OperationClaim { Id = operationClaim.Id, Name = operationClaim.Name };
 
                 return result.ToList();
             }
@@ -28,7 +29,6 @@ namespace DataAccess.Concretes
             using (var context = new AppDbContext())
             {
                 var result = from user in context.Users
-                    join userOperationClaim in context.UserOperationClaims on user.Id equals userOperationClaim.UserId
                     select new UserDto
                     {
                         Id = user.Id,
@@ -37,8 +37,7 @@ namespace DataAccess.Concretes
                         ImagePath = user.ImagePath,
                         PreferredLanguage = user.PreferredLanguage,
                         EmailConfirmed = user.EmailConfirmed,
-                        Roles = string.Join(" ",(from operationClaim in context.OperationClaims where operationClaim.Id == userOperationClaim.OperationClaimId select operationClaim.Name).ToArray())
-                        
+                        Roles = "User"
                     };
                 return result.ToList();
             }

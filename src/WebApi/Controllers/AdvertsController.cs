@@ -37,6 +37,7 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -63,11 +64,13 @@ namespace WebApi.Controllers
             advert.Map(advertUpdateDto);
 
 
-            var result = await _advertService.Update(advert, advertImage, advertUpdateDto.Files, advertUpdateDto.DeletedImages, location);
+            var result = await _advertService.Update(advert, advertImage, advertUpdateDto.Files,
+                advertUpdateDto.DeletedImages, location);
             if (result.Success)
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -106,21 +109,25 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
         }
+
         [HttpGet("getAllAdvertDetailByFilter/{pageNumber}")]
         public IActionResult GetAllAdvertDetailByFilter([FromQuery] AdvertFilterDto filter, int pageNumber)
         {
-             var result = _advertService.GetAllAdvertDetailsByFilter(filter, pageNumber);
+            var result = _advertService.GetAllAdvertDetailsByFilter(filter, pageNumber);
             if (result.Success)
             {
-                return Ok(new { Data = result.Data, Success = true, Message = result.Message, SelectedFilters = filter });
+                return Ok(new
+                    { Data = result.Data, Success = true, Message = result.Message, SelectedFilters = filter });
             }
-            return BadRequest(new { Data = result.Data, Success = true, Message = result.Message, SelectedFilters = filter });     
+
+            return BadRequest(new
+                { Data = result.Data, Success = true, Message = result.Message, SelectedFilters = filter });
         }
 
 
         [HttpGet("getAll")]
         public IActionResult GetAll()
-        {  
+        {
             var result = _advertService.GetAll();
             if (result.Success)
             {
@@ -138,6 +145,7 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -149,6 +157,7 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -160,6 +169,7 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -171,8 +181,8 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
-
     }
 }

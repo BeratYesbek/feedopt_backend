@@ -14,7 +14,7 @@ namespace WebApi.Controllers
         {
             _favoriteAdvertService = favoriteAdvertService;
         }
-        
+
         [HttpPost("add")]
         public IActionResult Add(FavoriteAdvert favorite)
         {
@@ -24,9 +24,10 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
-        
+
         [HttpPut("update")]
         public IActionResult Update(FavoriteAdvert favorite)
         {
@@ -35,9 +36,10 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
-        
+
         [HttpPost("delete")]
         public IActionResult Delete(FavoriteAdvert favorite)
         {
@@ -46,9 +48,10 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
-        
+
         [HttpGet("getAllDetailByUserId/{userId}")]
         public IActionResult GetAllDetailByUserId(int userId)
         {
@@ -57,6 +60,7 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
     }

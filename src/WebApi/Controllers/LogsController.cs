@@ -12,17 +12,17 @@ namespace WebApi.Controllers
         public LogsController(ILogService logService)
         {
             _logService = logService;
-
         }
 
         [HttpGet("/getAll")]
         public IActionResult GetAll()
         {
             var result = _logService.GetAll();
-            if(result.Success)
+            if (result.Success)
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -35,6 +35,7 @@ namespace WebApi.Controllers
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
     }

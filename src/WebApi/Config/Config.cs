@@ -31,7 +31,6 @@ namespace WebApi.Config
             Mailer.PasswordOption = section["Password"];
             Mailer.HostOption = section["Host"];
             Mailer.PortOption = Convert.ToInt32(section["Port"]);
-
         }
 
         private void DatabaseMigration()

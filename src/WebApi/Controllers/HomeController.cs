@@ -11,6 +11,7 @@ namespace WebApi.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -24,15 +25,15 @@ namespace WebApi.Controllers
             return View();
         }
 
-        private LogDetail GetLogDetail( )
+        private LogDetail GetLogDetail()
         {
             var logParameters = new List<LogParameter>();
             logParameters.Add(new LogParameter()
             {
                 Name = "dsa0,",
-                Value ="dsadsadsadas"
+                Value = "dsadsadsadas"
             });
-            
+
 
             var logDetail = new LogDetail
             {
