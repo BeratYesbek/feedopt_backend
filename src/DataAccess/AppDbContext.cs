@@ -20,7 +20,6 @@ namespace DataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(_configuration["ConnectionStrings:DB_CONNECTION_STRING"]);
-            //.UseLazyLoadingProxies(false)
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,6 +32,7 @@ namespace DataAccess
             modelBuilder.Entity<Advert>().HasOne<Color>(a => a.Color).WithMany(t => t.Adverts);
             modelBuilder.Entity<Advert>().HasOne<Location>(t => t.Location).WithMany(t => t.Adverts);
             modelBuilder.Entity<FavoriteAdvert>().HasOne(t => t.Advert).WithMany(t => t.FavoriteAdverts);
+            modelBuilder.Entity<AnimalSpecies>().HasOne(t => t.AnimalCategory).WithMany(t => t.AnimalSpecies);
             modelBuilder.Entity<AdvertImage>().HasOne(t => t.Advert).WithMany(t => t.AdvertImages);
 
             /*  modelBuilder.Entity<ColorTranslation>().HasOne(c => c.Color).WithMany(t => t.ColorTranslations).HasForeignKey(c => c.ColorId);

@@ -16,7 +16,7 @@ namespace Core.DataAccess
 
         T Get(Expression<Func<T, bool>> filter);
 
-        List<T> GetAll(Expression<Func<T, bool>> filter = null, bool translation = false, params Expression<Func<T, object>>[] including);
+        List<T> GetAll(Expression<Func<T, bool>> filter = null, bool lazyLoading = false, params Expression<Func<T, object>>[] including);
 
         Task<T> AddAsync(T entity);
 

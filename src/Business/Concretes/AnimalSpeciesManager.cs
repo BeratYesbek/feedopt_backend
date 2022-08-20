@@ -129,7 +129,7 @@ namespace Business.Concretes
         [CacheAspect(Priority = 4)]
         public IDataResult<List<AnimalSpecies>> GetAll()
         {
-            var data = _animalSpeciesDal.GetAll();
+            var data = _animalSpeciesDal.GetAll(null,true,t => t.AnimalCategory);
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<AnimalSpecies>>(data);

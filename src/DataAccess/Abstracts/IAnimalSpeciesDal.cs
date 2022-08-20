@@ -1,5 +1,7 @@
-﻿using Core.DataAccess;
+﻿using System.Collections.Generic;
+using Core.DataAccess;
 using Entity.concretes;
+using Entity.Dtos;
 
 namespace DataAccess.Abstracts
 {
