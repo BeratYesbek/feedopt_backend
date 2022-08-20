@@ -11,6 +11,7 @@ using Core.Utilities.FileHelper;
 using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
+using Entity.Dtos;
 
 namespace Business.Concretes
 {
@@ -135,6 +136,12 @@ namespace Business.Concretes
             }
 
             return new SuccessResult();
+        }
+
+        public IDataResult<List<UserDto>> GetUserDetails()
+        {
+            var users = _userDal.GetUserDetails();
+            return new SuccessDataResult<List<UserDto>>(users);
         }
     }
 }

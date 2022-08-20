@@ -48,7 +48,6 @@ namespace Core.DataAccess
         {
             using (TContext context = new TContext())
             {
-
                 var result = context.Set<TEntity>().SingleOrDefault(filter);
                 return result;
             }

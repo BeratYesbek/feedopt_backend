@@ -7,10 +7,11 @@ using Business.Abstracts;
 using Core.CrossCuttingConcerns.Cache;
 using Core.Entity.Concretes;
 using Core.Utilities.Cloud.FCM;
-using Entity.Concretes;
 using Entity.Dtos;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using Telegram.Bot.Types;
+using Chat = Entity.Concretes.Chat;
 
 namespace WebApi.Hub
 {
@@ -90,15 +91,20 @@ namespace WebApi.Hub
             await Clients.Group(groupName).SendAsync("GetPreviousMessage", data);
         }
 
-        public async Task HandleUpdateIsSeen(ChatUpdateDto chatUpdateDto)
+        public async Task HandleUpdateIsSeen(string jsonPayload)
         {
-            var chat = chatUpdateDto.Chat;
-            if (chat.SenderId  != CurrentUser.User.Id)
+            var payload = JsonConvert.DeserializeObject<dynamic>(jsonPayload);
+            var chatId = (int) int.Parse(payload?.ChatId.ToString());
+            var senderId = (int)int.Parse(payload?.SenderId.ToString());
+            var senderEmail = (string)payload?.SenderEmail.ToString();
+            if (senderEmail == null) throw new ArgumentNullException(nameof(senderEmail));
+            var chat = await _chatService.Get(chatId);
+            if (senderId  != CurrentUser.User.Id)
             {
                 Console.WriteLine("Message updated command received on: " + CurrentUser.User.Email);
-                chat.IsSeen = true;
-                var result = await _chatService.UpdateChat(chat);
-                await Clients.Group(chatUpdateDto.SenderEmail).SendAsync("ReceiveUpdatedMessage", result.Data);
+                chat.Data.IsSeen = true;
+                var result = await _chatService.UpdateChat(chat.Data);
+                await Clients.Group(senderEmail).SendAsync("ReceiveUpdatedMessage", result.Data);
             } 
         }
 

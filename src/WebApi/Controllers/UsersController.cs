@@ -53,12 +53,11 @@ namespace WebApi.Controllers
         [HttpGet("getAll")]
         public IActionResult GetAll()
         {
-            var result = _userService.GetAll();
+            var result = _userService.GetUserDetails();
             if (result.Success)
             {
                 return Ok(result);
             }
-
             return BadRequest(result);
         }
     }

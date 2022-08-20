@@ -11,6 +11,7 @@ namespace Business.Abstracts
         Task<IDataResult<Chat>> Add(Chat chat);
         Task<IDataResult<List<ChatDto>>> UpdateChatList(List<ChatDto> list);
         Task<IDataResult<Chat>> UpdateChat(Chat chat);
+        Task<IDataResult<Chat>> Get(int id);
         Task<IDataResult<List<ChatDto>>> GetAllByReceiverIdAndSenderId(int senderId, int receiverId);
         Task<IDataResult<List<ChatDto>>> GetAllLastMessages(int id);
     }

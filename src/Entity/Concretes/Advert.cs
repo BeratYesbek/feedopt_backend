@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Core.Entity.Abstracts;
+using Core.Entity.Concretes;
+using Entity.concretes;
 
 namespace Entity.Concretes
 {
@@ -35,6 +38,17 @@ namespace Entity.Concretes
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        
+
+        public AnimalCategory AnimalCategory { get; set; }
+        public AnimalSpecies AnimalSpecies { get; set; }
+        public AdvertCategory AdvertCategory { get; set; }
+        public Color Color { get; set; }
+        public Age Age { get; set; }
+        public User User { get; set; }
+        public Location Location { get; set; }
+
+        public List<FavoriteAdvert> FavoriteAdverts { get; set; }
+        public List<AdvertImage> AdvertImages { get; set; }
+
     }
 }

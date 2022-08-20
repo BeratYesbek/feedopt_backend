@@ -59,6 +59,17 @@ namespace Business.Concretes
             return new SuccessDataResult<Chat>(chat);
         }
 
+        public async Task<IDataResult<Chat>> Get(int id)
+        {
+            var data =  await _chatDal.GetAsync(t => t.Id == id);
+            if (data != null)
+            {
+                return new SuccessDataResult<Chat>(data);
+            }
+
+            return new ErrorDataResult<Chat>(null);
+        }
+
         [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}", Priority = 1)]
         [PerformanceAspect(5, Priority = 3)]
         [LogAspect(typeof(DatabaseLogger), Priority = 4)]

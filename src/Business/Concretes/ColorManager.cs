@@ -105,8 +105,9 @@ namespace Business.Concretes
         [CacheAspect(Priority = 4)]
         public IDataResult<List<Color>> GetAll()
         {
-            var data = _colorDal.GetAll(null,true,
-                t => t.ColorTranslations.Where(t => t.CultureName.Equals(CurrentUser.CultureName)));
+          /*  var data = _colorDal.GetAll(null,true,
+                t => t.ColorTranslations.Where(t => t.CultureName.Equals(CurrentUser.CultureName)));*/
+          var data = _colorDal.GetAll();
             return new SuccessDataResult<List<Color>>(data);
        
         }

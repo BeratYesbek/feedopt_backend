@@ -19,17 +19,27 @@ namespace DataAccess
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLazyLoadingProxies(false)
-                .UseNpgsql(_configuration["ConnectionStrings:DB_CONNECTION_STRING"]);
+            optionsBuilder.UseNpgsql(_configuration["ConnectionStrings:DB_CONNECTION_STRING"]);
+            //.UseLazyLoadingProxies(false)
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ColorTranslation>().HasOne(c => c.Color).WithMany(t => t.ColorTranslations).HasForeignKey(c => c.ColorId);
-            modelBuilder.Entity<Color>().Navigation(t => t.ColorTranslations).HasField("_colorTranslations").UsePropertyAccessMode(PropertyAccessMode.Property);
 
-          /*  modelBuilder.Entity<AnimalCategoryTranslation>().HasOne(c => c.AnimalCategory).WithMany(t => t.AnimalCategoryTranslations).HasForeignKey(t => t.AnimalCategoryId);
-            modelBuilder.Entity<AnimalCategory>().Navigation(t => t.AnimalCategoryTranslations).HasField("_AnimalCategoryTranslations").UsePropertyAccessMode(PropertyAccessMode.Property);*/
+            modelBuilder.Entity<Advert>().HasOne<AnimalCategory>(a => a.AnimalCategory).WithMany(t => t.Adverts);
+            modelBuilder.Entity<Advert>().HasOne<AnimalSpecies>(a => a.AnimalSpecies).WithMany(t => t.Adverts);
+            modelBuilder.Entity<Advert>().HasOne<AdvertCategory>(a => a.AdvertCategory).WithMany(t => t.Adverts);
+            modelBuilder.Entity<Advert>().HasOne<Age>(a => a.Age).WithMany(t => t.Adverts);
+            modelBuilder.Entity<Advert>().HasOne<Color>(a => a.Color).WithMany(t => t.Adverts);
+            modelBuilder.Entity<Advert>().HasOne<Location>(t => t.Location).WithMany(t => t.Adverts);
+            modelBuilder.Entity<FavoriteAdvert>().HasOne(t => t.Advert).WithMany(t => t.FavoriteAdverts);
+            modelBuilder.Entity<AdvertImage>().HasOne(t => t.Advert).WithMany(t => t.AdvertImages);
+
+            /*  modelBuilder.Entity<ColorTranslation>().HasOne(c => c.Color).WithMany(t => t.ColorTranslations).HasForeignKey(c => c.ColorId);
+              modelBuilder.Entity<Color>().Navigation(t => t.ColorTranslations).HasField("_colorTranslations").UsePropertyAccessMode(PropertyAccessMode.Property);*/
+
+            /*  modelBuilder.Entity<AnimalCategoryTranslation>().HasOne(c => c.AnimalCategory).WithMany(t => t.AnimalCategoryTranslations).HasForeignKey(t => t.AnimalCategoryId);
+              modelBuilder.Entity<AnimalCategory>().Navigation(t => t.AnimalCategoryTranslations).HasField("_AnimalCategoryTranslations").UsePropertyAccessMode(PropertyAccessMode.Property);*/
 
         }
         public DbSet<AnimalCategory> AnimalCategories { get; set; }

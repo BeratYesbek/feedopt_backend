@@ -44,7 +44,7 @@ namespace Business.BusinessAspect.SecurityAspect
                     return;
             }
     
-            throw new AuthenticationFailedException("You have no authorization.");
+           // throw new AuthenticationFailedException("You have no authorization.");
         }
         
         private void SetCurrentUser()

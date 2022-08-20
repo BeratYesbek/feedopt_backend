@@ -226,6 +226,20 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AdvertCategoryId");
+
+                    b.HasIndex("AgeId");
+
+                    b.HasIndex("AnimalCategoryId");
+
+                    b.HasIndex("AnimalSpeciesId");
+
+                    b.HasIndex("ColorId");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Adverts");
                 });
 
@@ -263,6 +277,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("boolean");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdvertId");
 
                     b.ToTable("AdvertImages");
                 });
@@ -314,6 +330,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnimalCategoryId");
 
                     b.ToTable("AnimalSpecies");
                 });
@@ -384,6 +402,10 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AdvertId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("FavoriteAdverts");
                 });
 
@@ -441,33 +463,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Locations");
-                });
-
-            modelBuilder.Entity("Entity.Concretes.Translations.AdvertCategoryTranslation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AdvertCategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CultureName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PropertyName")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdvertCategoryId");
-
-                    b.ToTable("AdvertCategoryTranslation");
                 });
 
             modelBuilder.Entity("Entity.Concretes.Translations.AnimalCategoryTranslation", b =>
@@ -546,6 +541,8 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserLocations");
                 });
 
@@ -574,21 +571,110 @@ namespace DataAccess.Migrations
                     b.ToTable("VerificationCodes");
                 });
 
-            modelBuilder.Entity("Entity.Concretes.Translations.AdvertCategoryTranslation", b =>
+            modelBuilder.Entity("Entity.Concretes.Advert", b =>
                 {
                     b.HasOne("Entity.Concretes.AdvertCategory", "AdvertCategory")
-                        .WithMany("AdvertCategoryTranslations")
+                        .WithMany("Adverts")
                         .HasForeignKey("AdvertCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Entity.Concretes.Age", "Age")
+                        .WithMany("Adverts")
+                        .HasForeignKey("AgeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.concretes.AnimalCategory", "AnimalCategory")
+                        .WithMany("Adverts")
+                        .HasForeignKey("AnimalCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.concretes.AnimalSpecies", "AnimalSpecies")
+                        .WithMany("Adverts")
+                        .HasForeignKey("AnimalSpeciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.Concretes.Color", "Color")
+                        .WithMany("Adverts")
+                        .HasForeignKey("ColorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entity.Concretes.Location", "Location")
+                        .WithMany("Adverts")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entity.Concretes.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("AdvertCategory");
+
+                    b.Navigation("Age");
+
+                    b.Navigation("AnimalCategory");
+
+                    b.Navigation("AnimalSpecies");
+
+                    b.Navigation("Color");
+
+                    b.Navigation("Location");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Entity.Concretes.AdvertImage", b =>
+                {
+                    b.HasOne("Entity.Concretes.Advert", "Advert")
+                        .WithMany("AdvertImages")
+                        .HasForeignKey("AdvertId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Advert");
+                });
+
+            modelBuilder.Entity("Entity.concretes.AnimalSpecies", b =>
+                {
+                    b.HasOne("Entity.concretes.AnimalCategory", "AnimalCategory")
+                        .WithMany("AnimalSpecies")
+                        .HasForeignKey("AnimalCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AnimalCategory");
+                });
+
+            modelBuilder.Entity("Entity.Concretes.FavoriteAdvert", b =>
+                {
+                    b.HasOne("Entity.Concretes.Advert", "Advert")
+                        .WithMany("FavoriteAdverts")
+                        .HasForeignKey("AdvertId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entity.Concretes.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Advert");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entity.Concretes.Translations.AnimalCategoryTranslation", b =>
                 {
                     b.HasOne("Entity.concretes.AnimalCategory", "AnimalCategory")
-                        .WithMany("AnimalCategoryTranslations")
+                        .WithMany()
                         .HasForeignKey("AnimalCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -599,7 +685,7 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entity.Concretes.Translations.ColorTranslation", b =>
                 {
                     b.HasOne("Entity.Concretes.Color", "Color")
-                        .WithMany("ColorTranslations")
+                        .WithMany()
                         .HasForeignKey("ColorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -607,19 +693,54 @@ namespace DataAccess.Migrations
                     b.Navigation("Color");
                 });
 
+            modelBuilder.Entity("Entity.Concretes.UserLocation", b =>
+                {
+                    b.HasOne("Core.Entity.Concretes.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Entity.Concretes.Advert", b =>
+                {
+                    b.Navigation("AdvertImages");
+
+                    b.Navigation("FavoriteAdverts");
+                });
+
             modelBuilder.Entity("Entity.Concretes.AdvertCategory", b =>
                 {
-                    b.Navigation("AdvertCategoryTranslations");
+                    b.Navigation("Adverts");
+                });
+
+            modelBuilder.Entity("Entity.Concretes.Age", b =>
+                {
+                    b.Navigation("Adverts");
                 });
 
             modelBuilder.Entity("Entity.concretes.AnimalCategory", b =>
                 {
-                    b.Navigation("AnimalCategoryTranslations");
+                    b.Navigation("Adverts");
+
+                    b.Navigation("AnimalSpecies");
+                });
+
+            modelBuilder.Entity("Entity.concretes.AnimalSpecies", b =>
+                {
+                    b.Navigation("Adverts");
                 });
 
             modelBuilder.Entity("Entity.Concretes.Color", b =>
                 {
-                    b.Navigation("ColorTranslations");
+                    b.Navigation("Adverts");
+                });
+
+            modelBuilder.Entity("Entity.Concretes.Location", b =>
+                {
+                    b.Navigation("Adverts");
                 });
 #pragma warning restore 612, 618
         }

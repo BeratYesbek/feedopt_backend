@@ -118,7 +118,7 @@ namespace Business.Concretes
         [CacheAspect(Priority = 5)]
         public IDataResult<List<AnimalCategory>> GetAll()
         {
-            var data = _animalCategoryDal.GetAll(null,true,t => t.AnimalCategoryTranslations);
+            var data = _animalCategoryDal.GetAll();
 
             if (data.Count > 0)
             {
