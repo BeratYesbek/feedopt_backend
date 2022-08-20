@@ -39,10 +39,9 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll", Priority = 5)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAllByAnimalCategoryId", Priority = 6)]
         [CacheRemoveAspect("IOptionService.GetOptions", Priority = 7)]
-        public IResult Add(AnimalSpecies animalSpecies)
+        public IDataResult<AnimalSpecies> Add(AnimalSpecies animalSpecies)
         {
-            _animalSpeciesDal.Add(animalSpecies);
-            return new SuccessResult();
+            return new SuccessDataResult<AnimalSpecies>(_animalSpeciesDal.Add(animalSpecies));
         }
 
         /// <summary>

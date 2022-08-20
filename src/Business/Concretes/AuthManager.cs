@@ -57,7 +57,6 @@ namespace Business.Concretes
                 FullName = userForRegisterDto.FullName,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                PhoneNumber = userForRegisterDto.PhoneNumber,
                 PreferredLanguage = Core.Utilities.Language.PreferredLanguage.tr,
                 EmailConfirmed = false,
             };

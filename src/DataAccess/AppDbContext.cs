@@ -34,6 +34,8 @@ namespace DataAccess
             modelBuilder.Entity<FavoriteAdvert>().HasOne(t => t.Advert).WithMany(t => t.FavoriteAdverts);
             modelBuilder.Entity<AnimalSpecies>().HasOne(t => t.AnimalCategory).WithMany(t => t.AnimalSpecies);
             modelBuilder.Entity<AdvertImage>().HasOne(t => t.Advert).WithMany(t => t.AdvertImages);
+            modelBuilder.Entity<UserOperationClaim>().HasOne(t => t.OperationClaim).WithMany(t => t.UserOperationClaims);
+            modelBuilder.Entity<UserOperationClaim>().HasOne(t => t.User).WithMany(t => t.UserOperationClaims);
 
             /*  modelBuilder.Entity<ColorTranslation>().HasOne(c => c.Color).WithMany(t => t.ColorTranslations).HasForeignKey(c => c.ColorId);
               modelBuilder.Entity<Color>().Navigation(t => t.ColorTranslations).HasField("_colorTranslations").UsePropertyAccessMode(PropertyAccessMode.Property);*/

@@ -6,7 +6,7 @@ namespace Business.Abstracts
 {
     public interface IAnimalSpeciesService
     {
-        IResult Add(AnimalSpecies animalSpecies);
+        IDataResult<AnimalSpecies> Add(AnimalSpecies animalSpecies);
 
         IResult Update(AnimalSpecies animalSpecies);
 

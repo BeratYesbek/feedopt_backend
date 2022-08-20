@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Core.Entity.Abstracts;
 using Core.Utilities.Language;
@@ -12,7 +13,6 @@ namespace Core.Entity.Concretes
         public int Id { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
-        public string PhoneNumber { get; set; }
         public bool EmailConfirmed { get; set; } = false;
         
         public bool Status { get; set; } = false;
@@ -28,5 +28,6 @@ namespace Core.Entity.Concretes
         public byte[] PasswordSalt { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public List<UserOperationClaim> UserOperationClaims { get; set; }
     }
 }
