@@ -19,11 +19,11 @@ namespace DataAccess
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(_configuration["ConnectionStrings:DB_CONNECTION_STRING"]);
+            optionsBuilder.UseLazyLoadingProxies(false).UseNpgsql(_configuration["ConnectionStrings:DB_CONNECTION_STRING"]);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {   
 
             modelBuilder.Entity<Advert>().HasOne<AnimalCategory>(a => a.AnimalCategory).WithMany(t => t.Adverts);
             modelBuilder.Entity<Advert>().HasOne<AnimalSpecies>(a => a.AnimalSpecies).WithMany(t => t.Adverts);

@@ -149,6 +149,18 @@ namespace WebApi.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("getDetails")]
+        public IActionResult GetDetails()
+        {
+            var result = _advertService.GetDetails();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+        
         [HttpGet("getDetailById/{id}")]
         public IActionResult GetDetailById(int id)
         {

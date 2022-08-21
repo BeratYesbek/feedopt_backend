@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Business.Abstracts;
 using Business.BusinessAspect.SecurityAspect;
 using Business.Security.Role;
@@ -95,7 +96,8 @@ namespace Business.Concretes
         [CacheAspect(Priority = 4)]
         public IDataResult<List<AnimalSpecies>> GetAllByAnimalCategoryId(int animalCategoryId)
         {
-            var data = _animalSpeciesDal.GetAll(a => a.AnimalCategoryId == animalCategoryId);
+            var data = _animalSpeciesDal.GetAll(a => a.AnimalCategoryId == animalCategoryId)
+                .OrderByDescending(a => a.Id).ToList();
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<AnimalSpecies>>(data);
@@ -137,7 +139,7 @@ namespace Business.Concretes
             var data = _animalSpeciesDal.GetAll(null, true, t => t.AnimalCategory);
             if (data.Count > 0)
             {
-                return new SuccessDataResult<List<AnimalSpecies>>(data);
+                return new SuccessDataResult<List<AnimalSpecies>>(data.OrderByDescending(t => t.Id).ToList());
             }
 
             return new ErrorDataResult<List<AnimalSpecies>>(null);

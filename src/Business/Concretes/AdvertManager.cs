@@ -283,6 +283,12 @@ namespace Business.Concretes
             _advertDal.Update(advert);
             return new SuccessResult(AdvertMessages.AdvertStatus);
         }
+        
+        [SecuredOperation($"{Role.AdvertGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        public IDataResult<List<Advert>> GetDetails()
+        {
+            return new SuccessDataResult<List<Advert>>(_advertDal.GetDetails());
+        }
 
         /// <summary>
         /// This method to run update an advert while the process it can update it's images

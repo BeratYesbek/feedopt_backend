@@ -3,6 +3,7 @@ using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using Entity.concretes;
 using System.Collections.Generic;
+using System.Linq;
 using Business.BusinessAspect.SecurityAspect;
 using Business.Security.Role;
 using Business.Validation.FluentValidation;
@@ -118,7 +119,7 @@ namespace Business.Concretes
         [CacheAspect(Priority = 5)]
         public IDataResult<List<AnimalCategory>> GetAll()
         {
-            var data = _animalCategoryDal.GetAll();
+            var data = _animalCategoryDal.GetAll().OrderByDescending(t => t.Id).ToList();
 
             if (data.Count > 0)
             {
