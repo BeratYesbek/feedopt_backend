@@ -15,9 +15,7 @@ namespace DataAccess.Concretes
             using (var context = new AppDbContext())
             {
                 var result = from operationClaim in context.OperationClaims
-                    join UserOperationClaim in context.UserOperationClaims
-                        on operationClaim.Id equals UserOperationClaim.OperationClaimId
-                    where UserOperationClaim.UserId == user.Id
+                    join userOperationClaim in context.UserOperationClaims on operationClaim.Id equals userOperationClaim.OperationClaimId where userOperationClaim.UserId == user.Id
                     select new OperationClaim { Id = operationClaim.Id, Name = operationClaim.Name };
 
                 return result.ToList();
@@ -37,7 +35,10 @@ namespace DataAccess.Concretes
                         ImagePath = user.ImagePath,
                         PreferredLanguage = user.PreferredLanguage,
                         EmailConfirmed = user.EmailConfirmed,
-                        Roles = "User"
+                        Roles =  string.Join(", ",(from operationClaim in context.OperationClaims 
+                            join userOperationClaim in context.UserOperationClaims
+                            on operationClaim.Id equals userOperationClaim.OperationClaimId 
+                            where userOperationClaim.UserId == user.Id select operationClaim.Name).ToArray())
                     };
                 return result.ToList();
             }

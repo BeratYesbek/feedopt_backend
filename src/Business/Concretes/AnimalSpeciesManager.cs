@@ -21,10 +21,12 @@ namespace Business.Concretes
     public class AnimalSpeciesManager : IAnimalSpeciesService
     {
         private readonly IAnimalSpeciesDal _animalSpeciesDal;
+        private readonly IAnimalCategoryService _categoryService;
 
-        public AnimalSpeciesManager(IAnimalSpeciesDal animalSpeciesDal)
+        public AnimalSpeciesManager(IAnimalSpeciesDal animalSpeciesDal, IAnimalCategoryService categoryService)
         {
             _animalSpeciesDal = animalSpeciesDal;
+            _categoryService = categoryService;
         }
 
         /// <summary>
@@ -41,7 +43,10 @@ namespace Business.Concretes
         [CacheRemoveAspect("IOptionService.GetOptions", Priority = 7)]
         public IDataResult<AnimalSpecies> Add(AnimalSpecies animalSpecies)
         {
-            return new SuccessDataResult<AnimalSpecies>(_animalSpeciesDal.Add(animalSpecies));
+            var data = _animalSpeciesDal.Add(animalSpecies);
+            var dataResult = _categoryService.Get(animalSpecies.AnimalCategoryId);
+            data.AnimalCategory = dataResult.Data;
+            return new SuccessDataResult<AnimalSpecies>(data);
         }
 
         /// <summary>
@@ -73,7 +78,6 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll", Priority = 4)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAllByAnimalCategoryId", Priority = 5)]
         [CacheRemoveAspect("IOptionService.GetOptions", Priority = 6)]
-
         public IResult Delete(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Delete(animalSpecies);
@@ -96,6 +100,7 @@ namespace Business.Concretes
             {
                 return new SuccessDataResult<List<AnimalSpecies>>(data);
             }
+
             return new ErrorDataResult<List<AnimalSpecies>>(null);
         }
 
@@ -118,6 +123,7 @@ namespace Business.Concretes
 
             return new ErrorDataResult<AnimalSpecies>(null);
         }
+
         /// <summary>
         /// This method get all animal species
         /// </summary>
@@ -128,7 +134,7 @@ namespace Business.Concretes
         [CacheAspect(Priority = 4)]
         public IDataResult<List<AnimalSpecies>> GetAll()
         {
-            var data = _animalSpeciesDal.GetAll(null,true,t => t.AnimalCategory);
+            var data = _animalSpeciesDal.GetAll(null, true, t => t.AnimalCategory);
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<AnimalSpecies>>(data);
