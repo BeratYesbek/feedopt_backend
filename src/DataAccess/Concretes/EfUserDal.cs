@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using Core.DataAccess;
 using Core.Entity.Concretes;
 using DataAccess.Abstracts;
 using Entity.Dtos;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concretes
 {
@@ -22,17 +25,19 @@ namespace DataAccess.Concretes
             }
         }
 
-        public List<UserDto> GetUserDetails()
+
+        public List<UserDto> GetUserDetails(Expression<Func<User,bool>> filter)
         {
             using (var context = new AppDbContext())
             {
-                var result = from user in context.Users
+                var result = from user in context.Users.AsTracking().Where(filter)
                     select new UserDto
                     {
                         Id = user.Id,
                         Email = user.Email,
                         FullName = user.FullName,
                         ImagePath = user.ImagePath,
+                        Status = user.Status,
                         PreferredLanguage = user.PreferredLanguage,
                         EmailConfirmed = user.EmailConfirmed,
                         Roles =  string.Join(", ",(from operationClaim in context.OperationClaims 

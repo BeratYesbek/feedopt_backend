@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 using Business.Abstracts;
+using Business.Filters;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
@@ -12,10 +16,11 @@ using Core.Utilities.Result.Abstracts;
 using Core.Utilities.Result.Concretes;
 using DataAccess.Abstracts;
 using Entity.Dtos;
+using Entity.Dtos.Filter;
 
 namespace Business.Concretes
 {
-    public class UserManager : IUserService
+    public class UserManager : UserFilter,IUserService
     {
         private readonly IUserDal _userDal;
 
@@ -138,10 +143,42 @@ namespace Business.Concretes
             return new SuccessResult();
         }
 
-        public IDataResult<List<UserDto>> GetUserDetails()
+        public IDataResult<List<UserDto>> GetUserDetails(UserFilterDto filter)
         {
-            var users = _userDal.GetUserDetails();
+            Expression<Func<User, bool>> filters = c => true;
+
+            var properties = filter.GetType().GetProperties();
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(filter, null);
+                if (value?.GetType() == typeof(int[]) && value != null)
+                {
+                    int[] arrayInteger = (int[])value;
+                    if (arrayInteger.Length > 0)
+                    {
+                        filters = (Expression<Func<User, bool>>)StartFilterInvokeMethod(filters, value, property);
+                    }
+                }
+                else if (value?.GetType() == typeof(bool) && value != null)
+                {
+                    var data = (bool)value;
+                    filters = (Expression<Func<User, bool>>)StartFilterInvokeMethod(filters, value, property);
+                }
+            }
+            var users = _userDal.GetUserDetails(filters);
+            
             return new SuccessDataResult<List<UserDto>>(users);
+        }
+        
+        private object StartFilterInvokeMethod(Expression<Func<User, bool>> filters, object value, PropertyInfo property)
+        {
+            // object must include filters type of expression  and value, Value might be any type depend on situations
+            object[] methodParams = { filters, value };
+
+            // AdvertManager inherited Advert Filter class and AdvertFilter class inherited BaseFilterInvoke class 
+            // Base filter class include GetInvokeMethod that is taking few properties, one of it is name of method that run
+            // first parameter methodName it must includes property name of AdvertFilterDto and filter method's is going to work 
+            return (Expression<Func<User, bool>>)GetInvokeMethod($"{property.Name}Condition", methodParams);
         }
     }
 }

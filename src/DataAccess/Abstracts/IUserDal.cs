@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Core.DataAccess;
 using Core.Entity.Concretes;
 using Entity.Dtos;
@@ -9,7 +12,7 @@ namespace DataAccess.Abstracts
     {
         List<OperationClaim> GetClaims(User user);
 
-        List<UserDto> GetUserDetails();
+        List<UserDto> GetUserDetails(Expression<Func<User,bool>> filter);
 
     }
 }

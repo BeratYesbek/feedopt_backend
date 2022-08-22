@@ -3,6 +3,7 @@ using AutoMapper;
 using Business.Abstracts;
 using Core.Extensions;
 using Entity.Dtos;
+using Entity.Dtos.Filter;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -51,14 +52,15 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getAll")]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] UserFilterDto filterDto)
         {
-            var result = _userService.GetUserDetails();
+            var result = _userService.GetUserDetails(filterDto);
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
         }
+        
     }
 }
