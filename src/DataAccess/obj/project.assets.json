@@ -1555,6 +1555,9 @@
       },
       "NLog.Web/5.1.0": {
         "type": "package",
+        "dependencies": {
+          "NLog": "5.0.1"
+        },
         "compile": {
           "lib/net46/NLog.Web.dll": {}
         },

@@ -40,7 +40,12 @@ namespace Entity.Concretes
         {
             get
             {
-                Distance = (int)Calculator.CalculateDistance(CurrentUser.Latitude, CurrentUser.Longitude, _location.Latitude, _location.Longitude);
+                if (_location != null)
+                {
+                    Distance = (int)Calculator.CalculateDistance(CurrentUser.Latitude, CurrentUser.Longitude,
+                        _location.Latitude, _location.Longitude);
+
+                }
                 return _location;
             }
             set

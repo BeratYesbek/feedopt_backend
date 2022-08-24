@@ -14,7 +14,7 @@ public class UserFilter : BaseFilterInvoke
 
     protected Expression<Func<User, bool>> EmailConfirmedCondition(Expression<Func<User, bool>> filter, bool value)
     {
-        return filter.And(t => t.EmailConfirmed == true);
+        return filter.And(t => t.EmailConfirmed == value);
     }
 
     protected Expression<Func<User, bool>> OperationClaimIdCondition(Expression<Func<User, bool>> filter, int[] value)
