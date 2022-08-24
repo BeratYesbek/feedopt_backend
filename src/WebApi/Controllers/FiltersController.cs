@@ -9,10 +9,10 @@ namespace WebApi.Controllers
     public class FiltersController : ControllerBase
     {
         private readonly IFilterService _filterService;
+
         public FiltersController(IFilterService filterService)
         {
             _filterService = filterService;
-
         }
 
         [HttpPost("add")]
@@ -71,10 +71,11 @@ namespace WebApi.Controllers
         public IActionResult GetByFilterType(string filterType)
         {
             var result = _filterService.GetByFilterType(filterType);
-            if(result.Success)
+            if (result.Success)
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
@@ -90,7 +91,5 @@ namespace WebApi.Controllers
 
             return BadRequest();
         }
-
-
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Business.Abstracts;
-using Business.BusinessAspect;
+using Business.BusinessAspect.SecurityAspect;
 using Business.Security.Role;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Logging;
@@ -24,10 +24,10 @@ namespace Business.Concretes
             _operationClaimService = operationClaimService;
         }
 
-        [SecuredOperation($"{Role.UserOperationClaimAdd},{Role.SuperAdmin}",Priority = 1)]
+       /* [SecuredOperation($"{Role.UserOperationClaimAdd},{Role.SuperAdmin}",Priority = 1)]
         [ValidationAspect(typeof(UserOperationClaimValidator),Priority = 2)]
         [PerformanceAspect(5,Priority = 3)]
-        [LogAspect(typeof(DatabaseLogger),Priority = 4)]
+        [LogAspect(typeof(DatabaseLogger),Priority = 4)]*/
         public IDataResult<UserOperationClaim> Add(UserOperationClaim userOperationClaim)
         {
             _userOperationClaimDal.Add(userOperationClaim);

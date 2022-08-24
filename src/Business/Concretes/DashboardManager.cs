@@ -1,5 +1,6 @@
-﻿using Business.Abstracts;
-using Business.BusinessAspect;
+﻿using System.Linq;
+using Business.Abstracts;
+using Business.BusinessAspect.SecurityAspect;
 using Business.Security.Role;
 using Core.Aspects.Autofac.Cache;
 using Core.Utilities.Result.Abstracts;
@@ -24,15 +25,15 @@ namespace Business.Concretes
         public IDataResult<DashboardDto> GetDashboard()
         {
             var advert = _advertService.GetAll();
-            var activeAdverts = _advertService.GetAll(a => a.Status == Status.Active);
-            var pendingAdverts = _advertService.GetAll(a => a.Status == Status.Pending);
+            var activeAdverts = advert.Data.Where(t => t.Status == Status.Active);
+            var pendingAdverts = advert.Data.Where(t => t.Status == Status.Pending); 
             var users = _userService.GetAll();
 
             return new SuccessDataResult<DashboardDto>(new DashboardDto
             {
                 AdvertQuantity = advert.Data.Count,
-                ActiveAdvertQuantity = activeAdverts.Data.Count,
-                PendingAdvertQuantity = pendingAdverts.Data.Count,
+                ActiveAdvertQuantity = activeAdverts.Count(),
+                PendingAdvertQuantity = pendingAdverts.Count(),
                 UserQuantity = users.Data.Count
             });
         }

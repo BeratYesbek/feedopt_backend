@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstracts;
-using Business.BusinessAspect;
+using Business.BusinessAspect.SecurityAspect;
 using Business.Security.Role;
 using Core.Entity.Concretes;
 using Core.Utilities.Result.Abstracts;

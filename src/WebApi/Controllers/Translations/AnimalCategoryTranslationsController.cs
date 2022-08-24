@@ -9,6 +9,7 @@ namespace WebApi.Controllers.Translations
     public class AnimalCategoryTranslationsController : ControllerBase
     {
         private readonly IAnimalCategoryTranslationService _animalCategoryTranslationService;
+
         public AnimalCategoryTranslationsController(IAnimalCategoryTranslationService animalCategoryTranslationService)
         {
             _animalCategoryTranslationService = animalCategoryTranslationService;
@@ -22,6 +23,7 @@ namespace WebApi.Controllers.Translations
             {
                 return Ok(result);
             }
+
             return BadRequest();
         }
 

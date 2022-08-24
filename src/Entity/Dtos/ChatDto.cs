@@ -7,9 +7,7 @@ namespace Entity.Dtos
     public class ChatDto
     {
         public Chat Chat { get; set; }
-
-        public User SenderUser { get; set; }
-
-        public User ReceiverUser { get; set; }
+        public UserDto SenderUser { get; set; }
+        public UserDto ReceiverUser { get; set; }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using Business.Abstracts;
-using Business.BusinessAspect;
+using Business.BusinessAspect.SecurityAspect;
 using Business.Security.Role;
 using Business.Validation.FluentValidation;
-using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Validation;
@@ -19,54 +20,48 @@ namespace Business.Concretes
     public class ChatManager : IChatService
     {
         private readonly IChatDal _chatDal;
+        private readonly IMapper _mapper;
 
-        public ChatManager(IChatDal chatDal)
+        public ChatManager(IChatDal chatDal, IMapper mapper)
         {
             _chatDal = chatDal;
+            _mapper = mapper;
         }
 
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatAdd}",Priority = 1)]
-        [ValidationAspect(typeof(ChatValidator),Priority = 2)]
-        [CacheRemoveAspect("IChatService.GetAllByReceiverIdAndSenderId",Priority = 3)]
-        [CacheRemoveAspect("IChatService.GetAllLastMessages",Priority = 4)]
-        [PerformanceAspect(5,Priority = 5)]
-        [LogAspect(typeof(DatabaseLogger),Priority = 6)]
-        public IDataResult<Chat> Add(Chat chat)
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatAdd}", Priority = 1)]
+        [ValidationAspect(typeof(ChatValidator), Priority = 2)]
+        [PerformanceAspect(5, Priority = 5)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 6)]
+        public async Task<IDataResult<Chat>> Add(Chat chat)
         {
-            return new SuccessDataResult<Chat>(_chatDal.Add(chat));
+            var data = await _chatDal.AddAsync(chat);
+            return new SuccessDataResult<Chat>(data);
         }
 
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatUpdate}",Priority = 1)]
-        [ValidationAspect(typeof(ChatValidator),Priority = 2)]
-        [CacheRemoveAspect("IChatService.GetAllByReceiverIdAndSenderId",Priority = 3)]
-        [CacheRemoveAspect("IChatService.GetAllLastMessages",Priority = 4)]
-        [PerformanceAspect(5,Priority = 5)]
-        [LogAspect(typeof(DatabaseLogger),Priority = 6)]
-        public IResult Update(Chat chat)
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 3)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 4)]
+        public async Task<IDataResult<List<ChatDto>>> UpdateChatList(List<ChatDto> list)
         {
-            _chatDal.Update(chat);
-            return new SuccessResult();
+            foreach (var item in list)
+            {
+                item.Chat.IsSeen = true;
+                var chat = item.Chat;
+                await _chatDal.UpdateAsync(chat);
+            }
+            return new SuccessDataResult<List<ChatDto>>(list);
         }
 
-        [SecuredOperation($"{Role.Admin},{Role.SuperAdmin},{Role.ChatDelete}",Priority = 1)]
-        [ValidationAspect(typeof(ChatValidator),Priority = 2)]
-        [CacheRemoveAspect("IChatService.GetAllByReceiverIdAndSenderId",Priority = 3)]
-        [CacheRemoveAspect("IChatService.GetAllLastMessages",Priority = 4)]
-        [PerformanceAspect(5,Priority = 5)]
-        [LogAspect(typeof(DatabaseLogger),Priority = 6)]
-        public IResult Delete(Chat chat)
+        public async Task<IDataResult<Chat>> UpdateChat(Chat chat)
         {
-            _chatDal.Delete(chat);
-            return new SuccessResult();
+            chat.IsSeen = true;
+            await _chatDal.UpdateAsync(chat);
+            return new SuccessDataResult<Chat>(chat);
         }
 
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGet}",Priority = 1)]
-        [LogAspect(typeof(DatabaseLogger),Priority = 2)]
-        [PerformanceAspect(5,Priority = 3)]
-        [CacheAspect(Priority = 4)]
-        public IDataResult<Chat> Get(int id)
+        public async Task<IDataResult<Chat>> Get(int id)
         {
-            var data = _chatDal.Get(c => c.Id == id);
+            var data =  await _chatDal.GetAsync(t => t.Id == id);
             if (data != null)
             {
                 return new SuccessDataResult<Chat>(data);
@@ -75,33 +70,12 @@ namespace Business.Concretes
             return new ErrorDataResult<Chat>(null);
         }
 
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}",Priority = 1)]
-        [LogAspect(typeof(DatabaseLogger),Priority = 2)]
-        [PerformanceAspect(5,Priority = 3)]
-        [CacheAspect(Priority = 4)]
-        public IDataResult<List<Chat>> GetAll()
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}", Priority = 1)]
+        [PerformanceAspect(5, Priority = 3)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 4)]
+        public async Task<IDataResult<List<ChatDto>>> GetAllByReceiverIdAndSenderId(int senderId, int receiverId)
         {
-            var data = _chatDal.GetAll();
-            if (data.Count > 0)
-            {
-                return new SuccessDataResult<List<Chat>>(data);
-            }
-
-            return new ErrorDataResult<List<Chat>>(null);
-        }
-
-        public IDataResult<List<ChatDto>> GetAllLastMessagesByUserId()
-        {
-            return null;
-        }
-
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}",Priority = 1)] 
-        [CacheAspect(Priority = 2)]
-        [PerformanceAspect(5,Priority = 3)]
-        [LogAspect(typeof(DatabaseLogger),Priority = 4)]
-        public IDataResult<List<ChatDto>> GetAllByReceiverIdAndSenderId(int senderId, int receiverId)
-        {
-            var data = _chatDal.GetAllByReceiverIdAndSenderId(c => c.SenderId == senderId && c.ReceiverId == receiverId
+            var data = await _chatDal.GetAllByReceiverIdAndSenderId(c => c.SenderId == senderId && c.ReceiverId == receiverId
                                                                    || c.SenderId == receiverId &&
                                                                    c.ReceiverId == senderId);
 
@@ -113,13 +87,12 @@ namespace Business.Concretes
             return new ErrorDataResult<List<ChatDto>>(null);
         }
 
-        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}",Priority = 1)]
-        [LogAspect(typeof(DatabaseLogger),Priority = 2)]
-        [PerformanceAspect(5,Priority = 3)]
-        [CacheAspect(Priority = 4)]
-        public IDataResult<List<ChatDto>> GetAllLastMessages(int id)
+        [SecuredOperation($"{Role.Admin},{Role.User},{Role.SuperAdmin},{Role.ChatGetAll}", Priority = 1)]
+        [LogAspect(typeof(DatabaseLogger), Priority = 2)]
+        [PerformanceAspect(5, Priority = 3)]
+        public async Task<IDataResult<List<ChatDto>>> GetAllLastMessages(int id)
         {
-            var data = _chatDal.GetAllLastMessages(c => c.ReceiverId == id || c.SenderId == id, id);
+            var data = await _chatDal.GetAllLastMessages(c => c.ReceiverId == id || c.SenderId == id, id);
 
             if (data.Count > 0)
             {

@@ -2,8 +2,8 @@
 using Autofac.Extras.DynamicProxy;
 using Business.Abstracts;
 using Business.Abstracts.Translations;
-using Business.BusinessMailer.Abstracts;
-using Business.BusinessMailer.Concretes.FluentMailer;
+using Business.BusinessRules.BusinessMailer.Abstracts;
+using Business.BusinessRules.BusinessMailer.Concretes.FluentMailer;
 using Business.Concretes;
 using Business.Concretes.Translations;
 using Business.Services.Abstracts;
@@ -108,7 +108,6 @@ namespace Business.DependencyResolver.Autofac
             builder.RegisterType<AuthMailer>().As<IAuthMailer>().SingleInstance();
 
             builder.RegisterType<DashboardManager>().As<IDashboardService>().SingleInstance();
-
 
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

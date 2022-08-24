@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Core.Entity.Concretes;
 using Core.Utilities.Result.Abstracts;
+using Entity.Dtos;
+using Entity.Dtos.Filter;
 
 namespace Business.Abstracts
 {
@@ -22,6 +24,8 @@ namespace Business.Abstracts
         IDataResult<User> GetByMail(string email);
 
         IResult UpdateLocation(decimal latitude, decimal longitude,int userId);
+        
+        IDataResult<List<UserDto>> GetUserDetails(UserFilterDto filterDto);
 
 
     }

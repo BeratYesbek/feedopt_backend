@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Core.DataAccess;
 using DataAccess.Abstracts;
 using Entity.Concretes;
 using Entity.Dtos;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concretes
 {
     public class EfChatDal : EfEntityRepositoryBase<Chat, AppDbContext>, IChatDal
     {
-        public List<ChatDto> GetAllByReceiverIdAndSenderId(Expression<Func<Chat, bool>> filter)
+        public async Task<List<ChatDto>> GetAllByReceiverIdAndSenderId(Expression<Func<Chat, bool>> filter)
         {
             using (AppDbContext context = new AppDbContext())
             {
@@ -25,15 +28,29 @@ namespace DataAccess.Concretes
                     select new ChatDto
                     {
                         Chat = chat,
-                        SenderUser = senderUser,
-                        ReceiverUser = receiverUser
+                        SenderUser = new UserDto
+                        {
+                            Id = senderUser.Id,
+                            FullName = senderUser.FullName,
+                            Email = senderUser.Email,
+                            PreferredLanguage = senderUser.PreferredLanguage,
+                            ImagePath = senderUser.ImagePath
+                        },
+                        ReceiverUser = new UserDto
+                        {
+                            Id = receiverUser.Id,
+                            FullName = receiverUser.FullName,
+                            Email = receiverUser.Email,
+                            PreferredLanguage = receiverUser.PreferredLanguage,
+                            ImagePath = receiverUser.ImagePath
+                        }
                     };
 
-                return result.ToList();
+                return await result.ToListAsync();
             }
         }
 
-        public List<ChatDto> GetAllLastMessages(Expression<Func<Chat, bool>> filter, int id)
+        public async Task<List<ChatDto>> GetAllLastMessages(Expression<Func<Chat, bool>> filter, int id)
         {
             // purpose of this query if you would like to get data from database by datetime you must use this query 
             // firstly query will control who you are ? after it will control again four possibilities.
@@ -72,12 +89,26 @@ namespace DataAccess.Concretes
                     join receiverUser in context.Users on chat.SenderId equals receiverUser.Id
                     select new ChatDto
                     {
-                        SenderUser = senderUser,
-                        ReceiverUser = receiverUser,
+                        SenderUser = new UserDto
+                        {
+                            Id = senderUser.Id,
+                            FullName = senderUser.FullName,
+                            Email = senderUser.Email,
+                            PreferredLanguage = senderUser.PreferredLanguage,
+                            ImagePath = senderUser.ImagePath
+                        },
+                        ReceiverUser = new UserDto
+                        {
+                            Id = receiverUser.Id,
+                            FullName = receiverUser.FullName,
+                            Email = receiverUser.Email,
+                            PreferredLanguage = receiverUser.PreferredLanguage,
+                            ImagePath = receiverUser.ImagePath
+                        },
                         Chat = chat
                     };
 
-                return result.ToList();
+                return await Task.FromResult(result.ToList());
             }
         }
     }

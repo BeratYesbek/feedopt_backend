@@ -31,12 +31,10 @@ namespace WebApi.Config
             Mailer.PasswordOption = section["Password"];
             Mailer.HostOption = section["Host"];
             Mailer.PortOption = Convert.ToInt32(section["Port"]);
-
         }
 
         private void DatabaseMigration()
         {
-            ConnectionString.DataBaseConnectionString = Configuration.GetConnectionString("DB_CONNECTION_STRING");
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             using (var db = ServiceProvider.GetService<AppDbContext>())

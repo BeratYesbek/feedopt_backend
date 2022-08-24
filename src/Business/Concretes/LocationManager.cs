@@ -1,5 +1,5 @@
 ﻿using Business.Abstracts;
-using Business.BusinessAspect;
+using Business.BusinessAspect.SecurityAspect;
 using Business.Security.Role;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;

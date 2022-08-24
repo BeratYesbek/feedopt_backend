@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Core.DataAccess;
+using Core.Entity.Concretes;
 using Core.Utilities.Calculator;
 using DataAccess.Abstracts;
 using Entity.Concretes;
 using Entity.Dtos;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concretes
 {
@@ -16,7 +18,8 @@ namespace DataAccess.Concretes
         {
             using (var context = new AppDbContext())
             {
-                var result = from advert in context.Adverts.Where(x => x.IsDeleted != true)
+                var result = from advert in context.Adverts.AsNoTracking().Where(x => x.IsDeleted != true)
+                        .OrderByDescending(t => t.Id).Skip(pageNumber * pageSize).Take(pageSize)
                              join location in context.Locations on advert.LocationId equals location.Id
                              join animalSpecies in context.AnimalSpecies on advert.AnimalSpeciesId equals animalSpecies.Id
                              join advertCategory in context.AdvertCategories on advert.AdvertCategoryId equals advertCategory.Id
@@ -32,7 +35,7 @@ namespace DataAccess.Concretes
                                  AdvertCategory = advertCategory,
                                  User = user,
                                  AdvertImages = (from image in context.AdvertImages where advert.Id == image.AdvertId && image.IsDeleted == false select image).ToArray(),
-                                 Distance = (int)Calculator.CalculateDistance(latitude, longitude, location.Latitude, location.Longitude),
+                                Distance = (int)Calculator.CalculateDistance(latitude, longitude, location.Latitude, location.Longitude),
                                  Id = advert.Id,
                                  AdvertCategoryId = advert.AdvertCategoryId,
                                  AnimalSpeciesId = advert.AnimalSpeciesId,
@@ -52,9 +55,8 @@ namespace DataAccess.Concretes
                                  Images = (from image in context.AdvertImages where advert.Id == image.AdvertId && image.IsDeleted == false select image.ImagePath).ToArray(),
                                  CreatedAt = advert.CreatedAt,
                                  UpdatedAt = advert.UpdatedAt,
-
                              };
-                return result.OrderByDescending(t => t.Id).Skip(pageNumber * pageSize).Take(pageSize).ToList();
+                return result.ToList();
             }
         }
 
@@ -193,6 +195,26 @@ namespace DataAccess.Concretes
 
                              };
                 return result.FirstOrDefault();
+            }
+        }
+
+        public List<Advert> GetDetails()
+        {
+            using (var context = new AppDbContext())
+            {
+                var result = context.Adverts.OrderByDescending(t => t.Id).Take(20)
+                    .AsNoTracking()
+                    .Include(t => t.User)
+                    .Include(t => t.Age)
+                    .Include(t => t.Color)
+                    .Include(t => t.AdvertCategory)
+                    .Include(t => t.AnimalCategory)
+                    .Include(t => t.AnimalSpecies)
+                    .Include(t => t.AdvertImages)
+                    .Include(t => t.Location)
+                    .Include(t => t.FavoriteAdverts.Where(t => t.UserId == 3))
+                    .ToList();
+                return result;
             }
         }
 

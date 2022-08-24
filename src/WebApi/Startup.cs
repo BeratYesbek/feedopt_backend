@@ -25,9 +25,9 @@ using Amazon.Extensions.NETCore.Setup;
 using Core.Utilities.Cloud.Aws;
 using Amazon;
 using Amazon.S3;
+using Business.BusinessAspect.SecurityAspect;
 using Core.Utilities.Security.Encryption;
 using Microsoft.AspNetCore.SignalR;
-using WebApi.Extensions;
 using WebApi.Hub.HubFilter;
 
 namespace WebApi
@@ -44,6 +44,7 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped<Authorize>();
             services.AddMvc(options => { options.AddCommaSeparatedArrayModelBinderProvider(); });
             var awsConfiguration = new AWSServiceConfiguration();
             var awsSettingsSection = Configuration.GetSection("AWSS3Configuration");
@@ -54,8 +55,9 @@ namespace WebApi
                 Region = RegionEndpoint.GetBySystemName(awsConfiguration.Region)
             };
             services.AddAWSService<IAmazonS3>(awsOptions);
-            services.Configure<AWSServiceConfiguration>(awsSettingsSection);
-            services.AddSignalR(opt => opt.AddFilter(typeof(HubAuthorizationFilter)));
+            services.Configure<AWSServiceConfiguration>(awsSettingsSection); 
+            services.AddSignalR(opt => opt.AddFilter<HubAuthorizationFilter>());
+            //services.AddSignalR();
             services.AddMvcCore();
             services.AddHangfireServer();
             services.AddControllersWithViews();
@@ -69,7 +71,7 @@ namespace WebApi
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.Cookie.SameSite = SameSiteMode.Lax;
+                    options.Cookie.SameSite = SameSiteMode.None;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.IsEssential = true;
 
@@ -112,7 +114,7 @@ namespace WebApi
                 options.AddPolicy(name: "FeedoptCorsPolicy",
                     policy =>
                     {
-                        policy.WithOrigins("https://localhost:3000", "http://localhost:3000", "http://127.0.0.1:5500")
+                        policy.WithOrigins("https://localhost:3000", "http://localhost:3000", "http://127.0.0.1:5500/", "http://127.0.0.1:5500/", "http://127.0.0.1:5500/index.html")
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials();          
@@ -142,7 +144,6 @@ namespace WebApi
             app.ConfigureCustomExceptionMiddleware();
             app.UseHttpsRedirection();
             app.UseAuthentication();
-            app.UserCurrentUserMiddleware();
             app.UseHangfireDashboard();
             app.UseRouting();
             app.UseAuthorization();

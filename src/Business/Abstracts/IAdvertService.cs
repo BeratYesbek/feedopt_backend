@@ -36,5 +36,7 @@ namespace Business.Abstracts
         IDataResult<AdvertEditDto> Edit(int id);
 
         IResult UpdateStatus(Advert advert);
+
+        IDataResult<List<Advert>> GetDetails();
     }
 }

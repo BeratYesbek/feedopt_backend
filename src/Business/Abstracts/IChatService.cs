@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Core.Utilities.Result.Abstracts;
 using Entity.Concretes;
 using Entity.Dtos;
@@ -7,18 +8,11 @@ namespace Business.Abstracts
 {
     public interface IChatService
     {
-        IDataResult<Chat> Add(Chat chat);
-
-        IResult Update(Chat chat);
-
-        IResult Delete(Chat chat);
-
-        IDataResult<Chat> Get(int chat);
-
-        IDataResult<List<Chat>> GetAll();
-
-        IDataResult<List<ChatDto>> GetAllByReceiverIdAndSenderId(int senderId, int receiverId);
-
-        IDataResult<List<ChatDto>> GetAllLastMessages(int id);
+        Task<IDataResult<Chat>> Add(Chat chat);
+        Task<IDataResult<List<ChatDto>>> UpdateChatList(List<ChatDto> list);
+        Task<IDataResult<Chat>> UpdateChat(Chat chat);
+        Task<IDataResult<Chat>> Get(int id);
+        Task<IDataResult<List<ChatDto>>> GetAllByReceiverIdAndSenderId(int senderId, int receiverId);
+        Task<IDataResult<List<ChatDto>>> GetAllLastMessages(int id);
     }
 }

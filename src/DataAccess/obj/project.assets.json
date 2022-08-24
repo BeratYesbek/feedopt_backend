@@ -10831,7 +10831,8 @@
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 6.0.7",
       "Microsoft.EntityFrameworkCore.Design >= 6.0.6",
       "Microsoft.EntityFrameworkCore.Proxies >= 6.0.7",
-      "Npgsql.EntityFrameworkCore.PostgreSQL >= 6.0.6"
+      "Npgsql.EntityFrameworkCore.PostgreSQL >= 6.0.6",
+      "System.Linq.Dynamic.Core >= 1.2.19"
     ]
   },
   "packageFolders": {
@@ -10897,6 +10898,10 @@
           "Npgsql.EntityFrameworkCore.PostgreSQL": {
             "target": "Package",
             "version": "[6.0.6, )"
+          },
+          "System.Linq.Dynamic.Core": {
+            "target": "Package",
+            "version": "[1.2.19, )"
           }
         },
         "imports": [

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Business.Abstracts;
 using Entity.Concretes;
 
@@ -15,70 +16,10 @@ namespace WebApi.Controllers
             _chatService = chatService;
         }
 
-        [HttpPost("add")]
-        public IActionResult Add(Chat chat)
-        {
-            var result = _chatService.Add(chat);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpPut("update")]
-        public IActionResult Update(Chat chat)
-        {
-            var result = _chatService.Update(chat);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpDelete("delete")]
-        public IActionResult Delete(Chat chat)
-        {
-            var result = _chatService.Delete(chat);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("getById{id}")]
-        public IActionResult GetById(int id)
-        {
-            var result = _chatService.Get(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("getAll")]
-        public IActionResult GetAll()
-        {
-            var result = _chatService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
         [HttpGet("getAllByReceiverIdAndSenderId")]
-        public IActionResult GetAllByReceiverIdAndSenderId(int senderId, int receiverId)
+        public async Task<IActionResult> GetAllByReceiverIdAndSenderId(int senderId, int receiverId)
         {
-            var result = _chatService.GetAllByReceiverIdAndSenderId(senderId, receiverId);
+            var result = await _chatService.GetAllByReceiverIdAndSenderId(senderId, receiverId);
             if (result.Success)
             {
                 return Ok(result);
@@ -88,9 +29,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getAllLastMessages")]
-        public IActionResult GetAllLastMessages(int id)
+        public async Task<IActionResult> GetAllLastMessages(int id)
         {
-            var result = _chatService.GetAllLastMessages(id);
+            var result = await _chatService.GetAllLastMessages(id);
             if (result.Success)
             {
                 return Ok(result);

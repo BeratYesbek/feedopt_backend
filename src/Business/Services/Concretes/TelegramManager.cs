@@ -31,7 +31,7 @@ namespace Business.Services.Concretes
         {
             await _botClient.SendTextMessageAsync(
                 new ChatId(_configuration.GetSection("TelegramOptions")["TelegramChatId"]),
-                $" Whoops! someone shared new post\n \n ### User Information ### \n email: {user.Email} \n fullname: {user.FullName} \n phone: {user.PhoneNumber}\n \n \n ### Advert Information ###\n Animal Name: {advert.AnimalName} \n Status: {advert.Status} \n CreatedAt: {advert.CreatedAt}");
+                $" Whoops! someone shared new post\n \n ### User Information ### \n email: {user.Email} \n fullname: {user.FullName} \n \n \n \n ### Advert Information ###\n Animal Name: {advert.AnimalName} \n Status: {advert.Status} \n CreatedAt: {advert.CreatedAt}");
         }
     }
 }

@@ -15,7 +15,9 @@ namespace Entity.Concretes
 
         public string Hex { get; set; }
 
-        private ICollection<ColorTranslation> _colorTranslations;
+        public List<Advert> Adverts { get; set; }
+
+     /*   private ICollection<ColorTranslation> _colorTranslations;
 
         public virtual ICollection<ColorTranslation> ColorTranslations
         {
@@ -26,7 +28,7 @@ namespace Entity.Concretes
                 return null;
             }
             set => _colorTranslations = value;
-        }
+        }*/
 
 
 

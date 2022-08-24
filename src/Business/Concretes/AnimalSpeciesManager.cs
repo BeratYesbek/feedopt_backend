@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Business.Abstracts;
-using Business.BusinessAspect;
+using Business.BusinessAspect.SecurityAspect;
 using Business.Security.Role;
 using Business.Validation.FluentValidation;
 using Core.Aspects.Autofac.Cache;
@@ -21,10 +22,12 @@ namespace Business.Concretes
     public class AnimalSpeciesManager : IAnimalSpeciesService
     {
         private readonly IAnimalSpeciesDal _animalSpeciesDal;
+        private readonly IAnimalCategoryService _categoryService;
 
-        public AnimalSpeciesManager(IAnimalSpeciesDal animalSpeciesDal)
+        public AnimalSpeciesManager(IAnimalSpeciesDal animalSpeciesDal, IAnimalCategoryService categoryService)
         {
             _animalSpeciesDal = animalSpeciesDal;
+            _categoryService = categoryService;
         }
 
         /// <summary>
@@ -39,10 +42,12 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll", Priority = 5)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAllByAnimalCategoryId", Priority = 6)]
         [CacheRemoveAspect("IOptionService.GetOptions", Priority = 7)]
-        public IResult Add(AnimalSpecies animalSpecies)
+        public IDataResult<AnimalSpecies> Add(AnimalSpecies animalSpecies)
         {
-            _animalSpeciesDal.Add(animalSpecies);
-            return new SuccessResult();
+            var data = _animalSpeciesDal.Add(animalSpecies);
+            var dataResult = _categoryService.Get(animalSpecies.AnimalCategoryId);
+            data.AnimalCategory = dataResult.Data;
+            return new SuccessDataResult<AnimalSpecies>(data);
         }
 
         /// <summary>
@@ -74,7 +79,6 @@ namespace Business.Concretes
         [CacheRemoveAspect("IAnimalSpeciesService.GetAll", Priority = 4)]
         [CacheRemoveAspect("IAnimalSpeciesService.GetAllByAnimalCategoryId", Priority = 5)]
         [CacheRemoveAspect("IOptionService.GetOptions", Priority = 6)]
-
         public IResult Delete(AnimalSpecies animalSpecies)
         {
             _animalSpeciesDal.Delete(animalSpecies);
@@ -92,11 +96,13 @@ namespace Business.Concretes
         [CacheAspect(Priority = 4)]
         public IDataResult<List<AnimalSpecies>> GetAllByAnimalCategoryId(int animalCategoryId)
         {
-            var data = _animalSpeciesDal.GetAll(a => a.AnimalCategoryId == animalCategoryId);
+            var data = _animalSpeciesDal.GetAll(a => a.AnimalCategoryId == animalCategoryId)
+                .OrderByDescending(a => a.Id).ToList();
             if (data.Count > 0)
             {
                 return new SuccessDataResult<List<AnimalSpecies>>(data);
             }
+
             return new ErrorDataResult<List<AnimalSpecies>>(null);
         }
 
@@ -119,6 +125,7 @@ namespace Business.Concretes
 
             return new ErrorDataResult<AnimalSpecies>(null);
         }
+
         /// <summary>
         /// This method get all animal species
         /// </summary>
@@ -129,10 +136,10 @@ namespace Business.Concretes
         [CacheAspect(Priority = 4)]
         public IDataResult<List<AnimalSpecies>> GetAll()
         {
-            var data = _animalSpeciesDal.GetAll();
+            var data = _animalSpeciesDal.GetAll(null, true, t => t.AnimalCategory);
             if (data.Count > 0)
             {
-                return new SuccessDataResult<List<AnimalSpecies>>(data);
+                return new SuccessDataResult<List<AnimalSpecies>>(data.OrderByDescending(t => t.Id).ToList());
             }
 
             return new ErrorDataResult<List<AnimalSpecies>>(null);

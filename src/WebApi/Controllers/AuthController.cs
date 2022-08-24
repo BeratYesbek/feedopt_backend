@@ -36,22 +36,20 @@ namespace WebApi.Controllers
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
-
                 result.Data.User = userToLogin.Data;
                 HttpContext.SetCookie(new CookieParams
                 {
                     AccessToken = result.Data,
                     User = userToLogin.Data,
-
                 });
 
 
                 Console.WriteLine("--> ");
                 return Ok(result);
             }
+
             return BadRequest(userToLogin);
         }
-
 
 
         [HttpPost("register")]
@@ -73,7 +71,6 @@ namespace WebApi.Controllers
                 {
                     AccessToken = result.Data,
                     User = registerResult.Data,
-
                 });
 
                 return Ok(result);
@@ -93,11 +90,12 @@ namespace WebApi.Controllers
         {
             var email = json.email ?? (string)json.email;
             if (email == null) return BadRequest("Email is null");
-            var result = await _authService.SendResetPasswordCode((string) email);
+            var result = await _authService.SendResetPasswordCode((string)email);
             if (result.Success)
             {
                 return Ok();
             }
+
             return BadRequest();
         }
 
@@ -111,7 +109,8 @@ namespace WebApi.Controllers
             var result = _authService.VerifyCode(code, email);
             if (result.Success)
             {
-                var token = _authService.CreateAccessToken(result.Data, DateTime.Now.AddMinutes(5),TokenType.ResetPassword);
+                var token = _authService.CreateAccessToken(result.Data, DateTime.Now.AddMinutes(5),
+                    TokenType.ResetPassword);
                 HttpContext.SetCookie(new CookieParams
                 {
                     AccessToken = token.Data,
@@ -119,37 +118,39 @@ namespace WebApi.Controllers
                 });
                 return Ok(result.Message);
             }
+
             return BadRequest(result.Message);
         }
-        
+
         [HttpPost("resetPassword")]
         public IActionResult ResetPassword([FromBody] dynamic json)
         {
             string password = json.password ?? (string)json.password;
             string passwordConfirmation = json.passwordConfirmation ?? (string)json.passwordConfirmation;
             if (passwordConfirmation == null || password == null) return BadRequest("Passwords are nullable");
-     
+
             var result = _authService.ResetPassword(password, passwordConfirmation);
             if (result.Success)
             {
                 HttpContext.DeleteCookies();
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
         [HttpPost("changePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] dynamic json)
         {
-
             string oldPassword = json.oldPassword ?? (string)json.oldPassword;
             string password = json.password ?? (string)json.password;
             string passwordConfirmation = json.passwordConfirmation ?? (string)json.passwordConfirmation;
             string code = json.verificationCode ?? (string)json.verificationCode;
             string email = json.email ?? (string)json.email;
-            if (passwordConfirmation == null || password == null || oldPassword == null) return BadRequest("Passwords are nullable");
+            if (passwordConfirmation == null || password == null || oldPassword == null)
+                return BadRequest("Passwords are nullable");
 
-            var result = await _authService.ChangePassword(oldPassword, password, passwordConfirmation,code,email);
+            var result = await _authService.ChangePassword(oldPassword, password, passwordConfirmation, code, email);
             if (result.Success)
             {
                 return Ok(result);
@@ -164,6 +165,5 @@ namespace WebApi.Controllers
             HttpContext.DeleteCookies();
             return Ok(new SuccessResult());
         }
-
     }
 }

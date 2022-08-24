@@ -5,6 +5,7 @@ using DataAccess.Abstracts.Translations;
 using Entity.Concretes.Translations;
 using System;
 using System.Collections.Generic;
+using Business.Abstracts.Translations;
 
 namespace Business.Concretes.Translations
 {

@@ -14,11 +14,9 @@ namespace Business.Validation.FluentValidation
         public ChatValidator()
         {
             RuleFor(c => c.Message).NotNull().NotEmpty();
-
             RuleFor(c => c.ReceiverId).NotNull().NotEmpty();
-
             RuleFor(c => c.SenderId).NotNull().NotEmpty();
-            
+            RuleFor(c => c.ReceiverId).NotEqual(c => c.SenderId);
         }
     }
 }

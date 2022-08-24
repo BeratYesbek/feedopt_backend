@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstracts;
-using Business.BusinessAspect;
+using Business.BusinessAspect.SecurityAspect;
 using Business.BusinessRules;
 using Business.Security.Role;
 using Business.Validation.FluentValidation;
@@ -158,9 +158,9 @@ namespace Business.Concretes
         /// <param name="pageNumber">pageNumber</param>
         /// <returns>It will return data result that includes list of advert</returns>
         [SecuredOperation($"{Role.AdvertCategoryGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
-        [PerformanceAspect(5, Priority = 2)]
+       /* [PerformanceAspect(5, Priority = 2)]
         [LogAspect(typeof(DatabaseLogger), Priority = 3)]
-        [CacheAspect(Priority = 4)]
+        [CacheAspect(Priority = 4)]*/
         public IDataResult<List<AdvertReadDto>> GetAllAdvertDetail(int pageNumber)
         {
             double latitude = CurrentUser.Latitude;
@@ -282,6 +282,12 @@ namespace Business.Concretes
         {
             _advertDal.Update(advert);
             return new SuccessResult(AdvertMessages.AdvertStatus);
+        }
+        
+        [SecuredOperation($"{Role.AdvertGetAll},{Role.User},{Role.SuperAdmin},{Role.Admin}", Priority = 1)]
+        public IDataResult<List<Advert>> GetDetails()
+        {
+            return new SuccessDataResult<List<Advert>>(_advertDal.GetDetails());
         }
 
         /// <summary>

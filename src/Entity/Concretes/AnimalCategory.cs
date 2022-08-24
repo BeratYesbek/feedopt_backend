@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using Core.Entity.Abstracts;
 using Core.Utilities.Language;
+using Entity.Concretes;
 using Entity.Concretes.Translations;
 
 
@@ -10,13 +11,13 @@ namespace Entity.concretes
     public class AnimalCategory : IEntity
     {
         public int Id { get; set; }
-
-        [JsonPropertyName("Name")]
         public string AnimalCategoryName { get; set; }
+        public List<Advert> Adverts { get; set; }
+        public List<AnimalSpecies> AnimalSpecies { get; set; } 
 
-        private ICollection<AnimalCategoryTranslation> _animalCategoryTranslations;
+        //private ICollection<AnimalCategoryTranslation> _animalCategoryTranslations;
 
-        public virtual ICollection<AnimalCategoryTranslation> AnimalCategoryTranslations
+        /*public virtual ICollection<AnimalCategoryTranslation> AnimalCategoryTranslations
         {
             get
             {
@@ -25,7 +26,7 @@ namespace Entity.concretes
                 return null;
             }
             set => _animalCategoryTranslations = value;
-        }
+        }*/
 
 
     }

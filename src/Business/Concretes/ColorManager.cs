@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Business.Abstracts;
-using Business.BusinessAspect;
+using Business.BusinessAspect.SecurityAspect;
 using Business.Security.Role;
 using Core.Aspects.Autofac.Cache;
 using Core.Aspects.Autofac.Logging;
@@ -105,8 +105,9 @@ namespace Business.Concretes
         [CacheAspect(Priority = 4)]
         public IDataResult<List<Color>> GetAll()
         {
-            var data = _colorDal.GetAll(null,true,
-                t => t.ColorTranslations.Where(t => t.CultureName.Equals(CurrentUser.CultureName)));
+          /*  var data = _colorDal.GetAll(null,true,
+                t => t.ColorTranslations.Where(t => t.CultureName.Equals(CurrentUser.CultureName)));*/
+          var data = _colorDal.GetAll();
             return new SuccessDataResult<List<Color>>(data);
        
         }

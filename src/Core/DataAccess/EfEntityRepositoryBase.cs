@@ -48,17 +48,16 @@ namespace Core.DataAccess
         {
             using (TContext context = new TContext())
             {
-
                 var result = context.Set<TEntity>().SingleOrDefault(filter);
                 return result;
             }
         }
 
-        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null, bool translation = false, params Expression<Func<TEntity, object>>[] including)
+        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null, bool lazyLoading = false, params Expression<Func<TEntity, object>>[] including)
         {
             using (TContext context = new TContext())
             {
-                if (translation)
+                if (lazyLoading)
                 {
                     var include = context.Set<TEntity>().AsQueryable();
                     including.ToList().ForEach(item =>
